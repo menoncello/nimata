@@ -9,6 +9,7 @@
 Nìmata is a CLI tool that orchestrates quality validation for TypeScript/Bun projects through a three-pillar quality cascade: **Start Right** (quality-first scaffolding with AI context), **Find Right** (unified validation), and **Fix Right** (intelligent refactoring with AI assistance). Built as a Turborepo monorepo with Clean Architecture Lite principles, Nìmata leverages Bun 1.3+ native features (SQLite caching, YAML parsing, file hashing) to deliver sub-100ms validation checks with watch mode support. The architecture supports parallel development across 30 stories organized into 3 epics, with a plugin system enabling extensibility while maintaining strict test isolation and mutation testing coverage.
 
 **Key Architectural Highlights:**
+
 - **Modular Monolith** with Clean Architecture Lite (3 layers: CLI → Use Cases → Adapters)
 - **Turborepo monorepo** with apps/, packages/, plugins/, infrastructure/ organization
 - **Bun 1.3+ native features** for 40-60% performance improvement over npm equivalents
@@ -20,28 +21,28 @@ Nìmata is a CLI tool that orchestrates quality validation for TypeScript/Bun pr
 
 ### 1.1 Technology and Library Decision Table
 
-| Category | Technology | Version | Rationale | Alternative Considered | Decision Driver |
-|----------|-----------|---------|-----------|----------------------|----------------|
-| **Runtime** | Bun | 1.3+ | Native SQLite, YAML, file hashing, glob, watch APIs. 40-60% faster than Node.js for file operations. | Node.js 20 LTS | Performance (NFR-003), native features eliminate 6+ dependencies |
-| **Language** | TypeScript | 5.x | Type safety, strict mode enforcement, best Bun support | JavaScript | Developer experience, type safety required by SOLID principles |
-| **CLI Framework** | Yargs | 17.x | Best TypeScript support, subcommand routing, built-in completion infrastructure | Commander, oclif | TypeScript-first design, zero decorators, simple routing |
-| **Interactive UI** | Prompts | 2.x | Lightweight async prompts, best UX for wizards | Inquirer, Enquirer | Async/await API, minimal bundle size, Bun compatibility |
-| **Terminal Colors** | Picocolors | 1.x | Fastest terminal colors library, 6x smaller than chalk | Chalk, Kleur | Performance, bundle size (14x faster than chalk) |
-| **Progress UI** | Ora | 7.x | Spinners with best terminal compatibility | Listr2, cli-progress | Simple API, wide terminal support, spinner + text updates |
-| **Monorepo** | Turborepo | 2.x | Best-in-class caching, 80% CI time savings, npm/Bun support | Nx, Rush, Lerna | Industry standard, simple config, remote caching support |
-| **Dependency Injection** | TSyringe | 4.x | Manual registration (no decorators), Microsoft-maintained | InversifyJS, Awilix | TDD focus, manual bindings for debugging, performance |
-| **AST Manipulation** | ts-morph | 22.x | High-level TypeScript AST API, syntax validation | TypeScript Compiler API directly | Developer productivity > bundle size, safe transformations |
-| **Logging** | Pino | 9.x | Fastest Node.js logger, structured JSON logging | Winston, Bunyan | Performance (NFR-003), structured output, log levels |
-| **Configuration** | Bun.file().yaml() | Native | Native Bun YAML parsing, zero dependencies | js-yaml, yaml | Performance, native Bun API, eliminates dependency |
-| **Caching** | bun:sqlite | Native | Native SQLite with WAL mode, 3-6x faster than JSON | JSON files, Redis | Performance (NFR-003), persistence, query capabilities |
-| **File Watching** | Bun.watch() | Native | Native Bun file watcher, cross-platform | chokidar, node:fs.watch | Performance, native Bun API, cross-platform support |
-| **File Globbing** | Bun.Glob | Native | Native Bun glob pattern matching | glob, fast-glob | Performance, native Bun API, async iteration |
-| **File Hashing** | Bun.hash() | Native | Native Bun hashing (xxHash64), faster than crypto | crypto, xxhash-wasm | Performance, native Bun API, cache invalidation |
-| **Build Tool** | Bun.build() | Native | Native bundler with minification | esbuild, tsup | Native Bun API, tree-shaking, single binary compilation |
-| **Testing** | Bun Test | 1.3+ | Native test runner with snapshots, watch mode | Vitest, Jest | Bun native, faster execution, built-in coverage |
-| **Mutation Testing** | Stryker | 8.x | Industry standard mutation testing, Bun Test support | Not applicable | FR-013, 80%+ mutation score requirement |
-| **Quality Tools** | ESLint 9.x, TypeScript 5.x, Prettier 3.x | Latest | Tools being orchestrated | Not applicable | Project purpose |
-| **Shell Completion** | Yargs completion + custom scripts | Built-in | Manual completion scripts for < 100ms performance | omelette, tabtab | Performance (NFR-003), full control over completion logic |
+| Category                 | Technology                               | Version  | Rationale                                                                                            | Alternative Considered           | Decision Driver                                                  |
+| ------------------------ | ---------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------- | -------------------------------- | ---------------------------------------------------------------- |
+| **Runtime**              | Bun                                      | 1.3+     | Native SQLite, YAML, file hashing, glob, watch APIs. 40-60% faster than Node.js for file operations. | Node.js 20 LTS                   | Performance (NFR-003), native features eliminate 6+ dependencies |
+| **Language**             | TypeScript                               | 5.x      | Type safety, strict mode enforcement, best Bun support                                               | JavaScript                       | Developer experience, type safety required by SOLID principles   |
+| **CLI Framework**        | Yargs                                    | 17.x     | Best TypeScript support, subcommand routing, built-in completion infrastructure                      | Commander, oclif                 | TypeScript-first design, zero decorators, simple routing         |
+| **Interactive UI**       | Prompts                                  | 2.x      | Lightweight async prompts, best UX for wizards                                                       | Inquirer, Enquirer               | Async/await API, minimal bundle size, Bun compatibility          |
+| **Terminal Colors**      | Picocolors                               | 1.x      | Fastest terminal colors library, 6x smaller than chalk                                               | Chalk, Kleur                     | Performance, bundle size (14x faster than chalk)                 |
+| **Progress UI**          | Ora                                      | 7.x      | Spinners with best terminal compatibility                                                            | Listr2, cli-progress             | Simple API, wide terminal support, spinner + text updates        |
+| **Monorepo**             | Turborepo                                | 2.x      | Best-in-class caching, 80% CI time savings, npm/Bun support                                          | Nx, Rush, Lerna                  | Industry standard, simple config, remote caching support         |
+| **Dependency Injection** | TSyringe                                 | 4.x      | Manual registration (no decorators), Microsoft-maintained                                            | InversifyJS, Awilix              | TDD focus, manual bindings for debugging, performance            |
+| **AST Manipulation**     | ts-morph                                 | 22.x     | High-level TypeScript AST API, syntax validation                                                     | TypeScript Compiler API directly | Developer productivity > bundle size, safe transformations       |
+| **Logging**              | Pino                                     | 9.x      | Fastest Node.js logger, structured JSON logging                                                      | Winston, Bunyan                  | Performance (NFR-003), structured output, log levels             |
+| **Configuration**        | Bun.file().yaml()                        | Native   | Native Bun YAML parsing, zero dependencies                                                           | js-yaml, yaml                    | Performance, native Bun API, eliminates dependency               |
+| **Caching**              | bun:sqlite                               | Native   | Native SQLite with WAL mode, 3-6x faster than JSON                                                   | JSON files, Redis                | Performance (NFR-003), persistence, query capabilities           |
+| **File Watching**        | Bun.watch()                              | Native   | Native Bun file watcher, cross-platform                                                              | chokidar, node:fs.watch          | Performance, native Bun API, cross-platform support              |
+| **File Globbing**        | Bun.Glob                                 | Native   | Native Bun glob pattern matching                                                                     | glob, fast-glob                  | Performance, native Bun API, async iteration                     |
+| **File Hashing**         | Bun.hash()                               | Native   | Native Bun hashing (xxHash64), faster than crypto                                                    | crypto, xxhash-wasm              | Performance, native Bun API, cache invalidation                  |
+| **Build Tool**           | Bun.build()                              | Native   | Native bundler with minification                                                                     | esbuild, tsup                    | Native Bun API, tree-shaking, single binary compilation          |
+| **Testing**              | Bun Test                                 | 1.3+     | Native test runner with snapshots, watch mode                                                        | Vitest, Jest                     | Bun native, faster execution, built-in coverage                  |
+| **Mutation Testing**     | Stryker                                  | 8.x      | Industry standard mutation testing, Bun Test support                                                 | Not applicable                   | FR-013, 80%+ mutation score requirement                          |
+| **Quality Tools**        | ESLint 9.x, TypeScript 5.x, Prettier 3.x | Latest   | Tools being orchestrated                                                                             | Not applicable                   | Project purpose                                                  |
+| **Shell Completion**     | Yargs completion + custom scripts        | Built-in | Manual completion scripts for < 100ms performance                                                    | omelette, tabtab                 | Performance (NFR-003), full control over completion logic        |
 
 ### 1.2 Technology Decision Rationale
 
@@ -59,6 +60,7 @@ The decision to use Bun native features eliminates 6+ npm dependencies and provi
 **TSyringe (Manual Registration, No Decorators):**
 
 Manual dependency injection container registration provides:
+
 - Clear, debuggable dependency graphs
 - No magic decorators (explicit binding)
 - Full control over lifetime management
@@ -67,6 +69,7 @@ Manual dependency injection container registration provides:
 **ts-morph (High-Level AST API):**
 
 Chosen over direct TypeScript Compiler API for:
+
 - Developer productivity (hours vs days for refactoring)
 - Built-in syntax validation
 - Rollback on error (safe transformations)
@@ -129,8 +132,8 @@ container.register<IPlugin[]>('Plugins', {
     new ScaffolderPlugin(),
     new ValidatorPlugin(),
     new RefactorerPlugin(),
-    new ClaudeCodePlugin()
-  ]
+    new ClaudeCodePlugin(),
+  ],
 });
 ```
 
@@ -160,6 +163,7 @@ nimata/
 ```
 
 **Benefits:**
+
 - Single source of truth for all code
 - Shared build pipeline with caching (80% CI time savings)
 - Version locking across all packages
@@ -170,6 +174,7 @@ nimata/
 Components naturally align with the three epics from the PRD:
 
 **Epic 1: Start Right - Scaffolding System**
+
 - **ScaffoldingService** (Use Case): Orchestrates project structure generation
 - **TemplateRenderer** (Adapter): Handlebars template processing
 - **FileSystemRepository** (Adapter): File operations via Bun.write()
@@ -177,6 +182,7 @@ Components naturally align with the three epics from the PRD:
 - **ClaudeCodeGenerator** (Plugin): AI context generation (CLAUDE.md, MCP, agents, commands, hooks)
 
 **Epic 2: Find Right - Validation System**
+
 - **ValidationService** (Use Case): Orchestrates all quality tools
 - **ToolOrchestrator** (Use Case): Parallel tool execution
 - **CacheService** (Use Case): SQLite-based intelligent caching
@@ -185,6 +191,7 @@ Components naturally align with the three epics from the PRD:
 - **ValidationPresenter** (Adapter): Terminal output formatting
 
 **Epic 3: Fix Right - Refactoring System**
+
 - **RefactoringService** (Use Case): Orchestrates AST transformations
 - **TriageService** (Use Case): Issue categorization (auto-fix vs manual)
 - **ASTRefactorer** (Infrastructure): ts-morph wrapper with safety checks
@@ -213,13 +220,13 @@ Infrastructure Layer (infrastructure/ + plugins/)
 
 **Storage Locations (OS-Agnostic):**
 
-| Data Type | Location | Format | Persistence | Purpose |
-|-----------|----------|--------|-------------|---------|
-| **User Preferences** | `~/.nimata/config.yaml` | YAML | Permanent | Global user settings (log level, default tool configs) |
-| **Project Config** | `<project-root>/.nimata/config.yaml` | YAML | Permanent | Project-specific settings (overrides user config) |
-| **Validation Cache** | `~/.nimata/cache/validation.db` | SQLite (WAL) | Temporary | Cached validation results (file hash → results) |
-| **Project Metadata** | `<project-root>/.nimata/metadata.json` | JSON | Permanent | Project initialization metadata (creation date, version) |
-| **Logs** | `~/.nimata/logs/*.log` | JSON Lines | Temporary | Structured Pino logs (rotated daily) |
+| Data Type            | Location                               | Format       | Persistence | Purpose                                                  |
+| -------------------- | -------------------------------------- | ------------ | ----------- | -------------------------------------------------------- |
+| **User Preferences** | `~/.nimata/config.yaml`                | YAML         | Permanent   | Global user settings (log level, default tool configs)   |
+| **Project Config**   | `<project-root>/.nimata/config.yaml`   | YAML         | Permanent   | Project-specific settings (overrides user config)        |
+| **Validation Cache** | `~/.nimata/cache/validation.db`        | SQLite (WAL) | Temporary   | Cached validation results (file hash → results)          |
+| **Project Metadata** | `<project-root>/.nimata/metadata.json` | JSON         | Permanent   | Project initialization metadata (creation date, version) |
+| **Logs**             | `~/.nimata/logs/*.log`                 | JSON Lines   | Temporary   | Structured Pino logs (rotated daily)                     |
 
 ### 3.2 Configuration Cascade Strategy
 
@@ -233,8 +240,8 @@ Infrastructure Layer (infrastructure/ + plugins/)
 // Configuration merge logic
 const finalConfig = deepMerge(
   DEFAULTS,
-  userConfig,      // ~/.nimata/config.yaml
-  projectConfig    // .nimata/config.yaml (highest priority)
+  userConfig, // ~/.nimata/config.yaml
+  projectConfig // .nimata/config.yaml (highest priority)
 );
 ```
 
@@ -330,15 +337,16 @@ import { YAMLConfigRepository } from '@nimata/adapters';
 
 // Manual registration (no decorators)
 container.register<IConfigRepository>('IConfigRepository', {
-  useClass: YAMLConfigRepository
+  useClass: YAMLConfigRepository,
 });
 
 container.register<ValidateUseCase>('ValidateUseCase', {
-  useFactory: (c) => new ValidateUseCase(
-    c.resolve('IConfigRepository'),
-    c.resolve('IToolOrchestrator'),
-    c.resolve('ICacheService')
-  )
+  useFactory: (c) =>
+    new ValidateUseCase(
+      c.resolve('IConfigRepository'),
+      c.resolve('IToolOrchestrator'),
+      c.resolve('ICacheService')
+    ),
 });
 
 // ... more registrations
@@ -361,7 +369,7 @@ export class ValidateUseCase {
     // Parallel tool execution with caching
     const results = await this.toolOrchestrator.runAll(files, {
       useCache: !options.noCache,
-      tools: config.tools
+      tools: config.tools,
     });
 
     return this.aggregateResults(results);
@@ -447,9 +455,9 @@ export class ESLintRunner implements IToolRunner {
 
     return {
       tool: 'eslint',
-      errors: results.flatMap(r => r.messages.filter(m => m.severity === 2)),
-      warnings: results.flatMap(r => r.messages.filter(m => m.severity === 1)),
-      executionTime: Date.now() - startTime
+      errors: results.flatMap((r) => r.messages.filter((m) => m.severity === 2)),
+      warnings: results.flatMap((r) => r.messages.filter((m) => m.severity === 1)),
+      executionTime: Date.now() - startTime,
     };
   }
 }
@@ -489,6 +497,7 @@ Need to choose JavaScript runtime for CLI tool. Options: Node.js 20 LTS vs Bun 1
 Use Bun 1.3+ as primary runtime.
 
 **Rationale**:
+
 - Native SQLite support with WAL mode (3-6x faster than JSON caching)
 - Native YAML parsing eliminates js-yaml dependency
 - Native file hashing (Bun.hash) faster than crypto module
@@ -498,12 +507,14 @@ Use Bun 1.3+ as primary runtime.
 - Supports NFR-003 requirement: < 100ms validation checks with cache
 
 **Consequences**:
+
 - Positive: Significant performance gains, fewer dependencies, native features
 - Positive: Bun Test provides fast native testing
 - Negative: Smaller ecosystem than Node.js (mitigated by npm compatibility)
 - Negative: Users must install Bun (documented in installation guide)
 
 **Alternatives Considered**:
+
 - Node.js 20 LTS: More mature ecosystem but no native features, slower performance
 
 ---
@@ -519,6 +530,7 @@ Need to choose architecture pattern for CLI tool. Traditional Clean Architecture
 Use simplified "Clean Architecture Lite" with 3 layers: CLI → Use Cases → Adapters.
 
 **Rationale**:
+
 - CLI tools don't need separate Controllers layer (Yargs commands can call use cases directly)
 - Domain types (entities) can live with use cases (co-location principle)
 - Keeps core benefits: dependency inversion, testability, SOLID principles
@@ -526,12 +538,14 @@ Use simplified "Clean Architecture Lite" with 3 layers: CLI → Use Cases → Ad
 - Aligns with Epic-driven component boundaries
 
 **Consequences**:
+
 - Positive: Simpler architecture, less boilerplate, faster development
 - Positive: Still maintains testability and SOLID principles
 - Negative: Slightly less separation than traditional Clean Architecture
 - Mitigation: Strict TypeScript project references prevent circular dependencies
 
 **Alternatives Considered**:
+
 - Traditional Clean Architecture (4 layers): Over-engineering for CLI tool
 - Functional approach (no classes): Harder to test with DI, less clear boundaries
 - Event-driven architecture: Unnecessary complexity for synchronous CLI operations
@@ -549,6 +563,7 @@ Need DI container for testability and SOLID principles. Options: TSyringe, Inver
 Use TSyringe with manual registration (no decorators).
 
 **Rationale**:
+
 - TDD requirement demands easy mocking and dependency replacement
 - Manual registration provides explicit, debuggable dependency graphs
 - No magic decorators → clear, traceable code
@@ -557,6 +572,7 @@ Use TSyringe with manual registration (no decorators).
 - Simple API: register, resolve, clear
 
 **Consequences**:
+
 - Positive: Clear dependency graphs, excellent debuggability
 - Positive: Easy to mock for unit tests
 - Positive: Performance better than decorator-based solutions
@@ -564,6 +580,7 @@ Use TSyringe with manual registration (no decorators).
 - Negative: No automatic registration by decorators (intentional trade-off)
 
 **Alternatives Considered**:
+
 - InversifyJS: Decorator-based (too much magic), reflection overhead
 - Awilix: Auto-registration (less explicit, harder to debug)
 - No DI: Violates SOLID principles, makes testing difficult
@@ -581,6 +598,7 @@ Need caching strategy for validation results to achieve < 100ms performance (NFR
 Use `bun:sqlite` with WAL (Write-Ahead Logging) mode.
 
 **Rationale**:
+
 - 3-6x faster than JSON file caching (benchmark: 150ms vs 45ms for 1000 entries)
 - WAL mode prevents database corruption on crashes
 - Enables complex queries (find by hash, timestamp, tool)
@@ -590,6 +608,7 @@ Use `bun:sqlite` with WAL (Write-Ahead Logging) mode.
 - Supports NFR-003: < 100ms validation checks
 
 **Consequences**:
+
 - Positive: Significant performance improvement
 - Positive: Query capabilities (complex invalidation strategies)
 - Positive: Persistent cache across CLI runs
@@ -597,6 +616,7 @@ Use `bun:sqlite` with WAL (Write-Ahead Logging) mode.
 - Negative: Requires SQLite knowledge (mitigated by Repository pattern abstraction)
 
 **Alternatives Considered**:
+
 - JSON files: Too slow (150ms+ for large projects)
 - Redis: Overkill (requires separate process), network overhead
 - In-memory: Doesn't persist across runs, doesn't support watch mode
@@ -614,6 +634,7 @@ Need AST manipulation for refactoring features (Epic 3). Options: ts-morph vs Ty
 Use ts-morph as high-level wrapper around TypeScript Compiler API.
 
 **Rationale**:
+
 - Developer productivity: hours vs days for refactoring implementations
 - Built-in syntax validation: prevents invalid transformations
 - Rollback on error: safe transformations with automatic revert
@@ -622,6 +643,7 @@ Use ts-morph as high-level wrapper around TypeScript Compiler API.
 - Extensive documentation and examples
 
 **Consequences**:
+
 - Positive: Faster feature development (10x productivity gain)
 - Positive: Safer transformations (validation + rollback)
 - Positive: Easier onboarding (simpler API)
@@ -629,6 +651,7 @@ Use ts-morph as high-level wrapper around TypeScript Compiler API.
 - Mitigation: Bundle size acceptable for CLI tool (not a web app)
 
 **Alternatives Considered**:
+
 - TypeScript Compiler API directly: Lower-level, harder to use, error-prone
 - Babel AST: Not TypeScript-native, requires extra transformation steps
 
@@ -645,6 +668,7 @@ Need monorepo build orchestration. Options: Turborepo, Nx, Rush, Lerna.
 Use Turborepo for build caching and task orchestration.
 
 **Rationale**:
+
 - Industry standard for TypeScript monorepos
 - Best-in-class caching: 80% CI time savings measured
 - Simple configuration: single `turbo.json` file
@@ -653,6 +677,7 @@ Use Turborepo for build caching and task orchestration.
 - Fast adoption curve (simpler than Nx)
 
 **Consequences**:
+
 - Positive: Dramatic CI performance improvement (80% time savings)
 - Positive: Local development speed improvement (incremental builds)
 - Positive: Simple configuration and maintenance
@@ -660,6 +685,7 @@ Use Turborepo for build caching and task orchestration.
 - Negative: Requires learning Turborepo concepts (task dependencies, pipelines)
 
 **Alternatives Considered**:
+
 - Nx: More features but higher complexity, steeper learning curve
 - Rush: Microsoft-maintained but less popular, smaller community
 - Lerna: Deprecated, no longer maintained
@@ -677,6 +703,7 @@ Need CLI framework for command routing and interactive prompts. Options: Yargs, 
 Use Yargs for command routing + Prompts for interactive mode.
 
 **Rationale**:
+
 - Yargs: Best TypeScript support, zero decorators, simple routing
 - Prompts: Async/await API, lightweight, excellent Bun compatibility
 - Separation of concerns: routing (Yargs) vs interaction (Prompts)
@@ -684,6 +711,7 @@ Use Yargs for command routing + Prompts for interactive mode.
 - Smaller bundle size than oclif (which includes everything)
 
 **Consequences**:
+
 - Positive: Simple, focused libraries (single responsibility)
 - Positive: Excellent TypeScript experience
 - Positive: Lightweight bundle size
@@ -691,6 +719,7 @@ Use Yargs for command routing + Prompts for interactive mode.
 - Mitigation: Both libraries are mature, stable, well-documented
 
 **Alternatives Considered**:
+
 - Commander: Less TypeScript-focused, weaker completion support
 - oclif: Monolithic framework, decorator-heavy, larger bundle size
 
@@ -707,6 +736,7 @@ Need plugin discovery mechanism. Options: static registration, package.json conv
 Use hybrid approach: static registration for built-in plugins + intelligent recommendations from registry.
 
 **Rationale**:
+
 - MVP: 4 built-in plugins (scaffolder, validator, refactorer, claude-code)
 - Static registration: explicit imports, no runtime discovery overhead
 - Intelligent recommendations: registry suggests relevant plugins based on project type
@@ -714,6 +744,7 @@ Use hybrid approach: static registration for built-in plugins + intelligent reco
 - Future: plugin installation via `nimata plugin install <name>`
 
 **Consequences**:
+
 - Positive: Fast startup (no dynamic discovery in MVP)
 - Positive: Clear, traceable plugin loading
 - Positive: Extensible for future plugin ecosystem
@@ -721,7 +752,8 @@ Use hybrid approach: static registration for built-in plugins + intelligent reco
 - Future: Add dynamic discovery via package.json conventions in Phase 2
 
 **Alternatives Considered**:
-- Package.json conventions (nimata-plugin-*): Dynamic discovery overhead, slower startup
+
+- Package.json conventions (nimata-plugin-\*): Dynamic discovery overhead, slower startup
 - Registry file only: No built-in plugins, complicates distribution
 - Static only: Not extensible by users
 
@@ -738,6 +770,7 @@ Need shell completion for all shells (Bash, Zsh, Fish, PowerShell). Options: Yar
 Use Yargs completion infrastructure + manual custom completion scripts.
 
 **Rationale**:
+
 - Performance: < 100ms completion requirement (NFR-003)
 - Full control: custom logic for context-aware completions
 - Yargs provides: completion command (`nimata completion`) that generates shell-specific scripts
@@ -745,6 +778,7 @@ Use Yargs completion infrastructure + manual custom completion scripts.
 - Generated during: `nimata init` adds completion installation to setup
 
 **Consequences**:
+
 - Positive: Best performance (< 100ms)
 - Positive: Full control over completion behavior
 - Positive: Supports all major shells
@@ -752,6 +786,7 @@ Use Yargs completion infrastructure + manual custom completion scripts.
 - Mitigation: Yargs handles shell-specific syntax, we only write completion logic
 
 **Alternatives Considered**:
+
 - Yargs built-in completion: Simple but limited functionality
 - omelette/tabtab: Abstraction overhead, less control
 
@@ -768,6 +803,7 @@ NFR-003 specifies watch mode. Need to decide which commands support it.
 Watch mode only for `validate` command (not `fix` or `scaffold`).
 
 **Rationale**:
+
 - Find Right pillar: iterative validation during development
 - Refactoring (`fix`) should be deliberate, not automatic on file save
 - Scaffolding (`scaffold`) is one-time operation
@@ -775,6 +811,7 @@ Watch mode only for `validate` command (not `fix` or `scaffold`).
 - Aligns with TDD workflow: watch tests + validation simultaneously
 
 **Consequences**:
+
 - Positive: Clear use case (validation iteration)
 - Positive: Prevents unintended automatic refactoring
 - Positive: Simple implementation scope for MVP
@@ -782,6 +819,7 @@ Watch mode only for `validate` command (not `fix` or `scaffold`).
 - Future: Add watch mode for `fix` in Phase 2 if user feedback demands it
 
 **Alternatives Considered**:
+
 - Watch mode for all commands: Automatic refactoring is dangerous
 - No watch mode: Violates NFR-003 requirement
 
@@ -798,6 +836,7 @@ Multiple config locations (~/.nimata/config.yaml and <project>/.nimata/config.ya
 Deep merge with project config overriding user config.
 
 **Rationale**:
+
 - User config = developer preferences (log level, color scheme)
 - Project config = team standards (tool versions, rule sets)
 - Team standards should override individual preferences for consistency
@@ -805,12 +844,14 @@ Deep merge with project config overriding user config.
 - Aligns with "Start Right" pillar: team standards enforced
 
 **Consequences**:
+
 - Positive: Flexible configuration (user defaults + project overrides)
 - Positive: Team consistency (project config wins)
 - Positive: Developer freedom (user config for personal preferences)
 - Negative: Potential confusion about which config is active (mitigated by `nimata config show` command)
 
 **Alternatives Considered**:
+
 - Project replaces user (no merge): Loses user preferences entirely
 - User config only: No team standards enforcement
 
@@ -827,6 +868,7 @@ Distribution options: npm, single binary, or both. Need to prioritize for MVP.
 MVP uses npm distribution, single binary added in Phase 2.
 
 **Rationale**:
+
 - npm distribution: simpler, faster to implement
 - Single binary: requires cross-platform testing (Linux, macOS, Windows)
 - `bun build --compile` powerful but needs validation
@@ -834,12 +876,14 @@ MVP uses npm distribution, single binary added in Phase 2.
 - npm install -g nimata: familiar workflow for developers
 
 **Consequences**:
+
 - Positive: Faster MVP delivery (simpler distribution)
 - Positive: Familiar installation method (npm)
 - Negative: Users must have Bun installed (documented in README)
 - Phase 2: Add single binary via `bun build --compile` for users without Bun
 
 **Alternatives Considered**:
+
 - Binary in MVP: Adds complexity, delays core feature delivery
 - Binary only: No npm distribution (limits adoption for npm users)
 
@@ -882,11 +926,7 @@ describe('ValidateUseCase', () => {
     mockToolOrchestrator = createMockToolOrchestrator();
     mockCacheService = createMockCacheService();
 
-    sut = new ValidateUseCase(
-      mockConfigRepo,
-      mockToolOrchestrator,
-      mockCacheService
-    );
+    sut = new ValidateUseCase(mockConfigRepo, mockToolOrchestrator, mockCacheService);
   });
 
   afterEach(() => {
@@ -918,15 +958,8 @@ describe('ValidateUseCase', () => {
     "command": "bun test tests/unit/**/*.test.ts"
   },
   "coverageAnalysis": "perTest",
-  "mutate": [
-    "src/**/*.ts",
-    "!src/**/*.test.ts"
-  ],
-  "ignore": [
-    "**/tests/integration/**",
-    "**/tests/e2e/**",
-    "**/tests/performance/**"
-  ],
+  "mutate": ["src/**/*.ts", "!src/**/*.test.ts"],
+  "ignore": ["**/tests/integration/**", "**/tests/e2e/**", "**/tests/performance/**"],
   "thresholds": {
     "high": 80,
     "low": 60,
@@ -937,13 +970,13 @@ describe('ValidateUseCase', () => {
 
 **Test Types by Layer:**
 
-| Layer | Unit Tests | Integration Tests | E2E Tests | Performance Tests | Mutation Testing |
-|-------|-----------|------------------|-----------|------------------|------------------|
-| **apps/cli** | ✅ Commands (mocked use cases) | ✅ Command flow | ✅ Full CLI execution | ✅ Watch mode performance | ❌ (no Stryker) |
-| **packages/core** | ✅ Use cases (100% coverage) | ❌ | ❌ | ❌ | ✅ (80%+ mutation score) |
-| **packages/adapters** | ✅ Repositories, Presenters | ✅ File system, SQLite | ❌ | ❌ | ✅ (80%+ mutation score) |
-| **plugins/** | ✅ Plugin logic | ✅ Tool integration | ❌ | ❌ | ✅ (80%+ mutation score) |
-| **infrastructure/** | ✅ Wrapper logic | ✅ Tool execution | ❌ | ✅ Tool overhead | ✅ (80%+ mutation score) |
+| Layer                 | Unit Tests                     | Integration Tests      | E2E Tests             | Performance Tests         | Mutation Testing         |
+| --------------------- | ------------------------------ | ---------------------- | --------------------- | ------------------------- | ------------------------ |
+| **apps/cli**          | ✅ Commands (mocked use cases) | ✅ Command flow        | ✅ Full CLI execution | ✅ Watch mode performance | ❌ (no Stryker)          |
+| **packages/core**     | ✅ Use cases (100% coverage)   | ❌                     | ❌                    | ❌                        | ✅ (80%+ mutation score) |
+| **packages/adapters** | ✅ Repositories, Presenters    | ✅ File system, SQLite | ❌                    | ❌                        | ✅ (80%+ mutation score) |
+| **plugins/**          | ✅ Plugin logic                | ✅ Tool integration    | ❌                    | ❌                        | ✅ (80%+ mutation score) |
+| **infrastructure/**   | ✅ Wrapper logic               | ✅ Tool execution      | ❌                    | ✅ Tool overhead          | ✅ (80%+ mutation score) |
 
 ### 6.3 Error Handling Strategy
 
@@ -984,26 +1017,23 @@ export class ValidateUseCase {
 
 **Exit Codes:**
 
-| Exit Code | Meaning | When Used |
-|-----------|---------|-----------|
-| 0 | Success | Command completed successfully, no errors found |
-| 1 | Validation errors found | `validate` command found errors |
-| 2 | Validation warnings only | `validate` command found warnings but no errors |
-| 3 | Configuration error | Invalid config file or missing required config |
-| 4 | Plugin error | Plugin failed to load or execute |
-| 5 | File system error | Cannot read/write files |
-| 6 | Transformation error | Refactoring failed (syntax error after transform) |
-| 130 | Interrupted (SIGINT) | User pressed Ctrl+C |
+| Exit Code | Meaning                  | When Used                                         |
+| --------- | ------------------------ | ------------------------------------------------- |
+| 0         | Success                  | Command completed successfully, no errors found   |
+| 1         | Validation errors found  | `validate` command found errors                   |
+| 2         | Validation warnings only | `validate` command found warnings but no errors   |
+| 3         | Configuration error      | Invalid config file or missing required config    |
+| 4         | Plugin error             | Plugin failed to load or execute                  |
+| 5         | File system error        | Cannot read/write files                           |
+| 6         | Transformation error     | Refactoring failed (syntax error after transform) |
+| 130       | Interrupted (SIGINT)     | User pressed Ctrl+C                               |
 
 ### 6.4 Safe AST Transformation Pattern
 
 ```typescript
 // infrastructure/ts-morph-wrapper/src/refactorer.ts
 export class SafeASTRefactorer {
-  async applyTransformation(
-    filePath: string,
-    transformer: Transformer
-  ): Promise<Result<void>> {
+  async applyTransformation(filePath: string, transformer: Transformer): Promise<Result<void>> {
     const project = new Project();
     const sourceFile = project.addSourceFileAtPath(filePath);
     const originalText = sourceFile.getFullText();
@@ -1015,20 +1045,18 @@ export class SafeASTRefactorer {
       // Validate syntax (no errors introduced)
       const diagnostics = sourceFile.getPreEmitDiagnostics();
       if (diagnostics.length > 0) {
-        const errors = diagnostics.map(d => d.getMessageText()).join(', ');
+        const errors = diagnostics.map((d) => d.getMessageText()).join(', ');
         return Result.failure(`Transformation introduced errors: ${errors}`);
       }
 
       // Save if valid
       await sourceFile.save();
       return Result.success(undefined);
-
     } catch (error) {
       // Rollback on any error
       sourceFile.replaceWithText(originalText);
       await sourceFile.save();
       return Result.failure(`Transformation failed: ${error.message}`);
-
     } finally {
       // Prevent memory leaks
       project.dispose();
@@ -1315,16 +1343,17 @@ nimata/
 
 ### 8.1 Test Types and Coverage
 
-| Test Type | Location | Tools | Purpose | Coverage Target | Mutation Testing |
-|-----------|----------|-------|---------|----------------|------------------|
-| **Unit Tests** | `tests/unit/` per package | Bun Test | Test individual functions/classes in isolation with mocked dependencies | 100% line coverage | ✅ 80%+ mutation score |
-| **Integration Tests** | `tests/integration/` per package | Bun Test | Test component interactions (SQLite, file system, tool execution) | 80% coverage | ❌ Too slow |
-| **E2E Tests** | `apps/cli/tests/e2e/` | Bun Test | Test full CLI execution from command to output | 80% critical paths | ❌ Too slow |
-| **Performance Tests** | `tests/performance/` at root | Hyperfine, custom benchmarks | Validate NFR-003 (< 100ms validation with cache) | N/A (benchmark) | ❌ Not applicable |
+| Test Type             | Location                         | Tools                        | Purpose                                                                 | Coverage Target    | Mutation Testing       |
+| --------------------- | -------------------------------- | ---------------------------- | ----------------------------------------------------------------------- | ------------------ | ---------------------- |
+| **Unit Tests**        | `tests/unit/` per package        | Bun Test                     | Test individual functions/classes in isolation with mocked dependencies | 100% line coverage | ✅ 80%+ mutation score |
+| **Integration Tests** | `tests/integration/` per package | Bun Test                     | Test component interactions (SQLite, file system, tool execution)       | 80% coverage       | ❌ Too slow            |
+| **E2E Tests**         | `apps/cli/tests/e2e/`            | Bun Test                     | Test full CLI execution from command to output                          | 80% critical paths | ❌ Too slow            |
+| **Performance Tests** | `tests/performance/` at root     | Hyperfine, custom benchmarks | Validate NFR-003 (< 100ms validation with cache)                        | N/A (benchmark)    | ❌ Not applicable      |
 
 ### 8.2 Unit Testing Strategy
 
 **Principles:**
+
 1. **100% isolation**: Every test uses fresh mocks via `beforeEach()`
 2. **AAA pattern**: Arrange, Act, Assert
 3. **One assertion per test**: Clear failure messages
@@ -1361,24 +1390,15 @@ beforeEach(() => {
     "command": "bun test tests/unit/**/*.test.ts"
   },
   "coverageAnalysis": "perTest",
-  "mutate": [
-    "src/**/*.ts",
-    "!src/**/*.test.ts"
-  ],
-  "ignore": [
-    "**/tests/integration/**",
-    "**/tests/e2e/**",
-    "**/tests/performance/**"
-  ],
+  "mutate": ["src/**/*.ts", "!src/**/*.test.ts"],
+  "ignore": ["**/tests/integration/**", "**/tests/e2e/**", "**/tests/performance/**"],
   "thresholds": {
     "high": 80,
     "low": 60,
     "break": 50
   },
   "mutator": {
-    "plugins": [
-      "@stryker-mutator/typescript-checker"
-    ]
+    "plugins": ["@stryker-mutator/typescript-checker"]
   }
 }
 ```
@@ -1476,7 +1496,7 @@ describe('nimata validate (E2E)', () => {
     // Run actual CLI command
     const proc = spawn(['bun', 'run', 'nimata', 'validate'], {
       cwd: tempProjectDir,
-      env: process.env
+      env: process.env,
     });
 
     const output = await new Response(proc.stdout).text();
@@ -1695,14 +1715,14 @@ nimata init
 
 ### 10.2 Threat Model
 
-| Threat | Mitigation | Priority |
-|--------|-----------|----------|
-| **Malicious config file** | Config validation, no code execution in YAML | P0 |
-| **Path traversal** | Path normalization, restrict to project directory | P0 |
-| **Dependency vulnerabilities** | Dependabot alerts, automated security updates | P0 |
-| **Malicious plugin** | Static registration only (no dynamic loading in MVP) | P1 |
-| **AST transformation bugs** | Syntax validation, rollback on error, comprehensive tests | P0 |
-| **Cache poisoning** | File hash validation, SQLite integrity checks | P1 |
+| Threat                         | Mitigation                                                | Priority |
+| ------------------------------ | --------------------------------------------------------- | -------- |
+| **Malicious config file**      | Config validation, no code execution in YAML              | P0       |
+| **Path traversal**             | Path normalization, restrict to project directory         | P0       |
+| **Dependency vulnerabilities** | Dependabot alerts, automated security updates             | P0       |
+| **Malicious plugin**           | Static registration only (no dynamic loading in MVP)      | P1       |
+| **AST transformation bugs**    | Syntax validation, rollback on error, comprehensive tests | P0       |
+| **Cache poisoning**            | File hash validation, SQLite integrity checks             | P1       |
 
 ### 10.3 Input Validation
 
@@ -1714,12 +1734,12 @@ const configSchema = z.object({
   tools: z.object({
     eslint: z.object({
       enabled: z.boolean(),
-      configPath: z.string().optional()
+      configPath: z.string().optional(),
     }),
     // ... more tools
   }),
   include: z.array(z.string()),
-  exclude: z.array(z.string())
+  exclude: z.array(z.string()),
 });
 
 // Validate and sanitize
@@ -1764,6 +1784,7 @@ updates:
 **Minimal Dependencies:**
 
 By using Bun native features, we eliminate 6+ dependencies:
+
 - ❌ js-yaml → ✅ Bun.file().yaml()
 - ❌ fast-glob → ✅ Bun.Glob
 - ❌ chokidar → ✅ Bun.watch()
@@ -1803,7 +1824,7 @@ nimata fix --dry-run
 tools:
   eslint:
     enabled: true
-    configPath: .eslintrc.json  # Relative to project root
+    configPath: .eslintrc.json # Relative to project root
   typescript:
     enabled: true
     configPath: tsconfig.json
@@ -1812,22 +1833,22 @@ tools:
     configPath: .prettierrc.json
 
 include:
-  - "src/**/*.ts"
-  - "tests/**/*.ts"
+  - 'src/**/*.ts'
+  - 'tests/**/*.ts'
 
 exclude:
-  - "**/node_modules/**"
-  - "**/dist/**"
-  - "**/.nimata/**"  # Exclude own config directory
+  - '**/node_modules/**'
+  - '**/dist/**'
+  - '**/.nimata/**' # Exclude own config directory
 
 cache:
   enabled: true
-  ttl: 604800  # 7 days in seconds
+  ttl: 604800 # 7 days in seconds
   maxSize: 100MB
 
 logging:
-  level: "info"  # No debug by default
-  destination: "~/.nimata/logs/nimata.log"
+  level: 'info' # No debug by default
+  destination: '~/.nimata/logs/nimata.log'
 ```
 
 ---

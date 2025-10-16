@@ -20,6 +20,7 @@ Nìmata orchestrates the complete quality workflow from project inception throug
 Primary: AI-assisted TypeScript/JavaScript developers (mid-senior level, 3+ years experience) who value quality but struggle with tooling setup complexity and AI context management. Secondary: Engineering team leads seeking to standardize quality across 3-15 developer teams.
 
 **Key Differentiators:**
+
 - **Only tool** combining quality-first scaffolding + AI integration + intelligent refactoring triage
 - **Orchestration over invention:** Leverages battle-tested tools rather than building proprietary alternatives
 - **AI-native by design:** First-class support for Claude Code, GitHub Copilot, Windsurf with persistent context
@@ -45,18 +46,21 @@ This Product Brief serves as strategic foundation for creating detailed Product 
 Developers face three critical quality-related pain points that compound throughout the software development lifecycle:
 
 **1. Context Alignment Problem (AI Friction)**
+
 - Developers waste 10-30 minutes per session re-explaining project structure, architecture decisions, and coding standards to AI assistants
 - AI tools hallucinate and generate incorrect code without clear constraints and project-specific rules
 - No standardized way to provide persistent, structured context that both AI and humans can reference
 - **Impact:** Reduced productivity, inconsistent code quality, wasted AI API costs on correcting hallucinations
 
 **2. Quality Snowball Effect (Configuration Void)**
+
 - Projects that don't configure quality tools (linting, testing, formatting, type checking) from day one accumulate technical debt exponentially
 - Developers face decision paralysis choosing from dozens of tooling options without guidance
 - Retrofitting quality tools into existing projects is 5-10x more expensive than starting with them
 - **Impact:** Lower code quality, increased bug rates, higher maintenance costs, slower feature velocity
 
 **3. Inefficient Fix Workflow (Tool Mismatch)**
+
 - Simple syntax/formatting errors require full AI prompts, which are expensive (API costs) and slow (network latency)
 - Static refactoring tools can fix simple issues in milliseconds, but developers default to asking AI for everything
 - No intelligent triage system to route simple fixes to static tools and complex refactoring to AI
@@ -91,6 +95,7 @@ Developers face three critical quality-related pain points that compound through
 **Core Approach:**
 
 **Pillar 1: Start Right (Scaffolding with Quality DNA)**
+
 - Interactive CLI guides developers through project setup with context-aware questions
 - Configures comprehensive quality toolchain from day one (ESLint, TypeScript, Prettier, Bun Test)
 - Generates AI rules files (CLAUDE.md, BMAD configs) providing persistent project context to AI assistants
@@ -98,12 +103,14 @@ Developers face three critical quality-related pain points that compound through
 - Initial focus: TypeScript + Bun stack, designed for systematic expansion
 
 **Pillar 2: Find Right (Validation Orchestration)**
+
 - Unified interface orchestrating existing proven tools (don't reinvent the wheel)
 - Dual-layer reporting: CLI summary for quick feedback + detailed HTML reports (Stryker-inspired)
 - Configurable quality levels (light/medium/strict) with opinionated strict default
 - Runs comprehensive validation across linting, type checking, testing, and formatting in one command
 
 **Pillar 3: Fix Right (Intelligent Triage)**
+
 - Static refactoring for simple patterns (readonly variables, const declarations) - instant, safe, automated
 - AI prompt generation for complex refactoring (method extraction, architectural changes) - leverages existing AI tools
 - Interactive preview before applying changes (builds trust through transparency)
@@ -134,6 +141,7 @@ Developers face three critical quality-related pain points that compound through
 **AI-Assisted TypeScript/JavaScript Developers (Individual Contributors)**
 
 **Profile:**
+
 - Mid to senior-level developers (3+ years experience)
 - Active users of AI coding assistants (Claude Code, GitHub Copilot, Windsurf, Cursor)
 - Working primarily in TypeScript/JavaScript ecosystem
@@ -142,6 +150,7 @@ Developers face three critical quality-related pain points that compound through
 - Early adopters willing to try new developer tools
 
 **Current Behavior:**
+
 - Start new projects by copying previous project configurations or using basic scaffolding tools
 - Manually configure linting, formatting, testing tools after initial setup
 - Repeatedly explain project context to AI assistants in each session
@@ -149,6 +158,7 @@ Developers face three critical quality-related pain points that compound through
 - Run multiple tools separately (eslint, prettier, tsc, vitest) without unified workflow
 
 **Pain Points:**
+
 - "I waste 20 minutes every day re-teaching my AI assistant about my project structure"
 - "I always forget to set up testing properly at the start and regret it later"
 - "My AI keeps suggesting code that violates my linting rules"
@@ -156,6 +166,7 @@ Developers face three critical quality-related pain points that compound through
 - "Simple fixes take forever when I have to prompt an AI for them"
 
 **Goals:**
+
 - Start new projects with confidence that quality is built-in from day one
 - Reduce time spent on repetitive context establishment with AI tools
 - Catch and fix code quality issues faster
@@ -163,6 +174,7 @@ Developers face three critical quality-related pain points that compound through
 - Spend more time on creative problem-solving, less on tooling setup and maintenance
 
 **Success Metrics for This Segment:**
+
 - Reduces project setup time from 2-4 hours to 15-30 minutes
 - Eliminates 80%+ of AI context re-establishment overhead
 - Catches quality issues 5-10x faster through unified validation
@@ -173,6 +185,7 @@ Developers face three critical quality-related pain points that compound through
 **Engineering Team Leads and Tech Leads**
 
 **Profile:**
+
 - Senior developers or engineering managers responsible for team code quality
 - Manage teams of 3-15 developers
 - Enforce coding standards and best practices across multiple projects
@@ -180,6 +193,7 @@ Developers face three critical quality-related pain points that compound through
 - Budget authority or strong influence on tool adoption decisions
 
 **Current Behavior:**
+
 - Create and maintain "starter templates" or boilerplate repositories for their teams
 - Write extensive documentation on coding standards and quality expectations
 - Review PRs with focus on code quality and consistency
@@ -187,6 +201,7 @@ Developers face three critical quality-related pain points that compound through
 - Balance between giving developers autonomy and maintaining standards
 
 **Pain Points:**
+
 - "Every team member sets up projects differently, leading to inconsistent quality"
 - "New team members take weeks to learn our quality standards and tooling setup"
 - "I spend too much PR review time on style/formatting issues instead of logic"
@@ -194,6 +209,7 @@ Developers face three critical quality-related pain points that compound through
 - "Maintaining our project templates is a part-time job"
 
 **Goals:**
+
 - Standardize project setup and quality tooling across entire team
 - Reduce onboarding time for new developers
 - Shift quality enforcement left (earlier in development cycle)
@@ -201,6 +217,7 @@ Developers face three critical quality-related pain points that compound through
 - Reduce manual PR review burden on trivial issues
 
 **Success Metrics for This Segment:**
+
 - Reduces new developer onboarding time by 40-60%
 - Increases team code quality metrics (test coverage, linting compliance) by 30%+
 - Reduces PR review cycle time by focusing reviews on logic, not style
@@ -235,21 +252,25 @@ Developers face three critical quality-related pain points that compound through
 ### User Success Metrics
 
 **Setup Efficiency:**
+
 - Users complete full project setup (scaffolding + quality tools) in under 20 minutes (vs. 2-4 hours manual)
 - 90%+ of users report setup process was "easy" or "very easy"
 - Zero-to-commit time reduced by 70%+ compared to manual setup
 
 **Quality Improvement:**
+
 - Projects created with Nìmata achieve 80%+ test coverage on average (vs. 40-50% industry baseline)
 - Linting compliance reaches 95%+ in Nìmata projects (vs. 60-70% typical)
 - Users report 50%+ reduction in "quality debt" accumulated in first month of development
 
 **AI Integration Value:**
+
 - Users report 60%+ reduction in time spent re-explaining context to AI assistants
 - AI-generated code in Nìmata projects passes quality checks 40%+ more often
 - Users save an average of 15-20 minutes per day on AI context management
 
 **Developer Satisfaction:**
+
 - Net Promoter Score (NPS) of 40+ within first 6 months
 - 70%+ of users recommend Nìmata to colleagues
 - "Would use again" rating of 80%+ for next project
@@ -257,26 +278,31 @@ Developers face three critical quality-related pain points that compound through
 ### Key Performance Indicators (KPIs)
 
 **Adoption Metrics:**
+
 - **Weekly Active Users:** 200+ by month 3, 500+ by month 6
 - **Projects Created:** 1,000+ total projects scaffolded by month 6
 - **Installation Growth Rate:** 20%+ month-over-month for first 6 months
 
 **Engagement Metrics:**
+
 - **Retention Rate:** 60%+ of users create 2+ projects within 6 months
 - **Feature Usage:** 70%+ of users utilize all three pillars (scaffold, validate, refactor)
 - **Quality Level Adoption:** 80%+ choose "strict" quality level (validates opinionated defaults work)
 
 **Quality Metrics:**
+
 - **Average Project Quality Score:** 85/100 across scaffolded projects (composite: test coverage + linting + type safety)
 - **Time-to-First-Issue:** Average of 48+ hours before first bug reported (vs. industry baseline of 8-12 hours)
 - **Zero-Configuration Success:** 95%+ of scaffolded projects pass all quality checks immediately after setup
 
 **Community Health:**
+
 - **GitHub Issues Response Time:** <24 hours median response time
 - **Contribution Rate:** 5+ external contributors per month by month 6
 - **Community Satisfaction:** 4.5/5 stars average community support rating
 
 **Business Sustainability:**
+
 - **Cost per User:** < $0.50/user/month (infrastructure + tooling costs)
 - **Organic Growth Rate:** 60%+ of new users come from word-of-mouth/organic discovery
 - **Enterprise Interest Pipeline:** 3+ qualified enterprise leads per quarter (post-MVP)
@@ -288,6 +314,7 @@ Developers face three critical quality-related pain points that compound through
 ### Financial Impact
 
 **Development Investment (MVP - 6 months):**
+
 - **Personnel:** 1-2 developers full-time (or founder solo effort)
 - **Infrastructure:** Minimal (<$100/month for documentation hosting, domain, CDN)
 - **Tools/Services:** $0-200/month (GitHub, testing infrastructure, analytics)
@@ -295,26 +322,31 @@ Developers face three critical quality-related pain points that compound through
 
 **Revenue Potential (12-18 months post-launch):**
 
-*Open Source Model with Premium Tiers (Recommended):*
+_Open Source Model with Premium Tiers (Recommended):_
+
 - **Free Tier:** Core tool, community templates, individual use
 - **Pro Tier ($9-15/month):** Advanced features, priority support, team collaboration
 - **Enterprise Tier ($99-299/month per team):** Custom templates, SSO, compliance, SLA support
 
-*Conservative Projections (18 months):*
+_Conservative Projections (18 months):_
+
 - 5,000 free users, 2% convert to Pro ($12/month) = $1,200 MRR
 - 10 Enterprise teams ($199/month average) = $1,990 MRR
 - **Total: ~$3,200 MRR (~$38K ARR)**
 
-*Optimistic Projections (18 months):*
+_Optimistic Projections (18 months):_
+
 - 20,000 free users, 3% convert to Pro = $7,200 MRR
 - 50 Enterprise teams = $9,950 MRR
 - **Total: ~$17,000 MRR (~$204K ARR)**
 
 **Break-Even Timeline:**
+
 - Solo founder: 12-18 months to cover ongoing costs
 - Small team: 18-24 months to profitability with reinvestment
 
 **Strategic Value Beyond Revenue:**
+
 - Developer tool credibility and market positioning
 - Platform for future developer productivity tools
 - Community and brand building in AI-assisted development space
@@ -323,12 +355,14 @@ Developers face three critical quality-related pain points that compound through
 ### Company Objectives Alignment
 
 **For Independent/Solo Founder:**
+
 - **Build in Public:** Establishes thought leadership in quality-first and AI-assisted development
 - **Create Sustainable Income:** Path to default alive through organic growth and community
 - **Portfolio Value:** Demonstrates technical execution and product thinking
 - **Optionality:** Can remain indie tool or scale to VC-backed if traction warrants
 
 **For Small Dev Tools Company:**
+
 - **Market Differentiation:** "Quality-first" and "AI-native" positioning in crowded dev tools space
 - **Platform Strategy:** Foundation for suite of quality/productivity tools
 - **Developer Mindshare:** Early mover advantage in AI-assisted development tooling
@@ -337,21 +371,25 @@ Developers face three critical quality-related pain points that compound through
 ### Strategic Initiatives
 
 **Phase 1: Foundation & Validation (Months 1-6)**
+
 - **Initiative:** Launch MVP with TypeScript+Bun stack, validate core three-pillar value proposition
 - **Key Milestone:** 500 active users, 60% retention, clear evidence users value quality cascade
 - **Investment Focus:** Product development, initial documentation, early community building
 
 **Phase 2: Ecosystem Expansion (Months 7-12)**
+
 - **Initiative:** Expand to 3-5 additional stacks (React, Vue, Node.js, etc.), grow community contributions
 - **Key Milestone:** 2,000+ users, 20+ community templates, featured in major dev communities
 - **Investment Focus:** Developer relations, community programs, documentation expansion
 
 **Phase 3: Monetization & Scale (Months 13-18)**
+
 - **Initiative:** Launch Pro/Enterprise tiers, team collaboration features, enterprise integrations
 - **Key Milestone:** $3K+ MRR, 10+ paying enterprise customers, 5,000+ total users
 - **Investment Focus:** Sales/marketing for enterprise, customer success, premium feature development
 
 **Phase 4: Platform Evolution (Months 19-24)**
+
 - **Initiative:** Advanced AI features (code review, pattern recognition), deeper IDE integrations
 - **Key Milestone:** $10K+ MRR, recognized category leader in quality-first development tools
 - **Investment Focus:** Advanced R&D, strategic partnerships, potential Series A if scaling beyond bootstrapped growth
@@ -365,7 +403,9 @@ Developers face three critical quality-related pain points that compound through
 **These 6 features form the minimum viable quality cascade - each is essential and must work excellently:**
 
 #### 1. Limited Tech Stack Support (TypeScript + Bun for CLI Projects)
+
 **Why Essential:** Foundation for everything else. Must be rock-solid and extensible before expanding.
+
 - Interactive CLI setup wizard with context-aware question filtering
 - Complete project scaffolding with opinionated directory structure
 - Dependency management (package.json, tsconfig.json, etc.)
@@ -373,7 +413,9 @@ Developers face three critical quality-related pain points that compound through
 - **Success Criteria:** User can scaffold working TypeScript+Bun CLI project in <5 minutes
 
 #### 2. AI Rules Engine
+
 **Why Essential:** Immediate differentiator preventing AI hallucinations from day one.
+
 - Pre-cached common rules library (TypeScript best practices, no `any`, testing patterns)
 - Generate CLAUDE.md and BMAD agent configuration files during scaffolding
 - Multi-format export (adapters for different AI tools)
@@ -381,7 +423,9 @@ Developers face three critical quality-related pain points that compound through
 - **Success Criteria:** AI assistants follow project rules 80%+ of the time without re-prompting
 
 #### 3. Integrate Existing Quality Tools (Orchestration Layer)
+
 **Why Essential:** Core "Find Right" pillar - validates quality cascade actually works.
+
 - ESLint integration with enhanced reporting
 - TypeScript compiler integration (type checking)
 - Bun Test integration (built-in testing framework)
@@ -390,14 +434,18 @@ Developers face three critical quality-related pain points that compound through
 - **Success Criteria:** Developers can validate entire project quality in single command, <30 seconds
 
 #### 4. Configurable Quality Levels (Light/Medium/Strict)
+
 **Why Essential:** Flexibility without sacrificing opinionated defaults. Enables broader adoption.
+
 - Three preset quality configurations (strict default, medium/light opt-down)
 - Clear documentation of differences between levels
 - Easy switching between levels post-scaffolding
 - **Success Criteria:** 80%+ of users choose "strict" (validates defaults work), but flexibility exists
 
 #### 5. Simple Static Refactorings
+
 **Why Essential:** "Fix Right" pillar foundation - proves intelligent triage concept works.
+
 - 5-10 simple refactoring patterns (readonly variables, const declarations, arrow function conversions)
 - AST-based pattern detection and safe transformation
 - Interactive preview with diff before applying changes
@@ -405,7 +453,9 @@ Developers face three critical quality-related pain points that compound through
 - **Success Criteria:** Users fix 70%+ of simple issues via static refactoring instead of AI prompts
 
 #### 6. AI Prompt Generation for Complex Refactoring
+
 **Why Essential:** Completes "Fix Right" pillar while staying safe (human reviews AI suggestions).
+
 - Identify complex refactoring scenarios (method extraction, complexity reduction)
 - Generate formatted prompts with code context for Claude Code/Windsurf
 - Template library for common complex refactoring types
@@ -417,6 +467,7 @@ Developers face three critical quality-related pain points that compound through
 **Features deferred to post-MVP to maintain focus and ship faster:**
 
 **Stack Expansion:**
+
 - ❌ React, Vue, Angular, Svelte frontend frameworks
 - ❌ Express, Fastify, NestJS backend frameworks
 - ❌ PostgreSQL, MongoDB, Redis database setups
@@ -424,12 +475,14 @@ Developers face three critical quality-related pain points that compound through
 - **Rationale:** Start with ONE stack excellently. Extensible architecture allows parallel development of stacks post-MVP.
 
 **Advanced Refactoring:**
+
 - ❌ IDE-style complex refactorings (extract method, rename intelligently)
 - ❌ Scope-based batch operations across multiple files
 - ❌ Automated structural refactoring (reduce complexity, reorganize)
 - **Rationale:** Simple static refactorings prove concept. Complex features require mature foundation.
 
 **AI-Heavy Features:**
+
 - ❌ ML-powered bug prediction
 - ❌ Automatic test generation
 - ❌ Deep code review and smell detection
@@ -437,6 +490,7 @@ Developers face three critical quality-related pain points that compound through
 - **Rationale:** Expensive (time + cost) to build, uncertain ROI. Focus on high-value, proven concepts first.
 
 **Developer Environment Features:**
+
 - ❌ IDE settings/extensions configuration
 - ❌ Docker container setup
 - ❌ Database schema scaffolding
@@ -444,6 +498,7 @@ Developers face three critical quality-related pain points that compound through
 - **Rationale:** Scope creep. Stay focused on code quality cascade, not full environment orchestration.
 
 **Team/Enterprise Features:**
+
 - ❌ Team collaboration and shared templates
 - ❌ Custom organizational rule libraries
 - ❌ Usage analytics and reporting dashboards
@@ -451,6 +506,7 @@ Developers face three critical quality-related pain points that compound through
 - **Rationale:** Solve for individual developers first. Enterprise features come after PMF validation.
 
 **Integration Features:**
+
 - ❌ Claude Code Hooks deep integration
 - ❌ Git hooks automatic installation
 - ❌ IDE plugins/extensions
@@ -460,24 +516,28 @@ Developers face three critical quality-related pain points that compound through
 ### MVP Success Criteria
 
 **Product Validation:**
+
 - ✅ 500+ developers successfully scaffold projects with Nìmata within 6 months
 - ✅ 60%+ retention rate (users create 2+ projects)
 - ✅ Net Promoter Score (NPS) of 40+
 - ✅ 90%+ of scaffolded projects pass all quality checks immediately after setup
 
 **Technical Validation:**
+
 - ✅ Zero critical bugs in scaffolding (project must always work)
 - ✅ All 6 core features work reliably across supported platforms (macOS, Linux, Windows)
 - ✅ Average validation time <30 seconds for medium-sized project
 - ✅ 95%+ of static refactorings apply cleanly without breaking code
 
 **User Experience Validation:**
+
 - ✅ Setup completion time: <20 minutes from install to first commit
 - ✅ Documentation rated "clear and helpful" by 80%+ of users
 - ✅ Users report 50%+ reduction in AI context re-establishment time
 - ✅ 70%+ of users say they "would definitely use for next project"
 
 **Community Validation:**
+
 - ✅ 100+ GitHub stars within first 3 months
 - ✅ Positive mentions in at least 3 developer communities/forums
 - ✅ 10+ community bug reports or feature requests (evidence of real usage)
@@ -606,6 +666,7 @@ Nìmata evolves from a CLI tool into a comprehensive quality platform where exce
    - Enable innovation on top of Nìmata infrastructure
 
 **Potential Acquisition/Partnership Targets:**
+
 - GitHub (quality-first repository templates)
 - Vercel/Netlify (quality-first deployment)
 - Anthropic/OpenAI (official AI-native development tool)
@@ -619,26 +680,31 @@ Nìmata evolves from a CLI tool into a comprehensive quality platform where exce
 ### Platform Requirements
 
 **Supported Platforms (MVP):**
+
 - **macOS** (primary development platform, 10.15+)
 - **Linux** (Ubuntu 20.04+, popular developer distributions)
 - **Windows** (Windows 10/11 with WSL2 recommended)
 
 **Runtime Requirements:**
+
 - Bun 1.1.3+ (core runtime for the tool itself)
 - Node.js 18+ (fallback compatibility for users without Bun)
 - Git (required for project initialization)
 
 **Browser Support (for HTML reports):**
+
 - Modern evergreen browsers (Chrome, Firefox, Safari, Edge latest versions)
 - No IE11 support required
 
 **Performance Requirements:**
+
 - Project scaffolding: Complete in <30 seconds for typical project
 - Quality validation: Results in <30 seconds for 10,000 LOC project
 - Static refactoring: Apply changes in <5 seconds per file
 - Memory footprint: <200MB RAM during normal operation
 
 **Accessibility Standards:**
+
 - CLI output must be screen-reader friendly
 - Color-coded output must include non-color indicators (symbols)
 - HTML reports must meet WCAG 2.1 Level AA standards
@@ -779,30 +845,35 @@ nìmata/
 ### Constraints
 
 **Resource Constraints:**
+
 - **Budget:** Bootstrapped/minimal budget (<$500/month for MVP development)
 - **Team:** Solo founder or 1-2 developers maximum for MVP
 - **Timeline:** 6 months to MVP launch with community feedback loop
 - **Time:** Part-time development likely (nights/weekends if founder has day job)
 
 **Technical Constraints:**
+
 - **Initial Stack:** Limited to TypeScript + Bun for MVP (expand later)
 - **Platform Support:** Must work on macOS, Linux, Windows (testing burden)
 - **Offline-First:** Tool must work without internet connection (except initial install)
 - **No Backend Services:** MVP must be client-side only (no server infrastructure costs)
 
 **Market Constraints:**
+
 - **Competitive Landscape:** Existing scaffolding tools (Yeoman, Plop, etc.) have established users
 - **Learning Curve:** Developers must learn new CLI commands and workflows
 - **Adoption Friction:** "Yet another tool" fatigue in developer community
 - **AI Tool Diversity:** Must support multiple AI assistants (Claude, Copilot, Windsurf) with different config formats
 
 **Ecosystem Constraints:**
+
 - **Dependency on External Tools:** Relies on ESLint, Prettier, Bun Test, TypeScript stability
 - **Version Compatibility:** Must track and support multiple versions of quality tools
 - **Breaking Changes:** External tool updates may break Nìmata integrations
 - **Bun Maturity:** Bun is relatively new (v1.0 in Sept 2023, v1.1.3+ recommended), ecosystem still evolving
 
 **User Experience Constraints:**
+
 - **CLI-Only Interface:** No GUI for MVP, CLI must be intuitive enough
 - **Sequential Questions:** Interactive CLI flow limits parallelization
 - **Terminal Compatibility:** Must work across different terminal emulators and shells
@@ -1118,18 +1189,21 @@ nìmata/
 ### B. Stakeholder Input
 
 **Eduardo (Founder/Creator):**
+
 - Vision: Make high-quality code the path of least resistance through systematic prevention, detection, and correction
 - Priority: Focus on TypeScript+Bun initially, design for extensibility
 - Philosophy: Opinionated defaults with escape hatches - guide developers without forcing choices
 - Concern: Must avoid "yet another tool" fatigue - differentiate through integration and AI-native approach
 
 **Target User Persona (Synthesized):**
+
 - Mid-senior developers using AI assistants, frustrated by context re-establishment overhead
 - Value quality but struggle with decision paralysis on tooling setup
 - Want faster feedback loops and less time on trivial fixes
 - Willing to adopt opinionated tooling if it demonstrably saves time
 
 **Community Needs (Anticipated):**
+
 - Template variety for different stacks and use cases
 - Documentation and examples showing clear value
 - Transparent roadmap and contribution opportunities
@@ -1138,15 +1212,19 @@ nìmata/
 ### C. References
 
 **Brainstorming Documentation:**
+
 - `/Users/menoncello/repos/dev/nimata/docs/brainstorming-session-results-2025-10-16.md`
 
 **Project Configuration:**
+
 - `/Users/menoncello/repos/dev/nimata/bmad/bmm/config.yaml`
 
 **Workflow Status:**
+
 - `/Users/menoncello/repos/dev/nimata/docs/bmm-workflow-status.md`
 
 **Relevant Technologies:**
+
 - **Bun:** https://bun.sh - Fast JavaScript runtime and toolkit
 - **Bun Test:** https://bun.sh/docs/cli/test - Built-in test runner (Jest-compatible)
 - **TypeScript:** https://www.typescriptlang.org - Typed superset of JavaScript
@@ -1154,6 +1232,7 @@ nìmata/
 - **Prettier:** https://prettier.io - Opinionated code formatter
 
 **Competitive Tools:**
+
 - Yeoman: https://yeoman.io
 - Plop: https://plopjs.com
 - Hygen: https://www.hygen.io
@@ -1161,18 +1240,21 @@ nìmata/
 - Nx: https://nx.dev (monorepo tools)
 
 **AI Coding Assistants:**
+
 - Claude Code: https://docs.anthropic.com/claude-code
 - GitHub Copilot: https://github.com/features/copilot
 - Cursor: https://cursor.sh
 - Windsurf: https://codeium.com/windsurf
 
 **Developer Tool Business Models:**
+
 - Vercel (Next.js): Open-source framework + deployment platform
 - Sentry: Open-core error tracking
 - GitLab: Open-core DevOps platform
 - PostHog: Open-source product analytics
 
 **Market Research Resources:**
+
 - Stack Overflow Developer Survey: https://survey.stackoverflow.co
 - State of JS: https://stateofjs.com
 - GitHub Octoverse: https://octoverse.github.com

@@ -35,12 +35,14 @@
 Epic 2 delivers the **Find Right** pillar of Nimata's quality cascade, providing unified quality validation through a single command that orchestrates multiple quality tools (ESLint, TypeScript, Prettier, Bun Test, Stryker) with intelligent SQLite caching.
 
 **Core Value:**
+
 - **Single-command validation**: `nimata validate` runs all quality tools in parallel
 - **Sub-100ms performance**: SQLite caching with WAL mode delivers < 100ms validation for unchanged files (NFR-003)
 - **Watch mode support**: Bun.watch() integration for iterative development workflow
 - **Unified reporting**: Terminal output with Picocolors + Ora, JSON output for CI/CD
 
 **Key Differentiators:**
+
 - Intelligent caching eliminates redundant validation (3-6x faster than JSON caching)
 - Parallel tool execution maximizes throughput
 - File hash-based invalidation ensures cache correctness
@@ -49,6 +51,7 @@ Epic 2 delivers the **Find Right** pillar of Nimata's quality cascade, providing
 ### 1.2 Functional Scope
 
 **In Scope:**
+
 - ESLint, TypeScript, Prettier, Bun Test, Stryker integration
 - SQLite cache with WAL mode for validation results
 - Parallel tool orchestration with Promise.all
@@ -59,6 +62,7 @@ Epic 2 delivers the **Find Right** pillar of Nimata's quality cascade, providing
 - Exit codes for CI/CD integration
 
 **Out of Scope:**
+
 - HTML report generation (Phase 2)
 - Real-time validation as you type (Phase 2)
 - IDE integrations (Phase 2)
@@ -76,19 +80,19 @@ Epic 2 delivers the **Find Right** pillar of Nimata's quality cascade, providing
 
 ## 2. Stories Summary
 
-| Story ID | Title | Story Points | Primary Components | Swim Lane |
-|----------|-------|--------------|-------------------|-----------|
-| **2.1** | ESLint Integration | 3 | ESLintRunner, ValidationService | C (Infrastructure) |
-| **2.2** | TypeScript Compiler Integration | 3 | TypeScriptRunner, ValidationService | C (Infrastructure) |
-| **2.3** | Prettier Integration | 2 | PrettierRunner, ValidationService | C (Infrastructure) |
-| **2.4** | Bun Test Integration | 3 | BunTestRunner, ValidationService | C (Infrastructure) |
-| **2.5** | Stryker Mutation Testing Integration | 3 | StrykerRunner, ValidationService | C (Infrastructure) |
-| **2.6** | Intelligent Caching with SQLite | 4 | CacheService, CacheRepository | E (Adapters) |
-| **2.7** | Terminal Output Formatting | 3 | ValidationPresenter | E (Adapters) |
-| **2.8** | JSON Output Format | 2 | ValidationPresenter | E (Adapters) |
-| **2.9** | Watch Mode for Validation | 3 | WatchService, ValidateCommand | B (CLI) |
-| **2.10** | Unified Validate Command | 2 | ValidateCommand, ValidationService | A (Core) |
-| **Total** | **10 Stories** | **28 Points** | **12 Components** | **4-5 Devs** |
+| Story ID  | Title                                | Story Points  | Primary Components                  | Swim Lane          |
+| --------- | ------------------------------------ | ------------- | ----------------------------------- | ------------------ |
+| **2.1**   | ESLint Integration                   | 3             | ESLintRunner, ValidationService     | C (Infrastructure) |
+| **2.2**   | TypeScript Compiler Integration      | 3             | TypeScriptRunner, ValidationService | C (Infrastructure) |
+| **2.3**   | Prettier Integration                 | 2             | PrettierRunner, ValidationService   | C (Infrastructure) |
+| **2.4**   | Bun Test Integration                 | 3             | BunTestRunner, ValidationService    | C (Infrastructure) |
+| **2.5**   | Stryker Mutation Testing Integration | 3             | StrykerRunner, ValidationService    | C (Infrastructure) |
+| **2.6**   | Intelligent Caching with SQLite      | 4             | CacheService, CacheRepository       | E (Adapters)       |
+| **2.7**   | Terminal Output Formatting           | 3             | ValidationPresenter                 | E (Adapters)       |
+| **2.8**   | JSON Output Format                   | 2             | ValidationPresenter                 | E (Adapters)       |
+| **2.9**   | Watch Mode for Validation            | 3             | WatchService, ValidateCommand       | B (CLI)            |
+| **2.10**  | Unified Validate Command             | 2             | ValidateCommand, ValidationService  | A (Core)           |
+| **Total** | **10 Stories**                       | **28 Points** | **12 Components**                   | **4-5 Devs**       |
 
 **Estimated Effort:** 35% of total development (4 weeks across 2 sprints)
 
@@ -127,6 +131,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
 #### 3.2.1 Core Components (packages/core)
 
 **ValidationService**
+
 - **Responsibility:** Orchestrates complete validation workflow
 - **Dependencies:** IToolOrchestrator, ICacheService, IConfigRepository
 - **Key Methods:**
@@ -135,6 +140,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
   - `aggregateResults(results: ToolResult[]): ValidationResult`
 
 **ToolOrchestrator**
+
 - **Responsibility:** Parallel tool execution with error isolation
 - **Dependencies:** IToolRunner[] (5 tool runners)
 - **Key Methods:**
@@ -142,6 +148,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
   - `runTool(tool: IToolRunner, files: string[]): Promise<Result<ToolResult>>`
 
 **CacheService**
+
 - **Responsibility:** Cache coordination and invalidation logic
 - **Dependencies:** ICacheRepository, IFileHasher
 - **Key Methods:**
@@ -153,6 +160,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
 #### 3.2.2 Infrastructure Components (infrastructure/)
 
 **ESLintRunner**
+
 - **Location:** `infrastructure/eslint-wrapper/src/eslint-runner.ts`
 - **Responsibility:** Execute ESLint programmatically via Node API
 - **Dependencies:** ESLint library (external)
@@ -160,6 +168,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
   - `run(files: string[], config: ESLintConfig): Promise<ToolResult>`
 
 **TypeScriptRunner**
+
 - **Location:** `infrastructure/typescript-wrapper/src/typescript-runner.ts`
 - **Responsibility:** Execute TypeScript compiler for type checking
 - **Dependencies:** TypeScript Compiler API (external)
@@ -167,6 +176,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
   - `run(files: string[], config: TSConfig): Promise<ToolResult>`
 
 **PrettierRunner**
+
 - **Location:** `infrastructure/prettier-wrapper/src/prettier-runner.ts`
 - **Responsibility:** Execute Prettier in check mode
 - **Dependencies:** Prettier library (external)
@@ -174,6 +184,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
   - `run(files: string[], config: PrettierConfig): Promise<ToolResult>`
 
 **BunTestRunner**
+
 - **Location:** `infrastructure/bun-test-wrapper/src/bun-test-runner.ts`
 - **Responsibility:** Execute Bun Test runner and collect results
 - **Dependencies:** Bun Test API (native)
@@ -181,6 +192,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
   - `run(testPattern: string, config: BunTestConfig): Promise<ToolResult>`
 
 **StrykerRunner**
+
 - **Location:** `infrastructure/stryker-wrapper/src/stryker-runner.ts`
 - **Responsibility:** Execute Stryker mutation testing
 - **Dependencies:** Stryker library (external)
@@ -190,6 +202,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
 #### 3.2.3 Adapter Components (packages/adapters)
 
 **CacheRepository**
+
 - **Location:** `packages/adapters/src/repositories/sqlite-cache-repository.ts`
 - **Responsibility:** SQLite cache storage with WAL mode
 - **Dependencies:** bun:sqlite (native)
@@ -201,6 +214,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
   - `close(): Promise<void>`
 
 **ValidationPresenter**
+
 - **Location:** `packages/adapters/src/presenters/validation-presenter.ts`
 - **Responsibility:** Format validation results for terminal/JSON output
 - **Dependencies:** Picocolors, Ora (external)
@@ -212,6 +226,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
 #### 3.2.4 CLI Components (apps/cli)
 
 **ValidateCommand**
+
 - **Location:** `apps/cli/src/commands/validate.ts`
 - **Responsibility:** Yargs command handler for `nimata validate`
 - **Dependencies:** ValidationService, ValidationPresenter
@@ -219,6 +234,7 @@ Epic 2 follows Clean Architecture Lite with 4 layers:
   - `handler(argv: Arguments): Promise<void>`
 
 **WatchService**
+
 - **Location:** `apps/cli/src/services/watch-service.ts`
 - **Responsibility:** File watching with Bun.watch() for incremental validation
 - **Dependencies:** Bun.watch() (native), ValidationService
@@ -333,11 +349,7 @@ export interface ICacheService {
    * @param fileHash - Current file hash for invalidation check
    * @returns Cached result or null if cache miss
    */
-  get(
-    filePath: string,
-    toolName: string,
-    fileHash: string
-  ): Promise<CachedResult | null>;
+  get(filePath: string, toolName: string, fileHash: string): Promise<CachedResult | null>;
 
   /**
    * Store validation result in cache
@@ -346,12 +358,7 @@ export interface ICacheService {
    * @param fileHash - File content hash
    * @param result - Tool validation result
    */
-  set(
-    filePath: string,
-    toolName: string,
-    fileHash: string,
-    result: ToolResult
-  ): Promise<void>;
+  set(filePath: string, toolName: string, fileHash: string, result: ToolResult): Promise<void>;
 
   /**
    * Invalidate cache for specific file (all tools)
@@ -441,17 +448,17 @@ export interface IFileHasher {
 
 ### 4.2 Interface Implementation Matrix
 
-| Interface | Implementation | Location | Dependencies |
-|-----------|---------------|----------|--------------|
-| **IToolRunner** | ESLintRunner | infrastructure/eslint-wrapper | ESLint library |
-| **IToolRunner** | TypeScriptRunner | infrastructure/typescript-wrapper | TypeScript Compiler API |
-| **IToolRunner** | PrettierRunner | infrastructure/prettier-wrapper | Prettier library |
-| **IToolRunner** | BunTestRunner | infrastructure/bun-test-wrapper | Bun Test API |
-| **IToolRunner** | StrykerRunner | infrastructure/stryker-wrapper | Stryker library |
-| **IToolOrchestrator** | ToolOrchestrator | packages/core | IToolRunner[] |
-| **ICacheService** | CacheService | packages/core | ICacheRepository, IFileHasher |
-| **ICacheRepository** | SQLiteCacheRepository | packages/adapters | bun:sqlite |
-| **IFileHasher** | BunFileHasher | packages/adapters | Bun.hash() |
+| Interface             | Implementation        | Location                          | Dependencies                  |
+| --------------------- | --------------------- | --------------------------------- | ----------------------------- |
+| **IToolRunner**       | ESLintRunner          | infrastructure/eslint-wrapper     | ESLint library                |
+| **IToolRunner**       | TypeScriptRunner      | infrastructure/typescript-wrapper | TypeScript Compiler API       |
+| **IToolRunner**       | PrettierRunner        | infrastructure/prettier-wrapper   | Prettier library              |
+| **IToolRunner**       | BunTestRunner         | infrastructure/bun-test-wrapper   | Bun Test API                  |
+| **IToolRunner**       | StrykerRunner         | infrastructure/stryker-wrapper    | Stryker library               |
+| **IToolOrchestrator** | ToolOrchestrator      | packages/core                     | IToolRunner[]                 |
+| **ICacheService**     | CacheService          | packages/core                     | ICacheRepository, IFileHasher |
+| **ICacheRepository**  | SQLiteCacheRepository | packages/adapters                 | bun:sqlite                    |
+| **IFileHasher**       | BunFileHasher         | packages/adapters                 | Bun.hash()                    |
 
 ---
 
@@ -903,11 +910,7 @@ export class CacheService implements ICacheService {
     private readonly fileHasher: IFileHasher
   ) {}
 
-  async get(
-    filePath: string,
-    toolName: string,
-    fileHash: string
-  ): Promise<CachedResult | null> {
+  async get(filePath: string, toolName: string, fileHash: string): Promise<CachedResult | null> {
     const key: CacheKey = { filePath, toolName, fileHash };
 
     const entry = await this.cacheRepo.get(key);
@@ -940,7 +943,7 @@ export class CacheService implements ICacheService {
     // Cache hit - return cached result
     return {
       result: entry.result,
-      fromCache: true
+      fromCache: true,
     };
   }
 
@@ -960,7 +963,7 @@ export class CacheService implements ICacheService {
       result,
       timestamp: Date.now(),
       toolVersion,
-      configHash
+      configHash,
     };
 
     await this.cacheRepo.set({ filePath, toolName, fileHash }, entry);
@@ -997,11 +1000,15 @@ export class CacheService implements ICacheService {
     const entries = await this.cacheRepo.query({ toolName });
 
     // Delete all entries
-    await Promise.all(entries.map(entry => this.cacheRepo.delete({
-      filePath: entry.filePath,
-      toolName: entry.toolName,
-      fileHash: entry.fileHash
-    })));
+    await Promise.all(
+      entries.map((entry) =>
+        this.cacheRepo.delete({
+          filePath: entry.filePath,
+          toolName: entry.toolName,
+          fileHash: entry.fileHash,
+        })
+      )
+    );
   }
 
   async invalidateAll(): Promise<void> {
@@ -1024,29 +1031,33 @@ export class CacheService implements ICacheService {
 
     // Query entries older than cutoff
     const oldEntries = await this.cacheRepo.query({
-      olderThan: cutoffTimestamp
+      olderThan: cutoffTimestamp,
     });
 
     // Delete old entries
-    await Promise.all(oldEntries.map(entry => this.cacheRepo.delete({
-      filePath: entry.filePath,
-      toolName: entry.toolName,
-      fileHash: entry.fileHash
-    })));
+    await Promise.all(
+      oldEntries.map((entry) =>
+        this.cacheRepo.delete({
+          filePath: entry.filePath,
+          toolName: entry.toolName,
+          fileHash: entry.fileHash,
+        })
+      )
+    );
   }
 }
 ```
 
 ### 6.4 Cache Performance Benchmarks
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| **Cache Hit Latency** | < 5ms | Time to retrieve cached result from SQLite |
-| **Cache Miss Latency** | < 10ms | Time to determine cache miss + query |
-| **Cache Write Latency** | < 10ms | Time to store new cache entry |
-| **Full Validation (Cache Hit)** | < 100ms | Total validation time with 100% cache hit |
-| **Full Validation (Cache Miss)** | < 30s | Total validation time with 0% cache hit (medium project) |
-| **Cache Hit Rate** | > 80% | Percentage of cache hits in typical workflow |
+| Metric                           | Target  | Measurement                                              |
+| -------------------------------- | ------- | -------------------------------------------------------- |
+| **Cache Hit Latency**            | < 5ms   | Time to retrieve cached result from SQLite               |
+| **Cache Miss Latency**           | < 10ms  | Time to determine cache miss + query                     |
+| **Cache Write Latency**          | < 10ms  | Time to store new cache entry                            |
+| **Full Validation (Cache Hit)**  | < 100ms | Total validation time with 100% cache hit                |
+| **Full Validation (Cache Miss)** | < 30s   | Total validation time with 0% cache hit (medium project) |
+| **Cache Hit Rate**               | > 80%   | Percentage of cache hits in typical workflow             |
 
 ---
 
@@ -1078,7 +1089,7 @@ export class ESLintRunner implements IToolRunner {
       // Initialize ESLint with config
       const eslint = new ESLint({
         useEslintrc: true,
-        ...config
+        ...config,
       });
 
       // Lint files
@@ -1097,7 +1108,7 @@ export class ESLintRunner implements IToolRunner {
             severity: message.severity === 2 ? 'error' : 'warning',
             message: message.message,
             ruleId: message.ruleId,
-            source: 'eslint'
+            source: 'eslint',
           };
 
           if (message.severity === 2) {
@@ -1116,25 +1127,26 @@ export class ESLintRunner implements IToolRunner {
         errors,
         warnings,
         executionTime,
-        fromCache: false
+        fromCache: false,
       };
-
     } catch (error) {
       // Graceful error handling
       return {
         tool: this.name,
         success: false,
-        errors: [{
-          filePath: '',
-          line: 0,
-          column: 0,
-          severity: 'error',
-          message: `ESLint execution failed: ${error.message}`,
-          source: 'eslint'
-        }],
+        errors: [
+          {
+            filePath: '',
+            line: 0,
+            column: 0,
+            severity: 'error',
+            message: `ESLint execution failed: ${error.message}`,
+            source: 'eslint',
+          },
+        ],
         warnings: [],
         executionTime: Date.now() - startTime,
-        fromCache: false
+        fromCache: false,
       };
     }
   }
@@ -1273,9 +1285,10 @@ export class ToolOrchestrator implements IToolOrchestrator {
     const { useCache, parallel, tools: toolNames } = options;
 
     // Filter tools to run
-    const toolsToRun = toolNames && toolNames.length > 0
-      ? toolNames.map(name => this.tools.get(name)!).filter(Boolean)
-      : Array.from(this.tools.values());
+    const toolsToRun =
+      toolNames && toolNames.length > 0
+        ? toolNames.map((name) => this.tools.get(name)!).filter(Boolean)
+        : Array.from(this.tools.values());
 
     if (parallel) {
       // Parallel execution with Promise.all
@@ -1292,9 +1305,7 @@ export class ToolOrchestrator implements IToolOrchestrator {
     useCache: boolean
   ): Promise<ToolResult[]> {
     // Execute all tools concurrently
-    const promises = tools.map(tool =>
-      this.runToolWithCache(tool, files, useCache)
-    );
+    const promises = tools.map((tool) => this.runToolWithCache(tool, files, useCache));
 
     // Wait for all to complete (Promise.all)
     const results = await Promise.allSettled(promises);
@@ -1307,23 +1318,25 @@ export class ToolOrchestrator implements IToolOrchestrator {
         // Tool execution failed - return error result
         const tool = tools[index];
         logger.error(`Tool ${tool.name} failed in parallel execution`, {
-          error: result.reason
+          error: result.reason,
         });
 
         return {
           tool: tool.name,
           success: false,
-          errors: [{
-            filePath: '',
-            line: 0,
-            column: 0,
-            severity: 'error',
-            message: `Tool execution failed: ${result.reason}`,
-            source: tool.name
-          }],
+          errors: [
+            {
+              filePath: '',
+              line: 0,
+              column: 0,
+              severity: 'error',
+              message: `Tool execution failed: ${result.reason}`,
+              source: tool.name,
+            },
+          ],
           warnings: [],
           executionTime: 0,
-          fromCache: false
+          fromCache: false,
         };
       }
     });
@@ -1343,23 +1356,25 @@ export class ToolOrchestrator implements IToolOrchestrator {
       } catch (error) {
         // Handle error gracefully
         logger.error(`Tool ${tool.name} failed in sequential execution`, {
-          error
+          error,
         });
 
         results.push({
           tool: tool.name,
           success: false,
-          errors: [{
-            filePath: '',
-            line: 0,
-            column: 0,
-            severity: 'error',
-            message: `Tool execution failed: ${error.message}`,
-            source: tool.name
-          }],
+          errors: [
+            {
+              filePath: '',
+              line: 0,
+              column: 0,
+              severity: 'error',
+              message: `Tool execution failed: ${error.message}`,
+              source: tool.name,
+            },
+          ],
           warnings: [],
           executionTime: 0,
-          fromCache: false
+          fromCache: false,
         });
       }
     }
@@ -1431,22 +1446,22 @@ export class ToolOrchestrator implements IToolOrchestrator {
     const allResults = [...cached, fresh];
     return {
       tool: allResults[0].tool,
-      success: allResults.every(r => r.success),
-      errors: allResults.flatMap(r => r.errors),
-      warnings: allResults.flatMap(r => r.warnings),
-      executionTime: Math.max(...allResults.map(r => r.executionTime)),
-      fromCache: cached.length > 0
+      success: allResults.every((r) => r.success),
+      errors: allResults.flatMap((r) => r.errors),
+      warnings: allResults.flatMap((r) => r.warnings),
+      executionTime: Math.max(...allResults.map((r) => r.executionTime)),
+      fromCache: cached.length > 0,
     };
   }
 
   private aggregateCachedResults(results: ToolResult[]): ToolResult {
     return {
       tool: results[0].tool,
-      success: results.every(r => r.success),
-      errors: results.flatMap(r => r.errors),
-      warnings: results.flatMap(r => r.warnings),
-      executionTime: Math.max(...results.map(r => r.executionTime)),
-      fromCache: true
+      success: results.every((r) => r.success),
+      errors: results.flatMap((r) => r.errors),
+      warnings: results.flatMap((r) => r.warnings),
+      executionTime: Math.max(...results.map((r) => r.executionTime)),
+      fromCache: true,
     };
   }
 
@@ -1463,12 +1478,12 @@ export class ToolOrchestrator implements IToolOrchestrator {
 
 ### 8.2 Parallel Execution Benefits
 
-| Metric | Sequential Execution | Parallel Execution | Improvement |
-|--------|---------------------|-------------------|-------------|
-| **Total Time (5 tools, 2s each)** | 10s | 2s | 80% faster |
-| **CPU Utilization** | 20% (1 core) | 80% (4 cores) | 4x better |
-| **Watch Mode Latency** | 10s | 2s | 80% faster |
-| **Developer Waiting Time** | High | Low | Better UX |
+| Metric                            | Sequential Execution | Parallel Execution | Improvement |
+| --------------------------------- | -------------------- | ------------------ | ----------- |
+| **Total Time (5 tools, 2s each)** | 10s                  | 2s                 | 80% faster  |
+| **CPU Utilization**               | 20% (1 core)         | 80% (4 cores)      | 4x better   |
+| **Watch Mode Latency**            | 10s                  | 2s                 | 80% faster  |
+| **Developer Waiting Time**        | High                 | Low                | Better UX   |
 
 ---
 
@@ -1538,7 +1553,7 @@ export class WatchService {
       const result = await this.validationService.execute({
         files,
         noCache: false,
-        reporter: 'terminal'
+        reporter: 'terminal',
       });
 
       if (result.isSuccess) {
@@ -1609,12 +1624,12 @@ export class WatchService {
 
 ### 9.3 Watch Mode Performance
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| **File Change Detection** | < 50ms | Time from file save to watch callback |
-| **Incremental Validation** | < 200ms | Time to validate single changed file |
-| **Debounce Delay** | 100ms | Delay to prevent duplicate validations |
-| **Memory Overhead** | < 50MB | Additional memory for watch mode |
+| Metric                     | Target  | Measurement                            |
+| -------------------------- | ------- | -------------------------------------- |
+| **File Change Detection**  | < 50ms  | Time from file save to watch callback  |
+| **Incremental Validation** | < 200ms | Time to validate single changed file   |
+| **Debounce Delay**         | 100ms   | Delay to prevent duplicate validations |
+| **Memory Overhead**        | < 50MB  | Additional memory for watch mode       |
 
 ---
 
@@ -1733,9 +1748,10 @@ export class ValidationPresenter {
 
   private formatFooter(result: ValidationResult): string {
     if (result.success) {
-      const cacheInfo = result.cacheHitRate > 0
-        ? picocolors.gray(`Cache hit rate: ${(result.cacheHitRate * 100).toFixed(0)}%`)
-        : '';
+      const cacheInfo =
+        result.cacheHitRate > 0
+          ? picocolors.gray(`Cache hit rate: ${(result.cacheHitRate * 100).toFixed(0)}%`)
+          : '';
       return picocolors.green(`All checks passed! ${cacheInfo}`);
     }
 
@@ -1743,7 +1759,9 @@ export class ValidationPresenter {
 
     suggestions.push(picocolors.yellow('Next steps:'));
     suggestions.push(`  ${picocolors.bold('nimata fix')} - Auto-fix simple issues`);
-    suggestions.push(`  ${picocolors.bold('nimata prompt')} - Generate AI prompts for complex fixes`);
+    suggestions.push(
+      `  ${picocolors.bold('nimata prompt')} - Generate AI prompts for complex fixes`
+    );
 
     return suggestions.join('\n');
   }
@@ -1882,15 +1900,15 @@ Next steps:
 
 ### 11.1 Tool Failure Scenarios
 
-| Scenario | Handling Strategy | Exit Code |
-|----------|------------------|-----------|
-| **Tool executable not found** | Log error, skip tool, continue with others | 0 (if other tools pass) |
-| **Tool config invalid** | Log error, skip tool, continue with others | 0 (if other tools pass) |
-| **Tool crashes** | Catch exception, log error, continue with others | 0 (if other tools pass) |
-| **Tool timeout** | Kill process, log timeout, continue with others | 0 (if other tools pass) |
-| **All tools fail** | Log all errors, return failure | 1 |
-| **Cache corruption** | Clear cache, run without cache | 0 (if validation passes) |
-| **File system error** | Log error, fail validation | 5 |
+| Scenario                      | Handling Strategy                                | Exit Code                |
+| ----------------------------- | ------------------------------------------------ | ------------------------ |
+| **Tool executable not found** | Log error, skip tool, continue with others       | 0 (if other tools pass)  |
+| **Tool config invalid**       | Log error, skip tool, continue with others       | 0 (if other tools pass)  |
+| **Tool crashes**              | Catch exception, log error, continue with others | 0 (if other tools pass)  |
+| **Tool timeout**              | Kill process, log timeout, continue with others  | 0 (if other tools pass)  |
+| **All tools fail**            | Log all errors, return failure                   | 1                        |
+| **Cache corruption**          | Clear cache, run without cache                   | 0 (if validation passes) |
+| **File system error**         | Log error, fail validation                       | 5                        |
 
 ### 11.2 Graceful Degradation
 
@@ -1906,7 +1924,7 @@ export class ValidationService {
       // Orchestrator handles tool failures internally
       const toolResults = await this.toolOrchestrator.runAll(files, {
         useCache: !options.noCache,
-        parallel: true
+        parallel: true,
       });
 
       // Aggregate results even if some tools failed
@@ -1920,7 +1938,6 @@ export class ValidationService {
       }
 
       return Result.success(aggregated);
-
     } catch (error) {
       logger.error('Validation service failed', { error });
       return Result.failure(`Validation failed: ${error.message}`);
@@ -1931,7 +1948,7 @@ export class ValidationService {
     const criticalTools = ['eslint', 'typescript'];
 
     for (const toolName of criticalTools) {
-      const result = results.find(r => r.tool === toolName);
+      const result = results.find((r) => r.tool === toolName);
       if (!result || !result.success) {
         return false;
       }
@@ -1956,12 +1973,12 @@ export const logger = pino({
     options: {
       colorize: true,
       translateTime: 'SYS:standard',
-      ignore: 'pid,hostname'
-    }
+      ignore: 'pid,hostname',
+    },
   },
   base: {
-    service: 'nimata-validate'
-  }
+    service: 'nimata-validate',
+  },
 });
 
 // Usage in error scenarios
@@ -1970,7 +1987,7 @@ logger.error('Tool execution failed', {
   error: error.message,
   stack: error.stack,
   files: files.length,
-  config: configPath
+  config: configPath,
 });
 ```
 
@@ -1985,7 +2002,7 @@ export class ValidateCommand {
       files: argv.files,
       noCache: argv.noCache,
       reporter: argv.reporter,
-      verbose: argv.verbose
+      verbose: argv.verbose,
     });
 
     if (!result.isSuccess) {
@@ -2022,18 +2039,18 @@ export class ValidateCommand {
 
 #### Test Coverage Requirements
 
-| Component | Coverage Target | Mutation Score Target |
-|-----------|----------------|----------------------|
-| **ValidationService** | 100% | 80%+ |
-| **ToolOrchestrator** | 100% | 80%+ |
-| **CacheService** | 100% | 80%+ |
-| **ESLintRunner** | 100% | 80%+ |
-| **TypeScriptRunner** | 100% | 80%+ |
-| **PrettierRunner** | 100% | 80%+ |
-| **BunTestRunner** | 100% | 80%+ |
-| **StrykerRunner** | 100% | 80%+ |
-| **CacheRepository** | 100% | 80%+ |
-| **ValidationPresenter** | 100% | 80%+ |
+| Component               | Coverage Target | Mutation Score Target |
+| ----------------------- | --------------- | --------------------- |
+| **ValidationService**   | 100%            | 80%+                  |
+| **ToolOrchestrator**    | 100%            | 80%+                  |
+| **CacheService**        | 100%            | 80%+                  |
+| **ESLintRunner**        | 100%            | 80%+                  |
+| **TypeScriptRunner**    | 100%            | 80%+                  |
+| **PrettierRunner**      | 100%            | 80%+                  |
+| **BunTestRunner**       | 100%            | 80%+                  |
+| **StrykerRunner**       | 100%            | 80%+                  |
+| **CacheRepository**     | 100%            | 80%+                  |
+| **ValidationPresenter** | 100%            | 80%+                  |
 
 #### Example Unit Test
 
@@ -2055,7 +2072,7 @@ describe('ValidationService', () => {
     mockOrchestrator = {
       runAll: jest.fn(),
       runTool: jest.fn(),
-      registerTool: jest.fn()
+      registerTool: jest.fn(),
     };
 
     mockCacheService = {
@@ -2063,12 +2080,12 @@ describe('ValidationService', () => {
       set: jest.fn(),
       invalidate: jest.fn(),
       invalidateAll: jest.fn(),
-      getStats: jest.fn()
+      getStats: jest.fn(),
     };
 
     mockConfigRepo = {
       load: jest.fn(),
-      save: jest.fn()
+      save: jest.fn(),
     };
 
     sut = new ValidationService(mockOrchestrator, mockCacheService, mockConfigRepo);
@@ -2077,8 +2094,22 @@ describe('ValidationService', () => {
   it('should aggregate results from all tools', async () => {
     // Arrange
     const mockToolResults: ToolResult[] = [
-      { tool: 'eslint', success: true, errors: [], warnings: [], executionTime: 100, fromCache: false },
-      { tool: 'typescript', success: true, errors: [], warnings: [], executionTime: 200, fromCache: false }
+      {
+        tool: 'eslint',
+        success: true,
+        errors: [],
+        warnings: [],
+        executionTime: 100,
+        fromCache: false,
+      },
+      {
+        tool: 'typescript',
+        success: true,
+        errors: [],
+        warnings: [],
+        executionTime: 200,
+        fromCache: false,
+      },
     ];
 
     mockConfigRepo.load.mockResolvedValue({});
@@ -2100,11 +2131,20 @@ describe('ValidationService', () => {
       {
         tool: 'eslint',
         success: false,
-        errors: [{ filePath: 'test.ts', line: 1, column: 1, severity: 'error', message: 'Error', source: 'eslint' }],
+        errors: [
+          {
+            filePath: 'test.ts',
+            line: 1,
+            column: 1,
+            severity: 'error',
+            message: 'Error',
+            source: 'eslint',
+          },
+        ],
         warnings: [],
         executionTime: 100,
-        fromCache: false
-      }
+        fromCache: false,
+      },
     ];
 
     mockConfigRepo.load.mockResolvedValue({});
@@ -2142,11 +2182,14 @@ describe('ESLintRunner (Integration)', () => {
 
     // Create test files
     await Bun.write(join(tempDir, 'test.ts'), 'const x: any = 1;'); // Should error with no-any
-    await Bun.write(join(tempDir, '.eslintrc.json'), JSON.stringify({
-      rules: {
-        '@typescript-eslint/no-explicit-any': 'error'
-      }
-    }));
+    await Bun.write(
+      join(tempDir, '.eslintrc.json'),
+      JSON.stringify({
+        rules: {
+          '@typescript-eslint/no-explicit-any': 'error',
+        },
+      })
+    );
   });
 
   afterEach(async () => {
@@ -2192,7 +2235,7 @@ describe('nimata validate (E2E)', () => {
     // Act - run validate command
     const proc = spawn(['bun', 'run', 'nimata', 'validate'], {
       cwd: tempProjectDir,
-      env: process.env
+      env: process.env,
     });
 
     const output = await new Response(proc.stdout).text();
@@ -2212,7 +2255,7 @@ describe('nimata validate (E2E)', () => {
     // Act - run validate command
     const proc = spawn(['bun', 'run', 'nimata', 'validate'], {
       cwd: tempProjectDir,
-      env: process.env
+      env: process.env,
     });
 
     const output = await new Response(proc.stdout).text();
@@ -2281,14 +2324,14 @@ benchmark('validate with 0% cache hit (< 30s)', async () => {
 
 **Performance Breakdown:**
 
-| Component | Time Budget | Actual Target |
-|-----------|-------------|---------------|
-| **File Discovery (Bun.Glob)** | 10ms | < 5ms |
-| **File Hashing (Bun.hash)** | 20ms | < 10ms |
-| **Cache Lookup (SQLite)** | 30ms | < 20ms |
-| **Result Aggregation** | 20ms | < 10ms |
-| **Output Formatting** | 20ms | < 10ms |
-| **Total** | **100ms** | **< 55ms** |
+| Component                     | Time Budget | Actual Target |
+| ----------------------------- | ----------- | ------------- |
+| **File Discovery (Bun.Glob)** | 10ms        | < 5ms         |
+| **File Hashing (Bun.hash)**   | 20ms        | < 10ms        |
+| **Cache Lookup (SQLite)**     | 30ms        | < 20ms        |
+| **Result Aggregation**        | 20ms        | < 10ms        |
+| **Output Formatting**         | 20ms        | < 10ms        |
+| **Total**                     | **100ms**   | **< 55ms**    |
 
 ### 13.2 Benchmarking Approach
 
@@ -2349,7 +2392,7 @@ export class ValidationService {
       cacheLookup: 0,
       toolExecution: 0,
       resultAggregation: 0,
-      outputFormatting: 0
+      outputFormatting: 0,
     };
 
     const totalStart = performance.now();
@@ -2399,58 +2442,58 @@ export class ValidationService {
 
 **Acceptance Criteria → Test Cases:**
 
-| Acceptance Criteria | Test Case | Test Type |
-|---------------------|-----------|-----------|
-| Runs ESLint programmatically via Node API | `it('should run ESLint via Node API')` | Unit |
-| Respects project's .eslintrc.json | `it('should load .eslintrc.json config')` | Integration |
-| Captures errors with file, line, rule | `it('should capture lint errors with metadata')` | Unit |
-| Returns structured results | `it('should return ToolResult format')` | Unit |
-| Handles ESLint errors gracefully | `it('should handle ESLint config errors')` | Unit |
-| Supports incremental linting | `it('should support per-file linting')` | Unit |
-| Logs execution time | `it('should measure execution time')` | Unit |
+| Acceptance Criteria                       | Test Case                                        | Test Type   |
+| ----------------------------------------- | ------------------------------------------------ | ----------- |
+| Runs ESLint programmatically via Node API | `it('should run ESLint via Node API')`           | Unit        |
+| Respects project's .eslintrc.json         | `it('should load .eslintrc.json config')`        | Integration |
+| Captures errors with file, line, rule     | `it('should capture lint errors with metadata')` | Unit        |
+| Returns structured results                | `it('should return ToolResult format')`          | Unit        |
+| Handles ESLint errors gracefully          | `it('should handle ESLint config errors')`       | Unit        |
+| Supports incremental linting              | `it('should support per-file linting')`          | Unit        |
+| Logs execution time                       | `it('should measure execution time')`            | Unit        |
 
 ### 14.2 Story 2.2: TypeScript Compiler Integration
 
 **Acceptance Criteria → Test Cases:**
 
-| Acceptance Criteria | Test Case | Test Type |
-|---------------------|-----------|-----------|
-| Runs TypeScript compiler programmatically | `it('should run tsc via Compiler API')` | Unit |
-| Executes type checking without emitting files | `it('should run noEmit mode')` | Unit |
-| Captures type errors with metadata | `it('should capture diagnostics with location')` | Unit |
-| Returns structured diagnostic results | `it('should return ToolResult format')` | Unit |
-| Respects tsconfig.json | `it('should load tsconfig.json')` | Integration |
-| Handles compiler errors gracefully | `it('should handle syntax errors')` | Unit |
-| Supports incremental type checking | `it('should support incremental compilation')` | Unit |
+| Acceptance Criteria                           | Test Case                                        | Test Type   |
+| --------------------------------------------- | ------------------------------------------------ | ----------- |
+| Runs TypeScript compiler programmatically     | `it('should run tsc via Compiler API')`          | Unit        |
+| Executes type checking without emitting files | `it('should run noEmit mode')`                   | Unit        |
+| Captures type errors with metadata            | `it('should capture diagnostics with location')` | Unit        |
+| Returns structured diagnostic results         | `it('should return ToolResult format')`          | Unit        |
+| Respects tsconfig.json                        | `it('should load tsconfig.json')`                | Integration |
+| Handles compiler errors gracefully            | `it('should handle syntax errors')`              | Unit        |
+| Supports incremental type checking            | `it('should support incremental compilation')`   | Unit        |
 
 ### 14.3 Story 2.6: Intelligent Caching with SQLite
 
 **Acceptance Criteria → Test Cases:**
 
-| Acceptance Criteria | Test Case | Test Type |
-|---------------------|-----------|-----------|
-| Stores results in SQLite | `it('should store cache entry in SQLite')` | Integration |
-| Uses file hash for invalidation | `it('should invalidate on file hash change')` | Unit |
-| Invalidates on config change | `it('should invalidate on config hash change')` | Unit |
-| Persists across runs | `it('should load cache from previous run')` | Integration |
-| Can be manually cleared | `it('should clear cache with --no-cache flag')` | E2E |
-| Prunes old entries (>100MB) | `it('should prune cache when size exceeds limit')` | Integration |
-| Enables WAL mode | `it('should enable WAL mode on initialization')` | Integration |
+| Acceptance Criteria             | Test Case                                          | Test Type   |
+| ------------------------------- | -------------------------------------------------- | ----------- |
+| Stores results in SQLite        | `it('should store cache entry in SQLite')`         | Integration |
+| Uses file hash for invalidation | `it('should invalidate on file hash change')`      | Unit        |
+| Invalidates on config change    | `it('should invalidate on config hash change')`    | Unit        |
+| Persists across runs            | `it('should load cache from previous run')`        | Integration |
+| Can be manually cleared         | `it('should clear cache with --no-cache flag')`    | E2E         |
+| Prunes old entries (>100MB)     | `it('should prune cache when size exceeds limit')` | Integration |
+| Enables WAL mode                | `it('should enable WAL mode on initialization')`   | Integration |
 
 ### 14.4 Story 2.10: Unified Validate Command
 
 **Acceptance Criteria → Test Cases:**
 
-| Acceptance Criteria | Test Case | Test Type |
-|---------------------|-----------|-----------|
-| `nimata validate` runs all tools | `it('should orchestrate all tools')` | E2E |
-| Supports --no-cache flag | `it('should bypass cache with --no-cache')` | E2E |
-| Supports --quiet flag | `it('should suppress output with --quiet')` | E2E |
-| Exit code 0 if all pass | `it('should exit with code 0 on success')` | E2E |
-| Exit code 1 if any fail | `it('should exit with code 1 on errors')` | E2E |
-| Cache improves performance (<2s) | `it('should complete in <2s with cache')` | Performance |
-| First run completes in <30s | `it('should complete in <30s without cache')` | Performance |
-| Works from any subdirectory | `it('should find project root from subdirectory')` | E2E |
+| Acceptance Criteria              | Test Case                                          | Test Type   |
+| -------------------------------- | -------------------------------------------------- | ----------- |
+| `nimata validate` runs all tools | `it('should orchestrate all tools')`               | E2E         |
+| Supports --no-cache flag         | `it('should bypass cache with --no-cache')`        | E2E         |
+| Supports --quiet flag            | `it('should suppress output with --quiet')`        | E2E         |
+| Exit code 0 if all pass          | `it('should exit with code 0 on success')`         | E2E         |
+| Exit code 1 if any fail          | `it('should exit with code 1 on errors')`          | E2E         |
+| Cache improves performance (<2s) | `it('should complete in <2s with cache')`          | Performance |
+| First run completes in <30s      | `it('should complete in <30s without cache')`      | Performance |
+| Works from any subdirectory      | `it('should find project root from subdirectory')` | E2E         |
 
 ---
 
@@ -2461,6 +2504,7 @@ export class ValidationService {
 **Goal:** Set up infrastructure before story implementation
 
 **Tasks:**
+
 1. Define all interfaces in `packages/core/src/interfaces/`
 2. Set up Turborepo with package dependencies
 3. Configure TypeScript project references
@@ -2469,6 +2513,7 @@ export class ValidationService {
 6. Configure Stryker per package
 
 **Deliverables:**
+
 - All interfaces defined and reviewed
 - Monorepo builds successfully
 - DI container configured
@@ -2481,11 +2526,13 @@ export class ValidationService {
 #### Swim Lane A: Core (Dev 1) - Sequential
 
 **Week 1:**
+
 - Story 2.10: ValidationService + ToolOrchestrator interfaces
 - Story 2.10: Result aggregation logic
 - Unit tests for ValidationService
 
 **Week 2:**
+
 - Story 2.10: ValidateCommand integration
 - E2E tests for validate command
 
@@ -2494,11 +2541,13 @@ export class ValidationService {
 #### Swim Lane B: CLI (Dev 2) - Parallel with C/E
 
 **Week 1:**
+
 - Story 2.9: WatchService implementation
 - Story 2.9: Bun.watch() integration
 - Unit tests for WatchService
 
 **Week 2:**
+
 - Story 2.9: Debounce logic
 - Story 2.9: Graceful shutdown handlers
 - Integration tests for watch mode
@@ -2510,22 +2559,26 @@ export class ValidationService {
 **Dev 3:**
 
 **Week 1:**
+
 - Story 2.1: ESLintRunner implementation
 - Story 2.2: TypeScriptRunner implementation
 - Unit tests for both runners
 
 **Week 2:**
+
 - Story 2.3: PrettierRunner implementation
 - Integration tests for all 3 runners
 
 **Dev 4:**
 
 **Week 1:**
+
 - Story 2.4: BunTestRunner implementation
 - Story 2.5: StrykerRunner implementation
 - Unit tests for both runners
 
 **Week 2:**
+
 - Integration tests for both runners
 - Error handling for all wrappers
 
@@ -2534,12 +2587,14 @@ export class ValidationService {
 #### Swim Lane E: Adapters (Dev 5) - Parallel with B/C
 
 **Week 1:**
+
 - Story 2.6: CacheRepository (SQLite)
 - Story 2.6: WAL mode configuration
 - Story 2.6: CacheService implementation
 - Unit tests for CacheService
 
 **Week 2:**
+
 - Story 2.7: ValidationPresenter (terminal output)
 - Story 2.8: ValidationPresenter (JSON output)
 - Integration tests for cache
@@ -2591,12 +2646,14 @@ Sprint 0 (Foundation)
 ### 16.1 Epic 2 Deliverables
 
 **User Value:**
+
 - Single `nimata validate` command orchestrates all quality tools
 - Sub-100ms validation for unchanged files (NFR-003 compliance)
 - Watch mode for iterative development
 - Unified terminal output with actionable suggestions
 
 **Technical Achievements:**
+
 - Clean Architecture Lite implementation (3 layers)
 - SQLite caching with WAL mode (3-6x faster than JSON)
 - Parallel tool execution (40-60% faster than sequential)
@@ -2604,6 +2661,7 @@ Sprint 0 (Foundation)
 - 12 components with clear boundaries and responsibilities
 
 **Quality Metrics:**
+
 - 100% unit test coverage with 80%+ mutation score
 - Integration tests for all tool wrappers and cache
 - E2E tests for complete validate command workflow
@@ -2611,29 +2669,32 @@ Sprint 0 (Foundation)
 
 ### 16.2 Developer Swim Lanes
 
-| Swim Lane | Developer | Stories | Duration |
-|-----------|-----------|---------|----------|
-| **A (Core)** | Dev 1 | 2.10 | 2 weeks (sequential) |
-| **B (CLI)** | Dev 2 | 2.9 | 2 weeks (parallel) |
-| **C (Infrastructure)** | Dev 3 + Dev 4 | 2.1, 2.2, 2.3, 2.4, 2.5 | 2 weeks (parallel) |
-| **E (Adapters)** | Dev 5 | 2.6, 2.7, 2.8 | 2 weeks (parallel) |
+| Swim Lane              | Developer     | Stories                 | Duration             |
+| ---------------------- | ------------- | ----------------------- | -------------------- |
+| **A (Core)**           | Dev 1         | 2.10                    | 2 weeks (sequential) |
+| **B (CLI)**            | Dev 2         | 2.9                     | 2 weeks (parallel)   |
+| **C (Infrastructure)** | Dev 3 + Dev 4 | 2.1, 2.2, 2.3, 2.4, 2.5 | 2 weeks (parallel)   |
+| **E (Adapters)**       | Dev 5         | 2.6, 2.7, 2.8           | 2 weeks (parallel)   |
 
 **Total:** 4-5 developers working in parallel for 2 weeks (after Sprint 0)
 
 ### 16.3 Success Criteria
 
 **Performance:**
+
 - ✅ Validation completes in < 100ms for unchanged files (cache hit)
 - ✅ Validation completes in < 30s for medium project (cache miss)
 - ✅ Cache hit rate > 80% in typical development workflow
 
 **Quality:**
+
 - ✅ 100% unit test coverage with 80%+ mutation score
 - ✅ All integration tests passing
 - ✅ All E2E tests passing
 - ✅ Zero cache false positives (stale results)
 
 **User Experience:**
+
 - ✅ Single command runs all tools
 - ✅ Clear terminal output with colored results
 - ✅ JSON output for CI/CD integration
@@ -2645,6 +2706,7 @@ Sprint 0 (Foundation)
 **Document Status:** ✅ Implementation Ready
 **Last Updated:** 2025-10-16
 **Related Documents:**
+
 - `/Users/menoncello/repos/dev/nimata/docs/PRD.md`
 - `/Users/menoncello/repos/dev/nimata/docs/epic-stories.md`
 - `/Users/menoncello/repos/dev/nimata/docs/solution-architecture.md`

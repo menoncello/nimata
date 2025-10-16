@@ -30,9 +30,11 @@ Nìmata MVP delivers the complete three-pillar quality cascade (Start Right → 
 ### Swim Lane A: CLI Infrastructure (Dev 1)
 
 #### Story 1.1: CLI Framework Setup
+
 **Description:** Set up core CLI application framework with command routing and argument parsing
 
 **Acceptance Criteria:**
+
 - [ ] CLI entry point (`bin/nimata`) executes successfully
 - [ ] Command routing supports subcommands (init, validate, fix, prompt)
 - [ ] Argument parsing handles flags and options (--help, --version, --config)
@@ -41,6 +43,7 @@ Nìmata MVP delivers the complete three-pillar quality cascade (Start Right → 
 - [ ] Exit codes follow Unix conventions (0=success, non-zero=error)
 
 **Technical Notes:**
+
 - Evaluate Commander.js vs Oclif for CLI framework
 - TypeScript compilation target: ES2022
 - Bun runtime: 1.1.3+
@@ -51,9 +54,11 @@ Nìmata MVP delivers the complete three-pillar quality cascade (Start Right → 
 ---
 
 #### Story 1.2: Configuration System
+
 **Description:** Implement configuration management system for project-level and global settings
 
 **Acceptance Criteria:**
+
 - [ ] Reads `.nimatarc` file from project root (YAML format)
 - [ ] Supports global config in `~/.nimata/config.yaml`
 - [ ] Project config overrides global config
@@ -62,9 +67,10 @@ Nìmata MVP delivers the complete three-pillar quality cascade (Start Right → 
 - [ ] Config can be programmatically loaded and validated
 
 **Configuration Schema:**
+
 ```yaml
 version: 1
-qualityLevel: strict  # light, medium, strict
+qualityLevel: strict # light, medium, strict
 aiAssistants: [claude-code, copilot]
 validation:
   cache: true
@@ -81,9 +87,11 @@ refactoring:
 ### Swim Lane B: Scaffolding Engine (Dev 2)
 
 #### Story 1.3: Interactive Wizard
+
 **Description:** Build interactive CLI wizard that collects project configuration through user prompts
 
 **Acceptance Criteria:**
+
 - [ ] Wizard collects: project name, description, quality level, AI assistants
 - [ ] Each question has inline help accessible via `[?]` key
 - [ ] Smart defaults pre-selected (Strict quality, common AI tools)
@@ -99,9 +107,11 @@ refactoring:
 ---
 
 #### Story 1.4: Directory Structure Generator
+
 **Description:** Generate opinionated directory structure for TypeScript+Bun CLI projects
 
 **Acceptance Criteria:**
+
 - [ ] Creates standard directories: src/, tests/, bin/, docs/, .nimata/
 - [ ] Generates entry point file: `src/index.ts`
 - [ ] Creates bin launcher script with proper shebang
@@ -111,6 +121,7 @@ refactoring:
 - [ ] Structure supports SOLID architecture principles
 
 **Directory Structure:**
+
 ```
 project-name/
 ├── src/
@@ -138,9 +149,11 @@ project-name/
 ---
 
 #### Story 1.5: Template Engine
+
 **Description:** Implement template rendering system for generating project files from templates
 
 **Acceptance Criteria:**
+
 - [ ] Loads templates from `templates/typescript-bun-cli/` directory
 - [ ] Variable substitution: {{project_name}}, {{description}}, etc.
 - [ ] Conditional blocks: {{#if strict}}...{{/if}}
@@ -157,9 +170,11 @@ project-name/
 ### Swim Lane C: Quality Tool Configuration (Dev 3)
 
 #### Story 1.6: ESLint Configuration Generator
+
 **Description:** Generate ESLint configuration based on selected quality level
 
 **Acceptance Criteria:**
+
 - [ ] Creates .eslintrc.json with appropriate rules for quality level
 - [ ] Light: Basic formatting and common errors only
 - [ ] Medium: Standard TypeScript rules + best practices
@@ -174,9 +189,11 @@ project-name/
 ---
 
 #### Story 1.7: TypeScript Configuration Generator
+
 **Description:** Generate tsconfig.json optimized for Bun + CLI projects
 
 **Acceptance Criteria:**
+
 - [ ] Creates tsconfig.json with strict mode enabled
 - [ ] Target: ES2022, module: ESNext
 - [ ] Source maps enabled for debugging
@@ -192,9 +209,11 @@ project-name/
 ---
 
 #### Story 1.8: Prettier & Bun Test Configuration
+
 **Description:** Generate Prettier formatting config and Bun Test setup
 
 **Acceptance Criteria:**
+
 - [ ] Creates .prettierrc.json with opinionated formatting rules
 - [ ] Single quotes, 2-space indent, trailing commas, 100 char line width
 - [ ] Creates .prettierignore for dist/, node_modules/
@@ -211,9 +230,11 @@ project-name/
 ### Swim Lane D: AI Rules Generation (Dev 4)
 
 #### Story 1.9: AI Rules Library & CLAUDE.md Generator
+
 **Description:** Create rules library and generate CLAUDE.md file with persistent AI context
 
 **Acceptance Criteria:**
+
 - [ ] Rules library contains common TypeScript/Bun best practices
 - [ ] Generates CLAUDE.md in project root with:
   - Project structure explanation
@@ -232,9 +253,11 @@ project-name/
 ---
 
 #### Story 1.10: GitHub Copilot Instructions Generator
+
 **Description:** Generate GitHub Copilot instructions file for AI context
 
 **Acceptance Criteria:**
+
 - [ ] Generates `.github/copilot-instructions.md` with project context
 - [ ] Contains coding standards and architectural decisions
 - [ ] Format optimized for GitHub Copilot parsing
@@ -251,9 +274,11 @@ project-name/
 ### Swim Lane E: Integration & Quality Levels (Dev 5)
 
 #### Story 1.11: Quality Level Presets & End-to-End Init
+
 **Description:** Implement quality level preset system and integrate all scaffolding components
 
 **Acceptance Criteria:**
+
 - [ ] Three preset configurations: Light, Medium, Strict
 - [ ] Each preset defines: ESLint rules, TypeScript strictness, test coverage thresholds
 - [ ] Preset selection during wizard affects all generated configs
@@ -281,9 +306,11 @@ project-name/
 ### Swim Lanes B: Tool Integrations (Devs 1-4 in parallel)
 
 #### Story 2.1: ESLint Integration
+
 **Description:** Integrate ESLint execution with Nìmata validation orchestration
 
 **Acceptance Criteria:**
+
 - [ ] Runs ESLint programmatically via Node API (not shell command)
 - [ ] Respects project's .eslintrc.json configuration
 - [ ] Captures lint errors with file path, line number, rule name, message
@@ -299,9 +326,11 @@ project-name/
 ---
 
 #### Story 2.2: TypeScript Compiler Integration
+
 **Description:** Integrate TypeScript compiler for type checking validation
 
 **Acceptance Criteria:**
+
 - [ ] Runs TypeScript compiler programmatically (tsc API)
 - [ ] Executes type checking without emitting files (--noEmit equivalent)
 - [ ] Captures type errors with file, line, column, error code, message
@@ -317,9 +346,11 @@ project-name/
 ---
 
 #### Story 2.3: Prettier Integration
+
 **Description:** Integrate Prettier for code formatting validation
 
 **Acceptance Criteria:**
+
 - [ ] Runs Prettier programmatically to check formatting
 - [ ] Uses --check mode (validates without modifying files)
 - [ ] Respects .prettierrc.json configuration
@@ -335,9 +366,11 @@ project-name/
 ---
 
 #### Story 2.4: Bun Test Integration
+
 **Description:** Integrate Bun Test runner for test execution and coverage
 
 **Acceptance Criteria:**
+
 - [ ] Runs Bun Test programmatically via Bun API
 - [ ] Executes all tests in tests/ directory
 - [ ] Captures test results: passed, failed, skipped counts
@@ -355,9 +388,11 @@ project-name/
 ### Swim Lane A: Orchestration (Dev 5)
 
 #### Story 2.5: Parallel Execution Engine
+
 **Description:** Build orchestration layer that runs quality tools in parallel
 
 **Acceptance Criteria:**
+
 - [ ] Runs all 4 tools (ESLint, TypeScript, Prettier, Tests) concurrently
 - [ ] Uses Promise.all or similar for parallel execution
 - [ ] Continues execution even if one tool fails
@@ -372,9 +407,11 @@ project-name/
 ---
 
 #### Story 2.6: Result Aggregation
+
 **Description:** Aggregate validation results from all tools into unified structure
 
 **Acceptance Criteria:**
+
 - [ ] Unified result schema containing all tool outputs
 - [ ] Overall pass/fail status based on all tools
 - [ ] Error count aggregation across tools
@@ -384,6 +421,7 @@ project-name/
 - [ ] Results serializable to JSON for caching/reporting
 
 **Result Schema:**
+
 ```typescript
 interface ValidationResults {
   success: boolean;
@@ -408,9 +446,11 @@ interface ValidationResults {
 ### Swim Lane C: Performance (Dev 3)
 
 #### Story 2.7: File Hashing System
+
 **Description:** Implement file content hashing for cache invalidation
 
 **Acceptance Criteria:**
+
 - [ ] Computes hash for each source file (SHA256 or similar)
 - [ ] Stores hash with file path and timestamp
 - [ ] Detects file changes by comparing current hash to cached hash
@@ -424,9 +464,11 @@ interface ValidationResults {
 ---
 
 #### Story 2.8: Cache Storage & Invalidation
+
 **Description:** Implement caching layer for validation results with intelligent invalidation
 
 **Acceptance Criteria:**
+
 - [ ] Stores validation results in `.nimata/cache/validation.json`
 - [ ] Cache structure: file hash → validation results mapping
 - [ ] Invalidates cache entry when file hash changes
@@ -443,9 +485,11 @@ interface ValidationResults {
 ### Swim Lane E: CLI Reporting (Dev 2)
 
 #### Story 2.9: Unified CLI Output
+
 **Description:** Create clear, actionable CLI output for validation results
 
 **Acceptance Criteria:**
+
 - [ ] Shows summary: ✓/✗ per tool with pass/fail status
 - [ ] Displays execution time per tool and total time
 - [ ] Lists all errors grouped by file
@@ -456,6 +500,7 @@ interface ValidationResults {
 - [ ] Respects --quiet flag for CI/CD (only errors, no visual flourishes)
 
 **Example Output:**
+
 ```
 Validating Nìmata project...
 
@@ -478,9 +523,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ---
 
 #### Story 2.10: Validate Command Integration
+
 **Description:** Integrate all validation components into `nimata validate` command
 
 **Acceptance Criteria:**
+
 - [ ] `nimata validate` executes complete validation workflow
 - [ ] Supports flags: --no-cache, --quiet, --reporter=<format>
 - [ ] Exit code 0 if all tools pass, 1 if any tool fails
@@ -507,9 +554,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ### Swim Lane C: Static Refactoring (Devs 1-2 in parallel)
 
 #### Story 3.1: AST Parser Setup
+
 **Description:** Set up TypeScript AST parser for code analysis and transformation
 
 **Acceptance Criteria:**
+
 - [ ] Uses TypeScript Compiler API or ts-morph for AST manipulation
 - [ ] Parses TypeScript files into AST successfully
 - [ ] Traverses AST to find specific patterns
@@ -525,9 +574,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ---
 
 #### Story 3.2: Readonly Variable Enforcement
+
 **Description:** Detect and add readonly modifier to variables that are never reassigned
 
 **Acceptance Criteria:**
+
 - [ ] Identifies class properties that are never reassigned after initialization
 - [ ] Identifies function parameters that are never modified
 - [ ] Adds `readonly` modifier where applicable
@@ -543,9 +594,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ---
 
 #### Story 3.3: Const Promotion
+
 **Description:** Convert `let` declarations to `const` when variable is never reassigned
 
 **Acceptance Criteria:**
+
 - [ ] Identifies `let` declarations that are never reassigned
 - [ ] Converts to `const` declarations
 - [ ] Handles destructuring assignments correctly
@@ -560,9 +613,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ---
 
 #### Story 3.4: Arrow Function Conversion
+
 **Description:** Convert traditional function expressions to arrow functions where safe
 
 **Acceptance Criteria:**
+
 - [ ] Identifies function expressions that can safely become arrow functions
 - [ ] Converts to arrow syntax with implicit return where applicable
 - [ ] Preserves `this` binding correctly (doesn't convert if `this` is used)
@@ -577,9 +632,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ---
 
 #### Story 3.5: Unused Imports Removal
+
 **Description:** Detect and remove unused import statements
 
 **Acceptance Criteria:**
+
 - [ ] Identifies import statements where imported symbols are never used
 - [ ] Removes entire import statement if no symbols are used
 - [ ] Removes specific symbols from import lists if only some are unused
@@ -596,9 +653,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ### Swim Lane D: AI Prompt Generation (Dev 3)
 
 #### Story 3.6: Prompt Template System
+
 **Description:** Create template system for AI refactoring prompts
 
 **Acceptance Criteria:**
+
 - [ ] Template library for common refactoring scenarios:
   - Method extraction
   - Complexity reduction
@@ -615,9 +674,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ---
 
 #### Story 3.7: Context Extraction for Prompts
+
 **Description:** Extract relevant code context to include in AI prompts
 
 **Acceptance Criteria:**
+
 - [ ] Extracts function/class containing the issue
 - [ ] Includes imports and type definitions referenced
 - [ ] Limits context size to <4KB (LLM token efficiency)
@@ -631,9 +692,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ---
 
 #### Story 3.8: Multi-Assistant Prompt Formatting
+
 **Description:** Generate prompts formatted for Claude Code and GitHub Copilot
 
 **Acceptance Criteria:**
+
 - [ ] Claude Code format: Markdown with clear sections (Context, Task, Code)
 - [ ] GitHub Copilot format: Concise comment-style instructions
 - [ ] Both formats include sufficient context for accurate suggestions
@@ -649,9 +712,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ### Swim Lane D: Triage Engine (Dev 4)
 
 #### Story 3.9: Issue Categorization & Complexity Analysis
+
 **Description:** Analyze validation issues and categorize as simple (static) or complex (AI)
 
 **Acceptance Criteria:**
+
 - [ ] Categorizes each validation error/warning
 - [ ] Simple issues: readonly missing, const promotion, unused imports, formatting
 - [ ] Complex issues: high cyclomatic complexity, code duplication, architectural smells
@@ -661,6 +726,7 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 - [ ] Fast categorization (<10ms per issue)
 
 **Categorization Rules:**
+
 - ESLint rules with auto-fix → Simple
 - TypeScript errors → Complex (usually require logic changes)
 - Complexity warnings → Complex
@@ -674,9 +740,11 @@ Run 'nimata fix' to auto-fix simple issues, or 'nimata prompt' for AI assistance
 ### Swim Lane E: UX & Integration (Dev 5)
 
 #### Story 3.10: Interactive Preview & Fix/Prompt Commands
+
 **Description:** Build interactive preview UI and integrate fix/prompt commands
 
 **Acceptance Criteria:**
+
 - [ ] `nimata fix` command:
   - Shows diff preview of all proposed static refactorings
   - Interactive prompt: Approve all, Approve one-by-one, or Cancel
@@ -866,6 +934,7 @@ graph TB
 ### Legend
 
 **Swim Lanes (Color-coded):**
+
 - 🔵 **Lane A (Infrastructure):** Core systems, orchestration, frameworks
 - 🟣 **Lane B (Integrations):** Tool integrations, scaffolding components
 - 🟢 **Lane C (Intelligence):** Performance, static analysis, AST manipulation
@@ -875,6 +944,7 @@ graph TB
 **Story Format:** `Story#: Title (Estimated Days)`
 
 **Critical Path:**
+
 - Epic 1: 1.1 → 1.2 → 1.3 → 1.4 → 1.5 → 1.11 (17 days)
 - Epic 2: 2.1/2.2/2.3/2.4 → 2.5 → 2.6 → 2.10 (13 days)
 - Epic 3: 3.1 → 3.2/3.3/3.4/3.5 → 3.10 (11 days)
@@ -884,6 +954,7 @@ graph TB
 ## Parallelization Strategy
 
 **Sprint 1-2 (Epic 1):**
+
 - Dev 1: Stories 1.1, 1.2 (Infrastructure)
 - Dev 2: Stories 1.3, 1.4, 1.5 (Scaffolding)
 - Dev 3: Stories 1.6, 1.7, 1.8 (Quality Config)
@@ -891,6 +962,7 @@ graph TB
 - Dev 5: Story 1.11 (Integration) + helping others
 
 **Sprint 3-4 (Epic 2):**
+
 - Dev 1: Story 2.1 (ESLint) → Story 2.5 (Orchestration)
 - Dev 2: Story 2.2 (TypeScript) → Story 2.9 (CLI Output)
 - Dev 3: Story 2.3 (Prettier) → Stories 2.7, 2.8 (Caching)
@@ -898,6 +970,7 @@ graph TB
 - Dev 5: Story 2.6 (Aggregation) → Story 2.10 (Integration)
 
 **Sprint 5-6 (Epic 3):**
+
 - Dev 1: Stories 3.1, 3.2, 3.5 (AST + refactorings)
 - Dev 2: Stories 3.3, 3.4 (refactorings)
 - Dev 3: Stories 3.6, 3.7, 3.8 (AI prompts)

@@ -15,6 +15,7 @@ Nìmata is a BunJS-powered CLI tool that transforms code quality from an aspirat
 **The Problem We Solve:**
 
 AI-assisted TypeScript/JavaScript developers face three compounding pain points:
+
 1. **Context Alignment Problem:** 10-30 minutes wasted daily re-explaining project context to AI assistants
 2. **Quality Snowball Effect:** Projects without upfront quality configuration accumulate exponential technical debt
 3. **Inefficient Fix Workflow:** Simple fixes consume expensive AI prompts when static tools could handle them in milliseconds
@@ -24,6 +25,7 @@ AI-assisted TypeScript/JavaScript developers face three compounding pain points:
 Nìmata orchestrates the complete quality workflow from project inception through ongoing maintenance. It scaffolds TypeScript+Bun projects with comprehensive quality tooling pre-configured (ESLint, TypeScript, Prettier, Bun Test), generates persistent AI rules files (CLAUDE.md, BMAD configs) to eliminate context re-establishment overhead, validates code through unified orchestration, and intelligently routes simple fixes to static refactoring while generating AI prompts for complex improvements.
 
 **Key Differentiators:**
+
 - Only tool combining quality-first scaffolding + AI integration + intelligent refactoring triage
 - Orchestration over invention: leverages battle-tested tools rather than building proprietary alternatives
 - AI-native by design: first-class support for Claude Code, GitHub Copilot, Windsurf
@@ -42,6 +44,7 @@ Nìmata orchestrates the complete quality workflow from project inception throug
 ### Context
 
 **Why Now:**
+
 - AI-assisted development has become standard practice (60%+ of developers use AI tools in 2025)
 - Quality debt accumulates faster in AI-assisted workflows without proper guardrails
 - Static analysis tools are mature and reliable but underutilized in modern workflows
@@ -53,18 +56,21 @@ Growing intersection of three trends: (1) rapid AI coding assistant adoption, (2
 ### Goals
 
 **Primary Goal 1: Eliminate AI Context Re-establishment Overhead**
+
 - Generate persistent AI rules files (CLAUDE.md, BMAD configs) during project scaffolding
 - Reduce developer time spent re-explaining project context by 60%+
 - Enable AI assistants to follow project standards 80%+ of the time without re-prompting
 - **Success Metric:** Users report saving 15-20 minutes per day on context management
 
 **Primary Goal 2: Make Quality Automatic from Day One**
+
 - Scaffold TypeScript+Bun projects with comprehensive quality tooling pre-configured
 - Reduce project setup time from 2-4 hours to under 20 minutes
 - Achieve 90%+ of scaffolded projects passing all quality checks immediately after setup
 - **Success Metric:** 80%+ of users choose "strict" quality level (validates opinionated defaults work)
 
 **Primary Goal 3: Optimize Fix Workflow with Intelligent Triage**
+
 - Route simple fixes to static refactoring (milliseconds) vs AI prompts (seconds/cost)
 - Enable developers to fix 70%+ of simple issues via static refactoring
 - Generate formatted AI prompts for complex refactoring that require human judgment
@@ -130,6 +136,7 @@ System functions fully offline after initial installation, with all templates, r
 ### Non-Functional Requirements
 
 **NFR001: Performance - Fast Feedback Loops**
+
 - Project scaffolding completes in <30 seconds for typical TypeScript+Bun CLI project
 - Quality validation returns results in <30 seconds for projects up to 10,000 lines of code
 - **Intelligent caching:** System maintains cache of validation results per file with hash-based invalidation, only re-analyzing files that have changed since last validation
@@ -139,6 +146,7 @@ System functions fully offline after initial installation, with all templates, r
 - **Rationale:** Fast feedback is critical to maintaining developer flow state and encouraging frequent validation. Caching prevents redundant analysis of unchanged files, enabling sub-second validation for typical workflow (developer changes 1-3 files between runs).
 
 **NFR002: Reliability - Zero-Defect Scaffolding**
+
 - Scaffolded projects must compile and pass all quality checks 100% of the time immediately after creation
 - Static refactoring transformations must never introduce syntax errors or break existing functionality
 - System must handle edge cases gracefully (missing dependencies, disk space issues, permission errors) with clear error messages
@@ -146,6 +154,7 @@ System functions fully offline after initial installation, with all templates, r
 - **Rationale:** Trust is paramount - developers must be confident that Nìmata won't break their code or provide incorrect validation results
 
 **NFR003: Usability - Intuitive CLI Experience**
+
 - Interactive CLI wizard completes project setup in <20 questions with smart defaults
 - CLI output must be color-coded with symbols for accessibility (screen reader friendly)
 - Error messages must be actionable, explaining what went wrong and how to fix it
@@ -153,6 +162,7 @@ System functions fully offline after initial installation, with all templates, r
 - **Rationale:** Low friction adoption is essential for developer tools - if setup is confusing, users abandon immediately
 
 **NFR004: Maintainability - Extensible Architecture**
+
 - Core engine follows SOLID principles to enable addition of new tech stacks without modifying core code
 - Comprehensive unit and integration test coverage (>80%) to catch regressions
 - Clear separation between core orchestration, plugins (scaffolding/validation/refactoring), and templates
@@ -160,6 +170,7 @@ System functions fully offline after initial installation, with all templates, r
 - **Rationale:** MVP is just the beginning - architecture must support Phase 2 expansion without rewrites
 
 **NFR005: Security - Safe by Default**
+
 - No scaffolded project should contain hardcoded secrets, API keys, or credentials
 - All dependencies must be vetted and regularly audited for vulnerabilities (Dependabot integration)
 - Static refactoring operates in safe mode: changes can always be reverted, never modifies files without explicit user approval
@@ -234,6 +245,7 @@ System functions fully offline after initial installation, with all templates, r
    - **Outcome:** Technical debt prevented, not accumulated
 
 **Journey Success Metrics:**
+
 - Time from install to first commit: <20 minutes (vs 2-4 hours manual)
 - AI context re-establishment overhead: Eliminated (saved 15-20 min/day)
 - Quality tool compliance: 95%+ from day one (vs 60-70% typical)
@@ -244,18 +256,21 @@ System functions fully offline after initial installation, with all templates, r
 ## UX Design Principles
 
 **1. Progressive Disclosure - Complexity on Demand**
+
 - Present simple, clear defaults first; reveal advanced options only when requested
 - Interactive wizard uses smart defaults (e.g., Strict quality level) with `[?]` help available for those who want details
 - CLI commands work with zero flags for common cases (`nimata validate`), but accept flags for power users (`nimata validate --full --reporter=html`)
 - **Rationale:** Reduces cognitive load for new users while maintaining power user flexibility
 
 **2. Fast Feedback - Instant Gratification**
+
 - Every command provides immediate visual feedback (spinners during work, checkmarks/crosses for results)
 - Validation shows progress incrementally: "✓ ESLint passed (2.1s)" as each tool completes
 - Cache-powered incremental validation feels instant (<2s) for typical workflow
 - **Rationale:** Fast feedback maintains flow state and encourages frequent validation
 
 **3. Transparency & Trust - No Magic, Only Clarity**
+
 - Always show what Nìmata is doing and why (e.g., "Running ESLint on 23 files...")
 - Static refactoring shows full diff preview before applying changes
 - Configuration files are plain text (YAML/JSON), fully readable and version-controllable
@@ -263,12 +278,14 @@ System functions fully offline after initial installation, with all templates, r
 - **Rationale:** Developers need to trust tools that touch their code; transparency builds trust
 
 **4. Actionable Errors - Problems → Solutions**
+
 - Error messages explain what went wrong AND how to fix it
 - Example: "ESLint found 3 issues. Run `nimata fix` to auto-fix simple issues, or `nimata prompt --lint` for AI assistance with complex ones."
 - Include relevant file paths with line numbers (src/index.ts:42) for immediate navigation
 - **Rationale:** Errors should guide users toward solutions, not leave them stuck
 
 **5. Consistent Language - Speak Developer**
+
 - Use terminology developers already know (lint, validate, refactor) not invented jargon
 - Command structure follows Unix conventions (`nimata <verb> <noun>` pattern)
 - Output uses standard exit codes (0 = success, 1 = failure) for CI/CD integration
@@ -281,6 +298,7 @@ System functions fully offline after initial installation, with all templates, r
 Nìmata MVP is organized into 3 primary epics aligned with the three-pillar quality cascade. While epics deliver sequentially for coherent user value, stories within each epic are highly granular and parallelizable, enabling 4-5 developers to work simultaneously with minimal blocking dependencies.
 
 **Epic 1: Start Right - Quality-First Scaffolding**
+
 - **Goal:** Enable developers to scaffold TypeScript+Bun CLI projects with comprehensive quality tooling and AI context files pre-configured
 - **Value:** Eliminates 2-4 hours of manual setup, generates persistent AI context (Claude Code & GitHub Copilot) to reduce hallucinations
 - **Stories:** 10 stories designed for parallel development
@@ -293,6 +311,7 @@ Nìmata MVP is organized into 3 primary epics aligned with the three-pillar qual
 - **Delivery:** Enables "nimata init" complete workflow
 
 **Epic 2: Find Right - Unified Quality Validation**
+
 - **Goal:** Orchestrate multiple quality tools (ESLint, TypeScript, Prettier, Bun Test) through single command with intelligent caching
 - **Value:** Single-command validation with fast incremental feedback (<2s for unchanged files)
 - **Stories:** 10 stories designed for parallel development
@@ -304,6 +323,7 @@ Nìmata MVP is organized into 3 primary epics aligned with the three-pillar qual
 - **Delivery:** Enables "nimata validate" complete workflow
 
 **Epic 3: Fix Right - Intelligent Refactoring & Triage**
+
 - **Goal:** Implement intelligent triage that routes simple fixes to static refactoring and complex issues to AI-assisted refactoring
 - **Value:** 10x faster fixes for simple issues, AI prompts (Claude Code & Copilot format) for complex refactoring
 - **Stories:** 10 stories designed for parallel development
@@ -317,6 +337,7 @@ Nìmata MVP is organized into 3 primary epics aligned with the three-pillar qual
 **Parallelization Details:**
 
 Each epic's stories are organized into **swim lanes** that minimize dependencies:
+
 - **Lane A (Infrastructure):** Framework, orchestration, core systems
 - **Lane B (Integrations):** Tool integrations, external APIs
 - **Lane C (Intelligence):** Analysis, categorization, AI features
@@ -328,6 +349,7 @@ Each epic's stories are organized into **swim lanes** that minimize dependencies
 **Team Velocity:** With 5 devs, ~10-12 stories per 2-week sprint
 
 **Delivery Timeline:**
+
 - **Sprint 1-2:** Epic 1 (10 stories, 5 devs in parallel)
 - **Sprint 3-4:** Epic 2 (10 stories, 5 devs in parallel)
 - **Sprint 5-6:** Epic 3 (10 stories, 5 devs in parallel)
@@ -342,6 +364,7 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 **Deferred to Post-MVP (Phase 2+):**
 
 **Additional Tech Stacks:**
+
 - React, Vue, Angular, Svelte frontend frameworks
 - Express, Fastify, NestJS backend frameworks
 - PostgreSQL, MongoDB, Redis database setups
@@ -349,6 +372,7 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 - **Rationale:** MVP focuses on TypeScript+Bun CLI projects only. Extensible architecture allows adding stacks in Phase 2 without core rewrites.
 
 **Additional AI Assistants:**
+
 - Windsurf integration
 - Cursor integration
 - Cody integration
@@ -356,6 +380,7 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 - **Rationale:** Claude Code + GitHub Copilot cover 80%+ of AI-assisted developers. Additional assistants can be added via adapter pattern post-MVP.
 
 **Advanced Refactoring Features:**
+
 - IDE-style complex refactorings (extract method, inline variable)
 - Automated structural refactoring (reduce complexity, reorganize imports)
 - Cross-file refactoring (rename across project)
@@ -363,6 +388,7 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 - **Rationale:** Simple static refactorings prove concept. Complex features require mature AST manipulation foundation.
 
 **HTML Reports & Visualization:**
+
 - Stryker-style HTML reports for validation results
 - Quality trend tracking dashboards
 - Visual diff previews for refactorings
@@ -370,12 +396,14 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 - **Rationale:** CLI output sufficient for MVP. HTML reports add significant dev time, deferred to Phase 2.
 
 **Mutation Testing:**
+
 - Stryker mutation testing integration
 - Mutation coverage reporting
 - Automated test quality validation
 - **Rationale:** Added complexity, slower validation. Core test coverage sufficient for MVP validation.
 
 **Team & Enterprise Features:**
+
 - Team collaboration and shared templates
 - Custom organizational rule libraries
 - Usage analytics and reporting dashboards
@@ -383,6 +411,7 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 - **Rationale:** Solve for individual developers first. Enterprise features come after PMF validation.
 
 **Developer Environment Features:**
+
 - IDE settings/extensions configuration
 - Docker container setup
 - Database schema scaffolding
@@ -390,6 +419,7 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 - **Rationale:** Scope creep. Focus on code quality cascade, not full environment orchestration.
 
 **Advanced Integration Features:**
+
 - Git hooks automatic installation (pre-commit, pre-push)
 - VSCode/JetBrains IDE plugins
 - Deep IDE integrations (inline warnings)
@@ -397,6 +427,7 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 - **Rationale:** CLI-first approach works standalone. IDE integrations add platform-specific complexity.
 
 **Project Migration & Audit:**
+
 - Scan existing projects for quality gaps
 - Generate migration plan to adopt Nìmata standards
 - Health check scoring for brownfield projects
@@ -410,18 +441,21 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 ### Immediate Actions
 
 **1. Review and Approve PRD**
+
 - Stakeholder review of goals, requirements, and epic structure
 - Validate 30-story breakdown supports parallel development
 - Confirm 6-7 sprint timeline aligns with business goals
 - **Timeline:** 1-2 days
 
 **2. Generate Detailed Story Breakdown**
+
 - Create `epic-stories.md` with full acceptance criteria for all 30 stories
 - Define swim lane dependencies and story sequencing
 - Identify shared components and integration points
 - **Timeline:** 2-3 days
 
 **3. Technical Foundation Planning**
+
 - Review technology stack decisions (Bun 1.1.3+, TypeScript, CLI framework selection)
 - Define repository structure and monorepo strategy
 - Plan CI/CD pipeline and testing infrastructure
@@ -432,6 +466,7 @@ _Detailed epic breakdown with story swim lanes, acceptance criteria, and depende
 Since this is a Level 2 project, you need solutioning before implementation:
 
 **Required Next Workflow:**
+
 - Run `3-solutioning` workflow to generate:
   - Solution architecture document
   - Per-epic technical specifications
@@ -439,6 +474,7 @@ Since this is a Level 2 project, you need solutioning before implementation:
   - Technology stack validation
 
 **Input Documents for Solutioning:**
+
 - This PRD: `/Users/menoncello/repos/dev/nimata/docs/PRD.md`
 - Epic structure: `/Users/menoncello/repos/dev/nimata/docs/epic-stories.md`
 - Product Brief: `/Users/menoncello/repos/dev/nimata/docs/product-brief-Nìmata-2025-10-16.md`
@@ -446,18 +482,21 @@ Since this is a Level 2 project, you need solutioning before implementation:
 ### Phase 3: Development Preparation
 
 **4. Team Assembly & Assignment**
+
 - Assign 5 developers to swim lanes (Infrastructure, Integration, Intelligence, Config, UX)
 - Conduct architecture review and knowledge sharing
 - Set up development environments and tooling
 - **Timeline:** 1 week
 
 **5. Sprint Planning**
+
 - Break stories into tasks with hour estimates
 - Define sprint goals and demo criteria
 - Establish team velocity baseline
 - **Timeline:** 2-3 days per sprint
 
 **6. Development Kickoff**
+
 - Sprint 1 begins with Epic 1 stories
 - Daily standups to coordinate parallel development
 - Weekly integration checkpoints

@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "bun test"
+  },
+  "plugins": ["@stryker-mutator/typescript-checker"],
+  "checkers": ["typescript"],
+  "tsconfigFile": "tsconfig.json",
+  "mutate": ["apps/cli/src/**/*.ts", "!apps/cli/src/**/*.test.ts", "!apps/cli/src/**/*.spec.ts"],
+  "ignoreStatic": true,
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "coverage",
+    "**/*.d.ts",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/tests/**"
+  ],
+  "reporters": ["html", "clear-text", "progress", "dashboard"],
+  "htmlReporter": {
+    "fileName": "reports/mutation/mutation-report.html"
+  },
+  "coverageAnalysis": "perTest",
+  "thresholds": {
+    "high": 90,
+    "low": 80,
+    "break": 80
+  },
+  "timeoutMS": 60000,
+  "concurrency": 4
+}

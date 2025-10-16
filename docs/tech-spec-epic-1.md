@@ -46,34 +46,34 @@ Enable developers to scaffold TypeScript+Bun CLI projects with comprehensive qua
 
 ### 1.4 Key Technologies
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Bun** | 1.3+ | Runtime, native APIs (file I/O, YAML, hashing) |
-| **TypeScript** | 5.x | Type safety, strict mode enforcement |
-| **Yargs** | 17.x | CLI framework, command routing |
-| **Prompts** | 2.x | Interactive wizards |
-| **Handlebars** | 4.x | Template rendering |
-| **TSyringe** | 4.x | Dependency injection |
-| **Picocolors** | 1.x | Terminal colors |
-| **Ora** | 7.x | Progress spinners |
+| Technology     | Version | Purpose                                        |
+| -------------- | ------- | ---------------------------------------------- |
+| **Bun**        | 1.3+    | Runtime, native APIs (file I/O, YAML, hashing) |
+| **TypeScript** | 5.x     | Type safety, strict mode enforcement           |
+| **Yargs**      | 17.x    | CLI framework, command routing                 |
+| **Prompts**    | 2.x     | Interactive wizards                            |
+| **Handlebars** | 4.x     | Template rendering                             |
+| **TSyringe**   | 4.x     | Dependency injection                           |
+| **Picocolors** | 1.x     | Terminal colors                                |
+| **Ora**        | 7.x     | Progress spinners                              |
 
 ---
 
 ## 2. Stories Summary
 
-| Story ID | Title | Story Points | Primary Components | Swim Lane |
-|----------|-------|--------------|-------------------|-----------|
-| **1.1** | CLI Framework Setup | 3 | CLI entry point, Yargs routing, TSyringe DI | A (Infrastructure) |
-| **1.2** | Configuration System | 2 | YAMLConfigRepository, config cascade | A (Infrastructure) |
-| **1.3** | Interactive Wizard | 4 | ScaffoldWizard, Prompts integration | B (Scaffolding) |
-| **1.4** | Directory Structure Generator | 3 | ScaffoldingService, FileSystemRepository | B (Scaffolding) |
-| **1.5** | Template Engine | 3 | TemplateRenderer, Handlebars integration | B (Scaffolding) |
-| **1.6** | ESLint Configuration Generator | 3 | ScaffolderPlugin, ESLintGenerator | C (Quality Config) |
-| **1.7** | TypeScript Configuration Generator | 2 | ScaffolderPlugin, TSConfigGenerator | C (Quality Config) |
-| **1.8** | Prettier & Bun Test Configuration | 2 | ScaffolderPlugin, PrettierGenerator, BunConfigGenerator | C (Quality Config) |
-| **1.9** | AI Rules Library & CLAUDE.md Generator | 4 | ClaudeCodePlugin, ContextGenerator | D (AI Rules) |
-| **1.10** | GitHub Copilot Instructions Generator | 2 | ClaudeCodePlugin, CopilotGenerator | D (AI Rules) |
-| **1.11** | Quality Level Presets & End-to-End Init | 3 | InitCommand, preset system integration | E (Integration) |
+| Story ID | Title                                   | Story Points | Primary Components                                      | Swim Lane          |
+| -------- | --------------------------------------- | ------------ | ------------------------------------------------------- | ------------------ |
+| **1.1**  | CLI Framework Setup                     | 3            | CLI entry point, Yargs routing, TSyringe DI             | A (Infrastructure) |
+| **1.2**  | Configuration System                    | 2            | YAMLConfigRepository, config cascade                    | A (Infrastructure) |
+| **1.3**  | Interactive Wizard                      | 4            | ScaffoldWizard, Prompts integration                     | B (Scaffolding)    |
+| **1.4**  | Directory Structure Generator           | 3            | ScaffoldingService, FileSystemRepository                | B (Scaffolding)    |
+| **1.5**  | Template Engine                         | 3            | TemplateRenderer, Handlebars integration                | B (Scaffolding)    |
+| **1.6**  | ESLint Configuration Generator          | 3            | ScaffolderPlugin, ESLintGenerator                       | C (Quality Config) |
+| **1.7**  | TypeScript Configuration Generator      | 2            | ScaffolderPlugin, TSConfigGenerator                     | C (Quality Config) |
+| **1.8**  | Prettier & Bun Test Configuration       | 2            | ScaffolderPlugin, PrettierGenerator, BunConfigGenerator | C (Quality Config) |
+| **1.9**  | AI Rules Library & CLAUDE.md Generator  | 4            | ClaudeCodePlugin, ContextGenerator                      | D (AI Rules)       |
+| **1.10** | GitHub Copilot Instructions Generator   | 2            | ClaudeCodePlugin, CopilotGenerator                      | D (AI Rules)       |
+| **1.11** | Quality Level Presets & End-to-End Init | 3            | InitCommand, preset system integration                  | E (Integration)    |
 
 **Total Story Points:** 31
 **Estimated Duration:** Sprints 1-2 (4 weeks with 4-5 developers)
@@ -115,40 +115,40 @@ Epic 1 follows Clean Architecture Lite with 3 layers:
 
 #### 3.2.1 CLI Layer (apps/cli)
 
-| Component | File Path | Responsibility | Stories |
-|-----------|-----------|----------------|---------|
-| **InitCommand** | apps/cli/src/commands/init.ts | `nimata init` command handler, orchestrates wizard + scaffolding | 1.1, 1.11 |
-| **ScaffoldWizard** | apps/cli/src/wizards/scaffold-wizard.ts | Interactive prompts, collects user input (project name, quality level, AI tools) | 1.3 |
-| **ProgressPresenter** | apps/cli/src/presenters/progress-presenter.ts | Terminal output with Ora spinners, progress updates | All |
-| **DI Container** | apps/cli/src/container.ts | TSyringe dependency injection setup | 1.1 |
+| Component             | File Path                                     | Responsibility                                                                   | Stories   |
+| --------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- | --------- |
+| **InitCommand**       | apps/cli/src/commands/init.ts                 | `nimata init` command handler, orchestrates wizard + scaffolding                 | 1.1, 1.11 |
+| **ScaffoldWizard**    | apps/cli/src/wizards/scaffold-wizard.ts       | Interactive prompts, collects user input (project name, quality level, AI tools) | 1.3       |
+| **ProgressPresenter** | apps/cli/src/presenters/progress-presenter.ts | Terminal output with Ora spinners, progress updates                              | All       |
+| **DI Container**      | apps/cli/src/container.ts                     | TSyringe dependency injection setup                                              | 1.1       |
 
 #### 3.2.2 Use Case Layer (packages/core)
 
-| Component | File Path | Responsibility | Stories |
-|-----------|-----------|----------------|---------|
+| Component              | File Path                                          | Responsibility                                                                       | Stories        |
+| ---------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------ | -------------- |
 | **ScaffoldingService** | packages/core/src/use-cases/scaffolding-service.ts | Orchestrates project generation: directory structure, templates, configs, AI context | 1.4, 1.5, 1.11 |
 
 #### 3.2.3 Adapter Layer (packages/adapters)
 
-| Component | File Path | Responsibility | Stories |
-|-----------|-----------|----------------|---------|
-| **FileSystemRepository** | packages/adapters/src/repositories/file-system-repository.ts | File I/O via Bun.write(), directory creation | 1.4, All |
-| **YAMLConfigRepository** | packages/adapters/src/repositories/yaml-config-repository.ts | Config loading via Bun.file().yaml(), deep merge | 1.2 |
-| **TemplateRenderer** | packages/adapters/src/template-renderer.ts | Handlebars template processing, variable substitution | 1.5 |
+| Component                | File Path                                                    | Responsibility                                        | Stories  |
+| ------------------------ | ------------------------------------------------------------ | ----------------------------------------------------- | -------- |
+| **FileSystemRepository** | packages/adapters/src/repositories/file-system-repository.ts | File I/O via Bun.write(), directory creation          | 1.4, All |
+| **YAMLConfigRepository** | packages/adapters/src/repositories/yaml-config-repository.ts | Config loading via Bun.file().yaml(), deep merge      | 1.2      |
+| **TemplateRenderer**     | packages/adapters/src/template-renderer.ts                   | Handlebars template processing, variable substitution | 1.5      |
 
 #### 3.2.4 Plugin Layer (plugins/)
 
-| Component | File Path | Responsibility | Stories |
-|-----------|-----------|----------------|---------|
-| **ScaffolderPlugin** | plugins/plugin-scaffolder/src/scaffolder-plugin.ts | Orchestrates tool config generation | 1.6, 1.7, 1.8 |
-| **ESLintGenerator** | plugins/plugin-scaffolder/src/config-generators/eslint-generator.ts | Generate .eslintrc.json based on quality level | 1.6 |
-| **TSConfigGenerator** | plugins/plugin-scaffolder/src/config-generators/tsconfig-generator.ts | Generate tsconfig.json with strict mode | 1.7 |
-| **PrettierGenerator** | plugins/plugin-scaffolder/src/config-generators/prettier-generator.ts | Generate .prettierrc.json | 1.8 |
-| **BunConfigGenerator** | plugins/plugin-scaffolder/src/config-generators/bun-config-generator.ts | Configure Bun Test in package.json | 1.8 |
-| **PackageJsonGenerator** | plugins/plugin-scaffolder/src/config-generators/package-json-generator.ts | Generate package.json with dependencies | 1.4, 1.6, 1.7, 1.8 |
-| **ClaudeCodePlugin** | plugins/plugin-claude-code/src/claude-code-plugin.ts | Orchestrates AI context generation | 1.9, 1.10 |
-| **ContextGenerator** | plugins/plugin-claude-code/src/context-generator.ts | Generate CLAUDE.md with project context | 1.9 |
-| **CopilotGenerator** | plugins/plugin-claude-code/src/copilot-generator.ts | Generate .github/copilot-instructions.md | 1.10 |
+| Component                | File Path                                                                 | Responsibility                                 | Stories            |
+| ------------------------ | ------------------------------------------------------------------------- | ---------------------------------------------- | ------------------ |
+| **ScaffolderPlugin**     | plugins/plugin-scaffolder/src/scaffolder-plugin.ts                        | Orchestrates tool config generation            | 1.6, 1.7, 1.8      |
+| **ESLintGenerator**      | plugins/plugin-scaffolder/src/config-generators/eslint-generator.ts       | Generate .eslintrc.json based on quality level | 1.6                |
+| **TSConfigGenerator**    | plugins/plugin-scaffolder/src/config-generators/tsconfig-generator.ts     | Generate tsconfig.json with strict mode        | 1.7                |
+| **PrettierGenerator**    | plugins/plugin-scaffolder/src/config-generators/prettier-generator.ts     | Generate .prettierrc.json                      | 1.8                |
+| **BunConfigGenerator**   | plugins/plugin-scaffolder/src/config-generators/bun-config-generator.ts   | Configure Bun Test in package.json             | 1.8                |
+| **PackageJsonGenerator** | plugins/plugin-scaffolder/src/config-generators/package-json-generator.ts | Generate package.json with dependencies        | 1.4, 1.6, 1.7, 1.8 |
+| **ClaudeCodePlugin**     | plugins/plugin-claude-code/src/claude-code-plugin.ts                      | Orchestrates AI context generation             | 1.9, 1.10          |
+| **ContextGenerator**     | plugins/plugin-claude-code/src/context-generator.ts                       | Generate CLAUDE.md with project context        | 1.9                |
+| **CopilotGenerator**     | plugins/plugin-claude-code/src/copilot-generator.ts                       | Generate .github/copilot-instructions.md       | 1.10               |
 
 ### 3.3 Dependency Flow
 
@@ -198,13 +198,13 @@ export interface ScaffoldOptions {
 export enum QualityLevel {
   Light = 'light',
   Medium = 'medium',
-  Strict = 'strict'
+  Strict = 'strict',
 }
 
 export enum AIAssistant {
   ClaudeCode = 'claude-code',
   GitHubCopilot = 'github-copilot',
-  Windsurf = 'windsurf' // Phase 2
+  Windsurf = 'windsurf', // Phase 2
 }
 ```
 
@@ -528,12 +528,7 @@ export interface ToolConfig {
   overrides?: Record<string, unknown>; // User overrides
 }
 
-export type ToolName =
-  | 'eslint'
-  | 'typescript'
-  | 'prettier'
-  | 'bun-test'
-  | 'package-json';
+export type ToolName = 'eslint' | 'typescript' | 'prettier' | 'bun-test' | 'package-json';
 ```
 
 #### 5.1.5 Result Pattern
@@ -609,13 +604,13 @@ export class ScaffoldingService {
       const configResult = await this.scaffolderPlugin.generateConfigs([
         { tool: 'eslint', qualityLevel: options.qualityLevel, outputPath: '.eslintrc.json' },
         { tool: 'typescript', qualityLevel: options.qualityLevel, outputPath: 'tsconfig.json' },
-        { tool: 'prettier', qualityLevel: options.qualityLevel, outputPath: '.prettierrc.json' }
+        { tool: 'prettier', qualityLevel: options.qualityLevel, outputPath: '.prettierrc.json' },
       ]);
 
       // 4. Generate AI context via ClaudeCodePlugin
       if (options.aiAssistants.includes(AIAssistant.ClaudeCode)) {
         await this.claudeCodePlugin.execute('generate-context', {
-          projectMeta: this.buildProjectMetadata(options)
+          projectMeta: this.buildProjectMetadata(options),
         });
       }
 
@@ -635,7 +630,7 @@ export class ScaffoldingService {
       `${options.targetDirectory}/tests`,
       `${options.targetDirectory}/bin`,
       `${options.targetDirectory}/docs`,
-      `${options.targetDirectory}/.nimata`
+      `${options.targetDirectory}/.nimata`,
     ];
 
     for (const dir of dirs) {
@@ -690,7 +685,7 @@ export class ScaffoldingService {
       createdAt: new Date().toISOString(),
       year: new Date().getFullYear(),
       includeExamples: true,
-      initializeGit: true
+      initializeGit: true,
     };
   }
 
@@ -711,7 +706,7 @@ export class ScaffoldingService {
         language: 'typescript',
         testFramework: 'bun-test',
         linter: 'eslint',
-        formatter: 'prettier'
+        formatter: 'prettier',
       },
       directoryStructure: {
         root: options.targetDirectory,
@@ -719,8 +714,8 @@ export class ScaffoldingService {
         tests: `${options.targetDirectory}/tests`,
         bin: `${options.targetDirectory}/bin`,
         docs: `${options.targetDirectory}/docs`,
-        nimata: `${options.targetDirectory}/.nimata`
-      }
+        nimata: `${options.targetDirectory}/.nimata`,
+      },
     };
   }
 }
@@ -733,7 +728,10 @@ export class ScaffoldingService {
 import Handlebars from 'handlebars';
 import { injectable, inject } from 'tsyringe';
 import type { IFileSystem } from '@nimata/core/interfaces/i-file-system';
-import type { ITemplateRenderer, TemplateContext } from '@nimata/core/interfaces/i-template-renderer';
+import type {
+  ITemplateRenderer,
+  TemplateContext,
+} from '@nimata/core/interfaces/i-template-renderer';
 import { Result } from '@nimata/core/common/result';
 
 @injectable()
@@ -831,16 +829,16 @@ export class ESLintGenerator {
     const baseConfig = {
       env: {
         es2022: true,
-        node: true
+        node: true,
       },
       parser: '@typescript-eslint/parser',
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: 'module',
-        project: './tsconfig.json'
+        project: './tsconfig.json',
       },
       plugins: ['@typescript-eslint'],
-      extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended']
+      extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
     };
 
     // Quality level specific rules
@@ -848,7 +846,7 @@ export class ESLintGenerator {
 
     return {
       ...baseConfig,
-      rules
+      rules,
     };
   }
 
@@ -856,17 +854,17 @@ export class ESLintGenerator {
     const commonRules = {
       'no-console': 'warn',
       'no-unused-vars': 'off', // Use TypeScript's check
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }]
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     };
 
     const qualityRules: Record<QualityLevel, Record<string, unknown>> = {
       [QualityLevel.Light]: {
-        ...commonRules
+        ...commonRules,
       },
       [QualityLevel.Medium]: {
         ...commonRules,
         '@typescript-eslint/explicit-function-return-type': 'warn',
-        '@typescript-eslint/no-explicit-any': 'warn'
+        '@typescript-eslint/no-explicit-any': 'warn',
       },
       [QualityLevel.Strict]: {
         ...commonRules,
@@ -874,10 +872,10 @@ export class ESLintGenerator {
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-non-null-assertion': 'error',
         '@typescript-eslint/strict-boolean-expressions': 'error',
-        'complexity': ['error', 10],
+        complexity: ['error', 10],
         'max-lines-per-function': ['error', 50],
-        '@typescript-eslint/prefer-readonly': 'error'
-      }
+        '@typescript-eslint/prefer-readonly': 'error',
+      },
     };
 
     return qualityRules[qualityLevel];
@@ -937,46 +935,18 @@ plugins/plugin-claude-code/templates/  # Claude Code AI context templates
 #### 7.2.1 package.json.hbs
 
 ```handlebars
-{
-  "name": "{{projectName}}",
-  "version": "{{projectVersion}}",
-  "description": "{{projectDescription}}",
-  {{#if author}}
+{ "name": "{{projectName}}", "version": "{{projectVersion}}", "description": "{{projectDescription}}",
+{{#if author}}
   "author": "{{author}}",
-  {{/if}}
-  "license": "{{license}}",
-  "type": "module",
-  "main": "./dist/index.js",
-  "bin": {
-    "{{projectName}}": "./bin/cli.js"
-  },
-  "scripts": {
-    "dev": "bun run --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target bun",
-    "test": "bun test",
-    "test:coverage": "bun test --coverage",
-    "lint": "eslint src tests",
-    "format": "prettier --write src tests",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "yargs": "^17.0.0",
-    "prompts": "^2.0.0"
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "@types/node": "^20.0.0",
-    "@types/yargs": "^17.0.0",
-    "typescript": "^5.0.0",
-    "eslint": "^9.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "prettier": "^3.0.0"
-  },
-  "engines": {
-    "bun": ">=1.3.0"
-  }
-}
+{{/if}}
+"license": "{{license}}", "type": "module", "main": "./dist/index.js", "bin": { "{{projectName}}":
+"./bin/cli.js" }, "scripts": { "dev": "bun run --watch src/index.ts", "build": "bun build
+src/index.ts --outdir dist --target bun", "test": "bun test", "test:coverage": "bun test
+--coverage", "lint": "eslint src tests", "format": "prettier --write src tests", "typecheck": "tsc
+--noEmit" }, "dependencies": { "yargs": "^17.0.0", "prompts": "^2.0.0" }, "devDependencies": {
+"@types/bun": "latest", "@types/node": "^20.0.0", "@types/yargs": "^17.0.0", "typescript": "^5.0.0",
+"eslint": "^9.0.0", "@typescript-eslint/parser": "^7.0.0", "@typescript-eslint/eslint-plugin":
+"^7.0.0", "prettier": "^3.0.0" }, "engines": { "bun": ">=1.3.0" } }
 ```
 
 #### 7.2.2 tsconfig.strict.json
@@ -1030,43 +1000,42 @@ plugins/plugin-claude-code/templates/  # Claude Code AI context templates
 #### 7.2.3 CLAUDE.md.hbs
 
 ```handlebars
-# {{projectName}} - AI Context
-
-**Generated by Nìmata on {{createdAt}}**
-
-## Project Overview
+#
+{{projectName}}
+- AI Context **Generated by Nìmata on
+{{createdAt}}** ## Project Overview
 
 {{projectDescription}}
 
-- **Type:** {{projectType}}
-- **Runtime:** {{runtime}}
-- **Language:** {{language}}
-- **Quality Level:** {{qualityLevel}}
+- **Type:**
+{{projectType}}
+- **Runtime:**
+{{runtime}}
+- **Language:**
+{{language}}
+- **Quality Level:**
+{{qualityLevel}}
 
-## Architecture
-
-This project follows Clean Architecture Lite principles with 3 layers:
-
-1. **CLI Layer** (`src/cli/`) - Command handlers and user interaction
-2. **Use Case Layer** (`src/core/`) - Business logic and domain types
-3. **Adapter Layer** (`src/adapters/`) - External integrations and I/O
-
-## Directory Structure
-
+## Architecture This project follows Clean Architecture Lite principles with 3 layers: 1. **CLI
+Layer** (`src/cli/`) - Command handlers and user interaction 2. **Use Case Layer** (`src/core/`) -
+Business logic and domain types 3. **Adapter Layer** (`src/adapters/`) - External integrations and
+I/O ## Directory Structure
 ```
+
 {{projectName}}/
 ├── src/
-│   ├── index.ts           # Entry point
-│   ├── cli/               # CLI commands
-│   ├── core/              # Business logic
-│   └── adapters/          # External integrations
+│ ├── index.ts # Entry point
+│ ├── cli/ # CLI commands
+│ ├── core/ # Business logic
+│ └── adapters/ # External integrations
 ├── tests/
-│   ├── unit/              # Unit tests (100% coverage target)
-│   └── integration/       # Integration tests
+│ ├── unit/ # Unit tests (100% coverage target)
+│ └── integration/ # Integration tests
 ├── bin/
-│   └── cli.ts             # CLI launcher
+│ └── cli.ts # CLI launcher
 └── docs/
-```
+
+````
 
 ## Coding Standards
 
@@ -1093,17 +1062,20 @@ export function processData(input: string): Result<ProcessedData> {
   }
   return Result.success({ data: validated.value });
 }
-```
+````
 
 **❌ Bad:**
+
 ```typescript
 export function processData(input: any) {
   return { data: input };
 }
 ```
+
 {{/if}}
 
 {{#if isMedium}}
+
 ### Medium Quality Level
 
 This project uses moderate quality checks:
@@ -1111,9 +1083,10 @@ This project uses moderate quality checks:
 - Prefer explicit types over `any`
 - Write unit tests for critical paths
 - Use ESLint and Prettier for consistency
-{{/if}}
+  {{/if}}
 
 {{#if isLight}}
+
 ### Light Quality Level
 
 This project uses basic quality checks:
@@ -1121,7 +1094,7 @@ This project uses basic quality checks:
 - Basic ESLint rules for common errors
 - Prettier for code formatting
 - TypeScript for type safety
-{{/if}}
+  {{/if}}
 
 ## Testing Guidelines
 
@@ -1131,6 +1104,7 @@ This project uses basic quality checks:
 - **Test framework:** Bun Test with native coverage
 
 **Example:**
+
 ```typescript
 import { describe, it, expect, beforeEach } from 'bun:test';
 import { MyService } from '@/core/my-service';
@@ -1168,23 +1142,26 @@ Use TSyringe for dependency injection (manual registration, no decorators):
 
 ```typescript
 container.register<IService>('IService', {
-  useClass: MyService
+  useClass: MyService,
 });
 ```
 
 ## AI Assistant Guidelines
 
 {{#if hasClaudeCode}}
+
 ### Claude Code Integration
 
 This project is configured for Claude Code:
+
 - Follow coding standards above
 - Respect architecture boundaries (CLI → Use Case → Adapter)
 - Write tests for all new code
 - Use Result pattern for error handling
-{{/if}}
+  {{/if}}
 
 {{#if hasGitHubCopilot}}
+
 ### GitHub Copilot Integration
 
 Copilot instructions available in `.github/copilot-instructions.md`
@@ -1208,8 +1185,9 @@ bun run typecheck
 
 ---
 
-*This file is generated by Nìmata and should be kept up-to-date as the project evolves.*
-```
+_This file is generated by Nìmata and should be kept up-to-date as the project evolves._
+
+````
 
 #### 7.2.4 eslint.config.strict.js
 
@@ -1252,7 +1230,7 @@ export default [
     }
   }
 ];
-```
+````
 
 ---
 
@@ -1284,7 +1262,7 @@ export class ScaffolderPlugin implements IScaffolderPlugin {
       ['typescript', new TSConfigGenerator()],
       ['prettier', new PrettierGenerator()],
       ['bun-test', new BunConfigGenerator()],
-      ['package-json', new PackageJsonGenerator()]
+      ['package-json', new PackageJsonGenerator()],
     ]);
   }
 
@@ -1318,18 +1296,15 @@ export class ScaffolderPlugin implements IScaffolderPlugin {
     // Create src/ structure with example files
     const srcFiles = [
       { path: 'src/index.ts', template: 'templates/src/index.ts.hbs' },
-      { path: 'src/cli.ts', template: 'templates/src/cli.ts.hbs' }
+      { path: 'src/cli.ts', template: 'templates/src/cli.ts.hbs' },
     ];
 
     for (const file of srcFiles) {
       const content = await this.renderTemplate(file.template, {
         projectName: options.projectName,
-        projectDescription: options.description
+        projectDescription: options.description,
       });
-      await this.fileSystem.writeFile(
-        `${options.targetDirectory}/${file.path}`,
-        content
-      );
+      await this.fileSystem.writeFile(`${options.targetDirectory}/${file.path}`, content);
     }
   }
 
@@ -1349,7 +1324,10 @@ export class ScaffolderPlugin implements IScaffolderPlugin {
     }
   }
 
-  private async renderTemplate(templatePath: string, context: Record<string, unknown>): Promise<string> {
+  private async renderTemplate(
+    templatePath: string,
+    context: Record<string, unknown>
+  ): Promise<string> {
     // Template rendering logic (simplified)
     const templateResult = await this.fileSystem.readFile(templatePath);
     if (!templateResult.isSuccess) {
@@ -1393,7 +1371,7 @@ export class ClaudeCodePlugin implements IAIPlugin {
       'templates/mcp/mcp-config.json.hbs',
       'templates/agents/quality-assistant.md.hbs',
       'templates/commands/validate-fix.md.hbs',
-      'templates/hooks/pre-commit.md.hbs'
+      'templates/hooks/pre-commit.md.hbs',
     ];
 
     for (const template of requiredTemplates) {
@@ -1462,7 +1440,7 @@ export class ClaudeCodePlugin implements IAIPlugin {
     const context = {
       projectName: projectMeta.name,
       nimataVersion: projectMeta.nimataVersion,
-      toolsEnabled: this.getEnabledTools(projectMeta)
+      toolsEnabled: this.getEnabledTools(projectMeta),
     };
 
     const result = await this.templateRenderer.render(
@@ -1476,10 +1454,7 @@ export class ClaudeCodePlugin implements IAIPlugin {
 
     const mcpDir = `${projectMeta.directoryStructure.root}/.claude/mcp`;
     await this.fileSystem.createDirectory(mcpDir);
-    await this.fileSystem.writeFile(
-      `${mcpDir}/config.json`,
-      result.value!
-    );
+    await this.fileSystem.writeFile(`${mcpDir}/config.json`, result.value!);
   }
 
   private async generateAgentTemplates(projectMeta: ProjectMetadata): Promise<void> {
@@ -1496,10 +1471,7 @@ export class ClaudeCodePlugin implements IAIPlugin {
 
     const agentsDir = `${projectMeta.directoryStructure.root}/.claude/agents`;
     await this.fileSystem.createDirectory(agentsDir);
-    await this.fileSystem.writeFile(
-      `${agentsDir}/quality-assistant.md`,
-      result.value!
-    );
+    await this.fileSystem.writeFile(`${agentsDir}/quality-assistant.md`, result.value!);
   }
 
   private async generateCommandTemplates(projectMeta: ProjectMetadata): Promise<void> {
@@ -1516,10 +1488,7 @@ export class ClaudeCodePlugin implements IAIPlugin {
 
     const commandsDir = `${projectMeta.directoryStructure.root}/.claude/commands`;
     await this.fileSystem.createDirectory(commandsDir);
-    await this.fileSystem.writeFile(
-      `${commandsDir}/validate-fix.md`,
-      result.value!
-    );
+    await this.fileSystem.writeFile(`${commandsDir}/validate-fix.md`, result.value!);
   }
 
   private async generateHookTemplates(projectMeta: ProjectMetadata): Promise<void> {
@@ -1536,10 +1505,7 @@ export class ClaudeCodePlugin implements IAIPlugin {
 
     const hooksDir = `${projectMeta.directoryStructure.root}/.claude/hooks`;
     await this.fileSystem.createDirectory(hooksDir);
-    await this.fileSystem.writeFile(
-      `${hooksDir}/pre-commit.md`,
-      result.value!
-    );
+    await this.fileSystem.writeFile(`${hooksDir}/pre-commit.md`, result.value!);
   }
 
   async validateContext(contextPath: string): Promise<Result<void>> {
@@ -1558,7 +1524,7 @@ export class ClaudeCodePlugin implements IAIPlugin {
         '## Architecture',
         '## Directory Structure',
         '## Coding Standards',
-        '## Testing Guidelines'
+        '## Testing Guidelines',
       ];
 
       for (const section of requiredSections) {
@@ -1597,7 +1563,7 @@ export class ClaudeCodePlugin implements IAIPlugin {
       language: projectMeta.techStack.language,
       testFramework: projectMeta.techStack.testFramework,
       createdAt: projectMeta.createdAt.toISOString(),
-      year: projectMeta.createdAt.getFullYear()
+      year: projectMeta.createdAt.getFullYear(),
     };
   }
 
@@ -1605,7 +1571,7 @@ export class ClaudeCodePlugin implements IAIPlugin {
     return [
       projectMeta.techStack.linter,
       projectMeta.techStack.formatter,
-      projectMeta.techStack.testFramework
+      projectMeta.techStack.testFramework,
     ];
   }
 }
@@ -1617,13 +1583,13 @@ export class ClaudeCodePlugin implements IAIPlugin {
 
 ### 9.1 Error Categories
 
-| Category | HTTP Status Analogy | Exit Code | When Used |
-|----------|---------------------|-----------|-----------|
-| **Validation Error** | 400 Bad Request | 3 | Invalid config, missing required fields |
-| **File System Error** | 500 Internal Error | 5 | Cannot read/write files, permission denied |
-| **Template Error** | 500 Internal Error | 6 | Template rendering failed, missing template |
-| **Plugin Error** | 500 Internal Error | 4 | Plugin failed to initialize or execute |
-| **User Cancellation** | 499 Client Closed Request | 130 | User pressed Ctrl+C during wizard |
+| Category              | HTTP Status Analogy       | Exit Code | When Used                                   |
+| --------------------- | ------------------------- | --------- | ------------------------------------------- |
+| **Validation Error**  | 400 Bad Request           | 3         | Invalid config, missing required fields     |
+| **File System Error** | 500 Internal Error        | 5         | Cannot read/write files, permission denied  |
+| **Template Error**    | 500 Internal Error        | 6         | Template rendering failed, missing template |
+| **Plugin Error**      | 500 Internal Error        | 4         | Plugin failed to initialize or execute      |
+| **User Cancellation** | 499 Client Closed Request | 130       | User pressed Ctrl+C during wizard           |
 
 ### 9.2 Error Handling Patterns
 
@@ -1716,11 +1682,12 @@ async scaffold(options: ScaffoldOptions): Promise<Result<ProjectMetadata>> {
 // Map technical errors to user-friendly messages
 function formatErrorForUser(error: string): string {
   const errorMap: Record<string, string> = {
-    'EACCES': 'Permission denied. Please check file permissions or run with appropriate privileges.',
-    'ENOENT': 'File or directory not found. Please check the path and try again.',
-    'EEXIST': 'Directory already exists. Please choose a different project name or remove the existing directory.',
-    'ENOSPC': 'No space left on device. Please free up disk space and try again.',
-    'EMFILE': 'Too many open files. Please close other applications and try again.'
+    EACCES: 'Permission denied. Please check file permissions or run with appropriate privileges.',
+    ENOENT: 'File or directory not found. Please check the path and try again.',
+    EEXIST:
+      'Directory already exists. Please choose a different project name or remove the existing directory.',
+    ENOSPC: 'No space left on device. Please free up disk space and try again.',
+    EMFILE: 'Too many open files. Please close other applications and try again.',
   };
 
   for (const [code, message] of Object.entries(errorMap)) {
@@ -1739,11 +1706,11 @@ function formatErrorForUser(error: string): string {
 
 ### 10.1 Test Coverage Targets
 
-| Test Type | Coverage Target | Mutation Score Target | Location |
-|-----------|----------------|----------------------|----------|
-| **Unit Tests** | 100% line coverage | 80%+ mutation score | `tests/unit/` per package |
-| **Integration Tests** | 80% coverage | N/A (no Stryker) | `tests/integration/` per package |
-| **E2E Tests** | 80% critical paths | N/A (no Stryker) | `apps/cli/tests/e2e/` |
+| Test Type             | Coverage Target    | Mutation Score Target | Location                         |
+| --------------------- | ------------------ | --------------------- | -------------------------------- |
+| **Unit Tests**        | 100% line coverage | 80%+ mutation score   | `tests/unit/` per package        |
+| **Integration Tests** | 80% coverage       | N/A (no Stryker)      | `tests/integration/` per package |
+| **E2E Tests**         | 80% critical paths | N/A (no Stryker)      | `apps/cli/tests/e2e/`            |
 
 ### 10.2 Unit Testing Strategy
 
@@ -1772,13 +1739,13 @@ describe('ScaffoldingService', () => {
       writeFile: mock(async () => Result.success(undefined)),
       readFile: mock(async () => Result.success('mock content')),
       exists: mock(async () => true),
-      copy: mock(async () => Result.success(undefined))
+      copy: mock(async () => Result.success(undefined)),
     };
 
     mockTemplateRenderer = {
       render: mock(async () => Result.success('rendered content')),
       registerPartial: mock(async () => Result.success(undefined)),
-      registerHelper: mock(() => {})
+      registerHelper: mock(() => {}),
     };
 
     mockScaffolderPlugin = {
@@ -1788,7 +1755,7 @@ describe('ScaffoldingService', () => {
       teardown: mock(async () => {}),
       supports: mock(() => true),
       execute: mock(async () => {}),
-      generateConfigs: mock(async () => {})
+      generateConfigs: mock(async () => {}),
     };
 
     mockClaudeCodePlugin = {
@@ -1797,7 +1764,7 @@ describe('ScaffoldingService', () => {
       initialize: mock(async () => {}),
       teardown: mock(async () => {}),
       supports: mock(() => true),
-      execute: mock(async () => {})
+      execute: mock(async () => {}),
     };
 
     sut = new ScaffoldingService(
@@ -1816,7 +1783,7 @@ describe('ScaffoldingService', () => {
         description: 'Test description',
         targetDirectory: '/tmp/test-project',
         qualityLevel: QualityLevel.Strict,
-        aiAssistants: []
+        aiAssistants: [],
       };
 
       // Act
@@ -1837,7 +1804,7 @@ describe('ScaffoldingService', () => {
         description: 'Test description',
         targetDirectory: '/tmp/test-project',
         qualityLevel: QualityLevel.Strict,
-        aiAssistants: []
+        aiAssistants: [],
       };
 
       mockFileSystem.createDirectory = mock(async () =>
@@ -1859,7 +1826,7 @@ describe('ScaffoldingService', () => {
         description: 'Test description',
         targetDirectory: '/tmp/test-project',
         qualityLevel: QualityLevel.Strict,
-        aiAssistants: [AIAssistant.ClaudeCode]
+        aiAssistants: [AIAssistant.ClaudeCode],
       };
 
       // Act
@@ -1872,8 +1839,8 @@ describe('ScaffoldingService', () => {
         expect.objectContaining({
           projectMeta: expect.objectContaining({
             name: 'test-project',
-            qualityLevel: QualityLevel.Strict
-          })
+            qualityLevel: QualityLevel.Strict,
+          }),
         })
       );
     });
@@ -1885,7 +1852,7 @@ describe('ScaffoldingService', () => {
         description: 'Test description',
         targetDirectory: '/tmp/test-project',
         qualityLevel: QualityLevel.Strict,
-        aiAssistants: []
+        aiAssistants: [],
       };
 
       // Act
@@ -1903,7 +1870,7 @@ describe('ScaffoldingService', () => {
         description: 'Test description',
         targetDirectory: '/tmp/test-project',
         qualityLevel: QualityLevel.Strict,
-        aiAssistants: []
+        aiAssistants: [],
       };
 
       // Act
@@ -1915,8 +1882,8 @@ describe('ScaffoldingService', () => {
         expect.arrayContaining([
           expect.objectContaining({
             tool: 'eslint',
-            qualityLevel: QualityLevel.Strict
-          })
+            qualityLevel: QualityLevel.Strict,
+          }),
         ])
       );
     });
@@ -1943,7 +1910,7 @@ describe('TemplateRenderer', () => {
       writeFile: mock(async () => Result.success(undefined)),
       readFile: mock(async () => Result.success('{{projectName}} - {{description}}')),
       exists: mock(async () => true),
-      copy: mock(async () => Result.success(undefined))
+      copy: mock(async () => Result.success(undefined)),
     };
 
     sut = new TemplateRenderer(mockFileSystem);
@@ -1954,7 +1921,7 @@ describe('TemplateRenderer', () => {
       // Arrange
       const context = {
         projectName: 'my-project',
-        description: 'My awesome project'
+        description: 'My awesome project',
       };
 
       // Act
@@ -1998,9 +1965,7 @@ describe('TemplateRenderer', () => {
   describe('registerHelper', () => {
     it('should register and use custom helper', async () => {
       // Arrange
-      mockFileSystem.readFile = mock(async () =>
-        Result.success('{{kebab-case projectName}}')
-      );
+      mockFileSystem.readFile = mock(async () => Result.success('{{kebab-case projectName}}'));
       const context = { projectName: 'My Project' };
 
       // Act
@@ -2115,7 +2080,7 @@ describe('nimata init (E2E)', () => {
       env: { ...process.env, NIMATA_AUTO_CONFIRM: 'true' }, // Skip interactive prompts
       stdin: 'inherit',
       stdout: 'pipe',
-      stderr: 'pipe'
+      stderr: 'pipe',
     });
 
     const output = await new Response(proc.stdout).text();
@@ -2145,7 +2110,7 @@ describe('nimata init (E2E)', () => {
     // Scaffold project
     const scaffoldProc = spawn(['bun', 'run', 'nimata', 'init', projectName], {
       cwd: tempDir,
-      env: { ...process.env, NIMATA_AUTO_CONFIRM: 'true' }
+      env: { ...process.env, NIMATA_AUTO_CONFIRM: 'true' },
     });
     await scaffoldProc.exited;
 
@@ -2153,7 +2118,7 @@ describe('nimata init (E2E)', () => {
     const compileProc = spawn(['bun', 'x', 'tsc', '--noEmit'], {
       cwd: projectDir,
       stdout: 'pipe',
-      stderr: 'pipe'
+      stderr: 'pipe',
     });
 
     const exitCode = await compileProc.exited;
@@ -2170,7 +2135,7 @@ describe('nimata init (E2E)', () => {
     // Scaffold project
     const scaffoldProc = spawn(['bun', 'run', 'nimata', 'init', projectName], {
       cwd: tempDir,
-      env: { ...process.env, NIMATA_AUTO_CONFIRM: 'true' }
+      env: { ...process.env, NIMATA_AUTO_CONFIRM: 'true' },
     });
     await scaffoldProc.exited;
 
@@ -2178,7 +2143,7 @@ describe('nimata init (E2E)', () => {
     const qualityProc = spawn(['bun', 'run', 'lint'], {
       cwd: projectDir,
       stdout: 'pipe',
-      stderr: 'pipe'
+      stderr: 'pipe',
     });
 
     const exitCode = await qualityProc.exited;
@@ -2200,24 +2165,15 @@ describe('nimata init (E2E)', () => {
     "command": "bun test tests/unit/**/*.test.ts"
   },
   "coverageAnalysis": "perTest",
-  "mutate": [
-    "src/**/*.ts",
-    "!src/**/*.test.ts",
-    "!src/types/**"
-  ],
-  "ignore": [
-    "**/tests/integration/**",
-    "**/tests/e2e/**"
-  ],
+  "mutate": ["src/**/*.ts", "!src/**/*.test.ts", "!src/types/**"],
+  "ignore": ["**/tests/integration/**", "**/tests/e2e/**"],
   "thresholds": {
     "high": 80,
     "low": 60,
     "break": 50
   },
   "mutator": {
-    "plugins": [
-      "@stryker-mutator/typescript-checker"
-    ]
+    "plugins": ["@stryker-mutator/typescript-checker"]
   },
   "checkers": ["typescript"],
   "tsconfigFile": "tsconfig.json",
@@ -2234,141 +2190,141 @@ describe('nimata init (E2E)', () => {
 
 ### 11.1 Story 1.1: CLI Framework Setup
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.1.1 | CLI entry point executes successfully | `init-command.test.ts::should execute nimata command` | E2E | ✅ Mapped |
-| AC-1.1.2 | Command routing supports subcommands | `command-router.test.ts::should route to correct subcommand` | Unit | ✅ Mapped |
-| AC-1.1.3 | Argument parsing handles flags | `argument-parser.test.ts::should parse flags correctly` | Unit | ✅ Mapped |
-| AC-1.1.4 | Help text displays for each command | `help-display.test.ts::should show help text` | E2E | ✅ Mapped |
-| AC-1.1.5 | Version number displays correctly | `version-display.test.ts::should show version` | E2E | ✅ Mapped |
-| AC-1.1.6 | Exit codes follow Unix conventions | `exit-codes.test.ts::should return correct exit codes` | E2E | ✅ Mapped |
+| AC #     | Acceptance Criteria                   | Test Case                                                    | Test Type | Status    |
+| -------- | ------------------------------------- | ------------------------------------------------------------ | --------- | --------- |
+| AC-1.1.1 | CLI entry point executes successfully | `init-command.test.ts::should execute nimata command`        | E2E       | ✅ Mapped |
+| AC-1.1.2 | Command routing supports subcommands  | `command-router.test.ts::should route to correct subcommand` | Unit      | ✅ Mapped |
+| AC-1.1.3 | Argument parsing handles flags        | `argument-parser.test.ts::should parse flags correctly`      | Unit      | ✅ Mapped |
+| AC-1.1.4 | Help text displays for each command   | `help-display.test.ts::should show help text`                | E2E       | ✅ Mapped |
+| AC-1.1.5 | Version number displays correctly     | `version-display.test.ts::should show version`               | E2E       | ✅ Mapped |
+| AC-1.1.6 | Exit codes follow Unix conventions    | `exit-codes.test.ts::should return correct exit codes`       | E2E       | ✅ Mapped |
 
 ### 11.2 Story 1.2: Configuration System
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.2.1 | Reads .nimatarc from project root | `yaml-config-repository.test.ts::should read project config` | Integration | ✅ Mapped |
-| AC-1.2.2 | Supports global config | `yaml-config-repository.test.ts::should read global config` | Integration | ✅ Mapped |
-| AC-1.2.3 | Project config overrides global | `config-cascade.test.ts::should merge configs correctly` | Unit | ✅ Mapped |
-| AC-1.2.4 | Configuration schema validation | `config-validation.test.ts::should validate schema` | Unit | ✅ Mapped |
-| AC-1.2.5 | Default values for optional settings | `config-defaults.test.ts::should use defaults` | Unit | ✅ Mapped |
-| AC-1.2.6 | Programmatic config loading | `yaml-config-repository.test.ts::should load config` | Unit | ✅ Mapped |
+| AC #     | Acceptance Criteria                  | Test Case                                                    | Test Type   | Status    |
+| -------- | ------------------------------------ | ------------------------------------------------------------ | ----------- | --------- |
+| AC-1.2.1 | Reads .nimatarc from project root    | `yaml-config-repository.test.ts::should read project config` | Integration | ✅ Mapped |
+| AC-1.2.2 | Supports global config               | `yaml-config-repository.test.ts::should read global config`  | Integration | ✅ Mapped |
+| AC-1.2.3 | Project config overrides global      | `config-cascade.test.ts::should merge configs correctly`     | Unit        | ✅ Mapped |
+| AC-1.2.4 | Configuration schema validation      | `config-validation.test.ts::should validate schema`          | Unit        | ✅ Mapped |
+| AC-1.2.5 | Default values for optional settings | `config-defaults.test.ts::should use defaults`               | Unit        | ✅ Mapped |
+| AC-1.2.6 | Programmatic config loading          | `yaml-config-repository.test.ts::should load config`         | Unit        | ✅ Mapped |
 
 ### 11.3 Story 1.3: Interactive Wizard
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.3.1 | Wizard collects required inputs | `scaffold-wizard.test.ts::should collect all inputs` | Unit | ✅ Mapped |
-| AC-1.3.2 | Inline help accessible via [?] | `wizard-help.test.ts::should show help on demand` | E2E | ✅ Mapped |
-| AC-1.3.3 | Smart defaults pre-selected | `scaffold-wizard.test.ts::should pre-select defaults` | Unit | ✅ Mapped |
-| AC-1.3.4 | Multi-select for AI assistants | `wizard-multiselect.test.ts::should handle multi-select` | Unit | ✅ Mapped |
-| AC-1.3.5 | Input validation with errors | `wizard-validation.test.ts::should validate input` | Unit | ✅ Mapped |
-| AC-1.3.6 | Progress indicator | `wizard-progress.test.ts::should show progress` | E2E | ✅ Mapped |
-| AC-1.3.7 | Navigate to previous questions | `wizard-navigation.test.ts::should allow back navigation` | E2E | ✅ Mapped |
-| AC-1.3.8 | Completes in <15 questions | `wizard-length.test.ts::should complete within limit` | E2E | ✅ Mapped |
+| AC #     | Acceptance Criteria             | Test Case                                                 | Test Type | Status    |
+| -------- | ------------------------------- | --------------------------------------------------------- | --------- | --------- |
+| AC-1.3.1 | Wizard collects required inputs | `scaffold-wizard.test.ts::should collect all inputs`      | Unit      | ✅ Mapped |
+| AC-1.3.2 | Inline help accessible via [?]  | `wizard-help.test.ts::should show help on demand`         | E2E       | ✅ Mapped |
+| AC-1.3.3 | Smart defaults pre-selected     | `scaffold-wizard.test.ts::should pre-select defaults`     | Unit      | ✅ Mapped |
+| AC-1.3.4 | Multi-select for AI assistants  | `wizard-multiselect.test.ts::should handle multi-select`  | Unit      | ✅ Mapped |
+| AC-1.3.5 | Input validation with errors    | `wizard-validation.test.ts::should validate input`        | Unit      | ✅ Mapped |
+| AC-1.3.6 | Progress indicator              | `wizard-progress.test.ts::should show progress`           | E2E       | ✅ Mapped |
+| AC-1.3.7 | Navigate to previous questions  | `wizard-navigation.test.ts::should allow back navigation` | E2E       | ✅ Mapped |
+| AC-1.3.8 | Completes in <15 questions      | `wizard-length.test.ts::should complete within limit`     | E2E       | ✅ Mapped |
 
 ### 11.4 Story 1.4: Directory Structure Generator
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.4.1 | Creates standard directories | `scaffolding-service.test.ts::should create directories` | Unit | ✅ Mapped |
-| AC-1.4.2 | Generates entry point file | `directory-generator.test.ts::should create index.ts` | Integration | ✅ Mapped |
-| AC-1.4.3 | Creates bin launcher script | `directory-generator.test.ts::should create bin script` | Integration | ✅ Mapped |
-| AC-1.4.4 | Generates .gitignore | `directory-generator.test.ts::should create gitignore` | Integration | ✅ Mapped |
-| AC-1.4.5 | Creates README.md | `directory-generator.test.ts::should create readme` | Integration | ✅ Mapped |
-| AC-1.4.6 | Correct file permissions | `file-permissions.test.ts::should set permissions` | Integration | ✅ Mapped |
-| AC-1.4.7 | SOLID architecture support | `directory-structure.test.ts::should support SOLID` | E2E | ✅ Mapped |
+| AC #     | Acceptance Criteria          | Test Case                                                | Test Type   | Status    |
+| -------- | ---------------------------- | -------------------------------------------------------- | ----------- | --------- |
+| AC-1.4.1 | Creates standard directories | `scaffolding-service.test.ts::should create directories` | Unit        | ✅ Mapped |
+| AC-1.4.2 | Generates entry point file   | `directory-generator.test.ts::should create index.ts`    | Integration | ✅ Mapped |
+| AC-1.4.3 | Creates bin launcher script  | `directory-generator.test.ts::should create bin script`  | Integration | ✅ Mapped |
+| AC-1.4.4 | Generates .gitignore         | `directory-generator.test.ts::should create gitignore`   | Integration | ✅ Mapped |
+| AC-1.4.5 | Creates README.md            | `directory-generator.test.ts::should create readme`      | Integration | ✅ Mapped |
+| AC-1.4.6 | Correct file permissions     | `file-permissions.test.ts::should set permissions`       | Integration | ✅ Mapped |
+| AC-1.4.7 | SOLID architecture support   | `directory-structure.test.ts::should support SOLID`      | E2E         | ✅ Mapped |
 
 ### 11.5 Story 1.5: Template Engine
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.5.1 | Loads templates from directory | `template-renderer.test.ts::should load templates` | Unit | ✅ Mapped |
-| AC-1.5.2 | Variable substitution | `template-renderer.test.ts::should substitute variables` | Unit | ✅ Mapped |
-| AC-1.5.3 | Conditional blocks | `template-renderer.test.ts::should handle conditionals` | Unit | ✅ Mapped |
-| AC-1.5.4 | Template validation | `template-renderer.test.ts::should validate templates` | Unit | ✅ Mapped |
-| AC-1.5.5 | Correct formatting | `template-output.test.ts::should format correctly` | Integration | ✅ Mapped |
-| AC-1.5.6 | Template catalog extensible | `template-catalog.test.ts::should support new stacks` | Unit | ✅ Mapped |
-| AC-1.5.7 | Error handling | `template-renderer.test.ts::should handle errors` | Unit | ✅ Mapped |
+| AC #     | Acceptance Criteria            | Test Case                                                | Test Type   | Status    |
+| -------- | ------------------------------ | -------------------------------------------------------- | ----------- | --------- |
+| AC-1.5.1 | Loads templates from directory | `template-renderer.test.ts::should load templates`       | Unit        | ✅ Mapped |
+| AC-1.5.2 | Variable substitution          | `template-renderer.test.ts::should substitute variables` | Unit        | ✅ Mapped |
+| AC-1.5.3 | Conditional blocks             | `template-renderer.test.ts::should handle conditionals`  | Unit        | ✅ Mapped |
+| AC-1.5.4 | Template validation            | `template-renderer.test.ts::should validate templates`   | Unit        | ✅ Mapped |
+| AC-1.5.5 | Correct formatting             | `template-output.test.ts::should format correctly`       | Integration | ✅ Mapped |
+| AC-1.5.6 | Template catalog extensible    | `template-catalog.test.ts::should support new stacks`    | Unit        | ✅ Mapped |
+| AC-1.5.7 | Error handling                 | `template-renderer.test.ts::should handle errors`        | Unit        | ✅ Mapped |
 
 ### 11.6 Story 1.6: ESLint Configuration Generator
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.6.1 | Creates .eslintrc.json | `eslint-generator.test.ts::should create config file` | Integration | ✅ Mapped |
-| AC-1.6.2 | Light quality level rules | `eslint-generator.test.ts::should apply light rules` | Unit | ✅ Mapped |
-| AC-1.6.3 | Medium quality level rules | `eslint-generator.test.ts::should apply medium rules` | Unit | ✅ Mapped |
-| AC-1.6.4 | Strict quality level rules | `eslint-generator.test.ts::should apply strict rules` | Unit | ✅ Mapped |
-| AC-1.6.5 | Installs required packages | `package-json-generator.test.ts::should add eslint deps` | Integration | ✅ Mapped |
-| AC-1.6.6 | Config passes validation | `eslint-config-validation.test.ts::should validate` | E2E | ✅ Mapped |
-| AC-1.6.7 | Generated project passes lint | `init-command.test.ts::should pass eslint` | E2E | ✅ Mapped |
+| AC #     | Acceptance Criteria           | Test Case                                                | Test Type   | Status    |
+| -------- | ----------------------------- | -------------------------------------------------------- | ----------- | --------- |
+| AC-1.6.1 | Creates .eslintrc.json        | `eslint-generator.test.ts::should create config file`    | Integration | ✅ Mapped |
+| AC-1.6.2 | Light quality level rules     | `eslint-generator.test.ts::should apply light rules`     | Unit        | ✅ Mapped |
+| AC-1.6.3 | Medium quality level rules    | `eslint-generator.test.ts::should apply medium rules`    | Unit        | ✅ Mapped |
+| AC-1.6.4 | Strict quality level rules    | `eslint-generator.test.ts::should apply strict rules`    | Unit        | ✅ Mapped |
+| AC-1.6.5 | Installs required packages    | `package-json-generator.test.ts::should add eslint deps` | Integration | ✅ Mapped |
+| AC-1.6.6 | Config passes validation      | `eslint-config-validation.test.ts::should validate`      | E2E         | ✅ Mapped |
+| AC-1.6.7 | Generated project passes lint | `init-command.test.ts::should pass eslint`               | E2E         | ✅ Mapped |
 
 ### 11.7 Story 1.7: TypeScript Configuration Generator
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.7.1 | Creates tsconfig.json with strict mode | `tsconfig-generator.test.ts::should enable strict` | Unit | ✅ Mapped |
-| AC-1.7.2 | Target ES2022, module ESNext | `tsconfig-generator.test.ts::should set target` | Unit | ✅ Mapped |
-| AC-1.7.3 | Source maps enabled | `tsconfig-generator.test.ts::should enable sourcemaps` | Unit | ✅ Mapped |
-| AC-1.7.4 | Declaration files generated | `tsconfig-generator.test.ts::should enable declarations` | Unit | ✅ Mapped |
-| AC-1.7.5 | Path aliases configured | `tsconfig-generator.test.ts::should configure paths` | Unit | ✅ Mapped |
-| AC-1.7.6 | Excludes node_modules, dist, tests | `tsconfig-generator.test.ts::should exclude dirs` | Unit | ✅ Mapped |
-| AC-1.7.7 | Compiler validates config | `init-command.test.ts::should compile successfully` | E2E | ✅ Mapped |
-| AC-1.7.8 | Generated project compiles | `init-command.test.ts::should compile with tsc` | E2E | ✅ Mapped |
+| AC #     | Acceptance Criteria                    | Test Case                                                | Test Type | Status    |
+| -------- | -------------------------------------- | -------------------------------------------------------- | --------- | --------- |
+| AC-1.7.1 | Creates tsconfig.json with strict mode | `tsconfig-generator.test.ts::should enable strict`       | Unit      | ✅ Mapped |
+| AC-1.7.2 | Target ES2022, module ESNext           | `tsconfig-generator.test.ts::should set target`          | Unit      | ✅ Mapped |
+| AC-1.7.3 | Source maps enabled                    | `tsconfig-generator.test.ts::should enable sourcemaps`   | Unit      | ✅ Mapped |
+| AC-1.7.4 | Declaration files generated            | `tsconfig-generator.test.ts::should enable declarations` | Unit      | ✅ Mapped |
+| AC-1.7.5 | Path aliases configured                | `tsconfig-generator.test.ts::should configure paths`     | Unit      | ✅ Mapped |
+| AC-1.7.6 | Excludes node_modules, dist, tests     | `tsconfig-generator.test.ts::should exclude dirs`        | Unit      | ✅ Mapped |
+| AC-1.7.7 | Compiler validates config              | `init-command.test.ts::should compile successfully`      | E2E       | ✅ Mapped |
+| AC-1.7.8 | Generated project compiles             | `init-command.test.ts::should compile with tsc`          | E2E       | ✅ Mapped |
 
 ### 11.8 Story 1.8: Prettier & Bun Test Configuration
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.8.1 | Creates .prettierrc.json | `prettier-generator.test.ts::should create config` | Integration | ✅ Mapped |
-| AC-1.8.2 | Opinionated formatting rules | `prettier-generator.test.ts::should set rules` | Unit | ✅ Mapped |
-| AC-1.8.3 | Creates .prettierignore | `prettier-generator.test.ts::should create ignore file` | Integration | ✅ Mapped |
-| AC-1.8.4 | Bun Test configured in package.json | `bun-config-generator.test.ts::should add scripts` | Unit | ✅ Mapped |
-| AC-1.8.5 | Sample test file generated | `bun-config-generator.test.ts::should create test` | Integration | ✅ Mapped |
-| AC-1.8.6 | bun test runs successfully | `init-command.test.ts::should run tests` | E2E | ✅ Mapped |
-| AC-1.8.7 | prettier --check passes | `init-command.test.ts::should pass prettier` | E2E | ✅ Mapped |
+| AC #     | Acceptance Criteria                 | Test Case                                               | Test Type   | Status    |
+| -------- | ----------------------------------- | ------------------------------------------------------- | ----------- | --------- |
+| AC-1.8.1 | Creates .prettierrc.json            | `prettier-generator.test.ts::should create config`      | Integration | ✅ Mapped |
+| AC-1.8.2 | Opinionated formatting rules        | `prettier-generator.test.ts::should set rules`          | Unit        | ✅ Mapped |
+| AC-1.8.3 | Creates .prettierignore             | `prettier-generator.test.ts::should create ignore file` | Integration | ✅ Mapped |
+| AC-1.8.4 | Bun Test configured in package.json | `bun-config-generator.test.ts::should add scripts`      | Unit        | ✅ Mapped |
+| AC-1.8.5 | Sample test file generated          | `bun-config-generator.test.ts::should create test`      | Integration | ✅ Mapped |
+| AC-1.8.6 | bun test runs successfully          | `init-command.test.ts::should run tests`                | E2E         | ✅ Mapped |
+| AC-1.8.7 | prettier --check passes             | `init-command.test.ts::should pass prettier`            | E2E         | ✅ Mapped |
 
 ### 11.9 Story 1.9: AI Rules Library & CLAUDE.md Generator
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.9.1 | Rules library contains best practices | `rules-library.test.ts::should contain common rules` | Unit | ✅ Mapped |
-| AC-1.9.2 | Generates CLAUDE.md in root | `claude-code-plugin.test.ts::should create CLAUDE.md` | Integration | ✅ Mapped |
-| AC-1.9.3 | Project structure explanation | `claude-context-validation.test.ts::should explain structure` | E2E | ✅ Mapped |
-| AC-1.9.4 | Coding standards documented | `claude-context-validation.test.ts::should document standards` | E2E | ✅ Mapped |
-| AC-1.9.5 | Architecture decisions included | `claude-context-validation.test.ts::should include architecture` | E2E | ✅ Mapped |
-| AC-1.9.6 | Quality level constraints | `context-generator.test.ts::should adapt to quality level` | Unit | ✅ Mapped |
-| AC-1.9.7 | Common patterns and anti-patterns | `claude-context-validation.test.ts::should show patterns` | E2E | ✅ Mapped |
-| AC-1.9.8 | Rules adapt to quality level | `context-generator.test.ts::should adapt rules` | Unit | ✅ Mapped |
-| AC-1.9.9 | Human-readable markdown | `claude-context-validation.test.ts::should be readable` | E2E | ✅ Mapped |
-| AC-1.9.10 | File size < 10KB | `claude-code-plugin.test.ts::should validate size` | Unit | ✅ Mapped |
-| AC-1.9.11 | Good/bad code examples | `claude-context-validation.test.ts::should include examples` | E2E | ✅ Mapped |
+| AC #      | Acceptance Criteria                   | Test Case                                                        | Test Type   | Status    |
+| --------- | ------------------------------------- | ---------------------------------------------------------------- | ----------- | --------- |
+| AC-1.9.1  | Rules library contains best practices | `rules-library.test.ts::should contain common rules`             | Unit        | ✅ Mapped |
+| AC-1.9.2  | Generates CLAUDE.md in root           | `claude-code-plugin.test.ts::should create CLAUDE.md`            | Integration | ✅ Mapped |
+| AC-1.9.3  | Project structure explanation         | `claude-context-validation.test.ts::should explain structure`    | E2E         | ✅ Mapped |
+| AC-1.9.4  | Coding standards documented           | `claude-context-validation.test.ts::should document standards`   | E2E         | ✅ Mapped |
+| AC-1.9.5  | Architecture decisions included       | `claude-context-validation.test.ts::should include architecture` | E2E         | ✅ Mapped |
+| AC-1.9.6  | Quality level constraints             | `context-generator.test.ts::should adapt to quality level`       | Unit        | ✅ Mapped |
+| AC-1.9.7  | Common patterns and anti-patterns     | `claude-context-validation.test.ts::should show patterns`        | E2E         | ✅ Mapped |
+| AC-1.9.8  | Rules adapt to quality level          | `context-generator.test.ts::should adapt rules`                  | Unit        | ✅ Mapped |
+| AC-1.9.9  | Human-readable markdown               | `claude-context-validation.test.ts::should be readable`          | E2E         | ✅ Mapped |
+| AC-1.9.10 | File size < 10KB                      | `claude-code-plugin.test.ts::should validate size`               | Unit        | ✅ Mapped |
+| AC-1.9.11 | Good/bad code examples                | `claude-context-validation.test.ts::should include examples`     | E2E         | ✅ Mapped |
 
 ### 11.10 Story 1.10: GitHub Copilot Instructions Generator
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.10.1 | Generates .github/copilot-instructions.md | `copilot-generator.test.ts::should create file` | Integration | ✅ Mapped |
-| AC-1.10.2 | Contains coding standards | `copilot-context-validation.test.ts::should document standards` | E2E | ✅ Mapped |
-| AC-1.10.3 | Architectural decisions | `copilot-context-validation.test.ts::should include architecture` | E2E | ✅ Mapped |
-| AC-1.10.4 | Format optimized for Copilot | `copilot-generator.test.ts::should use copilot format` | Unit | ✅ Mapped |
-| AC-1.10.5 | Adapts to quality level | `copilot-generator.test.ts::should adapt to quality` | Unit | ✅ Mapped |
-| AC-1.10.6 | TypeScript/Bun conventions | `copilot-context-validation.test.ts::should include conventions` | E2E | ✅ Mapped |
-| AC-1.10.7 | Follows Copilot best practices | `copilot-validation.test.ts::should follow best practices` | Unit | ✅ Mapped |
-| AC-1.10.8 | File < 5KB | `copilot-generator.test.ts::should validate size` | Unit | ✅ Mapped |
+| AC #      | Acceptance Criteria                       | Test Case                                                         | Test Type   | Status    |
+| --------- | ----------------------------------------- | ----------------------------------------------------------------- | ----------- | --------- |
+| AC-1.10.1 | Generates .github/copilot-instructions.md | `copilot-generator.test.ts::should create file`                   | Integration | ✅ Mapped |
+| AC-1.10.2 | Contains coding standards                 | `copilot-context-validation.test.ts::should document standards`   | E2E         | ✅ Mapped |
+| AC-1.10.3 | Architectural decisions                   | `copilot-context-validation.test.ts::should include architecture` | E2E         | ✅ Mapped |
+| AC-1.10.4 | Format optimized for Copilot              | `copilot-generator.test.ts::should use copilot format`            | Unit        | ✅ Mapped |
+| AC-1.10.5 | Adapts to quality level                   | `copilot-generator.test.ts::should adapt to quality`              | Unit        | ✅ Mapped |
+| AC-1.10.6 | TypeScript/Bun conventions                | `copilot-context-validation.test.ts::should include conventions`  | E2E         | ✅ Mapped |
+| AC-1.10.7 | Follows Copilot best practices            | `copilot-validation.test.ts::should follow best practices`        | Unit        | ✅ Mapped |
+| AC-1.10.8 | File < 5KB                                | `copilot-generator.test.ts::should validate size`                 | Unit        | ✅ Mapped |
 
 ### 11.11 Story 1.11: Quality Level Presets & End-to-End Init
 
-| AC # | Acceptance Criteria | Test Case | Test Type | Status |
-|------|---------------------|-----------|-----------|--------|
-| AC-1.11.1 | Three preset configurations | `quality-presets.test.ts::should have three presets` | Unit | ✅ Mapped |
-| AC-1.11.2 | Presets define tools correctly | `quality-presets.test.ts::should define tool configs` | Unit | ✅ Mapped |
-| AC-1.11.3 | Selection affects all configs | `init-command.test.ts::should apply preset everywhere` | E2E | ✅ Mapped |
-| AC-1.11.4 | End-to-end init completes | `init-command.test.ts::should complete successfully` | E2E | ✅ Mapped |
-| AC-1.11.5 | Correct structure for all levels | `init-command.test.ts::should create correct structure` | E2E | ✅ Mapped |
-| AC-1.11.6 | Generated files are valid | `init-command.test.ts::should validate files` | E2E | ✅ Mapped |
-| AC-1.11.7 | Scaffolding completes < 30s | `performance.test.ts::should complete within time` | Performance | ✅ Mapped |
-| AC-1.11.8 | Can run cd & bun test immediately | `init-command.test.ts::should run tests immediately` | E2E | ✅ Mapped |
+| AC #      | Acceptance Criteria               | Test Case                                               | Test Type   | Status    |
+| --------- | --------------------------------- | ------------------------------------------------------- | ----------- | --------- |
+| AC-1.11.1 | Three preset configurations       | `quality-presets.test.ts::should have three presets`    | Unit        | ✅ Mapped |
+| AC-1.11.2 | Presets define tools correctly    | `quality-presets.test.ts::should define tool configs`   | Unit        | ✅ Mapped |
+| AC-1.11.3 | Selection affects all configs     | `init-command.test.ts::should apply preset everywhere`  | E2E         | ✅ Mapped |
+| AC-1.11.4 | End-to-end init completes         | `init-command.test.ts::should complete successfully`    | E2E         | ✅ Mapped |
+| AC-1.11.5 | Correct structure for all levels  | `init-command.test.ts::should create correct structure` | E2E         | ✅ Mapped |
+| AC-1.11.6 | Generated files are valid         | `init-command.test.ts::should validate files`           | E2E         | ✅ Mapped |
+| AC-1.11.7 | Scaffolding completes < 30s       | `performance.test.ts::should complete within time`      | Performance | ✅ Mapped |
+| AC-1.11.8 | Can run cd & bun test immediately | `init-command.test.ts::should run tests immediately`    | E2E         | ✅ Mapped |
 
 **Total Acceptance Criteria:** 88
 **Total Test Cases Mapped:** 88
@@ -2382,16 +2338,17 @@ describe('nimata init (E2E)', () => {
 
 **Goal:** Set up infrastructure before story implementation
 
-| Task | Owner | Duration | Dependencies | Deliverable |
-|------|-------|----------|--------------|-------------|
-| Turborepo monorepo setup | Dev 1 | 1 day | None | Working monorepo with turbo.json |
-| TypeScript project references | Dev 1 | 1 day | Turbo setup | All packages compile together |
-| Define core interfaces | Dev 1 | 2 days | None | packages/core/src/interfaces/ |
-| TSyringe DI container | Dev 1 | 1 day | Interfaces | apps/cli/src/container.ts |
-| Testing infrastructure | Dev 2 | 2 days | None | Bun Test + Stryker configs |
-| CI pipeline (GitHub Actions) | Dev 2 | 1 day | Testing setup | Working CI with caching |
+| Task                          | Owner | Duration | Dependencies  | Deliverable                      |
+| ----------------------------- | ----- | -------- | ------------- | -------------------------------- |
+| Turborepo monorepo setup      | Dev 1 | 1 day    | None          | Working monorepo with turbo.json |
+| TypeScript project references | Dev 1 | 1 day    | Turbo setup   | All packages compile together    |
+| Define core interfaces        | Dev 1 | 2 days   | None          | packages/core/src/interfaces/    |
+| TSyringe DI container         | Dev 1 | 1 day    | Interfaces    | apps/cli/src/container.ts        |
+| Testing infrastructure        | Dev 2 | 2 days   | None          | Bun Test + Stryker configs       |
+| CI pipeline (GitHub Actions)  | Dev 2 | 1 day    | Testing setup | Working CI with caching          |
 
 **Week 1 Deliverables:**
+
 - ✅ Monorepo structure functional
 - ✅ All interfaces defined and validated
 - ✅ DI container configured
@@ -2404,29 +2361,32 @@ describe('nimata init (E2E)', () => {
 
 **Swim Lane Assignment:**
 
-| Swim Lane | Developer | Stories | Parallel? |
-|-----------|-----------|---------|-----------|
-| **A (Infrastructure)** | Dev 1 | 1.1, 1.2 | Sequential |
-| **B (Scaffolding)** | Dev 2 | 1.3, 1.4, 1.5 | After A completes |
-| **C (Quality Config)** | Dev 3 | 1.6, 1.7, 1.8 | Parallel with B |
-| **D (AI Rules)** | Dev 4 | 1.9, 1.10 | Parallel with B, C |
-| **E (Integration)** | Dev 5 | 1.11 | After B, C, D complete |
+| Swim Lane              | Developer | Stories       | Parallel?              |
+| ---------------------- | --------- | ------------- | ---------------------- |
+| **A (Infrastructure)** | Dev 1     | 1.1, 1.2      | Sequential             |
+| **B (Scaffolding)**    | Dev 2     | 1.3, 1.4, 1.5 | After A completes      |
+| **C (Quality Config)** | Dev 3     | 1.6, 1.7, 1.8 | Parallel with B        |
+| **D (AI Rules)**       | Dev 4     | 1.9, 1.10     | Parallel with B, C     |
+| **E (Integration)**    | Dev 5     | 1.11          | After B, C, D complete |
 
 #### Week 2 (Sprint 1, Week 1)
 
 **Day 1-2: Story 1.1 (Dev 1) + Story 1.3 (Dev 2)**
+
 - Dev 1: CLI framework setup (Yargs, command routing)
 - Dev 2: Interactive wizard (Prompts integration)
 - Dev 3: Start ESLint generator research
 - Dev 4: Start CLAUDE.md template research
 
 **Day 3-4: Story 1.2 (Dev 1) + Story 1.4 (Dev 2) + Story 1.6 (Dev 3)**
+
 - Dev 1: Configuration system (YAML, cascade)
 - Dev 2: Directory structure generator
 - Dev 3: ESLint configuration generator
 - Dev 4: Start CLAUDE.md generator
 
 **Day 5: Story 1.5 (Dev 2) + Story 1.7 (Dev 3) + Story 1.9 (Dev 4)**
+
 - Dev 1: Help with integration
 - Dev 2: Template engine (Handlebars)
 - Dev 3: TypeScript config generator
@@ -2435,11 +2395,13 @@ describe('nimata init (E2E)', () => {
 #### Week 3 (Sprint 1, Week 2)
 
 **Day 1-2: Stories 1.8, 1.9, 1.10 (parallel)**
+
 - Dev 2: Prettier & Bun Test config
 - Dev 3: Finish TypeScript config
 - Dev 4: Finish CLAUDE.md, start GitHub Copilot instructions
 
 **Day 3-5: Story 1.11 (Integration)**
+
 - All devs: End-to-end init command integration
 - All devs: Quality level presets
 - All devs: E2E testing
@@ -2470,47 +2432,47 @@ Story 1.11 (Integration) ← MUST COMPLETE LAST
 
 #### Dependency Matrix
 
-| Story | Depends On | Can Start After | Blocks |
-|-------|-----------|-----------------|--------|
-| 1.1 | Sprint 0 | Day 1 | 1.2, 1.3 |
-| 1.2 | 1.1 | Day 3 | 1.3, 1.4 |
-| 1.3 | 1.1, 1.2 | Day 3 | 1.4, 1.11 |
-| 1.4 | 1.3 | Day 5 | 1.5, 1.11 |
-| 1.5 | 1.4 | Day 7 | 1.6, 1.7, 1.8, 1.11 |
-| 1.6 | 1.5 (interfaces) | Day 7 | 1.11 |
-| 1.7 | 1.5 (interfaces) | Day 7 | 1.11 |
-| 1.8 | 1.5 (interfaces) | Day 7 | 1.11 |
-| 1.9 | 1.5 (interfaces) | Day 7 | 1.10, 1.11 |
-| 1.10 | 1.9 | Day 10 | 1.11 |
-| 1.11 | 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.10 | Day 12 | None (Epic complete) |
+| Story | Depends On                              | Can Start After | Blocks               |
+| ----- | --------------------------------------- | --------------- | -------------------- |
+| 1.1   | Sprint 0                                | Day 1           | 1.2, 1.3             |
+| 1.2   | 1.1                                     | Day 3           | 1.3, 1.4             |
+| 1.3   | 1.1, 1.2                                | Day 3           | 1.4, 1.11            |
+| 1.4   | 1.3                                     | Day 5           | 1.5, 1.11            |
+| 1.5   | 1.4                                     | Day 7           | 1.6, 1.7, 1.8, 1.11  |
+| 1.6   | 1.5 (interfaces)                        | Day 7           | 1.11                 |
+| 1.7   | 1.5 (interfaces)                        | Day 7           | 1.11                 |
+| 1.8   | 1.5 (interfaces)                        | Day 7           | 1.11                 |
+| 1.9   | 1.5 (interfaces)                        | Day 7           | 1.10, 1.11           |
+| 1.10  | 1.9                                     | Day 10          | 1.11                 |
+| 1.11  | 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.10 | Day 12          | None (Epic complete) |
 
 ---
 
 ### 12.4 Risk Mitigation
 
-| Risk | Probability | Impact | Mitigation Strategy |
-|------|-------------|--------|---------------------|
-| **Handlebars template complexity** | Medium | High | Use simple templates first, add complexity incrementally |
-| **Bun API compatibility issues** | Low | Medium | Test Bun native APIs early in Sprint 0 |
-| **Plugin isolation failures** | Low | High | Implement error boundaries from day 1, test with intentional failures |
-| **CLAUDE.md size exceeds 10KB** | Medium | Medium | Monitor size during development, prune verbose content |
-| **Cross-platform file path issues** | Medium | Medium | Use path.join() everywhere, test on Windows/Mac/Linux early |
-| **Scaffolding performance <30s** | Low | Medium | Profile during development, optimize template rendering if needed |
+| Risk                                | Probability | Impact | Mitigation Strategy                                                   |
+| ----------------------------------- | ----------- | ------ | --------------------------------------------------------------------- |
+| **Handlebars template complexity**  | Medium      | High   | Use simple templates first, add complexity incrementally              |
+| **Bun API compatibility issues**    | Low         | Medium | Test Bun native APIs early in Sprint 0                                |
+| **Plugin isolation failures**       | Low         | High   | Implement error boundaries from day 1, test with intentional failures |
+| **CLAUDE.md size exceeds 10KB**     | Medium      | Medium | Monitor size during development, prune verbose content                |
+| **Cross-platform file path issues** | Medium      | Medium | Use path.join() everywhere, test on Windows/Mac/Linux early           |
+| **Scaffolding performance <30s**    | Low         | Medium | Profile during development, optimize template rendering if needed     |
 
 ---
 
 ## Appendix A: Glossary
 
-| Term | Definition |
-|------|------------|
-| **Clean Architecture Lite** | Simplified 3-layer architecture (CLI → Use Case → Adapter) optimized for CLI tools |
-| **Quality Level** | Three preset configurations: Light (basic), Medium (standard), Strict (comprehensive) |
-| **AI Context** | Persistent files (CLAUDE.md, MCP config, etc.) that provide project context to AI assistants |
-| **Result Pattern** | Explicit error handling pattern using Result<T> type instead of throwing exceptions |
-| **Template Context** | Variables passed to Handlebars templates for rendering |
-| **Scaffolding** | Project structure generation process (directories, files, configs) |
-| **DI Container** | TSyringe dependency injection container for managing component dependencies |
-| **Mutation Testing** | Testing technique that validates test quality by introducing bugs and checking if tests fail |
+| Term                        | Definition                                                                                   |
+| --------------------------- | -------------------------------------------------------------------------------------------- |
+| **Clean Architecture Lite** | Simplified 3-layer architecture (CLI → Use Case → Adapter) optimized for CLI tools           |
+| **Quality Level**           | Three preset configurations: Light (basic), Medium (standard), Strict (comprehensive)        |
+| **AI Context**              | Persistent files (CLAUDE.md, MCP config, etc.) that provide project context to AI assistants |
+| **Result Pattern**          | Explicit error handling pattern using Result<T> type instead of throwing exceptions          |
+| **Template Context**        | Variables passed to Handlebars templates for rendering                                       |
+| **Scaffolding**             | Project structure generation process (directories, files, configs)                           |
+| **DI Container**            | TSyringe dependency injection container for managing component dependencies                  |
+| **Mutation Testing**        | Testing technique that validates test quality by introducing bugs and checking if tests fail |
 
 ---
 
@@ -2636,4 +2598,4 @@ nimata/
 
 ---
 
-*Generated by BMad Method Technical Specification workflow*
+_Generated by BMad Method Technical Specification workflow_

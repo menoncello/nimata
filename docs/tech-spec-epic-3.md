@@ -37,16 +37,19 @@ Implement intelligent triage that routes simple fixes to static refactoring and 
 ### 1.2 Value Proposition
 
 **Problem Being Solved:**
+
 - Developers waste time manually fixing simple code quality issues (unused imports, type inference, code style)
 - AI assistants are overused for trivial fixes, consuming API credits and time
 - Complex refactoring requires manual context assembly for AI assistants
 
 **Solution:**
+
 - **Auto-fix pipeline**: AST-based transformations handle 70%+ of simple issues in milliseconds
 - **Intelligent triage**: Automatically classify issues as auto-fixable vs manual
 - **AI prompt generation**: Generate formatted prompts with full context for complex issues (Claude Code format)
 
 **Impact:**
+
 - 10x faster resolution for simple issues (2-3 seconds vs 30-60 seconds with AI)
 - Reduced AI API costs (70% fewer simple prompts)
 - Better AI results for complex issues (rich context included)
@@ -54,12 +57,14 @@ Implement intelligent triage that routes simple fixes to static refactoring and 
 ### 1.3 Technical Approach
 
 **Core Technologies:**
+
 - **ts-morph 22.x**: High-level TypeScript AST manipulation (chosen per ADR-005)
 - **Bun 1.3+**: Native file operations, hashing, and performance optimization
 - **Picocolors**: Terminal output with syntax highlighting
 - **Prompts**: Interactive confirmation dialogs for preview mode
 
 **Architecture Pattern:**
+
 - **Clean Architecture Lite**: Use cases orchestrate transformers and triage logic
 - **Plugin-based transformers**: Each transformer is independent and testable
 - **Safe transformation pattern**: Validation → Transform → Verify → Commit (or rollback)
@@ -77,18 +82,18 @@ Implement intelligent triage that routes simple fixes to static refactoring and 
 
 ## 2. Stories Summary
 
-| Story ID | Title | Story Points | Primary Component | Swim Lane |
-|----------|-------|--------------|-------------------|-----------|
-| **3.1** | Remove unused imports | 3 | UnusedImportsTransformer | C (Transformers) |
-| **3.2** | Infer explicit types | 5 | TypeInferenceTransformer | C (Transformers) |
-| **3.3** | Apply code style fixes | 3 | CodeStyleTransformer | C (Transformers) |
-| **3.4** | Safe AST transformation base | 5 | ASTRefactorer (base class) | C (Transformers) |
-| **3.5** | Rollback on error | 3 | ASTRefactorer (error handling) | C (Transformers) |
-| **3.6** | Triage issues (auto vs manual) | 5 | TriageService | A (Core) |
-| **3.7** | Generate AI prompts for manual fixes | 5 | AIPromptGenerator (ClaudeCodePlugin) | D (AI Plugin) |
-| **3.8** | Preview refactoring changes | 3 | DiffPresenter, RefactorWizard | E (Adapters) |
-| **3.9** | Diff output with syntax highlighting | 2 | DiffPresenter | E (Adapters) |
-| **3.10** | Unified fix command | 5 | FixCommand, RefactoringService | B (CLI) |
+| Story ID | Title                                | Story Points | Primary Component                    | Swim Lane        |
+| -------- | ------------------------------------ | ------------ | ------------------------------------ | ---------------- |
+| **3.1**  | Remove unused imports                | 3            | UnusedImportsTransformer             | C (Transformers) |
+| **3.2**  | Infer explicit types                 | 5            | TypeInferenceTransformer             | C (Transformers) |
+| **3.3**  | Apply code style fixes               | 3            | CodeStyleTransformer                 | C (Transformers) |
+| **3.4**  | Safe AST transformation base         | 5            | ASTRefactorer (base class)           | C (Transformers) |
+| **3.5**  | Rollback on error                    | 3            | ASTRefactorer (error handling)       | C (Transformers) |
+| **3.6**  | Triage issues (auto vs manual)       | 5            | TriageService                        | A (Core)         |
+| **3.7**  | Generate AI prompts for manual fixes | 5            | AIPromptGenerator (ClaudeCodePlugin) | D (AI Plugin)    |
+| **3.8**  | Preview refactoring changes          | 3            | DiffPresenter, RefactorWizard        | E (Adapters)     |
+| **3.9**  | Diff output with syntax highlighting | 2            | DiffPresenter                        | E (Adapters)     |
+| **3.10** | Unified fix command                  | 5            | FixCommand, RefactoringService       | B (CLI)          |
 
 **Total Story Points:** 39
 **Estimated Duration:** 3 sprints (6 weeks with 5 developers)
@@ -122,18 +127,21 @@ Infrastructure Layer (infrastructure/ + plugins/)
 **Location:** `packages/core/src/use-cases/refactoring-service.ts`
 
 **Responsibilities:**
+
 - Orchestrate AST transformations across multiple files
 - Apply selected transformations in safe mode
 - Coordinate with TriageService for issue classification
 - Handle transformation failures and rollback
 
 **Dependencies:**
+
 - `IASTRefactorer` (infrastructure)
 - `IConfigRepository` (adapters)
 - `IFileSystem` (adapters)
 - `ILogger` (adapters)
 
 **Key Methods:**
+
 ```typescript
 class RefactoringService {
   async applyTransformations(
@@ -147,9 +155,7 @@ class RefactoringService {
     transformations: TransformationType[]
   ): Promise<DiffResult[]>;
 
-  async rollbackTransformations(
-    sessionId: string
-  ): Promise<void>;
+  async rollbackTransformations(sessionId: string): Promise<void>;
 }
 ```
 
@@ -160,29 +166,26 @@ class RefactoringService {
 **Location:** `packages/core/src/use-cases/triage-service.ts`
 
 **Responsibilities:**
+
 - Classify validation issues as auto-fixable or manual
 - Calculate complexity score for each issue
 - Recommend appropriate fix strategy (auto vs AI)
 - Track triage accuracy metrics
 
 **Dependencies:**
+
 - `IClassifier` (core interface)
 - `ILogger` (adapters)
 
 **Key Methods:**
+
 ```typescript
 class TriageService {
-  async classifyIssues(
-    issues: Issue[]
-  ): Promise<TriageResult>;
+  async classifyIssues(issues: Issue[]): Promise<TriageResult>;
 
-  async calculateComplexity(
-    issue: Issue
-  ): Promise<ComplexityScore>;
+  async calculateComplexity(issue: Issue): Promise<ComplexityScore>;
 
-  getRecommendation(
-    category: TriageCategory
-  ): FixStrategy;
+  getRecommendation(category: TriageCategory): FixStrategy;
 }
 ```
 
@@ -193,35 +196,31 @@ class TriageService {
 **Location:** `infrastructure/ts-morph-wrapper/src/safe-ast-refactorer.ts`
 
 **Responsibilities:**
+
 - Provide safe AST transformation API using ts-morph
 - Implement syntax validation before committing changes
 - Handle rollback on transformation errors
 - Prevent memory leaks via proper `dispose()` calls
 
 **Dependencies:**
+
 - `ts-morph` library (22.x)
 - `Bun.file()` for file operations
 
 **Key Methods:**
+
 ```typescript
 class ASTRefactorer {
-  async applyTransformation(
-    filePath: string,
-    transformer: ITransformer
-  ): Promise<Result<void>>;
+  async applyTransformation(filePath: string, transformer: ITransformer): Promise<Result<void>>;
 
-  async validateSyntax(
-    sourceFile: SourceFile
-  ): Promise<ValidationResult>;
+  async validateSyntax(sourceFile: SourceFile): Promise<ValidationResult>;
 
-  async rollback(
-    filePath: string,
-    originalContent: string
-  ): Promise<void>;
+  async rollback(filePath: string, originalContent: string): Promise<void>;
 }
 ```
 
 **Safety Pattern:**
+
 1. Load source file into ts-morph Project
 2. Store original content
 3. Apply transformation
@@ -237,12 +236,14 @@ class ASTRefactorer {
 **Location:** `infrastructure/ts-morph-wrapper/src/transformers/unused-imports-transformer.ts`
 
 **Responsibilities:**
+
 - Detect unused import statements
 - Remove entire import if no symbols are used
 - Remove specific symbols from import lists if only some are unused
 - Preserve side-effect imports (e.g., `import './polyfill'`)
 
 **Algorithm:**
+
 ```typescript
 class UnusedImportsTransformer implements ITransformer {
   transform(sourceFile: SourceFile): void {
@@ -253,11 +254,11 @@ class UnusedImportsTransformer implements ITransformer {
       if (!importDecl.getNamedImports().length) continue;
 
       const namedImports = importDecl.getNamedImports();
-      const unusedImports = namedImports.filter(imp => {
+      const unusedImports = namedImports.filter((imp) => {
         const identifier = imp.getName();
-        const usages = sourceFile.getDescendantsOfKind(
-          SyntaxKind.Identifier
-        ).filter(id => id.getText() === identifier);
+        const usages = sourceFile
+          .getDescendantsOfKind(SyntaxKind.Identifier)
+          .filter((id) => id.getText() === identifier);
 
         // Only the import declaration itself = unused
         return usages.length === 1;
@@ -268,7 +269,7 @@ class UnusedImportsTransformer implements ITransformer {
         importDecl.remove();
       } else {
         // Remove only unused symbols
-        unusedImports.forEach(imp => imp.remove());
+        unusedImports.forEach((imp) => imp.remove());
       }
     }
   }
@@ -282,16 +283,18 @@ class UnusedImportsTransformer implements ITransformer {
 **Location:** `infrastructure/ts-morph-wrapper/src/transformers/type-inference-transformer.ts`
 
 **Responsibilities:**
+
 - Add explicit type annotations where TypeScript can infer types
 - Target: function return types, variable declarations, class properties
 - Only add types that improve readability (skip obvious primitives)
 
 **Algorithm:**
+
 ```typescript
 class TypeInferenceTransformer implements ITransformer {
   transform(sourceFile: SourceFile): void {
     // Add return types to functions without them
-    sourceFile.getFunctions().forEach(fn => {
+    sourceFile.getFunctions().forEach((fn) => {
       if (!fn.getReturnTypeNode()) {
         const inferredType = fn.getReturnType().getText();
         if (this.shouldAddType(inferredType)) {
@@ -301,7 +304,7 @@ class TypeInferenceTransformer implements ITransformer {
     });
 
     // Add types to variable declarations
-    sourceFile.getVariableDeclarations().forEach(varDecl => {
+    sourceFile.getVariableDeclarations().forEach((varDecl) => {
       if (!varDecl.getTypeNode()) {
         const inferredType = varDecl.getType().getText();
         if (this.shouldAddType(inferredType)) {
@@ -326,30 +329,30 @@ class TypeInferenceTransformer implements ITransformer {
 **Location:** `infrastructure/ts-morph-wrapper/src/transformers/code-style-transformer.ts`
 
 **Responsibilities:**
+
 - Convert `var` to `const` or `let` based on reassignment analysis
 - Convert function expressions to arrow functions (when safe)
 - Add `readonly` modifiers to class properties never reassigned
 - Apply consistent naming conventions
 
 **Algorithm:**
+
 ```typescript
 class CodeStyleTransformer implements ITransformer {
   transform(sourceFile: SourceFile): void {
     // Convert var to const/let
-    sourceFile.getVariableDeclarations().forEach(varDecl => {
+    sourceFile.getVariableDeclarations().forEach((varDecl) => {
       const declarationKind = varDecl.getVariableStatement()?.getDeclarationKind();
       if (declarationKind === VariableDeclarationKind.Var) {
         const isReassigned = this.isVariableReassigned(varDecl);
-        const newKind = isReassigned
-          ? VariableDeclarationKind.Let
-          : VariableDeclarationKind.Const;
+        const newKind = isReassigned ? VariableDeclarationKind.Let : VariableDeclarationKind.Const;
         varDecl.getVariableStatement()?.setDeclarationKind(newKind);
       }
     });
 
     // Add readonly to class properties
-    sourceFile.getClasses().forEach(cls => {
-      cls.getProperties().forEach(prop => {
+    sourceFile.getClasses().forEach((cls) => {
+      cls.getProperties().forEach((prop) => {
         if (!prop.isReadonly() && !this.isPropertyReassigned(prop)) {
           prop.setIsReadonly(true);
         }
@@ -359,7 +362,9 @@ class CodeStyleTransformer implements ITransformer {
 
   private isVariableReassigned(varDecl: VariableDeclaration): boolean {
     const references = varDecl.findReferencesAsNodes();
-    return references.some(ref => ref.wasForgotten() || ref.getParent()?.getKind() === SyntaxKind.BinaryExpression);
+    return references.some(
+      (ref) => ref.wasForgotten() || ref.getParent()?.getKind() === SyntaxKind.BinaryExpression
+    );
   }
 }
 ```
@@ -371,13 +376,15 @@ class CodeStyleTransformer implements ITransformer {
 **Location:** `plugins/plugin-claude-code/src/prompt-generator.ts`
 
 **Responsibilities:**
+
 - Generate Claude Code formatted prompts for manual fixes
 - Extract relevant code context (function/class containing issue)
 - Include imports and type definitions referenced
 - Format prompt with clear sections: Context, Task, Code
 
 **Prompt Template (Claude Code Format):**
-```markdown
+
+````markdown
 ## Refactoring Task
 
 **File:** `src/services/user-service.ts` (lines 42-68)
@@ -388,28 +395,30 @@ class CodeStyleTransformer implements ITransformer {
 This function handles user authentication with multiple validation steps and error paths.
 
 **Current Code:**
+
 ```typescript
 import { User } from './models';
 import { validateEmail, hashPassword } from './utils';
 
-export async function authenticateUser(
-  email: string,
-  password: string
-): Promise<User | null> {
+export async function authenticateUser(email: string, password: string): Promise<User | null> {
   // [Current implementation with 15 complexity]
 }
 ```
+````
 
 **Task:**
 Reduce cyclomatic complexity by:
+
 1. Extracting validation logic into separate functions
 2. Using early returns to reduce nesting
 3. Consider extracting error handling into a separate function
 
 **Constraints:**
+
 - Maintain exact same behavior and test coverage
 - Preserve all error messages
 - No breaking changes to public API
+
 ```
 
 ---
@@ -426,19 +435,21 @@ Reduce cyclomatic complexity by:
 
 **Output Format:**
 ```
+
 File: src/index.ts
 ────────────────────────────────────────────────────────
 
-  12 | -import { unused } from './utils';
-  13 | import { used } from './helpers';
-  14 |
-  15 | export function process() {
-  16 | -  let value = 42;
-  16 | +  const value = 42;
-  17 |   return used(value);
-  18 | }
+12 | -import { unused } from './utils';
+13 | import { used } from './helpers';
+14 |
+15 | export function process() {
+16 | - let value = 42;
+16 | + const value = 42;
+17 | return used(value);
+18 | }
 
 Changes: 2 lines removed, 1 line modified
+
 ```
 
 ---
@@ -455,6 +466,7 @@ Changes: 2 lines removed, 1 line modified
 
 **Interaction Flow:**
 ```
+
 1. Show summary: "Found 3 files with 8 auto-fixable issues"
 2. For each file:
    - Display diff with syntax highlighting
@@ -464,7 +476,8 @@ Changes: 2 lines removed, 1 line modified
      - a: Apply all remaining files
      - q: Quit without applying
 3. Show final summary: "Applied 2/3 files, 6/8 issues fixed"
-```
+
+````
 
 ---
 
@@ -489,7 +502,7 @@ Options:
   --transformations   Comma-separated list of transformations to apply
                       (unused-imports, type-inference, code-style)
   --all               Apply all available transformations (default)
-```
+````
 
 ---
 
@@ -511,29 +524,21 @@ export interface IASTRefactorer {
    * @param transformer - Transformation to apply
    * @returns Result indicating success or failure with error details
    */
-  applyTransformation(
-    filePath: string,
-    transformer: ITransformer
-  ): Promise<Result<void>>;
+  applyTransformation(filePath: string, transformer: ITransformer): Promise<Result<void>>;
 
   /**
    * Validate syntax of a source file
    * @param sourceFile - ts-morph SourceFile object
    * @returns Validation result with any syntax errors
    */
-  validateSyntax(
-    sourceFile: SourceFile
-  ): Promise<ValidationResult>;
+  validateSyntax(sourceFile: SourceFile): Promise<ValidationResult>;
 
   /**
    * Rollback a file to its original content
    * @param filePath - Absolute path to file
    * @param originalContent - Content to restore
    */
-  rollback(
-    filePath: string,
-    originalContent: string
-  ): Promise<void>;
+  rollback(filePath: string, originalContent: string): Promise<void>;
 
   /**
    * Dispose of ts-morph resources to prevent memory leaks
@@ -672,11 +677,7 @@ export interface IAIPromptGenerator {
    * @param format - Target AI format (claude-code, copilot)
    * @returns Formatted prompt string
    */
-  generatePrompt(
-    issue: Issue,
-    context: CodeContext,
-    format: AIFormat
-  ): Promise<string>;
+  generatePrompt(issue: Issue, context: CodeContext, format: AIFormat): Promise<string>;
 
   /**
    * Extract relevant code context for an issue
@@ -684,10 +685,7 @@ export interface IAIPromptGenerator {
    * @param filePath - File containing the issue
    * @returns Code context with imports, types, and surrounding code
    */
-  extractContext(
-    issue: Issue,
-    filePath: string
-  ): Promise<CodeContext>;
+  extractContext(issue: Issue, filePath: string): Promise<CodeContext>;
 
   /**
    * Generate batch prompt for multiple related issues
@@ -695,10 +693,7 @@ export interface IAIPromptGenerator {
    * @param format - Target AI format
    * @returns Combined prompt string
    */
-  generateBatchPrompt(
-    issues: Issue[],
-    format: AIFormat
-  ): Promise<string>;
+  generateBatchPrompt(issues: Issue[], format: AIFormat): Promise<string>;
 }
 ```
 
@@ -718,7 +713,7 @@ export enum TransformationType {
   UnusedImports = 'unused-imports',
   TypeInference = 'type-inference',
   CodeStyle = 'code-style',
-  All = 'all'
+  All = 'all',
 }
 ```
 
@@ -885,7 +880,7 @@ export interface CategorizedIssue {
 export enum TriageCategory {
   AutoFixable = 'auto-fixable',
   Manual = 'manual',
-  Mixed = 'mixed'
+  Mixed = 'mixed',
 }
 
 export interface FixStrategy {
@@ -1084,14 +1079,12 @@ export function requiresAI(complexity: ComplexityScore): boolean {
 /**
  * Calculate transformation priority
  */
-export function getTransformationPriority(
-  transformation: TransformationType
-): number {
+export function getTransformationPriority(transformation: TransformationType): number {
   const priorities: Record<TransformationType, number> = {
     [TransformationType.UnusedImports]: 1, // Highest priority (safest)
     [TransformationType.CodeStyle]: 2,
     [TransformationType.TypeInference]: 3, // Lowest priority (most complex)
-    [TransformationType.All]: 0 // Special case
+    [TransformationType.All]: 0, // Special case
   };
 
   return priorities[transformation] ?? 99;
@@ -1147,13 +1140,10 @@ export class SafeASTRefactorer implements IASTRefactorer {
     this.logger = logger;
   }
 
-  async applyTransformation(
-    filePath: string,
-    transformer: ITransformer
-  ): Promise<Result<void>> {
+  async applyTransformation(filePath: string, transformer: ITransformer): Promise<Result<void>> {
     const project = new Project({
       useInMemoryFileSystem: false,
-      skipFileDependencyResolution: true
+      skipFileDependencyResolution: true,
     });
 
     let sourceFile: SourceFile | undefined;
@@ -1168,7 +1158,7 @@ export class SafeASTRefactorer implements IASTRefactorer {
 
       this.logger.debug('Applying transformation', {
         transformer: transformer.id,
-        file: filePath
+        file: filePath,
       });
 
       // Step 3: Apply transformation
@@ -1182,15 +1172,13 @@ export class SafeASTRefactorer implements IASTRefactorer {
         this.logger.warn('Transformation introduced syntax errors', {
           transformer: transformer.id,
           file: filePath,
-          errors: validation.errors
+          errors: validation.errors,
         });
 
         sourceFile.replaceWithText(originalContent);
         await sourceFile.save();
 
-        return Result.failure(
-          `Transformation failed: ${validation.errors.join(', ')}`
-        );
+        return Result.failure(`Transformation failed: ${validation.errors.join(', ')}`);
       }
 
       // Step 5b: Valid - commit
@@ -1198,28 +1186,24 @@ export class SafeASTRefactorer implements IASTRefactorer {
 
       this.logger.info('Transformation applied successfully', {
         transformer: transformer.id,
-        file: filePath
+        file: filePath,
       });
 
       return Result.success(undefined);
-
     } catch (error) {
       // Unexpected error - rollback
       this.logger.error('Unexpected transformation error', {
         transformer: transformer.id,
         file: filePath,
         error: error.message,
-        stack: error.stack
+        stack: error.stack,
       });
 
       if (sourceFile && originalContent) {
         await this.rollback(filePath, originalContent);
       }
 
-      return Result.failure(
-        `Transformation crashed: ${error.message}`
-      );
-
+      return Result.failure(`Transformation crashed: ${error.message}`);
     } finally {
       // Step 6: Cleanup - prevent memory leaks
       project.dispose();
@@ -1232,22 +1216,20 @@ export class SafeASTRefactorer implements IASTRefactorer {
     if (diagnostics.length === 0) {
       return {
         isValid: true,
-        errors: []
+        errors: [],
       };
     }
 
-    const errors = diagnostics.map(diag => {
+    const errors = diagnostics.map((diag) => {
       const message = diag.getMessageText();
-      const messageText = typeof message === 'string'
-        ? message
-        : message.getMessageText();
+      const messageText = typeof message === 'string' ? message : message.getMessageText();
 
       return `Line ${diag.getLineNumber()}: ${messageText}`;
     });
 
     return {
       isValid: false,
-      errors
+      errors,
     };
   }
 
@@ -1258,7 +1240,7 @@ export class SafeASTRefactorer implements IASTRefactorer {
     } catch (error) {
       this.logger.error('Rollback failed', {
         file: filePath,
-        error: error.message
+        error: error.message,
       });
       throw error;
     }
@@ -1276,12 +1258,14 @@ export class SafeASTRefactorer implements IASTRefactorer {
 **Problem:** ts-morph creates internal data structures that can leak memory if not disposed properly.
 
 **Solution:**
+
 1. Create new `Project` for each transformation (isolated)
 2. Always call `project.dispose()` in `finally` block
 3. Use `useInMemoryFileSystem: false` to avoid caching files
 4. Skip dependency resolution for performance: `skipFileDependencyResolution: true`
 
 **Memory Usage Pattern:**
+
 ```
 Before transformation: 50MB
 During transformation: 80MB (peak)
@@ -1290,13 +1274,13 @@ After project.dispose(): 52MB (normal variation)
 
 ### 6.5 Error Scenarios
 
-| Scenario | Handling | User Impact |
-|----------|----------|-------------|
-| **Syntax error introduced** | Rollback, return failure | File unchanged, error logged |
-| **ts-morph crashes** | Catch exception, rollback | File unchanged, error logged |
-| **File write fails** | Exception propagates | Original content preserved |
-| **Validation fails** | Rollback, return failure | File unchanged, diagnostic errors shown |
-| **Out of memory** | Exception propagates | Process may crash (rare) |
+| Scenario                    | Handling                  | User Impact                             |
+| --------------------------- | ------------------------- | --------------------------------------- |
+| **Syntax error introduced** | Rollback, return failure  | File unchanged, error logged            |
+| **ts-morph crashes**        | Catch exception, rollback | File unchanged, error logged            |
+| **File write fails**        | Exception propagates      | Original content preserved              |
+| **Validation fails**        | Rollback, return failure  | File unchanged, diagnostic errors shown |
+| **Out of memory**           | Exception propagates      | Process may crash (rare)                |
 
 ---
 
@@ -1347,9 +1331,7 @@ export abstract class BaseTransformer implements ITransformer {
 
     // Simple heuristic: check if position is within comment ranges
     const commentRanges = sourceFile.getLeadingCommentRanges();
-    return commentRanges.some(range =>
-      pos >= range.getPos() && pos <= range.getEnd()
-    );
+    return commentRanges.some((range) => pos >= range.getPos() && pos <= range.getEnd());
   }
 
   /**
@@ -1382,6 +1364,7 @@ export abstract class BaseTransformer implements ITransformer {
 **Purpose:** Remove import statements for symbols that are never used in the file.
 
 **Safety Considerations:**
+
 - Never remove side-effect imports (e.g., `import './polyfill'`)
 - Never remove type-only imports used in type annotations
 - Preserve import order and formatting
@@ -1396,7 +1379,7 @@ export class UnusedImportsTransformer extends BaseTransformer {
     return [
       '@typescript-eslint/no-unused-vars',
       'no-unused-imports',
-      'unused-imports/no-unused-imports'
+      'unused-imports/no-unused-imports',
     ];
   }
 
@@ -1405,9 +1388,11 @@ export class UnusedImportsTransformer extends BaseTransformer {
 
     for (const importDecl of imports) {
       // Skip side-effect imports (no bindings)
-      if (importDecl.getNamedImports().length === 0 &&
-          !importDecl.getDefaultImport() &&
-          !importDecl.getNamespaceImport()) {
+      if (
+        importDecl.getNamedImports().length === 0 &&
+        !importDecl.getDefaultImport() &&
+        !importDecl.getNamespaceImport()
+      ) {
         continue;
       }
 
@@ -1425,18 +1410,20 @@ export class UnusedImportsTransformer extends BaseTransformer {
 
       // Check named imports usage
       const namedImports = importDecl.getNamedImports();
-      const unusedNamedImports = namedImports.filter(namedImport => {
+      const unusedNamedImports = namedImports.filter((namedImport) => {
         const name = namedImport.getName();
         return !this.isIdentifierUsed(sourceFile, name);
       });
 
       // Remove unused named imports
-      unusedNamedImports.forEach(imp => imp.remove());
+      unusedNamedImports.forEach((imp) => imp.remove());
 
       // Remove entire import declaration if all bindings were removed
-      if (importDecl.getNamedImports().length === 0 &&
-          !importDecl.getDefaultImport() &&
-          !importDecl.getNamespaceImport()) {
+      if (
+        importDecl.getNamedImports().length === 0 &&
+        !importDecl.getDefaultImport() &&
+        !importDecl.getNamespaceImport()
+      ) {
         importDecl.remove();
       }
     }
@@ -1446,13 +1433,12 @@ export class UnusedImportsTransformer extends BaseTransformer {
     const identifiers = sourceFile.getDescendantsOfKind(SyntaxKind.Identifier);
 
     // Find all usages (excluding the import declaration itself)
-    const usages = identifiers.filter(id => {
+    const usages = identifiers.filter((id) => {
       if (id.getText() !== identifier) return false;
 
       // Skip if inside import declaration
       const parent = id.getParent();
-      if (Node.isImportSpecifier(parent) ||
-          Node.isImportClause(parent)) {
+      if (Node.isImportSpecifier(parent) || Node.isImportClause(parent)) {
         return false;
       }
 
@@ -1471,6 +1457,7 @@ export class UnusedImportsTransformer extends BaseTransformer {
 **Purpose:** Add explicit type annotations where TypeScript can infer types, improving code readability.
 
 **Strategy:**
+
 - Target functions without return type annotations
 - Target variables without type annotations (except obvious primitives)
 - Skip adding types for `any`, `void`, and simple literals
@@ -1484,7 +1471,7 @@ export class TypeInferenceTransformer extends BaseTransformer {
   protected getHandledRules(): string[] {
     return [
       '@typescript-eslint/explicit-function-return-type',
-      '@typescript-eslint/explicit-module-boundary-types'
+      '@typescript-eslint/explicit-module-boundary-types',
     ];
   }
 
@@ -1499,8 +1486,8 @@ export class TypeInferenceTransformer extends BaseTransformer {
   private addFunctionReturnTypes(sourceFile: SourceFile): void {
     const functions = [
       ...sourceFile.getFunctions(),
-      ...sourceFile.getClasses().flatMap(c => c.getMethods()),
-      ...sourceFile.getClasses().flatMap(c => c.getGetAccessors())
+      ...sourceFile.getClasses().flatMap((c) => c.getMethods()),
+      ...sourceFile.getClasses().flatMap((c) => c.getGetAccessors()),
     ];
 
     for (const fn of functions) {
@@ -1560,12 +1547,7 @@ export class TypeInferenceTransformer extends BaseTransformer {
   }
 
   private shouldSkipType(typeText: string): boolean {
-    const skipTypes = [
-      'any',
-      'void',
-      'never',
-      'unknown'
-    ];
+    const skipTypes = ['any', 'void', 'never', 'unknown'];
 
     // Skip unhelpful types
     if (skipTypes.includes(typeText)) return true;
@@ -1577,10 +1559,12 @@ export class TypeInferenceTransformer extends BaseTransformer {
   }
 
   private isLiteralExpression(node: Node): boolean {
-    return Node.isStringLiteral(node) ||
-           Node.isNumericLiteral(node) ||
-           Node.isBooleanLiteral(node) ||
-           Node.isNullLiteral(node);
+    return (
+      Node.isStringLiteral(node) ||
+      Node.isNumericLiteral(node) ||
+      Node.isBooleanLiteral(node) ||
+      Node.isNullLiteral(node)
+    );
   }
 }
 ```
@@ -1592,6 +1576,7 @@ export class TypeInferenceTransformer extends BaseTransformer {
 **Purpose:** Apply consistent code style (const over let, readonly modifiers, arrow functions).
 
 **Safety Considerations:**
+
 - Only convert `let` to `const` if variable is provably never reassigned
 - Only add `readonly` if property is provably never reassigned
 - Only convert to arrow functions if `this` binding doesn't change
@@ -1603,11 +1588,7 @@ export class CodeStyleTransformer extends BaseTransformer {
   readonly description = 'Converts let to const, adds readonly, converts to arrow functions';
 
   protected getHandledRules(): string[] {
-    return [
-      'prefer-const',
-      'no-var',
-      '@typescript-eslint/prefer-readonly'
-    ];
+    return ['prefer-const', 'no-var', '@typescript-eslint/prefer-readonly'];
   }
 
   transform(sourceFile: SourceFile): void {
@@ -1633,9 +1614,7 @@ export class CodeStyleTransformer extends BaseTransformer {
       }
 
       const declarations = stmt.getDeclarations();
-      const allNeverReassigned = declarations.every(decl =>
-        !this.isVariableReassigned(decl)
-      );
+      const allNeverReassigned = declarations.every((decl) => !this.isVariableReassigned(decl));
 
       // Use const if none are reassigned, otherwise let
       const newKind = allNeverReassigned
@@ -1647,15 +1626,13 @@ export class CodeStyleTransformer extends BaseTransformer {
   }
 
   private convertLetToConst(sourceFile: SourceFile): void {
-    const letStatements = sourceFile.getVariableStatements().filter(stmt =>
-      stmt.getDeclarationKind() === VariableDeclarationKind.Let
-    );
+    const letStatements = sourceFile
+      .getVariableStatements()
+      .filter((stmt) => stmt.getDeclarationKind() === VariableDeclarationKind.Let);
 
     for (const stmt of letStatements) {
       const declarations = stmt.getDeclarations();
-      const allNeverReassigned = declarations.every(decl =>
-        !this.isVariableReassigned(decl)
-      );
+      const allNeverReassigned = declarations.every((decl) => !this.isVariableReassigned(decl));
 
       if (allNeverReassigned) {
         stmt.setDeclarationKind(VariableDeclarationKind.Const);
@@ -1738,8 +1715,9 @@ export class CodeStyleTransformer extends BaseTransformer {
           if (propName === name) {
             // Constructor assignment is OK (initialization)
             // Check if there are multiple assignments
-            const allAssignments = constructor.getDescendantsOfKind(SyntaxKind.BinaryExpression)
-              .filter(a => {
+            const allAssignments = constructor
+              .getDescendantsOfKind(SyntaxKind.BinaryExpression)
+              .filter((a) => {
                 const l = a.getLeft();
                 return Node.isPropertyAccessExpression(l) && l.getName() === name;
               });
@@ -1783,15 +1761,15 @@ import { TypeInferenceTransformer } from '@nimata/infrastructure/ts-morph-wrappe
 import { CodeStyleTransformer } from '@nimata/infrastructure/ts-morph-wrapper';
 
 container.register<ITransformer>('UnusedImportsTransformer', {
-  useClass: UnusedImportsTransformer
+  useClass: UnusedImportsTransformer,
 });
 
 container.register<ITransformer>('TypeInferenceTransformer', {
-  useClass: TypeInferenceTransformer
+  useClass: TypeInferenceTransformer,
 });
 
 container.register<ITransformer>('CodeStyleTransformer', {
-  useClass: CodeStyleTransformer
+  useClass: CodeStyleTransformer,
 });
 
 // Register all transformers as array for bulk operations
@@ -1799,8 +1777,8 @@ container.register<ITransformer[]>('AllTransformers', {
   useFactory: (c) => [
     c.resolve('UnusedImportsTransformer'),
     c.resolve('TypeInferenceTransformer'),
-    c.resolve('CodeStyleTransformer')
-  ]
+    c.resolve('CodeStyleTransformer'),
+  ],
 });
 ```
 
@@ -1836,7 +1814,7 @@ export class TriageService implements ITriageService {
     } = {
       autoFixable: [],
       manual: [],
-      mixed: []
+      mixed: [],
     };
 
     for (const issue of issues) {
@@ -1850,7 +1828,7 @@ export class TriageService implements ITriageService {
         complexity,
         recommendedTransformations,
         requiresAI: complexity.overall > 70,
-        aiPromptAvailable: complexity.overall > 50
+        aiPromptAvailable: complexity.overall > 50,
       };
 
       switch (category) {
@@ -1873,18 +1851,15 @@ export class TriageService implements ITriageService {
       totalIssues: issues.length,
       categories: categorized,
       recommendation,
-      confidence
+      confidence,
     };
   }
 
-  private determineCategory(
-    issue: Issue,
-    complexity: ComplexityScore
-  ): TriageCategory {
+  private determineCategory(issue: Issue, complexity: ComplexityScore): TriageCategory {
     // Rule-based classification
 
     // Check if any transformer can handle this issue
-    const canBeAutoFixed = this.transformers.some(t => t.canHandle(issue));
+    const canBeAutoFixed = this.transformers.some((t) => t.canHandle(issue));
 
     // Low complexity + transformer available = auto-fixable
     if (complexity.overall <= 30 && canBeAutoFixed) {
@@ -1937,7 +1912,7 @@ export class TriageService implements ITriageService {
     return {
       overall,
       factors,
-      reasoning
+      reasoning,
     };
   }
 
@@ -1957,19 +1932,16 @@ export class TriageService implements ITriageService {
       'max-lines-per-function': 55,
 
       // High complexity (71-100) - requires AI/human
-      'complexity': 80, // Cyclomatic complexity
+      complexity: 80, // Cyclomatic complexity
       'max-depth': 75,
       'no-duplicate-code': 85,
-      '@typescript-eslint/no-unsafe-call': 90
+      '@typescript-eslint/no-unsafe-call': 90,
     };
 
     return complexityMap[rule] ?? 60; // Default: medium-high
   }
 
-  private generateComplexityReasoning(
-    issue: Issue,
-    overall: number
-  ): string {
+  private generateComplexityReasoning(issue: Issue, overall: number): string {
     if (overall <= 30) {
       return `Low complexity issue that can be auto-fixed. Rule '${issue.rule}' has a straightforward fix.`;
     }
@@ -2002,7 +1974,7 @@ export class TriageService implements ITriageService {
     const mapping: Record<string, TransformationType> = {
       'unused-imports': TransformationType.UnusedImports,
       'type-inference': TransformationType.TypeInference,
-      'code-style': TransformationType.CodeStyle
+      'code-style': TransformationType.CodeStyle,
     };
 
     return mapping[id] ?? null;
@@ -2014,7 +1986,7 @@ export class TriageService implements ITriageService {
     const mixedCount = categorized.mixed.length;
 
     // If majority are auto-fixable, recommend auto-fix first
-    const autoFixFirst = autoCount > (manualCount + mixedCount);
+    const autoFixFirst = autoCount > manualCount + mixedCount;
 
     // Generate prompts if there are manual issues
     const generatePrompts = manualCount > 0 || mixedCount > 0;
@@ -2025,23 +1997,19 @@ export class TriageService implements ITriageService {
     return {
       autoFixFirst,
       generatePrompts,
-      parallelExecution
+      parallelExecution,
     };
   }
 
   private calculateConfidence(categorized: TriageResult['categories']): number {
     // Confidence based on complexity scores
-    const allIssues = [
-      ...categorized.autoFixable,
-      ...categorized.manual,
-      ...categorized.mixed
-    ];
+    const allIssues = [...categorized.autoFixable, ...categorized.manual, ...categorized.mixed];
 
     if (allIssues.length === 0) return 100;
 
     // Calculate average confidence
     // High confidence for issues far from complexity boundaries (30, 70)
-    const confidences = allIssues.map(issue => {
+    const confidences = allIssues.map((issue) => {
       const complexity = issue.complexity.overall;
 
       // Distance from boundaries
@@ -2064,21 +2032,21 @@ export class TriageService implements ITriageService {
         return {
           autoFixFirst: true,
           generatePrompts: false,
-          parallelExecution: false
+          parallelExecution: false,
         };
 
       case TriageCategory.Manual:
         return {
           autoFixFirst: false,
           generatePrompts: true,
-          parallelExecution: false
+          parallelExecution: false,
         };
 
       case TriageCategory.Mixed:
         return {
           autoFixFirst: true,
           generatePrompts: true,
-          parallelExecution: true
+          parallelExecution: true,
         };
     }
   }
@@ -2123,11 +2091,7 @@ Claude Code prompts follow a structured format optimized for context understandi
 export class AIPromptGenerator implements IAIPromptGenerator {
   private readonly logger: ILogger;
 
-  async generatePrompt(
-    issue: Issue,
-    context: CodeContext,
-    format: AIFormat
-  ): Promise<string> {
+  async generatePrompt(issue: Issue, context: CodeContext, format: AIFormat): Promise<string> {
     switch (format) {
       case AIFormat.ClaudeCode:
         return this.generateClaudeCodePrompt(issue, context);
@@ -2138,16 +2102,13 @@ export class AIPromptGenerator implements IAIPromptGenerator {
     }
   }
 
-  private generateClaudeCodePrompt(
-    issue: Issue,
-    context: CodeContext
-  ): string {
+  private generateClaudeCodePrompt(issue: Issue, context: CodeContext): string {
     const sections = [
       this.generateTaskSection(issue),
       this.generateContextSection(context),
       this.generateCodeSection(context),
       this.generateConstraintsSection(issue),
-      this.generateGuidanceSection(issue)
+      this.generateGuidanceSection(issue),
     ];
 
     return sections.join('\n\n');
@@ -2197,7 +2158,7 @@ ${context.focusedCode}
       'Maintain exact same behavior and test coverage',
       'Preserve all error messages and logging',
       'No breaking changes to public API',
-      'Keep code readable and maintainable'
+      'Keep code readable and maintainable',
     ];
 
     // Add rule-specific constraints
@@ -2230,7 +2191,7 @@ ${guidance}
 
   private getRuleSpecificGuidance(rule: string): string {
     const guidanceMap: Record<string, string> = {
-      'complexity': `**Refactoring Strategies:**
+      complexity: `**Refactoring Strategies:**
 1. Extract complex conditions into well-named functions
 2. Use early returns to reduce nesting
 3. Consider extracting error handling into a separate function
@@ -2252,13 +2213,16 @@ ${guidance}
 1. Identify the common pattern in the duplicated code
 2. Extract the pattern into a reusable function or class
 3. Parameterize the differences as function arguments
-4. Update all call sites to use the new abstraction`
+4. Update all call sites to use the new abstraction`,
     };
 
-    return guidanceMap[rule] ?? `**General Guidance:**
+    return (
+      guidanceMap[rule] ??
+      `**General Guidance:**
 - Review the issue and understand why it was flagged
 - Consider the simplest fix that maintains code quality
-- Ensure the fix doesn't introduce new issues`;
+- Ensure the fix doesn't introduce new issues`
+    );
   }
 
   async extractContext(issue: Issue, filePath: string): Promise<CodeContext> {
@@ -2267,9 +2231,7 @@ ${guidance}
 
     try {
       // Find the node at the issue location
-      const node = sourceFile.getDescendantAtPos(
-        this.getPositionFromLine(sourceFile, issue.line)
-      );
+      const node = sourceFile.getDescendantAtPos(this.getPositionFromLine(sourceFile, issue.line));
 
       if (!node) {
         throw new Error(`Could not find node at line ${issue.line}`);
@@ -2283,7 +2245,7 @@ ${guidance}
       const focusedCode = container.getText();
       const lineRange = {
         start: sourceFile.getLineAndColumnAtPos(container.getStart()).line,
-        end: sourceFile.getLineAndColumnAtPos(container.getEnd()).line
+        end: sourceFile.getLineAndColumnAtPos(container.getEnd()).line,
       };
 
       return {
@@ -2291,9 +2253,8 @@ ${guidance}
         imports,
         types,
         focusedCode,
-        lineRange
+        lineRange,
       };
-
     } finally {
       project.dispose();
     }
@@ -2304,10 +2265,12 @@ ${guidance}
     let current: Node | undefined = node;
 
     while (current) {
-      if (Node.isFunctionDeclaration(current) ||
-          Node.isMethodDeclaration(current) ||
-          Node.isArrowFunction(current) ||
-          Node.isClassDeclaration(current)) {
+      if (
+        Node.isFunctionDeclaration(current) ||
+        Node.isMethodDeclaration(current) ||
+        Node.isArrowFunction(current) ||
+        Node.isClassDeclaration(current)
+      ) {
         return current;
       }
 
@@ -2318,13 +2281,10 @@ ${guidance}
     return node;
   }
 
-  private extractRelevantImports(
-    sourceFile: SourceFile,
-    container: Node
-  ): string[] {
+  private extractRelevantImports(sourceFile: SourceFile, container: Node): string[] {
     // Get all identifiers used in container
     const identifiers = container.getDescendantsOfKind(SyntaxKind.Identifier);
-    const usedNames = new Set(identifiers.map(id => id.getText()));
+    const usedNames = new Set(identifiers.map((id) => id.getText()));
 
     // Find imports that match used names
     const imports = sourceFile.getImportDeclarations();
@@ -2332,9 +2292,7 @@ ${guidance}
 
     for (const importDecl of imports) {
       const namedImports = importDecl.getNamedImports();
-      const hasRelevantImport = namedImports.some(ni =>
-        usedNames.has(ni.getName())
-      );
+      const hasRelevantImport = namedImports.some((ni) => usedNames.has(ni.getName()));
 
       if (hasRelevantImport || importDecl.getDefaultImport()) {
         relevantImports.push(importDecl.getText());
@@ -2344,10 +2302,7 @@ ${guidance}
     return relevantImports;
   }
 
-  private extractRelevantTypes(
-    sourceFile: SourceFile,
-    container: Node
-  ): string[] {
+  private extractRelevantTypes(sourceFile: SourceFile, container: Node): string[] {
     // Extract type aliases and interfaces used in container
     const types: string[] = [];
 
@@ -2387,10 +2342,7 @@ ${guidance}
     return position;
   }
 
-  async generateBatchPrompt(
-    issues: Issue[],
-    format: AIFormat
-  ): Promise<string> {
+  async generateBatchPrompt(issues: Issue[], format: AIFormat): Promise<string> {
     // Group issues by file
     const issuesByFile = new Map<string, Issue[]>();
 
@@ -2438,10 +2390,7 @@ export class RefactorWizard {
   private readonly presenter: DiffPresenter;
   private readonly prompts: any; // prompts library
 
-  async showPreview(
-    diffs: DiffResult[],
-    options: RefactorOptions
-  ): Promise<ApprovalResult> {
+  async showPreview(diffs: DiffResult[], options: RefactorOptions): Promise<ApprovalResult> {
     // Show summary
     console.log(`\nFound ${diffs.length} files with auto-fixable issues:\n`);
 
@@ -2456,7 +2405,7 @@ export class RefactorWizard {
       return {
         approved: diffs,
         rejected: [],
-        cancelled: false
+        cancelled: false,
       };
     }
 
@@ -2469,7 +2418,7 @@ export class RefactorWizard {
       const diff = diffs[i];
 
       // Show diff with syntax highlighting
-      console.log(`\n[${ i + 1}/${diffs.length}] ${diff.filePath}`);
+      console.log(`\n[${i + 1}/${diffs.length}] ${diff.filePath}`);
       console.log('─'.repeat(80));
       this.presenter.present(diff);
       console.log('─'.repeat(80));
@@ -2488,8 +2437,8 @@ export class RefactorWizard {
           { title: 'Yes (apply this file)', value: 'yes' },
           { title: 'No (skip this file)', value: 'no' },
           { title: 'Apply all remaining files', value: 'all' },
-          { title: 'Quit (cancel all)', value: 'quit' }
-        ]
+          { title: 'Quit (cancel all)', value: 'quit' },
+        ],
       });
 
       switch (response.action) {
@@ -2518,7 +2467,7 @@ export class RefactorWizard {
     return {
       approved,
       rejected,
-      cancelled
+      cancelled,
     };
   }
 
@@ -2617,15 +2566,15 @@ export class DiffPresenter {
 
 ### 11.1 Error Scenarios and Recovery
 
-| Error Scenario | Detection | Recovery Strategy | User Impact |
-|----------------|-----------|-------------------|-------------|
-| **Syntax error introduced** | Pre-emit diagnostics after transform | Rollback to original content | File unchanged, error logged |
-| **ts-morph crashes** | Try-catch around transform | Rollback, log error | File unchanged, error logged |
-| **File write fails** | Bun.write() throws | Exception propagates | Original content preserved |
-| **Validation fails** | Diagnostics.length > 0 | Rollback, return failure | File unchanged, diagnostics shown |
-| **Memory leak** | Project not disposed | Always dispose in finally block | Performance degradation prevented |
-| **Transformer throws** | Try-catch in SafeASTRefactorer | Log error, skip file | File unchanged, other files continue |
-| **Invalid AST modification** | ts-morph throws | Catch exception, rollback | File unchanged, error logged |
+| Error Scenario               | Detection                            | Recovery Strategy               | User Impact                          |
+| ---------------------------- | ------------------------------------ | ------------------------------- | ------------------------------------ |
+| **Syntax error introduced**  | Pre-emit diagnostics after transform | Rollback to original content    | File unchanged, error logged         |
+| **ts-morph crashes**         | Try-catch around transform           | Rollback, log error             | File unchanged, error logged         |
+| **File write fails**         | Bun.write() throws                   | Exception propagates            | Original content preserved           |
+| **Validation fails**         | Diagnostics.length > 0               | Rollback, return failure        | File unchanged, diagnostics shown    |
+| **Memory leak**              | Project not disposed                 | Always dispose in finally block | Performance degradation prevented    |
+| **Transformer throws**       | Try-catch in SafeASTRefactorer       | Log error, skip file            | File unchanged, other files continue |
+| **Invalid AST modification** | ts-morph throws                      | Catch exception, rollback       | File unchanged, error logged         |
 
 ### 11.2 Error Handling Implementation
 
@@ -2653,23 +2602,22 @@ export class RefactoringService implements IRefactoringService {
           errors.push({
             filePath: file,
             transformation: TransformationType.All,
-            message: result.error
+            message: result.error,
           });
         }
-
       } catch (error) {
         // Unexpected error at file level
         this.logger.error('Failed to process file', {
           file,
           error: error.message,
-          stack: error.stack
+          stack: error.stack,
         });
 
         errors.push({
           filePath: file,
           transformation: TransformationType.All,
           message: error.message,
-          stack: error.stack
+          stack: error.stack,
         });
 
         fileResults.push({
@@ -2681,7 +2629,7 @@ export class RefactoringService implements IRefactoringService {
           linesModified: 0,
           originalContent: '',
           modifiedContent: '',
-          error: error.message
+          error: error.message,
         });
       }
     }
@@ -2695,7 +2643,7 @@ export class RefactoringService implements IRefactoringService {
       statistics,
       fileResults,
       errors,
-      executionTime
+      executionTime,
     };
   }
 
@@ -2709,10 +2657,7 @@ export class RefactoringService implements IRefactoringService {
 
     for (const transformer of transformers) {
       try {
-        const result = await this.astRefactorer.applyTransformation(
-          file,
-          transformer
-        );
+        const result = await this.astRefactorer.applyTransformation(file, transformer);
 
         if (result.isSuccess) {
           appliedTransformations.push(
@@ -2726,16 +2671,15 @@ export class RefactoringService implements IRefactoringService {
           this.logger.warn('Transformation failed', {
             file,
             transformer: transformer.id,
-            error: result.error
+            error: result.error,
           });
         }
-
       } catch (error) {
         // Unexpected error in transformer
         this.logger.error('Transformer crashed', {
           file,
           transformer: transformer.id,
-          error: error.message
+          error: error.message,
         });
 
         // Continue with next transformer
@@ -2744,8 +2688,10 @@ export class RefactoringService implements IRefactoringService {
     }
 
     // Calculate diff statistics
-    const { linesAdded, linesRemoved, linesModified } =
-      this.calculateDiff(originalContent, modifiedContent);
+    const { linesAdded, linesRemoved, linesModified } = this.calculateDiff(
+      originalContent,
+      modifiedContent
+    );
 
     return {
       filePath: file,
@@ -2755,7 +2701,7 @@ export class RefactoringService implements IRefactoringService {
       linesRemoved,
       linesModified,
       originalContent,
-      modifiedContent
+      modifiedContent,
     };
   }
 
@@ -2791,27 +2737,24 @@ export class RefactoringService implements IRefactoringService {
     return { linesAdded, linesRemoved, linesModified };
   }
 
-  private calculateStatistics(
-    fileResults: FileRefactorResult[]
-  ): RefactorStatistics {
+  private calculateStatistics(fileResults: FileRefactorResult[]): RefactorStatistics {
     return {
       totalFiles: fileResults.length,
-      filesModified: fileResults.filter(r =>
-        r.success && (r.linesAdded > 0 || r.linesRemoved > 0 || r.linesModified > 0)
+      filesModified: fileResults.filter(
+        (r) => r.success && (r.linesAdded > 0 || r.linesRemoved > 0 || r.linesModified > 0)
       ).length,
-      filesSkipped: fileResults.filter(r =>
-        r.success && r.transformationsApplied.length === 0
-      ).length,
-      filesFailed: fileResults.filter(r => !r.success).length,
-      totalTransformations: fileResults.reduce((sum, r) =>
-        sum + r.transformationsApplied.length, 0
+      filesSkipped: fileResults.filter((r) => r.success && r.transformationsApplied.length === 0)
+        .length,
+      filesFailed: fileResults.filter((r) => !r.success).length,
+      totalTransformations: fileResults.reduce(
+        (sum, r) => sum + r.transformationsApplied.length,
+        0
       ),
-      successfulTransformations: fileResults.reduce((sum, r) =>
-        r.success ? sum + r.transformationsApplied.length : sum, 0
+      successfulTransformations: fileResults.reduce(
+        (sum, r) => (r.success ? sum + r.transformationsApplied.length : sum),
+        0
       ),
-      failedTransformations: fileResults.reduce((sum, r) =>
-        !r.success ? sum + 1 : sum, 0
-      )
+      failedTransformations: fileResults.reduce((sum, r) => (!r.success ? sum + 1 : sum), 0),
     };
   }
 }
@@ -2823,13 +2766,10 @@ export class RefactoringService implements IRefactoringService {
 export class SessionManager {
   private readonly sessions: Map<string, SessionData> = new Map();
 
-  async storeSession(
-    sessionId: string,
-    fileResults: FileRefactorResult[]
-  ): Promise<void> {
+  async storeSession(sessionId: string, fileResults: FileRefactorResult[]): Promise<void> {
     this.sessions.set(sessionId, {
       timestamp: Date.now(),
-      fileResults
+      fileResults,
     });
 
     // Store in SQLite for persistence across restarts
@@ -2851,7 +2791,7 @@ export class SessionManager {
         } catch (error) {
           this.logger.error('Rollback failed', {
             file: result.filePath,
-            error: error.message
+            error: error.message,
           });
         }
       }
@@ -2867,10 +2807,13 @@ export class SessionManager {
     // Store in SQLite for rollback persistence
     const db = await this.openDatabase();
 
-    await db.run(`
+    await db.run(
+      `
       INSERT INTO refactor_sessions (id, timestamp, data)
       VALUES (?, ?, ?)
-    `, [sessionId, Date.now(), JSON.stringify(fileResults)]);
+    `,
+      [sessionId, Date.now(), JSON.stringify(fileResults)]
+    );
   }
 }
 
@@ -2890,11 +2833,11 @@ function generateSessionId(): string {
 
 ### 12.1 Test Types Overview
 
-| Test Type | Location | Tools | Coverage Target | Mutation Testing |
-|-----------|----------|-------|----------------|------------------|
-| **Unit Tests** | `tests/unit/` per package | Bun Test | 100% line coverage | 80%+ mutation score |
-| **Integration Tests** | `tests/integration/` per package | Bun Test | 80% coverage | No (too slow) |
-| **E2E Tests** | `apps/cli/tests/e2e/` | Bun Test | Critical paths | No |
+| Test Type             | Location                         | Tools    | Coverage Target    | Mutation Testing    |
+| --------------------- | -------------------------------- | -------- | ------------------ | ------------------- |
+| **Unit Tests**        | `tests/unit/` per package        | Bun Test | 100% line coverage | 80%+ mutation score |
+| **Integration Tests** | `tests/integration/` per package | Bun Test | 80% coverage       | No (too slow)       |
+| **E2E Tests**         | `apps/cli/tests/e2e/`            | Bun Test | Critical paths     | No                  |
 
 ### 12.2 Unit Testing Strategy
 
@@ -2921,13 +2864,16 @@ describe('UnusedImportsTransformer', () => {
 
   it('should remove entirely unused import', () => {
     // Arrange
-    const sourceFile = project.createSourceFile('test.ts', `
+    const sourceFile = project.createSourceFile(
+      'test.ts',
+      `
       import { unused } from './utils';
 
       export function process() {
         return 42;
       }
-    `);
+    `
+    );
 
     // Act
     sut.transform(sourceFile);
@@ -2939,13 +2885,16 @@ describe('UnusedImportsTransformer', () => {
 
   it('should preserve used import', () => {
     // Arrange
-    const sourceFile = project.createSourceFile('test.ts', `
+    const sourceFile = project.createSourceFile(
+      'test.ts',
+      `
       import { used } from './utils';
 
       export function process() {
         return used();
       }
-    `);
+    `
+    );
 
     // Act
     sut.transform(sourceFile);
@@ -2957,13 +2906,16 @@ describe('UnusedImportsTransformer', () => {
 
   it('should remove only unused symbols from import', () => {
     // Arrange
-    const sourceFile = project.createSourceFile('test.ts', `
+    const sourceFile = project.createSourceFile(
+      'test.ts',
+      `
       import { used, unused } from './utils';
 
       export function process() {
         return used();
       }
-    `);
+    `
+    );
 
     // Act
     sut.transform(sourceFile);
@@ -2976,13 +2928,16 @@ describe('UnusedImportsTransformer', () => {
 
   it('should preserve side-effect imports', () => {
     // Arrange
-    const sourceFile = project.createSourceFile('test.ts', `
+    const sourceFile = project.createSourceFile(
+      'test.ts',
+      `
       import './polyfill';
 
       export function process() {
         return 42;
       }
-    `);
+    `
+    );
 
     // Act
     sut.transform(sourceFile);
@@ -3020,13 +2975,16 @@ describe('SafeASTRefactorer (Integration)', () => {
     testFilePath = join(tempDir, 'test.ts');
 
     // Create test file
-    await Bun.write(testFilePath, `
+    await Bun.write(
+      testFilePath,
+      `
       import { unused } from './utils';
 
       export function process() {
         return 42;
       }
-    `);
+    `
+    );
 
     sut = new SafeASTRefactorer(createMockLogger());
   });
@@ -3063,7 +3021,7 @@ describe('SafeASTRefactorer (Integration)', () => {
         sourceFile.addStatements('this is not valid TypeScript!!!');
       },
       canHandle: () => false,
-      getHandledRules: () => []
+      getHandledRules: () => [],
     };
 
     // Act
@@ -3105,6 +3063,7 @@ describe('SafeASTRefactorer (Integration)', () => {
 **Goal:** Ensure transformations never introduce syntax errors or break semantics.
 
 **Approach:**
+
 1. **Golden file testing**: Store expected outputs for known inputs
 2. **Syntax validation**: Every transformation must produce valid TypeScript
 3. **Semantic preservation**: Test behavior before/after (if tests exist)
@@ -3122,7 +3081,7 @@ import { join } from 'path';
 
 describe('UnusedImportsTransformer - Golden Files', () => {
   const goldenDir = join(__dirname, 'golden', 'unused-imports');
-  const inputFiles = readdirSync(goldenDir).filter(f => f.endsWith('.input.ts'));
+  const inputFiles = readdirSync(goldenDir).filter((f) => f.endsWith('.input.ts'));
 
   for (const inputFile of inputFiles) {
     const testName = inputFile.replace('.input.ts', '');
@@ -3152,6 +3111,7 @@ describe('UnusedImportsTransformer - Golden Files', () => {
 ```
 
 **Golden File Structure:**
+
 ```
 tests/unit/golden/unused-imports/
 ├── simple-unused.input.ts
@@ -3174,7 +3134,7 @@ describe('Syntax Validation', () => {
   const transformers = [
     new UnusedImportsTransformer(),
     new TypeInferenceTransformer(),
-    new CodeStyleTransformer()
+    new CodeStyleTransformer(),
   ];
 
   for (const transformer of transformers) {
@@ -3193,7 +3153,7 @@ describe('Syntax Validation', () => {
         const diagnostics = sourceFile.getPreEmitDiagnostics();
 
         if (diagnostics.length > 0) {
-          const errors = diagnostics.map(d => d.getMessageText()).join(', ');
+          const errors = diagnostics.map((d) => d.getMessageText()).join(', ');
           throw new Error(
             `Transformer ${transformer.name} introduced syntax errors in ${testFile}: ${errors}`
           );
@@ -3215,22 +3175,28 @@ describe('Semantic Preservation', () => {
     const project = new Project({ useInMemoryFileSystem: true });
 
     // Create test file with tests
-    const sourceFile = project.createSourceFile('test.ts', `
+    const sourceFile = project.createSourceFile(
+      'test.ts',
+      `
       import { add, multiply, unused } from './utils';
 
       export function calculate(a: number, b: number): number {
         return add(a, b) + multiply(a, b);
       }
-    `);
+    `
+    );
 
-    const testFile = project.createSourceFile('test.test.ts', `
+    const testFile = project.createSourceFile(
+      'test.test.ts',
+      `
       import { expect, test } from 'bun:test';
       import { calculate } from './test';
 
       test('calculate should work', () => {
         expect(calculate(2, 3)).toBe(11); // 2+3 + 2*3 = 5 + 6 = 11
       });
-    `);
+    `
+    );
 
     // Run tests before transformation
     const beforeResult = await runTests(project);
@@ -3260,14 +3226,14 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | Identifies import statements where imported symbols are never used | `unused-imports-transformer.test.ts::should detect unused import` |
-| AC-2 | Removes entire import statement if no symbols are used | `unused-imports-transformer.test.ts::should remove entirely unused import` |
-| AC-3 | Removes specific symbols from import lists if only some are unused | `unused-imports-transformer.test.ts::should remove only unused symbols` |
-| AC-4 | Preserves used imports correctly | `unused-imports-transformer.test.ts::should preserve used import` |
-| AC-5 | Handles type imports correctly | `unused-imports-transformer.test.ts::should handle type-only imports` |
-| AC-6 | Safe: never removes imports with side effects | `unused-imports-transformer.test.ts::should preserve side-effect imports` |
+| AC   | Description                                                        | Test Case                                                                  |
+| ---- | ------------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| AC-1 | Identifies import statements where imported symbols are never used | `unused-imports-transformer.test.ts::should detect unused import`          |
+| AC-2 | Removes entire import statement if no symbols are used             | `unused-imports-transformer.test.ts::should remove entirely unused import` |
+| AC-3 | Removes specific symbols from import lists if only some are unused | `unused-imports-transformer.test.ts::should remove only unused symbols`    |
+| AC-4 | Preserves used imports correctly                                   | `unused-imports-transformer.test.ts::should preserve used import`          |
+| AC-5 | Handles type imports correctly                                     | `unused-imports-transformer.test.ts::should handle type-only imports`      |
+| AC-6 | Safe: never removes imports with side effects                      | `unused-imports-transformer.test.ts::should preserve side-effect imports`  |
 
 ---
 
@@ -3275,13 +3241,13 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | Adds return type annotations to functions without them | `type-inference-transformer.test.ts::should add return type to function` |
-| AC-2 | Adds type annotations to variables without them (except obvious primitives) | `type-inference-transformer.test.ts::should add type to variable` |
-| AC-3 | Skips adding types for `any`, `void`, and simple literals | `type-inference-transformer.test.ts::should skip unhelpful types` |
-| AC-4 | Preserves existing type annotations | `type-inference-transformer.test.ts::should not overwrite existing types` |
-| AC-5 | Handles complex types correctly | `type-inference-transformer.test.ts::should handle complex union types` |
+| AC   | Description                                                                 | Test Case                                                                 |
+| ---- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| AC-1 | Adds return type annotations to functions without them                      | `type-inference-transformer.test.ts::should add return type to function`  |
+| AC-2 | Adds type annotations to variables without them (except obvious primitives) | `type-inference-transformer.test.ts::should add type to variable`         |
+| AC-3 | Skips adding types for `any`, `void`, and simple literals                   | `type-inference-transformer.test.ts::should skip unhelpful types`         |
+| AC-4 | Preserves existing type annotations                                         | `type-inference-transformer.test.ts::should not overwrite existing types` |
+| AC-5 | Handles complex types correctly                                             | `type-inference-transformer.test.ts::should handle complex union types`   |
 
 ---
 
@@ -3289,13 +3255,13 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | Converts `var` to `const` or `let` based on reassignment | `code-style-transformer.test.ts::should convert var to const when not reassigned` |
-| AC-2 | Converts `let` to `const` when variable is never reassigned | `code-style-transformer.test.ts::should convert let to const` |
-| AC-3 | Adds `readonly` modifiers to class properties never reassigned | `code-style-transformer.test.ts::should add readonly to property` |
-| AC-4 | Preserves formatting and comments | `code-style-transformer.test.ts::should preserve comments` |
-| AC-5 | Safe: never converts if variable is reassigned in any scope | `code-style-transformer.test.ts::should not convert reassigned variable` |
+| AC   | Description                                                    | Test Case                                                                         |
+| ---- | -------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| AC-1 | Converts `var` to `const` or `let` based on reassignment       | `code-style-transformer.test.ts::should convert var to const when not reassigned` |
+| AC-2 | Converts `let` to `const` when variable is never reassigned    | `code-style-transformer.test.ts::should convert let to const`                     |
+| AC-3 | Adds `readonly` modifiers to class properties never reassigned | `code-style-transformer.test.ts::should add readonly to property`                 |
+| AC-4 | Preserves formatting and comments                              | `code-style-transformer.test.ts::should preserve comments`                        |
+| AC-5 | Safe: never converts if variable is reassigned in any scope    | `code-style-transformer.test.ts::should not convert reassigned variable`          |
 
 ---
 
@@ -3303,13 +3269,13 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | Validates syntax after every transformation | `safe-ast-refactorer.test.ts::should validate syntax after transform` |
-| AC-2 | Rolls back on syntax errors | `safe-ast-refactorer.test.ts::should rollback on syntax error` |
-| AC-3 | Disposes ts-morph Project to prevent memory leaks | `safe-ast-refactorer.test.ts::should dispose project` |
-| AC-4 | Never commits changes if validation fails | `safe-ast-refactorer.test.ts::should not commit invalid changes` |
-| AC-5 | Logs errors with diagnostic details | `safe-ast-refactorer.test.ts::should log errors` |
+| AC   | Description                                       | Test Case                                                             |
+| ---- | ------------------------------------------------- | --------------------------------------------------------------------- |
+| AC-1 | Validates syntax after every transformation       | `safe-ast-refactorer.test.ts::should validate syntax after transform` |
+| AC-2 | Rolls back on syntax errors                       | `safe-ast-refactorer.test.ts::should rollback on syntax error`        |
+| AC-3 | Disposes ts-morph Project to prevent memory leaks | `safe-ast-refactorer.test.ts::should dispose project`                 |
+| AC-4 | Never commits changes if validation fails         | `safe-ast-refactorer.test.ts::should not commit invalid changes`      |
+| AC-5 | Logs errors with diagnostic details               | `safe-ast-refactorer.test.ts::should log errors`                      |
 
 ---
 
@@ -3317,12 +3283,12 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | Restores original file content on transformation error | `safe-ast-refactorer.test.ts::should rollback on error` |
-| AC-2 | Continues processing other files after one fails | `refactoring-service.test.ts::should continue after file failure` |
-| AC-3 | Tracks which files failed and why | `refactoring-service.test.ts::should track errors` |
-| AC-4 | Provides rollback mechanism for entire session | `session-manager.test.ts::should rollback session` |
+| AC   | Description                                            | Test Case                                                         |
+| ---- | ------------------------------------------------------ | ----------------------------------------------------------------- |
+| AC-1 | Restores original file content on transformation error | `safe-ast-refactorer.test.ts::should rollback on error`           |
+| AC-2 | Continues processing other files after one fails       | `refactoring-service.test.ts::should continue after file failure` |
+| AC-3 | Tracks which files failed and why                      | `refactoring-service.test.ts::should track errors`                |
+| AC-4 | Provides rollback mechanism for entire session         | `session-manager.test.ts::should rollback session`                |
 
 ---
 
@@ -3330,12 +3296,12 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | Classifies issues as auto-fixable, manual, or mixed | `triage-service.test.ts::should classify issues` |
-| AC-2 | Calculates complexity score for each issue | `triage-service.test.ts::should calculate complexity` |
-| AC-3 | Recommends appropriate fix strategy | `triage-service.test.ts::should recommend fix strategy` |
-| AC-4 | Achieves 90%+ accuracy in classification | `triage-service.test.ts::should maintain high accuracy` |
+| AC   | Description                                         | Test Case                                               |
+| ---- | --------------------------------------------------- | ------------------------------------------------------- |
+| AC-1 | Classifies issues as auto-fixable, manual, or mixed | `triage-service.test.ts::should classify issues`        |
+| AC-2 | Calculates complexity score for each issue          | `triage-service.test.ts::should calculate complexity`   |
+| AC-3 | Recommends appropriate fix strategy                 | `triage-service.test.ts::should recommend fix strategy` |
+| AC-4 | Achieves 90%+ accuracy in classification            | `triage-service.test.ts::should maintain high accuracy` |
 
 ---
 
@@ -3343,13 +3309,13 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | Generates Claude Code formatted prompts | `ai-prompt-generator.test.ts::should generate claude code prompt` |
-| AC-2 | Extracts relevant code context (function/class containing issue) | `ai-prompt-generator.test.ts::should extract context` |
-| AC-3 | Includes imports and type definitions referenced | `ai-prompt-generator.test.ts::should include imports and types` |
-| AC-4 | Formats prompt with clear sections (Context, Task, Code) | `ai-prompt-generator.test.ts::should format sections` |
-| AC-5 | Limits context size to <4KB | `ai-prompt-generator.test.ts::should limit context size` |
+| AC   | Description                                                      | Test Case                                                         |
+| ---- | ---------------------------------------------------------------- | ----------------------------------------------------------------- |
+| AC-1 | Generates Claude Code formatted prompts                          | `ai-prompt-generator.test.ts::should generate claude code prompt` |
+| AC-2 | Extracts relevant code context (function/class containing issue) | `ai-prompt-generator.test.ts::should extract context`             |
+| AC-3 | Includes imports and type definitions referenced                 | `ai-prompt-generator.test.ts::should include imports and types`   |
+| AC-4 | Formats prompt with clear sections (Context, Task, Code)         | `ai-prompt-generator.test.ts::should format sections`             |
+| AC-5 | Limits context size to <4KB                                      | `ai-prompt-generator.test.ts::should limit context size`          |
 
 ---
 
@@ -3357,12 +3323,12 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | Shows unified diffs for before/after code | `diff-presenter.test.ts::should generate unified diff` |
-| AC-2 | Applies syntax highlighting using Picocolors | `diff-presenter.test.ts::should apply syntax highlighting` |
-| AC-3 | Prompts user for approval (all, one-by-one, or cancel) | `refactor-wizard.test.ts::should show approval prompt` |
-| AC-4 | Shows summary of applied transformations | `refactor-wizard.test.ts::should show summary` |
+| AC   | Description                                            | Test Case                                                  |
+| ---- | ------------------------------------------------------ | ---------------------------------------------------------- |
+| AC-1 | Shows unified diffs for before/after code              | `diff-presenter.test.ts::should generate unified diff`     |
+| AC-2 | Applies syntax highlighting using Picocolors           | `diff-presenter.test.ts::should apply syntax highlighting` |
+| AC-3 | Prompts user for approval (all, one-by-one, or cancel) | `refactor-wizard.test.ts::should show approval prompt`     |
+| AC-4 | Shows summary of applied transformations               | `refactor-wizard.test.ts::should show summary`             |
 
 ---
 
@@ -3370,12 +3336,12 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | Green for added lines | `diff-presenter.test.ts::should color added lines green` |
-| AC-2 | Red for removed lines | `diff-presenter.test.ts::should color removed lines red` |
-| AC-3 | Dim for context lines | `diff-presenter.test.ts::should dim context lines` |
-| AC-4 | Shows line numbers for navigation | `diff-presenter.test.ts::should show line numbers` |
+| AC   | Description                       | Test Case                                                |
+| ---- | --------------------------------- | -------------------------------------------------------- |
+| AC-1 | Green for added lines             | `diff-presenter.test.ts::should color added lines green` |
+| AC-2 | Red for removed lines             | `diff-presenter.test.ts::should color removed lines red` |
+| AC-3 | Dim for context lines             | `diff-presenter.test.ts::should dim context lines`       |
+| AC-4 | Shows line numbers for navigation | `diff-presenter.test.ts::should show line numbers`       |
 
 ---
 
@@ -3383,13 +3349,13 @@ describe('Semantic Preservation', () => {
 
 **Acceptance Criteria → Test Cases:**
 
-| AC | Description | Test Case |
-|----|-------------|-----------|
-| AC-1 | `nimata fix` executes complete fix workflow | `fix-command.test.ts::should run fix workflow` |
-| AC-2 | Supports flags: --preview, --no-preview, --dry-run | `fix-command.test.ts::should support flags` |
-| AC-3 | Integrates RefactoringService and TriageService | `fix-command.test.ts::should integrate services` |
-| AC-4 | Displays results using DiffPresenter | `fix-command.test.ts::should display results` |
-| AC-5 | Exit code 0 if successful, 1 if errors | `fix-command.test.ts::should return correct exit code` |
+| AC   | Description                                        | Test Case                                              |
+| ---- | -------------------------------------------------- | ------------------------------------------------------ |
+| AC-1 | `nimata fix` executes complete fix workflow        | `fix-command.test.ts::should run fix workflow`         |
+| AC-2 | Supports flags: --preview, --no-preview, --dry-run | `fix-command.test.ts::should support flags`            |
+| AC-3 | Integrates RefactoringService and TriageService    | `fix-command.test.ts::should integrate services`       |
+| AC-4 | Displays results using DiffPresenter               | `fix-command.test.ts::should display results`          |
+| AC-5 | Exit code 0 if successful, 1 if errors             | `fix-command.test.ts::should return correct exit code` |
 
 ---
 
@@ -3420,41 +3386,41 @@ The following implementation order respects dependencies and enables parallel wo
 
 **Parallel - Can work simultaneously after Phase 1**
 
-**Swim Lane C1 (Developer 1):**
-3. **Story 3.1: Remove Unused Imports** (3 points)
-   - Implement `UnusedImportsTransformer`
-   - Write golden file tests
-   - Write unit tests
+**Swim Lane C1 (Developer 1):** 3. **Story 3.1: Remove Unused Imports** (3 points)
 
-**Swim Lane C2 (Developer 2):**
-4. **Story 3.2: Infer Explicit Types** (5 points)
-   - Implement `TypeInferenceTransformer`
-   - Write golden file tests
-   - Write unit tests
+- Implement `UnusedImportsTransformer`
+- Write golden file tests
+- Write unit tests
 
-**Swim Lane C3 (Developer 2):**
-5. **Story 3.3: Apply Code Style Fixes** (3 points)
-   - Implement `CodeStyleTransformer`
-   - Write golden file tests
-   - Write unit tests
+**Swim Lane C2 (Developer 2):** 4. **Story 3.2: Infer Explicit Types** (5 points)
 
-**Swim Lane A (Developer 3):**
-6. **Story 3.6: Triage Issues** (5 points)
-   - Implement `TriageService`
-   - Implement classification algorithm
-   - Write unit tests
+- Implement `TypeInferenceTransformer`
+- Write golden file tests
+- Write unit tests
 
-**Swim Lane D (Developer 4):**
-7. **Story 3.7: Generate AI Prompts** (5 points)
-   - Implement `AIPromptGenerator` (in ClaudeCodePlugin)
-   - Implement context extraction
-   - Write unit tests
+**Swim Lane C3 (Developer 2):** 5. **Story 3.3: Apply Code Style Fixes** (3 points)
 
-**Swim Lane E (Developer 5):**
-8. **Story 3.8: Preview Refactoring Changes** (3 points)
-   - Implement `RefactorWizard`
-   - Implement interactive approval flow
-   - Write unit tests
+- Implement `CodeStyleTransformer`
+- Write golden file tests
+- Write unit tests
+
+**Swim Lane A (Developer 3):** 6. **Story 3.6: Triage Issues** (5 points)
+
+- Implement `TriageService`
+- Implement classification algorithm
+- Write unit tests
+
+**Swim Lane D (Developer 4):** 7. **Story 3.7: Generate AI Prompts** (5 points)
+
+- Implement `AIPromptGenerator` (in ClaudeCodePlugin)
+- Implement context extraction
+- Write unit tests
+
+**Swim Lane E (Developer 5):** 8. **Story 3.8: Preview Refactoring Changes** (3 points)
+
+- Implement `RefactorWizard`
+- Implement interactive approval flow
+- Write unit tests
 
 9. **Story 3.9: Diff Output with Syntax Highlighting** (2 points)
    - Implement `DiffPresenter`
@@ -3502,13 +3468,13 @@ Phase 3 (Sequential):
 
 ### 15.4 Developer Assignments
 
-| Developer | Swim Lane | Stories | Total Points |
-|-----------|-----------|---------|--------------|
-| **Dev 1** | C1 (Transformers) | 3.4, 3.5, 3.1 | 11 points |
-| **Dev 2** | C2, C3 (Transformers) | 3.2, 3.3 | 8 points |
-| **Dev 3** | A (Core) | 3.6, 3.10 (part) | 8 points |
-| **Dev 4** | D (AI Plugin) | 3.7 | 5 points |
-| **Dev 5** | E (Adapters) | 3.8, 3.9, 3.10 (part) | 10 points |
+| Developer | Swim Lane             | Stories               | Total Points |
+| --------- | --------------------- | --------------------- | ------------ |
+| **Dev 1** | C1 (Transformers)     | 3.4, 3.5, 3.1         | 11 points    |
+| **Dev 2** | C2, C3 (Transformers) | 3.2, 3.3              | 8 points     |
+| **Dev 3** | A (Core)              | 3.6, 3.10 (part)      | 8 points     |
+| **Dev 4** | D (AI Plugin)         | 3.7                   | 5 points     |
+| **Dev 5** | E (Adapters)          | 3.8, 3.9, 3.10 (part) | 10 points    |
 
 **Total Story Points:** 42 (includes integration overhead)
 
@@ -3529,6 +3495,7 @@ Need AST manipulation for refactoring features (Epic 3). Options: ts-morph vs Ty
 Use ts-morph as high-level wrapper around TypeScript Compiler API.
 
 **Rationale**:
+
 - Developer productivity: hours vs days for refactoring implementations
 - Built-in syntax validation: prevents invalid transformations
 - Rollback on error: safe transformations with automatic revert
@@ -3537,6 +3504,7 @@ Use ts-morph as high-level wrapper around TypeScript Compiler API.
 - Extensive documentation and examples
 
 **Consequences**:
+
 - Positive: Faster feature development (10x productivity gain)
 - Positive: Safer transformations (validation + rollback)
 - Positive: Easier onboarding (simpler API)
@@ -3544,6 +3512,7 @@ Use ts-morph as high-level wrapper around TypeScript Compiler API.
 - Mitigation: Bundle size acceptable for CLI tool (not a web app)
 
 **Alternatives Considered**:
+
 - TypeScript Compiler API directly: Lower-level, harder to use, error-prone
 - Babel AST: Not TypeScript-native, requires extra transformation steps
 
@@ -3562,6 +3531,7 @@ Use ts-morph as high-level wrapper around TypeScript Compiler API.
 - **Swim Lane E (Adapters)**: DiffPresenter (1 developer, parallel)
 
 **Dependencies:**
+
 - Swim Lane A must complete interfaces before B/C/D/E start
 - Swim Lanes B, C, D, E can work in parallel after interfaces defined
 - Stories 3.1-3.3 (transformers) depend on 3.4 (ASTRefactorer base class) - semi-sequential within Swim Lane C
@@ -3570,9 +3540,9 @@ Use ts-morph as high-level wrapper around TypeScript Compiler API.
 
 ## Revision History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-10-16 | Technical Architect | Initial draft |
+| Version | Date       | Author              | Changes       |
+| ------- | ---------- | ------------------- | ------------- |
+| 1.0     | 2025-10-16 | Technical Architect | Initial draft |
 
 ---
 

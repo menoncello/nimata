@@ -23,12 +23,7 @@ This checklist ensures the Turborepo monorepo setup is correctly configured befo
   - Verify workspaces are defined:
     ```json
     {
-      "workspaces": [
-        "apps/*",
-        "packages/*",
-        "plugins/*",
-        "infrastructure/*"
-      ]
+      "workspaces": ["apps/*", "packages/*", "plugins/*", "infrastructure/*"]
     }
     ```
 
@@ -198,12 +193,12 @@ This checklist ensures the Turborepo monorepo setup is correctly configured befo
 
 - [ ] **Initial build timing recorded**
   - Run: `turbo build --force` (ignore cache)
-  - Record time: ______ seconds
+  - Record time: **\_\_** seconds
 
 - [ ] **Cached build is faster**
   - Run: `turbo build` (should use cache)
   - Expected: "cache hit" messages for all tasks
-  - Time: ______ seconds (should be < 1 second)
+  - Time: **\_\_** seconds (should be < 1 second)
 
 - [ ] **Cache location verified**
   - Path: `/Users/menoncello/repos/dev/nimata/node_modules/.cache/turbo/`
@@ -458,13 +453,14 @@ This checklist ensures the Turborepo monorepo setup is correctly configured befo
 
 **After completing this checklist:**
 
-| Metric | Before | After |
-|--------|--------|-------|
-| Risk #4 Score | 6 (Probability: 2, Impact: 3) | 2 (Probability: 1, Impact: 2) |
-| Gate Status | CONCERNS | PASS (if all tests pass) |
+| Metric        | Before                                        | After                              |
+| ------------- | --------------------------------------------- | ---------------------------------- |
+| Risk #4 Score | 6 (Probability: 2, Impact: 3)                 | 2 (Probability: 1, Impact: 2)      |
+| Gate Status   | CONCERNS                                      | PASS (if all tests pass)           |
 | Residual Risk | Turborepo misconfiguration blocks development | Low - verified working, documented |
 
 **Evidence Required for PR Approval:**
+
 - Screenshot or log output of successful `turbo build --dry-run`
 - Screenshot or log output of successful `tsc --build`
 - Screenshot of cache hit after second `turbo build`
@@ -475,25 +471,33 @@ This checklist ensures the Turborepo monorepo setup is correctly configured befo
 ## Troubleshooting Common Issues
 
 ### Issue: "Workspace not found"
+
 **Solution:** Verify `package.json` workspaces glob patterns match directory structure.
 
 ### Issue: "Cannot find module @nimata/core"
+
 **Solution:**
+
 1. Check `packages/core/package.json` has `"name": "@nimata/core"`
 2. Run `bun install` to regenerate workspace links
 3. Verify TypeScript project references in tsconfig.json
 
 ### Issue: "Circular dependency detected"
+
 **Solution:** Review import statements. Core should never import from adapters/CLI.
 
 ### Issue: Slow builds
+
 **Solution:**
+
 1. Verify cache is working: `turbo build` should show "cache hit"
 2. Check `.turbo/` directory exists
 3. Use `turbo build --filter=<package>` for selective builds
 
 ### Issue: TypeScript errors in node_modules
+
 **Solution:**
+
 1. Run `bun install` to ensure all dependencies are installed
 2. Delete `node_modules/.cache` and rebuild
 3. Verify TypeScript version matches across all packages
@@ -502,7 +506,7 @@ This checklist ensures the Turborepo monorepo setup is correctly configured befo
 
 ## Approval Sign-Off
 
-**Developer:** __________________ Date: __________
+**Developer:** **\*\*\*\***\_\_**\*\*\*\*** Date: \***\*\_\_\*\***
 
 **Checklist Status:** ⬜ Complete (all items ✅)
 

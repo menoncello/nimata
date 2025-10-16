@@ -1,0 +1,35 @@
+{
+  "name": "@nimata/adapters",
+  "version": "0.1.0",
+  "description": "Nìmata adapter implementations (file system, config, etc.)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit",
+    "dev": "tsc --build --watch",
+    "test": "echo 'No tests yet (stub package)'",
+    "test:coverage": "echo 'No coverage tests yet (stub package)'",
+    "test:mutation": "echo 'No mutation tests yet (stub package)'",
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" --fix",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@nimata/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.8.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "bun": ">=1.3.0"
+  }
+}

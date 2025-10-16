@@ -10,6 +10,7 @@
 
 **Session Goals:**
 Explore and expand ideas for a BunJS-based monolithic CLI tool with three core capabilities:
+
 1. Interactive project scaffolding (language, libraries, architecture, databases, quality tools)
 2. Code quality validation and enhanced reporting (lint, tests, coverage, mutation testing)
 3. Static refactoring and AI-assisted code improvement prompts
@@ -95,6 +96,7 @@ The tool doesn't need to invent new refactorings - it orchestrates existing prov
 **The Non-Negotiable Superpower: Quality Through Prevention & Precision**
 
 The three pillars form a quality cascade:
+
 1. **Start Right** (Scaffolding) → Reduces corrections needed
 2. **Find Right** (Quality Validation) → Identifies issues more precisely
 3. **Fix Right** (Smart Refactoring) → Corrects issues more easily
@@ -241,6 +243,7 @@ Focus: Enhancing the Happy Path Scaffolding capability
 **R - REVERSE/REARRANGE Ideas:**
 
 _Explored but no immediate actionable ideas identified_
+
 - Validation before scaffolding: Doesn't apply (nothing to validate yet)
 - Suggesting vs applying: Already planned (interactive preview)
 - Start from end result: Too abstract for CLI workflow
@@ -289,6 +292,7 @@ The tool should maximize parallelization for faster value delivery.
 **Scenario 2: What if the opposite were true?**
 
 **New Idea Emerged: Deep Code Review**
+
 - AI-powered comprehensive code review
 - Detect code smells and potential bugs
 - Beyond syntax - semantic and architectural issues
@@ -319,6 +323,7 @@ The tool should maximize parallelization for faster value delivery.
 "Perfect code" is impossible - quality is a continuous pursuit, not a destination.
 
 The tool's value isn't in achieving perfection, but in:
+
 - Making quality the path of least resistance
 - Reducing friction in the quality feedback loop
 - Preventing problems earlier in the lifecycle
@@ -339,6 +344,7 @@ The tool's value isn't in achieving perfection, but in:
 ### MVP Strategy (Version 1.0)
 
 **Core Philosophy:**
+
 - Start focused, design for expansion (SOLID principles)
 - Leverage existing tools (don't reinvent)
 - Deliver value fast, parallelize future development
@@ -532,11 +538,13 @@ _Key realizations from the session_
 #### #1 Priority: Limited Tech Stack Support (Foundation)
 
 **Rationale:**
+
 - Everything else depends on this foundation
 - Must be rock-solid and extensible (SOLID)
 - Quality over quantity - one stack done right
 
 **Next Steps:**
+
 1. Choose initial stack (likely: TypeScript + Bun for CLI)
 2. Design plugin/extension architecture for future stacks
 3. Implement scaffolding engine with dependency injection
@@ -544,6 +552,7 @@ _Key realizations from the session_
 5. Build initial TypeScript+Bun stack template
 
 **Resources Needed:**
+
 - BunJS runtime and tooling knowledge
 - TypeScript ecosystem expertise
 - Design patterns for extensibility (Strategy, Factory)
@@ -556,11 +565,13 @@ _Key realizations from the session_
 #### #2 Priority: AI Rules Engine (Prevent AI Errors)
 
 **Rationale:**
+
 - Immediate value - prevents AI hallucinations from day one
 - Differentiator - most tools don't do this
 - Supports multiple AI platforms (Claude Code, Windsurf, etc.)
 
 **Next Steps:**
+
 1. Research AI rules file formats (CLAUDE.md, BMAD, etc.)
 2. Build pre-cached common rules library (TypeScript rules, best practices)
 3. Create rule template system
@@ -568,6 +579,7 @@ _Key realizations from the session_
 5. Generate rules during scaffolding
 
 **Resources Needed:**
+
 - Knowledge of various AI tool configuration formats
 - Rule curation (TypeScript, linting, testing best practices)
 - Template engine
@@ -580,11 +592,13 @@ _Key realizations from the session_
 #### #3 Priority: Integrate Existing Quality Tools (Core Value)
 
 **Rationale:**
+
 - This IS the "Find Right" pillar
 - Orchestration is the tool's superpower
 - Leverages proven tools (don't reinvent)
 
 **Next Steps:**
+
 1. Integrate ESLint with enhanced reporting
 2. Integrate TypeScript type checking
 3. Integrate Vitest for testing
@@ -593,6 +607,7 @@ _Key realizations from the session_
 6. Create dual-output reporting (CLI summary + detailed HTML)
 
 **Resources Needed:**
+
 - Deep knowledge of each tool's CLI/API
 - Report parsing and transformation
 - HTML report generation (inspired by Stryker)
@@ -605,17 +620,20 @@ _Key realizations from the session_
 #### #4 Priority: Configurable Quality Levels
 
 **Rationale:**
+
 - Flexibility without sacrificing opinionated defaults
 - Appeals to different project types/teams
 - Easy to implement on top of #3
 
 **Next Steps:**
+
 1. Define quality level schemas (light/medium/strict)
 2. Create configuration presets for each level
 3. Implement configuration selection in scaffolding
 4. Document differences between levels
 
 **Resources Needed:**
+
 - Configuration management
 - Preset definitions (ESLint rules per level, etc.)
 
@@ -626,11 +644,13 @@ _Key realizations from the session_
 #### #5 Priority: Simple Static Refactorings
 
 **Rationale:**
+
 - "Fix Right" pillar starts here
 - Low-hanging fruit, high value
 - Foundation for complex refactorings later
 
 **Next Steps:**
+
 1. Identify 5-10 simple refactoring patterns (readonly, const, etc.)
 2. Implement AST-based pattern detection
 3. Build safe transformation engine
@@ -638,6 +658,7 @@ _Key realizations from the session_
 5. Scope selection (file/folder/project)
 
 **Resources Needed:**
+
 - TypeScript Compiler API or Babel for AST manipulation
 - Diff generation library
 - Interactive CLI prompts
@@ -649,11 +670,13 @@ _Key realizations from the session_
 #### #6 Priority: AI Prompt Generation (Complex Refactoring)
 
 **Rationale:**
+
 - Completes "Fix Right" pillar for MVP
 - Safe approach - human reviews AI suggestions
 - Leverages existing AI tools
 
 **Next Steps:**
+
 1. Identify common complex refactoring scenarios
 2. Build prompt template library
 3. Create context extraction (code + surrounding context)
@@ -661,6 +684,7 @@ _Key realizations from the session_
 5. Support multiple AI tools (Claude Code, Windsurf)
 
 **Resources Needed:**
+
 - Prompt engineering expertise
 - Context gathering from codebase
 - Template system
@@ -680,12 +704,14 @@ _Key realizations from the session_
 ### Areas for Further Exploration
 
 **Technical Deep Dives:**
+
 1. **AST manipulation strategies** - How to implement safe static refactorings
 2. **Plugin architecture design** - SOLID principles for stack extensibility
 3. **AI prompt engineering** - Optimal templates for complex refactoring scenarios
 4. **Report generation** - HTML visualization strategies (Stryker-inspired)
 
 **Product Strategy:**
+
 1. **Go-to-market approach** - How to position and launch the tool
 2. **Community building** - Open source strategy, contribution model
 3. **Stack prioritization** - Which stacks to add after TypeScript+Bun
@@ -695,6 +721,7 @@ _Key realizations from the session_
 **Next Recommended Step: Product Brief**
 
 Run the `*product-brief` workflow to create strategic foundation document including:
+
 - Target users and personas
 - Value proposition and positioning
 - Competitive landscape
@@ -704,6 +731,7 @@ Run the `*product-brief` workflow to create strategic foundation document includ
 **Then: Technical Planning**
 
 After Product Brief, move to Phase 2 with `*plan-project` workflow to create:
+
 - Complete Tech-Spec
 - Epic breakdown
 - Story sequence for implementation

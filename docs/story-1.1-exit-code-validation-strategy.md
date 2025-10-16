@@ -20,16 +20,16 @@ This document explains the exit code validation strategy for Story 1.1 (CLI Fram
 
 Per Story 1.1 AC #6 and Solution Architecture (Section 6.3), Nìmata follows Unix exit code conventions:
 
-| Exit Code | Meaning | When Used | Examples |
-|-----------|---------|-----------|----------|
-| **0** | Success | Command completed successfully, no errors found | `nimata --help`, `nimata --version`, `nimata init` (stub) |
-| **1** | Validation errors found | `validate` command found errors | `nimata validate` (errors present), invalid command |
-| **2** | Validation warnings only | `validate` command found warnings but no errors | `nimata validate` (warnings only) |
-| **3** | Configuration error | Invalid config file or missing required config | `nimata validate --config /nonexistent.yaml` |
-| **4** | Plugin error | Plugin failed to load or execute | Plugin initialization failure |
-| **5** | File system error | Cannot read/write files | Permission denied, disk full |
-| **6** | Transformation error | Refactoring failed (syntax error after transform) | `nimata fix` introduces syntax errors |
-| **130** | Interrupted (SIGINT) | User pressed Ctrl+C | `nimata validate` (Ctrl+C during execution) |
+| Exit Code | Meaning                  | When Used                                         | Examples                                                  |
+| --------- | ------------------------ | ------------------------------------------------- | --------------------------------------------------------- |
+| **0**     | Success                  | Command completed successfully, no errors found   | `nimata --help`, `nimata --version`, `nimata init` (stub) |
+| **1**     | Validation errors found  | `validate` command found errors                   | `nimata validate` (errors present), invalid command       |
+| **2**     | Validation warnings only | `validate` command found warnings but no errors   | `nimata validate` (warnings only)                         |
+| **3**     | Configuration error      | Invalid config file or missing required config    | `nimata validate --config /nonexistent.yaml`              |
+| **4**     | Plugin error             | Plugin failed to load or execute                  | Plugin initialization failure                             |
+| **5**     | File system error        | Cannot read/write files                           | Permission denied, disk full                              |
+| **6**     | Transformation error     | Refactoring failed (syntax error after transform) | `nimata fix` introduces syntax errors                     |
+| **130**   | Interrupted (SIGINT)     | User pressed Ctrl+C                               | `nimata validate` (Ctrl+C during execution)               |
 
 ---
 
@@ -41,6 +41,7 @@ Per Story 1.1 AC #6 and Solution Architecture (Section 6.3), Nìmata follows Uni
 **Description:** Exit codes may not follow Unix conventions (AC #6), breaking CI/CD pipeline integrations that depend on exit codes.
 
 **Evidence:**
+
 - Story requires exit code conventions: 0=success, 1=error, 3=config error, 130=interrupt
 - Easy to forget exit codes in error paths (e.g., catching errors but not setting exit code)
 - CI/CD pipelines (GitHub Actions, GitLab CI, Jenkins) rely on exit codes for pass/fail gating
@@ -50,6 +51,7 @@ Per Story 1.1 AC #6 and Solution Architecture (Section 6.3), Nìmata follows Uni
 **Score:** 6 ⚠️ (CONCERNS - requires mitigation before approval)
 
 **Consequences if not mitigated:**
+
 - ❌ CI/CD builds pass incorrectly when validation finds errors
 - ❌ Quality gates don't prevent merging bad code
 - ❌ Production deployments with unvalidated code
@@ -88,6 +90,7 @@ The mitigation uses defense-in-depth with three test layers:
 **Location:** `apps/cli/tests/unit/`
 
 **Test Coverage:**
+
 - 1.1-UNIT-009: Exit code 0 for success
 - 1.1-UNIT-010: Exit code 1 for validation error
 - 1.1-UNIT-011: Exit code 3 for config error
@@ -96,6 +99,7 @@ The mitigation uses defense-in-depth with three test layers:
 **Purpose:** Verify exit code logic in isolation (fast feedback).
 
 **Example Test:**
+
 ```typescript
 describe('Exit Codes', () => {
   it('should exit with code 0 on success', async () => {
@@ -110,7 +114,7 @@ describe('Exit Codes', () => {
     const mockExit = jest.spyOn(process, 'exit').mockImplementation();
     mockValidationService.validate.mockResolvedValue({
       errors: [{ message: 'Error' }],
-      warnings: []
+      warnings: [],
     });
 
     await executeCommand(['validate']);
@@ -125,11 +129,13 @@ describe('Exit Codes', () => {
 **Location:** `apps/cli/tests/integration/`
 
 **Test Coverage:**
+
 - 1.1-INT-001: CLI entry point execution with real DI container
 
 **Purpose:** Verify exit codes work with real Yargs + TSyringe integration.
 
 **Example Test:**
+
 ```typescript
 describe('CLI Entry Point Integration', () => {
   it('should exit with correct code for invalid command', async () => {
@@ -149,6 +155,7 @@ describe('CLI Entry Point Integration', () => {
 **Location:** `apps/cli/tests/e2e/` + `.github/workflows/ci.yml`
 
 **Test Coverage:**
+
 - 1.1-E2E-007: Invalid command returns exit code 1
 - CI: `nimata --help` returns exit code 0
 - CI: `nimata --version` returns exit code 0
@@ -158,6 +165,7 @@ describe('CLI Entry Point Integration', () => {
 **Purpose:** Verify exit codes in real CLI execution (highest confidence).
 
 **CI Validation Example:**
+
 ```bash
 # In .github/workflows/ci.yml
 - name: 🔍 Exit Code Validation - Success (Exit 0)
@@ -207,12 +215,12 @@ Example GitHub Actions summary:
 ```markdown
 ## Exit Code Validation Results (Risk #3 Mitigation)
 
-| Test Case | Expected Exit Code | Result |
-|-----------|-------------------|---------|
-| `nimata --help` | 0 | ✅ PASS |
-| `nimata --version` | 0 | ✅ PASS |
-| `nimata invalid-command` | 1 | ✅ PASS |
-| `nimata` (no args) | 1 | ✅ PASS |
+| Test Case                | Expected Exit Code | Result  |
+| ------------------------ | ------------------ | ------- |
+| `nimata --help`          | 0                  | ✅ PASS |
+| `nimata --version`       | 0                  | ✅ PASS |
+| `nimata invalid-command` | 1                  | ✅ PASS |
+| `nimata` (no args)       | 1                  | ✅ PASS |
 
 **Risk Mitigation Status:** Story 1.1 Risk #3 (Exit Code Inconsistency)
 ```
@@ -277,14 +285,14 @@ import { hideBin } from 'yargs/helpers';
 
 // Exit code constants (documented)
 export const EXIT_CODES = {
-  SUCCESS: 0,              // Command completed successfully
-  VALIDATION_ERROR: 1,     // Validation errors found
-  VALIDATION_WARNING: 2,   // Warnings only (no errors)
-  CONFIG_ERROR: 3,         // Invalid config file
-  PLUGIN_ERROR: 4,         // Plugin failure
-  FILE_SYSTEM_ERROR: 5,    // Cannot read/write files
+  SUCCESS: 0, // Command completed successfully
+  VALIDATION_ERROR: 1, // Validation errors found
+  VALIDATION_WARNING: 2, // Warnings only (no errors)
+  CONFIG_ERROR: 3, // Invalid config file
+  PLUGIN_ERROR: 4, // Plugin failure
+  FILE_SYSTEM_ERROR: 5, // Cannot read/write files
   TRANSFORMATION_ERROR: 6, // Refactoring failed
-  INTERRUPTED: 130         // User pressed Ctrl+C (SIGINT)
+  INTERRUPTED: 130, // User pressed Ctrl+C (SIGINT)
 } as const;
 
 // Global error handler
@@ -350,7 +358,7 @@ export const validateCommand: CommandModule = {
     } catch (error) {
       handleError(error);
     }
-  }
+  },
 };
 ```
 
@@ -440,13 +448,13 @@ Run with: `bun run scripts/test-exit-codes.sh`
 
 **After implementing this strategy:**
 
-| Metric | Before | After |
-|--------|--------|-------|
-| Risk #3 Score | 6 (Probability: 2, Impact: 3) | 1 (Probability: 1, Impact: 1) |
-| Gate Status | CONCERNS | PASS (if all tests pass) |
-| Test Coverage | 0 tests | 18 tests (12 unit + 1 integration + 5 E2E/CI) |
-| CI Validation | ❌ None | ✅ Automated on every PR |
-| Merge Blocking | ❌ None | ✅ PR blocked if exit codes fail |
+| Metric         | Before                        | After                                         |
+| -------------- | ----------------------------- | --------------------------------------------- |
+| Risk #3 Score  | 6 (Probability: 2, Impact: 3) | 1 (Probability: 1, Impact: 1)                 |
+| Gate Status    | CONCERNS                      | PASS (if all tests pass)                      |
+| Test Coverage  | 0 tests                       | 18 tests (12 unit + 1 integration + 5 E2E/CI) |
+| CI Validation  | ❌ None                       | ✅ Automated on every PR                      |
+| Merge Blocking | ❌ None                       | ✅ PR blocked if exit codes fail              |
 
 **Residual Risk:** Low (1) - Comprehensive testing + CI validation ensures exit codes are correct.
 
@@ -490,7 +498,7 @@ Run with: `bun run scripts/test-exit-codes.sh`
 
 ## Approval Sign-Off
 
-**Developer:** __________________ Date: __________
+**Developer:** **\*\*\*\***\_\_**\*\*\*\*** Date: \***\*\_\_\*\***
 
 **Exit Code Tests Implemented:** ⬜ All 18 tests passing
 

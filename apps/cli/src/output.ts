@@ -1,0 +1,81 @@
+/**
+ * Output Wrapper - Console and Stream Abstraction
+ *
+ * Provides a mockable abstraction layer for stdout/stderr operations using DI.
+ * This allows tests to suppress output without fighting against Yargs internals.
+ */
+import { injectable, singleton } from 'tsyringe';
+
+/**
+ * Interface for output operations
+ */
+export interface OutputWriter {
+  /**
+   * Write to stdout
+   * @param message - Message to write
+   */
+  stdout: (message: string) => void;
+
+  /**
+   * Write to stderr
+   * @param message - Message to write
+   */
+  stderr: (message: string) => void;
+
+  /**
+   * Log to console
+   * @param messages - Messages to log
+   */
+  log: (...messages: unknown[]) => void;
+
+  /**
+   * Log error to console
+   * @param messages - Error messages to log
+   */
+  error: (...messages: unknown[]) => void;
+}
+
+/**
+ * Default implementation using real console and process streams
+ */
+@injectable()
+@singleton()
+export class ConsoleOutputWriter implements OutputWriter {
+  stdout(message: string): void {
+    process.stdout.write(message);
+  }
+
+  stderr(message: string): void {
+    process.stderr.write(message);
+  }
+
+  log(...messages: unknown[]): void {
+    console.log(...messages);
+  }
+
+  error(...messages: unknown[]): void {
+    console.error(...messages);
+  }
+}
+
+/**
+ * Silent implementation for testing (no-op)
+ */
+@injectable()
+export class SilentOutputWriter implements OutputWriter {
+  stdout(): void {
+    /* no-op for testing */
+  }
+
+  stderr(): void {
+    /* no-op for testing */
+  }
+
+  log(): void {
+    /* no-op for testing */
+  }
+
+  error(): void {
+    /* no-op for testing */
+  }
+}

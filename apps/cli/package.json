@@ -1,0 +1,42 @@
+{
+  "name": "@nimata/cli",
+  "version": "0.1.0",
+  "description": "Nìmata CLI application",
+  "type": "module",
+  "bin": {
+    "nimata": "./bin/nimata"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit && tsc --noEmit --project tsconfig.test.json",
+    "dev": "tsc --build --watch",
+    "test": "bun test",
+    "test:unit": "bun test tests/unit/",
+    "test:e2e": "bun test tests/e2e/",
+    "test:coverage": "bun test --coverage",
+    "test:mutation": "stryker run",
+    "test:watch": "bun test --watch",
+    "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" \"tests/**/*.ts\" --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "clean": "rm -rf dist node_modules reports .stryker-tmp"
+  },
+  "dependencies": {
+    "@nimata/core": "workspace:*",
+    "@nimata/adapters": "workspace:*",
+    "yargs": "^17.7.2",
+    "tsyringe": "^4.8.0",
+    "reflect-metadata": "^0.2.1",
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.8.0",
+    "@types/yargs": "^17.0.32",
+    "bun-types": "^1.3.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "bun": ">=1.3.0"
+  }
+}
