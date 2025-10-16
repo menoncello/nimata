@@ -1,0 +1,212 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.1</storyId>
+    <title>CLI Framework Setup</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-16</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.1.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>developer using Nìmata</asA>
+    <iWant>a functional CLI application with command routing and argument parsing</iWant>
+    <soThat>I can execute Nìmata commands (init, validate, fix, prompt) from the terminal with proper help and error handling</soThat>
+    <tasks>
+      - Set up Turborepo monorepo structure (Initialize Turborepo, create apps/cli, packages/core, packages/adapters, configure TypeScript project references, add Bun 1.3+ runtime)
+      - Implement CLI entry point with Yargs (Create apps/cli/src/index.ts, set up Yargs routing, implement bin/nimata launcher, configure command routing for init/validate/fix/prompt, add global flags --help/--version/--config)
+      - Implement TSyringe dependency injection container (Create apps/cli/src/container.ts for manual DI registration, document no-decorators approach)
+      - Add command help and version display (Implement --help for all commands, per-command help, --version reading from package.json, format help output)
+      - Implement proper exit codes (0=success, 1=validation errors, 3=config errors, 130=interruptions, document all codes)
+      - Add tests for CLI framework (Unit tests: command routing, argument parsing, help text, version display, exit codes; E2E tests: nimata --help, nimata --version)
+      - Create package.json with dependencies (Add yargs ^17.x, tsyringe ^4.x, picocolors ^1.x, typescript ^5.x as dev dep, configure bin field, add build/test/dev scripts)
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. CLI entry point (`bin/nimata`) executes successfully
+    2. Command routing supports subcommands (init, validate, fix, prompt)
+    3. Argument parsing handles flags and options (--help, --version, --config)
+    4. Help text displays for each command
+    5. Version number displays correctly
+    6. Exit codes follow Unix conventions (0=success, non-zero=error)
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>ADR-002: Clean Architecture Lite</section>
+        <snippet>Use simplified "Clean Architecture Lite" with 3 layers: CLI → Use Cases → Adapters. CLI tools don't need separate Controllers layer (Yargs commands can call use cases directly). Domain types can live with use cases, keeping core benefits: dependency inversion, testability, SOLID principles while reducing boilerplate.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>ADR-003: TSyringe DI with Manual Registration</section>
+        <snippet>Use TSyringe with manual registration (no decorators). Manual registration provides explicit, debuggable dependency graphs. Microsoft-maintained, TypeScript-first design with better performance than InversifyJS and simple API: register, resolve, clear.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>ADR-007: Yargs CLI Framework Selection</section>
+        <snippet>Use Yargs for command routing + Prompts for interactive mode. Yargs has best TypeScript support with zero decorators and simple routing. Separation of concerns: routing (Yargs) vs interaction (Prompts) results in smaller bundle size with built-in shell completion.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Solution Architecture Document</title>
+        <section>Section 7: Proposed Source Tree</section>
+        <snippet>apps/cli/ contains commands/ (Yargs handlers), wizards/ (Prompts interactive), presenters/ (terminal output), container.ts (TSyringe DI setup), and index.ts (CLI entry point). Turborepo monorepo structure with apps/ and packages/ separation.</snippet>
+      </doc>
+      <doc>
+        <path>docs/tech-spec-epic-1.md</path>
+        <title>Technical Specification - Epic 1</title>
+        <section>3.2.1: CLI Layer Components</section>
+        <snippet>CLI Layer contains Yargs command handlers, interactive wizards using Prompts, and terminal output formatters using Ora spinners. DI Container orchestrates dependency resolution through TSyringe with manual registration. All CLI components call use cases directly without intermediate controller layer.</snippet>
+      </doc>
+      <doc>
+        <path>docs/tech-spec-epic-1.md</path>
+        <title>Technical Specification - Epic 1</title>
+        <section>4.1: Core Interfaces</section>
+        <snippet>Key interfaces include IScaffoldingService (scaffold method), IFileSystem (createDirectory, writeFile, readFile, exists, copy), and Result pattern for functional error handling. All async operations return Result&lt;T&gt; for explicit error management.</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>NFR004: Maintainability</section>
+        <snippet>Core engine follows SOLID principles to enable addition of new tech stacks without modifying core code. Comprehensive test coverage (&gt;80%) catches regressions. Clear separation between core orchestration, plugins, and templates. MVP architecture must support Phase 2 expansion without rewrites.</snippet>
+      </doc>
+      <doc>
+        <path>docs/PRD.md</path>
+        <title>Product Requirements Document</title>
+        <section>FR001: Interactive CLI Scaffolding</section>
+        <snippet>User runs `nimata init` guided through interactive CLI wizard with context-aware questions to configure TypeScript+Bun project with opinionated directory structure, dependency management, and SOLID architecture. Wizard completes in &lt;20 questions with smart defaults.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <note>Greenfield project - Story 1.1 establishes the foundation. No existing code to reference.</note>
+      <note>This story creates: apps/cli/src/index.ts, apps/cli/src/container.ts, apps/cli/src/commands/*.ts, bin/nimata, turbo.json, root package.json, tsconfig.json</note>
+    </code>
+    <dependencies>
+      <ecosystem name="Node.js/Bun">
+        <runtime>
+          <package name="bun" version="^1.3.0" note="Primary runtime (replaces Node.js)" />
+        </runtime>
+        <cli-dependencies>
+          <package name="yargs" version="^17.0.0" note="CLI argument parsing and routing" />
+          <package name="picocolors" version="^1.0.0" note="Terminal colors (14x faster than chalk)" />
+        </cli-dependencies>
+        <core-dependencies>
+          <package name="tsyringe" version="^4.0.0" note="Dependency injection with manual registration" />
+          <package name="reflect-metadata" version="^0.2.0" note="Required by TSyringe" />
+        </core-dependencies>
+        <dev-dependencies>
+          <package name="typescript" version="^5.0.0" note="TypeScript compiler" />
+          <package name="@types/node" version="^20.0.0" note="Node.js type definitions" />
+          <package name="@types/yargs" version="^17.0.0" note="Yargs type definitions" />
+          <package name="turbo" version="^2.0.0" note="Turborepo monorepo build system" />
+        </dev-dependencies>
+        <testing-dependencies>
+          <package name="bun:test" version="built-in" note="Bun native test runner (v1.1.3+)" />
+          <note>No additional test framework needed - Bun Test is built-in with jest-compatible API</note>
+        </testing-dependencies>
+      </ecosystem>
+      <frameworks>
+        <framework name="Turborepo" version="2.x" purpose="Monorepo build orchestration, incremental builds, remote caching" />
+        <framework name="TypeScript" version="5.x" purpose="Type-safe development with strict mode" />
+        <framework name="Yargs" version="17.x" purpose="CLI command routing and argument parsing" />
+        <framework name="TSyringe" version="4.x" purpose="Dependency injection (manual registration, no decorators)" />
+      </frameworks>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>MUST use Clean Architecture Lite (3 layers): CLI → Use Cases → Adapters. No separate controller layer.</constraint>
+    <constraint>MUST use TSyringe for DI with manual registration only (NO decorators - explicit bindings in container.ts)</constraint>
+    <constraint>MUST use Yargs 17.x for CLI routing (not Commander or oclif)</constraint>
+    <constraint>MUST use Bun 1.3+ native APIs for performance (not Node.js APIs)</constraint>
+    <constraint>MUST use TypeScript 5.x with strict mode enabled</constraint>
+    <constraint>MUST implement Result pattern for all error handling (no throw/catch)</constraint>
+    <constraint>MUST achieve >80% test coverage (unit + E2E tests)</constraint>
+    <constraint>MUST follow Unix exit code conventions: 0=success, 1=validation error, 3=config error, 130=interrupt</constraint>
+    <constraint>CLI commands MUST be stubs only in this story (log "Not implemented yet" and exit 0). Full implementation in future stories.</constraint>
+    <constraint>MUST use Turborepo monorepo structure with apps/ and packages/ separation</constraint>
+    <constraint>MUST configure TypeScript project references for incremental builds</constraint>
+    <constraint>Package.json MUST include: yargs ^17.x, tsyringe ^4.x, picocolors ^1.x, typescript ^5.x (dev)</constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>IScaffoldingService</name>
+      <kind>TypeScript interface</kind>
+      <signature>interface IScaffoldingService { scaffold(options: ScaffoldOptions): Promise&lt;Result&lt;ProjectMetadata&gt;&gt;; }</signature>
+      <path>packages/core/src/interfaces/IScaffoldingService.ts (to be created in future story)</path>
+      <note>Not implemented in Story 1.1 - referenced for context only</note>
+    </interface>
+    <interface>
+      <name>IFileSystem</name>
+      <kind>TypeScript interface</kind>
+      <signature>interface IFileSystem { createDirectory(path: string): Promise&lt;Result&lt;void&gt;&gt;; writeFile(path: string, content: string | Buffer): Promise&lt;Result&lt;void&gt;&gt;; readFile(path: string): Promise&lt;Result&lt;string&gt;&gt;; exists(path: string): Promise&lt;boolean&gt;; copy(source: string, destination: string): Promise&lt;Result&lt;void&gt;&gt;; }</signature>
+      <path>packages/core/src/interfaces/IFileSystem.ts (to be created in future story)</path>
+      <note>Not implemented in Story 1.1 - referenced for context only</note>
+    </interface>
+    <interface>
+      <name>Result&lt;T&gt;</name>
+      <kind>TypeScript class (functional error handling pattern)</kind>
+      <signature>class Result&lt;T&gt; { static success&lt;T&gt;(value: T): Result&lt;T&gt;; static failure&lt;T&gt;(error: string): Result&lt;T&gt;; map&lt;U&gt;(fn: (value: T) =&gt; U): Result&lt;U&gt;; flatMap&lt;U&gt;(fn: (value: T) =&gt; Result&lt;U&gt;): Result&lt;U&gt;; }</signature>
+      <path>packages/core/src/common/result.ts (to be created in future story)</path>
+      <note>Not implemented in Story 1.1 - referenced for context only. Use basic error handling in this story.</note>
+    </interface>
+    <interface>
+      <name>Yargs Command Definition</name>
+      <kind>Yargs command configuration object</kind>
+      <signature>{ command: string; describe: string; builder: (yargs: Argv) =&gt; Argv; handler: (argv: Arguments) =&gt; Promise&lt;void&gt; }</signature>
+      <path>apps/cli/src/commands/init.ts, validate.ts, fix.ts, prompt.ts (stubs in this story)</path>
+      <note>Each command file exports a Yargs command definition. Story 1.1 creates stubs that log "Not implemented yet".</note>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Use Bun Test (built-in test runner v1.1.3+) with jest-compatible API. Unit tests: mock all dependencies using jest.fn(), fresh mocks in beforeEach() for isolation, 100% coverage target for CLI framework code. E2E tests: spawn actual CLI process via Bun.spawn(), verify stdout/stderr output, check exit codes. Mutation testing (Stryker): not applicable for Story 1.1 (no complex logic yet). Test structure: describe/it blocks, AAA pattern (Arrange/Act/Assert), clear test names describing behavior.
+    </standards>
+    <locations>
+      apps/cli/tests/unit/ - Unit tests for individual commands and components
+      apps/cli/tests/e2e/ - End-to-end tests executing full CLI commands
+      apps/cli/tests/fixtures/ - Test fixtures and mock data
+    </locations>
+    <ideas>
+      <test ac="1" description="CLI entry point executes successfully">
+        <unit>apps/cli/tests/unit/index.test.ts - Test that index.ts loads Yargs configuration and exports CLI instance without errors</unit>
+        <e2e>apps/cli/tests/e2e/cli-execution.test.ts - Spawn bin/nimata with no args, verify process exits with code 0 and displays help text</e2e>
+      </test>
+      <test ac="2" description="Command routing supports subcommands">
+        <unit>apps/cli/tests/unit/commands/routing.test.ts - Mock Yargs, verify init/validate/fix/prompt commands are registered with correct handlers</unit>
+        <unit>apps/cli/tests/unit/commands/init.test.ts - Test InitCommand handler is invoked when 'nimata init' is parsed</unit>
+        <e2e>apps/cli/tests/e2e/command-routing.test.ts - Execute 'nimata init', 'nimata validate', etc., verify correct stub messages and exit code 0</e2e>
+      </test>
+      <test ac="3" description="Argument parsing handles flags and options">
+        <unit>apps/cli/tests/unit/argument-parsing.test.ts - Test --help, --version, --config flags are parsed correctly by Yargs builder</unit>
+        <unit>apps/cli/tests/unit/commands/init.test.ts - Verify InitCommand receives parsed argv with correct flag values</unit>
+        <e2e>apps/cli/tests/e2e/flags.test.ts - Execute 'nimata --help', 'nimata --version', 'nimata init --config custom.json', verify output</e2e>
+      </test>
+      <test ac="4" description="Help text displays for each command">
+        <unit>apps/cli/tests/unit/help-text.test.ts - Mock Yargs showHelp(), verify each command has describe property with clear description</unit>
+        <e2e>apps/cli/tests/e2e/help-display.test.ts - Execute 'nimata --help', verify all commands (init, validate, fix, prompt) listed with descriptions</e2e>
+        <e2e>apps/cli/tests/e2e/per-command-help.test.ts - Execute 'nimata init --help', verify command-specific help is displayed</e2e>
+      </test>
+      <test ac="5" description="Version number displays correctly">
+        <unit>apps/cli/tests/unit/version.test.ts - Mock package.json read, verify version is extracted correctly</unit>
+        <e2e>apps/cli/tests/e2e/version-display.test.ts - Execute 'nimata --version', verify output matches version from package.json</e2e>
+      </test>
+      <test ac="6" description="Exit codes follow Unix conventions">
+        <unit>apps/cli/tests/unit/exit-codes.test.ts - Test that process.exit() is called with correct codes in different scenarios</unit>
+        <e2e>apps/cli/tests/e2e/exit-codes.test.ts - Spawn CLI with various scenarios, verify: success=0, validation error=1, config error=3, interrupt=130</e2e>
+        <note>Story 1.1 implements only successful stub execution (exit 0). Full error handling in future stories.</note>
+      </test>
+      <integration>
+        <test>apps/cli/tests/integration/container.test.ts - Test TSyringe container registration and dependency resolution (when real services added in future stories)</test>
+        <note>Story 1.1: Container exists but has no services registered yet. Test container instantiation only.</note>
+      </integration>
+    </ideas>
+  </tests>
+</story-context>

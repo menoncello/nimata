@@ -1,0 +1,496 @@
+# Nìmata CI Pipeline
+# Includes Turborepo caching, exit code validation, and mutation testing
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# Concurrency: Cancel in-progress runs for the same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Turborepo caching
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  # Bun version
+  BUN_VERSION: '1.1.38'
+
+jobs:
+  # ============================================================================
+  # Job 1: Lint
+  # ============================================================================
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run ESLint
+        run: bun run turbo lint
+
+  # ============================================================================
+  # Job 2: Build
+  # ============================================================================
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build all packages
+        run: bun run turbo build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            apps/*/dist/
+            packages/*/dist/
+            plugins/*/dist/
+            infrastructure/*/dist/
+          retention-days: 1
+
+  # ============================================================================
+  # Job 3: Type Check
+  # ============================================================================
+  typecheck:
+    name: TypeScript Type Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run TypeScript compiler
+        run: bun run tsc --build --noEmit
+
+  # ============================================================================
+  # Job 4: Unit Tests
+  # ============================================================================
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Run unit tests
+        run: bun run turbo test --filter='*[!e2e]*'
+
+      - name: Upload test coverage
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: ./coverage/coverage-final.json
+          flags: unit-tests
+
+  # ============================================================================
+  # Job 5: Integration Tests
+  # ============================================================================
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Run integration tests
+        run: bun test apps/cli/tests/integration/**/*.test.ts
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-test-results
+          path: test-results/
+          retention-days: 7
+
+  # ============================================================================
+  # Job 6: E2E Tests with Exit Code Validation (Risk #3 Mitigation)
+  # ============================================================================
+  e2e-tests:
+    name: E2E Tests + Exit Code Validation
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Run E2E tests
+        run: bun test apps/cli/tests/e2e/**/*.test.ts
+
+      # ========================================================================
+      # Exit Code Validation Tests (Risk #3 Mitigation - Story 1.1)
+      # ========================================================================
+      - name: 🔍 Exit Code Validation - Success (Exit 0)
+        id: exit-code-success
+        run: |
+          set +e  # Don't fail on non-zero exit
+
+          echo "Testing: nimata --help should exit with 0"
+          ./apps/cli/bin/nimata --help
+          EXIT_CODE=$?
+
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "✅ PASS: Exit code 0 for successful command"
+            echo "result=pass" >> $GITHUB_OUTPUT
+          else
+            echo "❌ FAIL: Expected exit code 0, got $EXIT_CODE"
+            echo "result=fail" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: 🔍 Exit Code Validation - Version (Exit 0)
+        id: exit-code-version
+        run: |
+          set +e
+
+          echo "Testing: nimata --version should exit with 0"
+          ./apps/cli/bin/nimata --version
+          EXIT_CODE=$?
+
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "✅ PASS: Exit code 0 for version command"
+            echo "result=pass" >> $GITHUB_OUTPUT
+          else
+            echo "❌ FAIL: Expected exit code 0, got $EXIT_CODE"
+            echo "result=fail" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: 🔍 Exit Code Validation - Invalid Command (Exit 1)
+        id: exit-code-invalid
+        run: |
+          set +e
+
+          echo "Testing: nimata invalid-command should exit with 1"
+          ./apps/cli/bin/nimata invalid-command 2>/dev/null
+          EXIT_CODE=$?
+
+          if [ $EXIT_CODE -eq 1 ]; then
+            echo "✅ PASS: Exit code 1 for invalid command"
+            echo "result=pass" >> $GITHUB_OUTPUT
+          else
+            echo "❌ FAIL: Expected exit code 1, got $EXIT_CODE"
+            echo "result=fail" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: 🔍 Exit Code Validation - No Command (Exit 1)
+        id: exit-code-no-command
+        run: |
+          set +e
+
+          echo "Testing: nimata (no args) should exit with 1"
+          ./apps/cli/bin/nimata 2>/dev/null
+          EXIT_CODE=$?
+
+          if [ $EXIT_CODE -eq 1 ]; then
+            echo "✅ PASS: Exit code 1 when no command provided"
+            echo "result=pass" >> $GITHUB_OUTPUT
+          else
+            echo "❌ FAIL: Expected exit code 1, got $EXIT_CODE"
+            echo "result=fail" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: 🔍 Exit Code Validation - Config Error (Exit 3)
+        id: exit-code-config-error
+        if: false  # Skip until Story 1.2+ implements config loading
+        run: |
+          set +e
+
+          echo "Testing: nimata validate --config /nonexistent.yaml should exit with 3"
+          ./apps/cli/bin/nimata validate --config /nonexistent.yaml 2>/dev/null
+          EXIT_CODE=$?
+
+          if [ $EXIT_CODE -eq 3 ]; then
+            echo "✅ PASS: Exit code 3 for config error"
+            echo "result=pass" >> $GITHUB_OUTPUT
+          else
+            echo "❌ FAIL: Expected exit code 3, got $EXIT_CODE"
+            echo "result=fail" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      # ========================================================================
+      # Exit Code Validation Summary (Risk #3 Mitigation)
+      # ========================================================================
+      - name: 📊 Exit Code Validation Summary
+        if: always()
+        run: |
+          echo "## Exit Code Validation Results (Risk #3 Mitigation)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Case | Expected Exit Code | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|-------------------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| \`nimata --help\` | 0 | ${{ steps.exit-code-success.outputs.result == 'pass' && '✅ PASS' || '❌ FAIL' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| \`nimata --version\` | 0 | ${{ steps.exit-code-version.outputs.result == 'pass' && '✅ PASS' || '❌ FAIL' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| \`nimata invalid-command\` | 1 | ${{ steps.exit-code-invalid.outputs.result == 'pass' && '✅ PASS' || '❌ FAIL' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| \`nimata\` (no args) | 1 | ${{ steps.exit-code-no-command.outputs.result == 'pass' && '✅ PASS' || '❌ FAIL' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Risk Mitigation Status:** Story 1.1 Risk #3 (Exit Code Inconsistency)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload E2E test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-results
+          path: |
+            test-results/
+            apps/cli/tests/e2e/screenshots/
+          retention-days: 7
+
+  # ============================================================================
+  # Job 7: Mutation Testing (Stryker) - Story 1.1+
+  # ============================================================================
+  mutation-testing:
+    name: Mutation Testing (Stryker)
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 30
+    if: github.event_name == 'pull_request'  # Only on PRs
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Run Stryker mutation testing
+        run: |
+          # Run Stryker for packages with unit tests
+          bun run stryker run --concurrency 4
+        continue-on-error: true  # Don't fail build if mutation score low
+
+      - name: Upload mutation report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutation-testing-report
+          path: reports/mutation/
+          retention-days: 30
+
+      - name: Check mutation score threshold
+        run: |
+          # Parse mutation score from Stryker output
+          MUTATION_SCORE=$(cat reports/mutation/mutation-score.json | jq -r '.mutation_score')
+          echo "Mutation Score: $MUTATION_SCORE%"
+
+          if (( $(echo "$MUTATION_SCORE < 50" | bc -l) )); then
+            echo "❌ Mutation score ($MUTATION_SCORE%) below break threshold (50%)"
+            exit 1
+          elif (( $(echo "$MUTATION_SCORE < 80" | bc -l) )); then
+            echo "⚠️ Mutation score ($MUTATION_SCORE%) below target threshold (80%)"
+          else
+            echo "✅ Mutation score ($MUTATION_SCORE%) meets target threshold (80%)"
+          fi
+
+  # ============================================================================
+  # Job 8: Performance Benchmarks - Story 1.1+
+  # ============================================================================
+  performance:
+    name: Performance Benchmarks
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Run performance benchmarks
+        run: bun test tests/performance/**/*.benchmark.ts
+        continue-on-error: true
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-results
+          path: benchmark-results/
+          retention-days: 30
+
+  # ============================================================================
+  # Job 9: Security Audit
+  # ============================================================================
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run Bun audit
+        run: bun audit
+        continue-on-error: true
+
+      - name: Run npm audit (fallback)
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  # ============================================================================
+  # Job 10: Status Check - All tests must pass
+  # ============================================================================
+  status-check:
+    name: ✅ Status Check - All Tests Pass
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+      - build
+      - typecheck
+      - unit-tests
+      - integration-tests
+      - e2e-tests
+      - security
+    if: always()
+
+    steps:
+      - name: Check all jobs status
+        run: |
+          if [[ "${{ needs.lint.result }}" != "success" ]] || \
+             [[ "${{ needs.build.result }}" != "success" ]] || \
+             [[ "${{ needs.typecheck.result }}" != "success" ]] || \
+             [[ "${{ needs.unit-tests.result }}" != "success" ]] || \
+             [[ "${{ needs.integration-tests.result }}" != "success" ]] || \
+             [[ "${{ needs.e2e-tests.result }}" != "success" ]] || \
+             [[ "${{ needs.security.result }}" != "success" ]]; then
+            echo "❌ One or more required jobs failed"
+            exit 1
+          else
+            echo "✅ All required jobs passed"
+          fi
+
+      - name: Create status check summary
+        if: always()
+        run: |
+          echo "## CI Pipeline Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ needs.lint.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ${{ needs.build.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Type Check | ${{ needs.typecheck.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests | ${{ needs.unit-tests.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Integration Tests | ${{ needs.integration-tests.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| E2E Tests + Exit Code Validation | ${{ needs.e2e-tests.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security Audit | ${{ needs.security.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
