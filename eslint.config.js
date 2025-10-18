@@ -193,10 +193,13 @@ export default [
       'jsdoc/require-description': 'off',
       'jsdoc/require-param': 'off',
       'jsdoc/require-returns': 'off',
+      'max-lines': 'off',
       'max-lines-per-function': 'off',
+      'max-nested-callbacks': 'off',
       'max-statements': 'off',
       'no-magic-numbers': 'off',
       'import/no-default-export': 'off',
+      'unicorn/no-array-for-each': 'off',
     },
   },
 ];

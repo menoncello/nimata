@@ -1,0 +1,13 @@
+# Bun Configuration
+# Root project configuration
+
+[test]
+coverageSkipTestFiles = true
+coverageDir = "coverage"
+coverageReporter = ["text", "lcov"]
+
+# Exclude patterns from coverage
+coveragePathIgnorePatterns = [
+  "tests/**",
+  "../**"
+]

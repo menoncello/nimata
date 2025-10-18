@@ -9,9 +9,9 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { YAMLConfigRepository } from '@nimata/adapters';
 import { deepMerge } from '@nimata/core/utils/deep-merge';
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
+import { YAMLConfigRepository } from '../../src/repositories/yaml-config-repository';
 
 describe('YAML Config Repository Performance (P0-2)', () => {
   let testDir: string;

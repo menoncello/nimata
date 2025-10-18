@@ -33,6 +33,18 @@ export interface OutputWriter {
    * @param messages - Error messages to log
    */
   error: (...messages: unknown[]) => void;
+
+  /**
+   * Log success message to console
+   * @param message - Success message to log
+   */
+  success: (message: string) => void;
+
+  /**
+   * Log info message to console
+   * @param message - Info message to log
+   */
+  info: (message: string) => void;
 }
 
 /**
@@ -56,6 +68,14 @@ export class ConsoleOutputWriter implements OutputWriter {
   error(...messages: unknown[]): void {
     console.error(...messages);
   }
+
+  success(message: string): void {
+    console.log(message);
+  }
+
+  info(message: string): void {
+    console.log(message);
+  }
 }
 
 /**
@@ -76,6 +96,14 @@ export class SilentOutputWriter implements OutputWriter {
   }
 
   error(): void {
+    /* no-op for testing */
+  }
+
+  success(): void {
+    /* no-op for testing */
+  }
+
+  info(): void {
     /* no-op for testing */
   }
 }

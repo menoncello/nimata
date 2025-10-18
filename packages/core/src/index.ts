@@ -9,4 +9,3 @@ export * from './types/config';
 export * from './interfaces/config-repository';
 export * from './config/defaults';
 export * from './utils/deep-merge';
-export * from './utils/logger';

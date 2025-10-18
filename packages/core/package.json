@@ -25,10 +25,6 @@
     "./utils/deep-merge": {
       "import": "./dist/utils/deep-merge.js",
       "types": "./dist/utils/deep-merge.d.ts"
-    },
-    "./utils/logger": {
-      "import": "./dist/utils/logger.js",
-      "types": "./dist/utils/logger.d.ts"
     }
   },
   "scripts": {

@@ -3,6 +3,7 @@
 ````xml
 <critical>The workflow execution engine is governed by: {project_root}/bmad/core/tasks/workflow.xml</critical>
 <critical>You MUST have already loaded and processed: {installed_path}/workflow.yaml</critical>
+<critical>Communicate all responses in {communication_language}</critical>
 <critical>This workflow creates or updates the next user story from epics/PRD and architecture context, saving to the configured stories directory and optionally invoking Story Context.</critical>
 <critical>Default execution mode: #yolo (minimal prompts). Only elicit if absolutely required and {{non_interactive}} == false.</critical>
 
@@ -120,6 +121,21 @@
     <action>Report created/updated story path</action>
   </step>
 
+  <step n="8.5" goal="Validate code examples in story">
+    <critical>Code examples validation is MANDATORY - ensure all examples meet project quality standards</critical>
+
+    <action>Review all code examples in story for quality compliance</action>
+    <action>Check TypeScript types in code examples</action>
+    <action>Validate ESLint compliance in code examples</action>
+    <action>Verify formatting in code examples</action>
+
+    <check>If code examples have TypeScript errors → Fix before saving story</check>
+    <check>If code examples have ESLint violations → Fix before saving story</check>
+    <check>If code examples have formatting issues → Fix before saving story</check>
+
+    <critical>All code examples in stories must be production-ready and compile with 0 errors</critical>
+  </step>
+
   <step n="9" goal="Update status file on completion">
     <action>Search {output_folder}/ for files matching pattern: bmm-workflow-status.md</action>
     <action>Find the most recent file (by date in filename)</action>
@@ -143,7 +159,7 @@
       - **{{date}}**: Completed create-story for Story {{story_id}} ({{story_title}}). Story file: {{story_file}}. Status: Draft (needs review via story-ready). Next: Review and approve story.
       ```
 
-      <output>**✅ Story Created Successfully**
+      <output>**✅ Story Created Successfully, {user_name}!**
 
 **Story Details:**
 - Story ID: {{story_id}}
@@ -164,7 +180,7 @@ Check status anytime with: `workflow-status`
     </check>
 
     <check if="status file not found">
-      <output>**✅ Story Created Successfully**
+      <output>**✅ Story Created Successfully, {user_name}!**
 
 **Story Details:**
 - Story ID: {{story_id}}
