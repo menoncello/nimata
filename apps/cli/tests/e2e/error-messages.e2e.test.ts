@@ -11,10 +11,11 @@
  * Story 1.1 relies on Yargs default error messages
  * Epic 2 will add custom error formatting and user-friendly guidance
  */
+import { join } from 'node:path';
 import { spawn } from 'bun';
 import { describe, it, expect } from 'bun:test';
 
-const CLI_PATH = './bin/nimata';
+const CLI_PATH = join(__dirname, '../bin/nimata');
 
 describe.skip('Error Message Quality', () => {
   describe('Unknown Command Errors', () => {
