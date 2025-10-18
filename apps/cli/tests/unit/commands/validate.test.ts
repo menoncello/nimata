@@ -29,7 +29,7 @@ class MockOutputWriter implements OutputWriter {
 describe('ValidateCommand', () => {
   beforeEach(() => {
     container.clearInstances();
-    container.register<OutputWriter>('OutputWriter', { useClass: MockOutputWriter });
+    container.register<OutputWriter>('OutputWriter', new MockOutputWriter());
   });
 
   afterEach(() => {
@@ -43,7 +43,7 @@ describe('ValidateCommand', () => {
   it('should have description', () => {
     expect(validateCommand.describe).toBeDefined();
     expect(typeof validateCommand.describe).toBe('string');
-    expect(validateCommand.describe.length).toBeGreaterThan(0);
+    expect(validateCommand.describe as string)?.length).toBeGreaterThan(0);
   });
 
   it('should define builder function', () => {

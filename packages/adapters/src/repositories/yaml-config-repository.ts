@@ -240,6 +240,6 @@ export class YAMLConfigRepository implements ConfigRepository {
    * @returns Number of enabled tools
    */
   private countEnabledTools(config: Config): number {
-    return Object.values(config.tools).filter(tool => tool.enabled).length;
+    return Object.values(config.tools).filter((tool) => Boolean(tool && (tool as Record<string, unknown>)['enabled'])).length;
   }
 }

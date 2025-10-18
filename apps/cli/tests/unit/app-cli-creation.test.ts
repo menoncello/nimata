@@ -158,7 +158,7 @@ describe('App Module - CLI Creation', () => {
 
       expect(epilogueSpy).toHaveBeenCalled();
       // Verify it was called with string containing github URL
-      const callArgs = epilogueSpy.mock.calls[0];
+      const callArgs = epilogueSpy.mock.calls[0] as any[];
       expect(callArgs?.[0]).toContain('github.com');
       epilogueSpy.mockRestore();
     });
@@ -191,7 +191,7 @@ describe('App Module - CLI Creation', () => {
 
       // Verify config option has alias 'c'
       const configCall = findConfigCall(optionSpy.mock.calls);
-      expect(configCall?.[1]?.alias).toBe('c');
+      expect((configCall?.[1] as any)?.alias).toBe('c');
 
       optionSpy.mockRestore();
     });
@@ -207,7 +207,7 @@ describe('App Module - CLI Creation', () => {
 
       // Verify config option is global
       const configCall = findConfigCall(optionSpy.mock.calls);
-      expect(configCall?.[1]?.global).toBe(true);
+      expect((configCall?.[1] as any)?.global).toBe(true);
 
       optionSpy.mockRestore();
     });

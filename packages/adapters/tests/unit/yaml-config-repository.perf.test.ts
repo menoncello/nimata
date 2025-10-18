@@ -135,7 +135,7 @@ tools:
       // Then - Verify parallel performance and consistency
       expect(avgTime).toBeLessThan(5); // target: <5ms average with caching
       expect(configs).toHaveLength(100);
-      configs.forEach((config) => {
+      configs.forEach((config: any) => {
         expect(config.version).toBe(1);
         expect(config.qualityLevel).toBe('strict');
       });
@@ -165,11 +165,11 @@ tools:
       // Then - Verify cache effectiveness
       expect(times).toHaveLength(10);
       // First load might be slower, subsequent loads should be cached
-      expect(times[0]).toBeGreaterThan(times[1]); // Cache hit should be faster
-      expect(times.slice(1).every((t) => t < 5)).toBe(true); // Cached loads <5ms
+      expect(times[0] || 0).toBeGreaterThan(times[1] || 0); // Cache hit should be faster
+      expect(times.slice(1).every((t) => (t || 0) < 5)).toBe(true); // Cached loads <5ms
 
       console.log(
-        `✅ Cache performance - First: ${times[0].toFixed(2)}ms, Cached avg: ${(times.slice(1).reduce((a, b) => a + b, 0) / 9).toFixed(2)}ms`
+        `✅ Cache performance - First: ${(times[0] || 0).toFixed(2)}ms, Cached avg: ${(times.slice(1).reduce((a, b) => a + (b || 0), 0) / 9).toFixed(2)}ms`
       );
     });
 
@@ -230,8 +230,10 @@ tools:
 
       // Verify O(n) complexity (time should grow linearly)
       for (let i = 1; i < times.length; i++) {
-        const ratio = times[i].time / times[i - 1].time;
-        const sizeRatio = times[i].size / times[i - 1].time;
+        const currentTime = times[i] || { time: 0, size: 0 };
+        const previousTime = times[i - 1] || { time: 0, size: 0 };
+        const ratio = currentTime.time / previousTime.time;
+        const sizeRatio = currentTime.size / previousTime.size;
         expect(ratio).toBeLessThan(sizeRatio * 1.5); // Allow 50% overhead
       }
 
