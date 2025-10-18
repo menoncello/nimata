@@ -3,6 +3,7 @@
 ````xml
 <critical>The workflow execution engine is governed by: {project_root}/bmad/core/tasks/workflow.xml</critical>
 <critical>You MUST have already loaded and processed: {installed_path}/workflow.yaml</critical>
+<critical>Communicate all responses in {communication_language}</critical>
 <critical>Only modify the story file in these areas: Tasks/Subtasks checkboxes, Dev Agent Record (Debug Log, Completion Notes), File List, Change Log, and Status</critical>
 <critical>Execute ALL steps in exact order; do NOT skip steps</critical>
 <critical>If {{run_until_complete}} == true, run non-interactively: do not pause between steps unless a HALT condition is reached or explicit user approval is required for unapproved dependencies.</critical>
@@ -70,14 +71,59 @@
     <action>Cover edge cases and error handling scenarios noted in the plan</action>
   </step>
 
-  <step n="4" goal="Run validations and tests">
-    <action>Determine how to run tests for this repo (infer or use {{run_tests_command}} if provided)</action>
-    <action>Run all existing tests to ensure no regressions</action>
-    <action>Run the new tests to verify implementation correctness</action>
-    <action>Run linting and code quality checks if configured</action>
-    <action>Validate implementation meets ALL story acceptance criteria; if ACs include quantitative thresholds (e.g., test pass rate), ensure they are met before marking complete</action>
-    <check>If regression tests fail → STOP and fix before continuing</check>
-    <check>If new tests fail → STOP and fix before continuing</check>
+  <step n="4" goal="Run quality gates and validations">
+    <critical>Quality validation is MANDATORY - ALL substeps must pass with ZERO errors</critical>
+    <critical>Execute substeps in EXACT order - do NOT skip or reorder</critical>
+
+    <substep n="4.1" goal="TypeScript type checking">
+      <action>Run: bun run typecheck (or tsc --noEmit if no script)</action>
+      <check>If TypeScript errors exist → STOP, analyze each error, fix code (not types), verify fix</check>
+      <check>ZERO TypeScript errors required - no exceptions</check>
+      <critical>NEVER use @ts-ignore or @ts-expect-error - fix the actual type issue</critical>
+    </substep>
+
+    <substep n="4.2" goal="ESLint validation">
+      <action>Run: bun run lint (or eslint . --ext .ts,.tsx if no script)</action>
+      <check>If ESLint errors exist → STOP, read error message, fix code to comply with rule</check>
+      <check>ZERO ESLint errors required (warnings acceptable if < 5 and documented in commit)</check>
+      <critical>NEVER add eslint-disable comments - refactor code to satisfy the rule</critical>
+      <critical>If rule seems incorrect, discuss with user before proceeding</critical>
+    </substep>
+
+    <substep n="4.3" goal="Code formatting">
+      <action>Run: bun run format:check (or prettier --check "**/*.{ts,tsx,js,jsx}" if no script)</action>
+      <check>If formatting violations exist → Run: bun run format (or prettier --write)</check>
+      <action>Re-run format:check to verify all files formatted correctly</action>
+      <check>ZERO formatting violations required after auto-fix</check>
+    </substep>
+
+    <substep n="4.4" goal="Unit and integration tests">
+      <action>Determine test command (infer from package.json or use {{run_tests_command}})</action>
+      <action>Run: bun test (or configured test command)</action>
+      <action>Verify ALL existing tests pass (check for regressions)</action>
+      <action>Verify ALL new tests pass (implementation correct)</action>
+      <check>If ANY test fails → STOP, read failure message, debug test or code, fix issue</check>
+      <check>100% test pass rate required - no skipped tests allowed</check>
+    </substep>
+
+    <substep n="4.5" goal="Acceptance criteria validation">
+      <action>Re-read ALL story acceptance criteria</action>
+      <action>Validate implementation satisfies each AC completely</action>
+      <action>If ACs specify quantitative thresholds (mutation score, coverage, performance) → verify met</action>
+      <check>If any AC not satisfied → STOP, implement missing requirements</check>
+      <check>ALL acceptance criteria must be met before proceeding</check>
+    </substep>
+
+    <substep n="4.6" goal="Mutation testing verification" optional="true">
+      <action>If mutation testing is configured (stryker.conf.json exists), run: bun run test:mutation</action>
+      <action>Verify mutation score meets threshold (typically 80%+)</action>
+      <check>If mutation score below threshold → Analyze surviving mutants, improve tests</check>
+      <critical>Mutation testing validates test quality - aim for 80%+ score</critical>
+    </substep>
+
+    <check>If ANY substep fails → DO NOT proceed to Step 5</check>
+    <check>Quality gates are non-negotiable: TypeScript 0, ESLint 0, Tests 100%, Formatting 100%</check>
+    <critical>Only proceed to Step 5 when ALL substeps show green (0 errors)</critical>
   </step>
 
   <step n="5" goal="Mark task complete and update story">
@@ -131,7 +177,7 @@
       - **{{date}}**: Completed dev-story for Story {{current_story_id}} ({{current_story_title}}). All tasks complete, tests passing. Story status: Ready for Review. Next: User reviews and runs story-approved when satisfied with implementation.
       ```
 
-      <output>**✅ Story Implementation Complete**
+      <output>**✅ Story Implementation Complete, {user_name}!**
 
 **Story Details:**
 - Story ID: {{current_story_id}}
@@ -153,7 +199,7 @@ Or check status anytime with: `workflow-status`
     </check>
 
     <check if="status file not found">
-      <output>**✅ Story Implementation Complete**
+      <output>**✅ Story Implementation Complete, {user_name}!**
 
 **Story Details:**
 - Story ID: {{current_story_id}}

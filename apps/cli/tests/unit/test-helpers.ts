@@ -9,16 +9,22 @@ import type { OutputWriter } from '../../src/output.js';
 
 // Mock OutputWriter for testing
 export class MockOutputWriter implements OutputWriter {
-  stdout(): void {
+  stdout(_message: string): void {
     /* Intentionally empty - test stub */
   }
-  stderr(): void {
+  stderr(_message: string): void {
     /* Intentionally empty - test stub */
   }
-  log(): void {
+  log(..._messages: unknown[]): void {
     /* Intentionally empty - test stub */
   }
-  error(): void {
+  error(..._messages: unknown[]): void {
+    /* Intentionally empty - test stub */
+  }
+  success(_message: string): void {
+    /* Intentionally empty - test stub */
+  }
+  info(_message: string): void {
     /* Intentionally empty - test stub */
   }
 }

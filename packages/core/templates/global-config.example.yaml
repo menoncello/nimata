@@ -1,0 +1,35 @@
+# Nìmata Global Configuration Example
+# File: ~/.nimata/config.yaml (user-specific settings)
+#
+# This file contains YOUR personal preferences.
+# Project configs will override these settings.
+
+# Quality level preference (can be overridden by project)
+qualityLevel: medium
+
+# Your preferred AI assistants
+aiAssistants:
+  - claude-code
+
+# Personal tool preferences
+tools:
+  eslint:
+    enabled: true
+    configPath: .eslintrc.js
+  
+  typescript:
+    enabled: true
+    strict: true
+  
+  prettier:
+    enabled: true
+
+# Personal scaffolding defaults
+scaffolding:
+  includeExamples: false
+  initializeGit: true
+
+# Logging preferences
+logging:
+  level: debug
+  destination: ~/.nimata/logs/nimata.log

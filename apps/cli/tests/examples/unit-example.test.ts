@@ -28,9 +28,9 @@ describe('Unit Test Example', () => {
     test('should create package.json with defaults', () => {
       const pkg = createPackageJson();
 
-      expect(pkg.version).toBe('0.1.0');
-      expect(pkg.type).toBe('module');
-      expect(pkg.name).toMatch(/^project-/);
+      expect(pkg['version']).toBe('0.1.0');
+      expect(pkg['type']).toBe('module');
+      expect(pkg['name']).toMatch(/^project-/);
     });
 
     test('should create package.json with overrides', () => {
@@ -42,9 +42,9 @@ describe('Unit Test Example', () => {
         },
       });
 
-      expect(pkg.name).toBe('my-project');
-      expect(pkg.version).toBe('2.0.0');
-      expect(pkg.scripts).toEqual({ test: 'bun test' });
+      expect(pkg['name']).toBe('my-project');
+      expect(pkg['version']).toBe('2.0.0');
+      expect(pkg['scripts']).toEqual({ test: 'bun test' });
     });
 
     test('should create validation result with defaults', () => {
@@ -84,15 +84,15 @@ describe('Unit Test Example', () => {
     test('should use static fixtures', () => {
       const pkg = packageJsonFixtures.minimal;
 
-      expect(pkg.name).toBe('test-project');
-      expect(pkg.version).toBe('0.1.0');
+      expect(pkg['name']).toBe('test-project');
+      expect(pkg['version']).toBe('0.1.0');
     });
 
     test('should use fixture with scripts', () => {
       const pkg = packageJsonFixtures.withScripts;
 
-      expect(pkg.scripts).toBeDefined();
-      expect(pkg.scripts?.build).toBe('tsc');
+      expect(pkg['scripts']).toBeDefined();
+      expect(pkg['scripts']?.build).toBe('tsc');
     });
   });
 
@@ -119,7 +119,7 @@ describe('Unit Test Example', () => {
       const pkg1 = createPackageJson();
       const pkg2 = createPackageJson();
 
-      expect(pkg1.name).not.toBe(pkg2.name);
+      expect(pkg1['name']).not.toBe(pkg2['name']);
     });
 
     test('should generate parallel-safe identifiers', () => {

@@ -67,6 +67,11 @@ describe('Index Module', () => {
         run: async () => {
           throw new Error('Simulated fatal error');
         },
+        output: {} as any,
+        cliBuilder: {} as any,
+        getVersion: () => '1.0.0',
+        setupInterruptHandler: () => {},
+        createCli: () => mockApp,
       } as CliApp;
 
       // Simulate the catch block from index.ts
@@ -97,6 +102,11 @@ describe('Index Module', () => {
         run: async () => {
           throw new Error('Test error');
         },
+        output: {} as any,
+        cliBuilder: {} as any,
+        getVersion: () => '1.0.0',
+        setupInterruptHandler: () => {},
+        createCli: () => mockApp,
       } as CliApp;
 
       try {

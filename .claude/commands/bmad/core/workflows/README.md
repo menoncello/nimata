@@ -2,11 +2,6 @@
 
 ## Available Workflows in core
 
-**bmad-init**
-
-- Path: `bmad/core/workflows/bmad-init/workflow.yaml`
-- BMAD system initialization and maintenance workflow for agent manifest generation and system configuration
-
 **brainstorming**
 
 - Path: `bmad/core/workflows/brainstorming/workflow.yaml`

@@ -9,79 +9,13 @@ import { container } from 'tsyringe';
 import { CliApp } from '../../src/app.js';
 import type { CliBuilder } from '../../src/cli-builder.js';
 import type { OutputWriter } from '../../src/output.js';
+import { MockOutputWriter, MockCliBuilder } from './test-helpers.js';
 
 // Test helpers
 const findConfigCall = (calls: unknown[][]): unknown[] | undefined => {
   return calls.find((call) => call[0] === 'config');
 };
 
-// Mock OutputWriter for testing
-class MockOutputWriter implements OutputWriter {
-  stdout(): void {
-    /* Intentionally empty - stub for testing */
-  }
-  stderr(): void {
-    /* Intentionally empty - stub for testing */
-  }
-  log(): void {
-    /* Intentionally empty - stub for testing */
-  }
-  error(): void {
-    /* Intentionally empty - stub for testing */
-  }
-}
-
-// Mock CliBuilder for testing
-class MockCliBuilder implements CliBuilder {
-  create(): CliBuilder {
-    return this;
-  }
-  scriptName(): CliBuilder {
-    return this;
-  }
-  version(): CliBuilder {
-    return this;
-  }
-  usage(): CliBuilder {
-    return this;
-  }
-  command(): CliBuilder {
-    return this;
-  }
-  option(): CliBuilder {
-    return this;
-  }
-  demandCommand(): CliBuilder {
-    return this;
-  }
-  help(): CliBuilder {
-    return this;
-  }
-  alias(): CliBuilder {
-    return this;
-  }
-  strict(): CliBuilder {
-    return this;
-  }
-  wrap(): CliBuilder {
-    return this;
-  }
-  epilogue(): CliBuilder {
-    return this;
-  }
-  exitProcess(): CliBuilder {
-    return this;
-  }
-  showHelpOnFail(): CliBuilder {
-    return this;
-  }
-  fail(): CliBuilder {
-    return this;
-  }
-  async parse(): Promise<void> {
-    /* Intentionally empty - stub for testing */
-  }
-}
 
 describe('App Module - CLI Creation', () => {
   let app: CliApp;
@@ -90,10 +24,10 @@ describe('App Module - CLI Creation', () => {
     // Clear and configure DI container for tests with mocks
     container.clearInstances();
     container.register<OutputWriter>('OutputWriter', {
-      useClass: MockOutputWriter,
+      useValue: new MockOutputWriter(),
     });
     container.register<CliBuilder>('CliBuilder', {
-      useClass: MockCliBuilder,
+      useValue: new MockCliBuilder(),
     });
     container.registerSingleton(CliApp);
 
@@ -158,7 +92,7 @@ describe('App Module - CLI Creation', () => {
 
       expect(epilogueSpy).toHaveBeenCalled();
       // Verify it was called with string containing github URL
-      const callArgs = epilogueSpy.mock.calls[0];
+      const callArgs = epilogueSpy.mock.calls[0] as any[];
       expect(callArgs?.[0]).toContain('github.com');
       epilogueSpy.mockRestore();
     });
@@ -191,7 +125,7 @@ describe('App Module - CLI Creation', () => {
 
       // Verify config option has alias 'c'
       const configCall = findConfigCall(optionSpy.mock.calls);
-      expect(configCall?.[1]?.alias).toBe('c');
+      expect((configCall?.[1] as any)?.alias).toBe('c');
 
       optionSpy.mockRestore();
     });
@@ -207,7 +141,7 @@ describe('App Module - CLI Creation', () => {
 
       // Verify config option is global
       const configCall = findConfigCall(optionSpy.mock.calls);
-      expect(configCall?.[1]?.global).toBe(true);
+      expect((configCall?.[1] as any)?.global).toBe(true);
 
       optionSpy.mockRestore();
     });

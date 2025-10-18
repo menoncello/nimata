@@ -46,18 +46,45 @@ export interface CLIExecutionResult {
  * expect(result.exitCode).toBe(0);
  * expect(result.stdout).toContain('Project initialized');
  */
-export async function executeCLI(options: CLIExecutionOptions): Promise<CLIExecutionResult> {
-  const { args, cwd = process.cwd(), env = {}, stdin, timeout = 30_000 } = options;
-
-  // Determine CLI binary path (handle monorepo structure)
+function determineCliBinaryPath(): string {
   const rootDir = process.cwd().includes('/apps/cli')
     ? join(process.cwd(), '../..')
     : process.cwd();
-  const cliBin = join(rootDir, 'apps/cli/bin/nimata');
+  return join(rootDir, 'apps/cli/bin/nimata');
+}
 
+function createTimeoutPromise(timeout: number, args: string[], proc: Subprocess): Promise<never> {
+  return new Promise<never>((_, reject) => {
+    setTimeout(() => {
+      proc.kill();
+      reject(new Error(`CLI command timed out after ${timeout}ms: ${args.join(' ')}`));
+    }, timeout);
+  });
+}
+
+async function captureProcessOutput(proc: Subprocess): Promise<{ stdout: string; stderr: string }> {
+  const stdout = proc.stdout && typeof proc.stdout !== 'number'
+    ? await new Response(proc.stdout as ReadableStream<Uint8Array>).text()
+    : '';
+  const stderr = proc.stderr && typeof proc.stderr !== 'number'
+    ? await new Response(proc.stderr as ReadableStream<Uint8Array>).text()
+    : '';
+  return { stdout, stderr };
+}
+
+function writeStdin(proc: Subprocess, stdin?: string): void {
+  if (stdin && proc.stdin && typeof proc.stdin !== 'number') {
+    proc.stdin.write(stdin);
+    proc.stdin.end();
+  }
+}
+
+export async function executeCLI(options: CLIExecutionOptions): Promise<CLIExecutionResult> {
+  const { args, cwd = process.cwd(), env = {}, stdin, timeout = 30_000 } = options;
+
+  const cliBin = determineCliBinaryPath();
   const startTime = Date.now();
 
-  // Spawn CLI process
   const proc: Subprocess = spawn({
     cmd: [cliBin, ...args],
     cwd,
@@ -67,27 +94,13 @@ export async function executeCLI(options: CLIExecutionOptions): Promise<CLIExecu
     stdin: stdin ? 'pipe' : 'ignore',
   });
 
-  // Write to stdin if provided
-  if (stdin && proc.stdin) {
-    proc.stdin.write(stdin);
-    proc.stdin.end();
-  }
+  writeStdin(proc, stdin);
 
-  // Create timeout promise
-  const timeoutPromise = new Promise<never>((_, reject) => {
-    setTimeout(() => {
-      proc.kill();
-      reject(new Error(`CLI command timed out after ${timeout}ms: ${args.join(' ')}`));
-    }, timeout);
-  });
+  const timeoutPromise = createTimeoutPromise(timeout, args, proc);
 
-  // Wait for process to exit or timeout
   try {
     const exitCode = await Promise.race([proc.exited, timeoutPromise]);
-
-    // Capture outputs
-    const stdout = await new Response(proc.stdout).text();
-    const stderr = await new Response(proc.stderr).text();
+    const { stdout, stderr } = await captureProcessOutput(proc);
     const executionTime = Date.now() - startTime;
 
     return {
@@ -98,7 +111,6 @@ export async function executeCLI(options: CLIExecutionOptions): Promise<CLIExecu
       executionTime,
     };
   } catch (error) {
-    // Ensure process is killed on timeout
     proc.kill();
     throw error;
   }

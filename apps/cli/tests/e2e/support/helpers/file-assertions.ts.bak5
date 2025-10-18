@@ -1,0 +1,205 @@
+import { join } from 'path';
+
+/**
+ * File Assertion Helpers
+ *
+ * Pure functions for common file system assertions in E2E tests.
+ * Framework-agnostic - returns boolean results for test assertions.
+ */
+
+/**
+ * Check if file exists
+ *
+ * @example
+ * expect(await fileExists(join(tempDir, 'package.json'))).toBe(true);
+ */
+export async function fileExists(filePath: string): Promise<boolean> {
+  try {
+    const file = Bun.file(filePath);
+    await file.text();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Check if directory exists
+ *
+ * @example
+ * expect(await directoryExists(join(tempDir, 'src'))).toBe(true);
+ */
+export async function directoryExists(dirPath: string): Promise<boolean> {
+  try {
+    const { stat } = await import('fs/promises');
+    const stats = await stat(dirPath);
+    return stats.isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Read file contents as string
+ *
+ * @example
+ * const content = await readFile(join(tempDir, 'README.md'));
+ * expect(content).toContain('# My Project');
+ */
+export async function readFile(filePath: string): Promise<string> {
+  return Bun.file(filePath).text();
+}
+
+/**
+ * Read and parse JSON file
+ *
+ * @example
+ * const pkg = await readJSON<PackageJson>(join(tempDir, 'package.json'));
+ * expect(pkg["name"]).toBe('my-project');
+ */
+export async function readJSON<T = unknown>(filePath: string): Promise<T> {
+  const content = await readFile(filePath);
+  return JSON.parse(content) as T;
+}
+
+/**
+ * Read and parse YAML file
+ *
+ * @example
+ * const config = await readYAML(join(tempDir, '.nimata/config.yaml'));
+ * expect(config.tools.eslint.enabled).toBe(true);
+ */
+export async function readYAML<T = unknown>(filePath: string): Promise<T> {
+  return (await Bun.file(filePath).yaml()) as T;
+}
+
+/**
+ * Write file contents
+ *
+ * @example
+ * await writeFile(join(tempDir, 'test.txt'), 'Hello World');
+ */
+export async function writeFile(filePath: string, content: string): Promise<void> {
+  await Bun.write(filePath, content);
+}
+
+/**
+ * List files in directory matching glob pattern
+ *
+ * @example
+ * const tsFiles = await listFiles(tempDir, '**\/*.ts');
+ * expect(tsFiles.length).toBeGreaterThan(0);
+ */
+export async function listFiles(dirPath: string, pattern: string): Promise<string[]> {
+  const glob = new Bun.Glob(pattern);
+  const files: string[] = [];
+
+  for await (const file of glob.scan(dirPath)) {
+    files.push(join(dirPath, file));
+  }
+
+  return files;
+}
+
+/**
+ * Assert file contains expected string
+ *
+ * @example
+ * expect(await fileContains(pkgPath, '"name": "my-project"')).toBe(true);
+ */
+export async function fileContains(filePath: string, expected: string): Promise<boolean> {
+  const content = await readFile(filePath);
+  return content.includes(expected);
+}
+
+/**
+ * Assert file matches regex pattern
+ *
+ * @example
+ * expect(await fileMatches(pkgPath, /"version":\s*"\d+\.\d+\.\d+"/)).toBe(true);
+ */
+export async function fileMatches(filePath: string, pattern: RegExp): Promise<boolean> {
+  const content = await readFile(filePath);
+  return pattern.test(content);
+}
+
+/**
+ * Assert JSON file has expected property values
+ *
+ * @example
+ * expect(await jsonHasProperties(pkgPath, { name: 'my-project', version: '1.0.0' })).toBe(true);
+ */
+export async function jsonHasProperties(
+  filePath: string,
+  expected: Record<string, unknown>
+): Promise<boolean> {
+  const actual = await readJSON<Record<string, unknown>>(filePath);
+
+  for (const [key, value] of Object.entries(expected)) {
+    if (actual[key] !== value) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Assert directory contains expected files
+ *
+ * @example
+ * expect(
+ *   await directoryContainsFiles(tempDir, ['package.json', 'tsconfig.json'])
+ * ).toBe(true);
+ */
+export async function directoryContainsFiles(
+  dirPath: string,
+  expectedFiles: string[]
+): Promise<boolean> {
+  for (const file of expectedFiles) {
+    const filePath = join(dirPath, file);
+    if (!(await fileExists(filePath))) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Get file size in bytes
+ *
+ * @example
+ * const size = await getFileSize(join(tempDir, 'bundle.js'));
+ * expect(size).toBeLessThan(1024 * 100); // Less than 100KB
+ */
+export async function getFileSize(filePath: string): Promise<number> {
+  const stat = await Bun.file(filePath).stat();
+  return stat.size;
+}
+
+/**
+ * Create temporary directory for test isolation
+ *
+ * @example
+ * const tempDir = await createTempDirectory();
+ * // ... run tests
+ * await cleanupTempDirectory(tempDir);
+ */
+export async function createTempDirectory(): Promise<string> {
+  const { tmpdir } = await import('os');
+  const { mkdtemp } = await import('fs/promises');
+  const { join: pathJoin } = await import('path');
+  return mkdtemp(pathJoin(tmpdir(), 'nimata-test-'));
+}
+
+/**
+ * Cleanup temporary directory recursively
+ *
+ * @example
+ * await cleanupTempDirectory(tempDir);
+ */
+export async function cleanupTempDirectory(dirPath: string): Promise<void> {
+  const { rm } = await import('fs/promises');
+  await rm(dirPath, { recursive: true, force: true });
+}

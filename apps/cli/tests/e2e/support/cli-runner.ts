@@ -71,8 +71,8 @@ export class CliRunner {
     try {
       const result = await Promise.race([proc.exited, timeoutPromise]);
 
-      const stdout = await new Response(proc.stdout).text();
-      const stderr = await new Response(proc.stderr).text();
+      const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
       const duration = performance.now() - startTime;
 
       return {

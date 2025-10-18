@@ -81,7 +81,7 @@ export function createValidationResult(
     passed: overrides.passed ?? true,
     errors: overrides.errors ?? [],
     warnings: overrides.warnings ?? [],
-    duration: overrides.duration ?? crypto.getRandomValues(new Uint32Array(1))[0] % 1000,
+    duration: overrides.duration ?? (crypto.getRandomValues(new Uint32Array(1))[0] ?? 0) % 1000,
     tool: overrides.tool ?? 'eslint',
   };
 }
@@ -105,7 +105,7 @@ export function createFileMetadata(
   return {
     path: overrides.path ?? `src/${createTestId('file')}.ts`,
     hash: overrides.hash ?? createTestId('hash'),
-    size: overrides.size ?? crypto.getRandomValues(new Uint32Array(1))[0] % 10_000,
+    size: overrides.size ?? (crypto.getRandomValues(new Uint32Array(1))[0] ?? 0) % 10_000,
     modified: overrides.modified ?? new Date(),
   };
 }

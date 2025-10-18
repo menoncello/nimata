@@ -55,7 +55,7 @@ export async function readFile(filePath: string): Promise<string> {
  *
  * @example
  * const pkg = await readJSON<PackageJson>(join(tempDir, 'package.json'));
- * expect(pkg.name).toBe('my-project');
+ * expect(pkg["name"]).toBe('my-project');
  */
 export async function readJSON<T = unknown>(filePath: string): Promise<T> {
   const content = await readFile(filePath);
@@ -70,7 +70,9 @@ export async function readJSON<T = unknown>(filePath: string): Promise<T> {
  * expect(config.tools.eslint.enabled).toBe(true);
  */
 export async function readYAML<T = unknown>(filePath: string): Promise<T> {
-  return (await Bun.file(filePath).yaml()) as T;
+  const file = Bun.file(filePath);
+  const content = await file.text();
+  return Bun.YAML.parse(content) as T;
 }
 
 /**

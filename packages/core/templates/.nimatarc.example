@@ -1,0 +1,59 @@
+# Nìmata Project Configuration Example
+# File: .nimatarc (place in project root)
+#
+# This file is version-controlled and shared across the team.
+# Project config OVERRIDES global config and defaults.
+
+# Config schema version
+version: 1
+
+# Quality level: light, medium, strict
+# Determines the strictness of code quality checks
+qualityLevel: strict
+
+# AI assistants to enable for this project
+aiAssistants:
+  - claude-code
+  - copilot
+
+# Tool-specific configurations
+tools:
+  eslint:
+    enabled: true
+    configPath: .eslintrc.json
+  
+  typescript:
+    enabled: true
+    configPath: tsconfig.json
+    strict: true
+    target: ES2022
+  
+  prettier:
+    enabled: true
+    configPath: .prettierrc.json
+  
+  bunTest:
+    enabled: true
+    coverage: true
+    coverageThreshold: 80
+
+# Scaffolding options
+scaffolding:
+  templateDirectory: templates
+  includeExamples: true
+  initializeGit: true
+  installDependencies: true
+
+# Validation settings
+validation:
+  cache: true
+  parallel: true
+
+# Refactoring settings
+refactoring:
+  preview: true
+
+# Logging configuration
+logging:
+  level: info
+  destination: ~/.nimata/logs/nimata.log

@@ -9,27 +9,13 @@ import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { container } from 'tsyringe';
 import { promptCommand } from '../../../src/commands/prompt.js';
 import type { OutputWriter } from '../../../src/output.js';
+import { MockOutputWriter } from '../test-helpers.js';
 
-// Mock OutputWriter
-class MockOutputWriter implements OutputWriter {
-  stdout(): void {
-    /* Intentionally empty - stub for testing */
-  }
-  stderr(): void {
-    /* Intentionally empty - stub for testing */
-  }
-  log(): void {
-    /* Intentionally empty - stub for testing */
-  }
-  error(): void {
-    /* Intentionally empty - stub for testing */
-  }
-}
 
 describe('PromptCommand', () => {
   beforeEach(() => {
     container.clearInstances();
-    container.register<OutputWriter>('OutputWriter', { useClass: MockOutputWriter });
+    container.register<OutputWriter>('OutputWriter', new MockOutputWriter());
   });
 
   afterEach(() => {
@@ -43,7 +29,7 @@ describe('PromptCommand', () => {
   it('should have description', () => {
     expect(promptCommand.describe).toBeDefined();
     expect(typeof promptCommand.describe).toBe('string');
-    expect(promptCommand.describe.length).toBeGreaterThan(0);
+    expect((promptCommand.describe as string)?.length).toBeGreaterThan(0);
   });
 
   it('should define builder function', () => {
