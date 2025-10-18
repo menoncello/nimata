@@ -15,12 +15,17 @@
     "build": "tsc --build",
     "typecheck": "tsc --noEmit",
     "dev": "tsc --build --watch",
-    "test": "echo 'No tests yet (stub package)'",
-    "test:coverage": "echo 'No coverage tests yet (stub package)'",
-    "test:mutation": "echo 'No mutation tests yet (stub package)'",
-    "lint": "eslint \"src/**/*.ts\"",
-    "lint:fix": "eslint \"src/**/*.ts\" --fix",
-    "clean": "rm -rf dist node_modules"
+    "test": "bun test",
+    "test:unit": "bun test tests/unit/",
+    "test:integration": "bun test tests/integration/",
+    "test:coverage": "bun test --coverage",
+    "test:mutation": "stryker run",
+    "test:watch": "bun test --watch",
+    "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" \"tests/**/*.ts\" --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "clean": "rm -rf dist node_modules reports .stryker-tmp coverage"
   },
   "dependencies": {
     "@nimata/core": "workspace:*"

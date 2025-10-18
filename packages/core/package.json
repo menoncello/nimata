@@ -9,18 +9,42 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./types/config": {
+      "import": "./dist/types/config.js",
+      "types": "./dist/types/config.d.ts"
+    },
+    "./interfaces/config-repository": {
+      "import": "./dist/interfaces/config-repository.js",
+      "types": "./dist/interfaces/config-repository.d.ts"
+    },
+    "./config/defaults": {
+      "import": "./dist/config/defaults.js",
+      "types": "./dist/config/defaults.d.ts"
+    },
+    "./utils/deep-merge": {
+      "import": "./dist/utils/deep-merge.js",
+      "types": "./dist/utils/deep-merge.d.ts"
+    },
+    "./utils/logger": {
+      "import": "./dist/utils/logger.js",
+      "types": "./dist/utils/logger.d.ts"
     }
   },
   "scripts": {
     "build": "tsc --build",
     "typecheck": "tsc --noEmit",
     "dev": "tsc --build --watch",
-    "test": "echo 'No tests yet (stub package)'",
-    "test:coverage": "echo 'No coverage tests yet (stub package)'",
-    "test:mutation": "echo 'No mutation tests yet (stub package)'",
-    "lint": "eslint \"src/**/*.ts\"",
-    "lint:fix": "eslint \"src/**/*.ts\" --fix",
-    "clean": "rm -rf dist node_modules"
+    "test": "bun test",
+    "test:unit": "bun test tests/unit/",
+    "test:coverage": "bun test --coverage",
+    "test:mutation": "stryker run",
+    "test:watch": "bun test --watch",
+    "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" \"tests/**/*.ts\" --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "clean": "rm -rf dist node_modules reports .stryker-tmp coverage"
   },
   "devDependencies": {
     "@types/node": "^24.8.0",
@@ -28,5 +52,8 @@
   },
   "engines": {
     "bun": ">=1.3.0"
+  },
+  "dependencies": {
+    "zod": "^4.1.12"
   }
 }
