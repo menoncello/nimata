@@ -28,7 +28,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should show available commands
       expect(stderr).toMatch(/unknown argument|not enough non-option arguments/i);
@@ -43,7 +43,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Yargs shows error for unknown command
       expect(stderr).toContain('Unknown argument');
@@ -58,7 +58,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should indicate missing command
       expect(stderr).toMatch(/not enough non-option arguments/i);
@@ -75,7 +75,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(stderr).toContain('Unknown argument');
       expect(stderr).toContain('--invalid-flag');
@@ -90,7 +90,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Yargs should indicate missing argument
       expect(stderr).toMatch(/not enough arguments|requires a value/i);
@@ -107,7 +107,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Error should reference the problematic path
       expect(stderr).toContain('path.yaml');
@@ -122,7 +122,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should not show stack traces to end users
       expect(stderr).not.toContain('at async');
@@ -138,7 +138,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Yargs provides consistent error format
       expect(stderr.length).toBeGreaterThan(0);
@@ -156,7 +156,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       const exitCode = await proc.exited;
-      const stdout = await new Response(proc.stdout).text();
+      const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBe(0);
       expect(stdout).toContain('Commands:');
@@ -175,7 +175,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       const exitCode = await proc.exited;
-      const stdout = await new Response(proc.stdout).text();
+      const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBe(0);
       expect(stdout).toContain('init');
@@ -190,7 +190,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       const exitCode = await proc.exited;
-      const stdout = await new Response(proc.stdout).text();
+      const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBe(0);
       expect(stdout).toContain('.');
@@ -207,7 +207,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should not contain developer-only terms
       expect(stderr).not.toContain('undefined is not a function');
@@ -224,7 +224,7 @@ describe.skip('Error Message Quality', () => {
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should guide user to help
       expect(stderr).toMatch(/not enough non-option arguments/i);

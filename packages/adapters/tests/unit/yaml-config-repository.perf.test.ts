@@ -9,7 +9,7 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { deepMerge } from '@nimata/core/utils/deep-merge';
+import { deepMerge } from '@nimata/core';
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { YAMLConfigRepository } from '../../src/repositories/yaml-config-repository';
 

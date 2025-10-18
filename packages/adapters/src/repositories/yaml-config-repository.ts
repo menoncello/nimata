@@ -1,9 +1,13 @@
 import { homedir } from 'os';
 import { join } from 'path';
-import { DEFAULT_CONFIG } from '@nimata/core/config/defaults';
-import type { ConfigRepository } from '@nimata/core/interfaces/config-repository';
-import { ConfigSchema, validateConfigPaths, type Config } from '@nimata/core/types/config';
-import { deepMerge } from '@nimata/core/utils/deep-merge';
+import {
+  DEFAULT_CONFIG,
+  type ConfigRepository,
+  ConfigSchema,
+  validateConfigPaths,
+  type Config,
+  deepMerge
+} from '@nimata/core';
 
 /**
  * YAML Configuration Repository

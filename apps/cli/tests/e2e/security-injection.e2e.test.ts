@@ -27,7 +27,7 @@ describe.skip('Security: Argument Injection Prevention', () => {
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should treat as literal path, not execute command
       expect(exitCode).not.toBe(0);
@@ -44,7 +44,7 @@ describe.skip('Security: Argument Injection Prevention', () => {
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).not.toBe(0);
       expect(stderr).not.toContain('root:'); // Should not read /etc/passwd
@@ -72,7 +72,7 @@ describe.skip('Security: Argument Injection Prevention', () => {
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).not.toBe(0);
       expect(stderr).not.toContain('total'); // Should not show ls output
@@ -89,7 +89,7 @@ describe.skip('Security: Argument Injection Prevention', () => {
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).not.toBe(0);
       // Should not read system files
@@ -172,7 +172,7 @@ describe.skip('Security: Argument Injection Prevention', () => {
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).not.toBe(0);
       expect(stderr).toContain('Unknown argument'); // Yargs error message

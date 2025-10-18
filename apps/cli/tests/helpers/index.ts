@@ -71,7 +71,27 @@ export function createMockConsole(): {
     error: (...args: unknown[]) => stderr.push(args.join(' ')),
     warn: (...args: unknown[]) => stderr.push(args.join(' ')),
     info: (...args: unknown[]) => stdout.push(args.join(' ')),
-  } as Console;
+    // Add missing Console properties
+    assert: () => {},
+    clear: () => {},
+    count: () => {},
+    countReset: () => {},
+    debug: (...args: unknown[]) => stdout.push(args.join(' ')),
+    dir: () => {},
+    dirxml: () => {},
+    group: () => {},
+    groupCollapsed: () => {},
+    groupEnd: () => {},
+    table: () => {},
+    time: () => {},
+    timeEnd: () => {},
+    timeLog: () => {},
+    trace: (...args: unknown[]) => stdout.push(args.join(' ')),
+    profile: () => {},
+    profileEnd: () => {},
+    timeStamp: () => {},
+    context: () => {},
+  } as unknown as Console;
 
   return {
     console: mockConsole,

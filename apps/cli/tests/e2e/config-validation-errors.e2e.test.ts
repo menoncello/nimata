@@ -56,7 +56,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBeGreaterThan(0);
       // Should include the specific field path
@@ -86,7 +86,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBeGreaterThan(0);
       // Should include the field path
@@ -120,7 +120,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBeGreaterThan(0);
       // Should include all problematic field paths
@@ -152,7 +152,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBeGreaterThan(0);
       // Should include field paths for invalid values
@@ -185,7 +185,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBeGreaterThan(0);
       // Should identify type issues
@@ -219,7 +219,7 @@ tools:
       });
 
       await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should not expose sensitive values
       expect(stderr).not.toContain('super-secret-api-key-12345');
@@ -249,7 +249,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBeGreaterThan(0);
       // Error should be actionable
@@ -297,7 +297,7 @@ version: "not_a_number"
         });
 
         const exitCode = await proc.exited;
-        const stderr = await new Response(proc.stderr).text();
+        const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
         expect(exitCode).toBeGreaterThan(0);
         // Should reference config file
@@ -331,7 +331,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBeGreaterThan(0);
       // Should reference the config file

@@ -20,7 +20,7 @@ describe('CLI Flags', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('nimata');
     expect(stdout).toContain('Commands:');
@@ -40,7 +40,7 @@ describe('CLI Flags', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('nimata');
     expect(stdout).toContain('Commands:');
@@ -56,7 +56,7 @@ describe('CLI Flags', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toMatch(/^(?:\d{1,3}\.){2}\d{1,3}$/m); // Matches version pattern (e.g., 0.1.0)
     expect(exitCode).toBe(0);
@@ -71,7 +71,7 @@ describe('CLI Flags', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toMatch(/^(?:\d{1,3}\.){2}\d{1,3}$/m);
     expect(exitCode).toBe(0);
@@ -86,7 +86,7 @@ describe('CLI Flags', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('custom.json');
     expect(exitCode).toBe(0);
@@ -101,7 +101,7 @@ describe('CLI Flags', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('test.json');
     expect(exitCode).toBe(0);

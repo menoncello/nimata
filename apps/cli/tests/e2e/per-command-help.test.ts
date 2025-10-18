@@ -18,7 +18,7 @@ describe('Per-Command Help', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('init');
     expect(stdout).toContain('Initialize');
@@ -35,7 +35,7 @@ describe('Per-Command Help', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('validate');
     expect(stdout).toContain('Validate');
@@ -53,7 +53,7 @@ describe('Per-Command Help', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('fix');
     expect(stdout).toContain('fix');
@@ -71,7 +71,7 @@ describe('Per-Command Help', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('prompt');
     expect(stdout).toContain('Generate');

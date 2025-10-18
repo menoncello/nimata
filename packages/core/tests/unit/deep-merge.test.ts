@@ -4,22 +4,22 @@ import { deepMerge } from '../../src/utils/deep-merge';
 describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
   describe('P0 - Critical Merge Logic', () => {
     it('should merge two simple objects', () => {
-      const base = { a: 1, b: 2 };
-      const override = { b: 3, c: 4 };
+      const base = { a: 1, b: 2 } as Record<string, unknown>;
+      const override = { b: 3, c: 4 } as Record<string, unknown>;
       const result = deepMerge(base, override);
       expect(result).toEqual({ a: 1, b: 3, c: 4 });
     });
 
     it('should return base when override is empty', () => {
-      const base = { a: 1, b: 2 };
-      const override = {};
+      const base = { a: 1, b: 2 } as Record<string, unknown>;
+      const override = {} as Record<string, unknown>;
       const result = deepMerge(base, override);
       expect(result).toEqual({ a: 1, b: 2 });
     });
 
     it('should override primitive values', () => {
-      const base = { value: 'old' };
-      const override = { value: 'new' };
+      const base = { value: 'old' } as Record<string, unknown>;
+      const override = { value: 'new' } as Record<string, unknown>;
       const result = deepMerge(base, override);
       expect(result).toEqual({ value: 'new' });
     });
@@ -29,10 +29,10 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     it('should deeply merge nested objects', () => {
       const base = {
         nested: { a: 1, b: 2 },
-      };
+      } as Record<string, unknown>;
       const override = {
         nested: { b: 3, c: 4 },
-      };
+      } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -52,7 +52,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
             },
           },
         },
-      };
+      } as Record<string, unknown>;
       const override = {
         level1: {
           level2: {
@@ -63,7 +63,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
             },
           },
         },
-      };
+      } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -85,12 +85,12 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
         tools: {
           eslint: { enabled: true },
         },
-      };
+      } as Record<string, unknown>;
       const override = {
         tools: {
           typescript: { enabled: true },
         },
-      };
+      } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -105,8 +105,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
   describe('P1 - Array Handling', () => {
     it('should replace arrays not merge', () => {
-      const base = { items: ['item1', 'item2', 'item3'] };
-      const override = { items: ['override1', 'override2'] };
+      const base = { items: ['item1', 'item2', 'item3'] } as Record<string, unknown>;
+      const override = { items: ['override1', 'override2'] } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -114,8 +114,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should replace empty array with new array', () => {
-      const base = { items: [] };
-      const override = { items: ['item1', 'item2'] };
+      const base = { items: [] } as Record<string, unknown>;
+      const override = { items: ['item1', 'item2'] } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -123,8 +123,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should replace array with empty array', () => {
-      const base = { items: ['item1', 'item2', 'item3'] };
-      const override = { items: [] };
+      const base = { items: ['item1', 'item2', 'item3'] } as Record<string, unknown>;
+      const override = { items: [] } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -134,8 +134,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
   describe('P2 - Edge Cases', () => {
     it('should not override with undefined values', () => {
-      const base = { value: 'existing' };
-      const override = { value: undefined };
+      const base = { value: 'existing' } as Record<string, unknown>;
+      const override = { value: undefined } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -143,8 +143,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should override with null values', () => {
-      const base = { value: 'existing' };
-      const override = { value: null };
+      const base = { value: 'existing' } as Record<string, unknown>;
+      const override = { value: null } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -152,8 +152,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should merge when base has undefined', () => {
-      const base = { value: undefined };
-      const override = { value: 'new' };
+      const base = { value: undefined } as Record<string, unknown>;
+      const override = { value: 'new' } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -161,8 +161,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should merge when base has null', () => {
-      const base = { value: null };
-      const override = { value: 'new' };
+      const base = { value: null } as Record<string, unknown>;
+      const override = { value: 'new' } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -172,29 +172,29 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
   describe('P2 - Error Handling', () => {
     it('should throw TypeError for null base', () => {
-      const base = null;
-      const override = { value: 'test' };
+      const base = null as any;
+      const override = { value: 'test' } as Record<string, unknown>;
 
       expect(() => deepMerge(base, override)).toThrow(TypeError);
     });
 
     it('should throw TypeError for array base', () => {
-      const base = [];
-      const override = { value: 'test' };
+      const base = [] as any;
+      const override = { value: 'test' } as Record<string, unknown>;
 
       expect(() => deepMerge(base, override)).toThrow(TypeError);
     });
 
     it('should throw TypeError for string base', () => {
-      const base = 'string';
-      const override = { value: 'test' };
+      const base = 'string' as any;
+      const override = { value: 'test' } as Record<string, unknown>;
 
       expect(() => deepMerge(base, override)).toThrow(TypeError);
     });
 
     it('should throw TypeError for number base', () => {
-      const base = 42;
-      const override = { value: 'test' };
+      const base = 42 as any;
+      const override = { value: 'test' } as Record<string, unknown>;
 
       expect(() => deepMerge(base, override)).toThrow(TypeError);
     });
@@ -202,8 +202,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
   describe('P2 - Edge Cases', () => {
     it('should return base for null override', () => {
-      const base = { value: 'existing' };
-      const override = null;
+      const base = { value: 'existing' } as Record<string, unknown>;
+      const override = null as any;
 
       const result = deepMerge(base, override);
 
@@ -211,8 +211,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should return base for array override', () => {
-      const base = { value: 'existing' };
-      const override = ['array'];
+      const base = { value: 'existing' } as Record<string, unknown>;
+      const override = ['array'] as any;
 
       const result = deepMerge(base, override);
 
@@ -220,8 +220,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should return base for string override', () => {
-      const base = { value: 'existing' };
-      const override = 'string';
+      const base = { value: 'existing' } as Record<string, unknown>;
+      const override = 'string' as any;
 
       const result = deepMerge(base, override);
 
@@ -230,8 +230,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
     it('should handle Date objects as values', () => {
       const date = new Date('2023-01-01');
-      const base = { createdAt: date };
-      const override = { updatedAt: new Date('2023-12-31') };
+      const base = { createdAt: date } as Record<string, unknown>;
+      const override = { updatedAt: new Date('2023-12-31') } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -242,8 +242,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should not mutate original objects', () => {
-      const base = { nested: { value: 'original' } };
-      const override = { nested: { newValue: 'new' } };
+      const base = { nested: { value: 'original' } } as Record<string, unknown>;
+      const override = { nested: { newValue: 'new' } } as Record<string, unknown>;
 
       const baseCopy = JSON.parse(JSON.stringify(base));
       const overrideCopy = JSON.parse(JSON.stringify(override));
@@ -255,8 +255,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should handle empty nested objects', () => {
-      const base = { nested: {} };
-      const override = { nested: { value: 'new' } };
+      const base = { nested: {} } as Record<string, unknown>;
+      const override = { nested: { value: 'new' } } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -268,8 +268,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
         constructor(public value: string) {}
       }
 
-      const base = { custom: new CustomObject('base') };
-      const override = { other: 'value' };
+      const base = { custom: new CustomObject('base') } as Record<string, unknown>;
+      const override = { other: 'value' } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -286,14 +286,14 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
           nullValue: null,
           undefinedValue: undefined,
         },
-      };
+      } as Record<string, unknown>;
       const override = {
         nested: {
           value: 'updated',
           newNull: null,
           newUndefined: undefined,
         },
-      };
+      } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -309,8 +309,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should preserve array replacement behavior', () => {
-      const base = { items: ['original'] };
-      const override = { items: ['replacement'] };
+      const base = { items: ['original'] } as Record<string, unknown>;
+      const override = { items: ['replacement'] } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -318,8 +318,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should throw TypeError with specific message for invalid base', () => {
-      const base = 'invalid';
-      const override = {};
+      const base = 'invalid' as any;
+      const override = {} as Record<string, unknown>;
 
       expect(() => deepMerge(base, override)).toThrow('Base must be a plain object');
     });
@@ -389,7 +389,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
           typescript: { enabled: true, strict: true },
         },
         logging: { level: 'info' },
-      };
+      } as Record<string, unknown>;
 
       const global = {
         qualityLevel: 'strict',
@@ -397,13 +397,13 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
           eslint: { configPath: '.eslintrc.js' },
         },
         logging: { level: 'debug' },
-      };
+      } as Record<string, unknown>;
 
       const project = {
         tools: {
           typescript: { strict: false },
         },
-      };
+      } as Record<string, unknown>;
 
       const startTime = performance.now();
       const result = deepMerge(deepMerge(defaults, global), project);
@@ -433,7 +433,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
           eslint: { enabled: true, configPath: '.eslintrc.json' },
           typescript: { enabled: true, strict: true },
         },
-      };
+      } as Record<string, unknown>;
 
       const global = {
         qualityLevel: 'strict',
@@ -441,13 +441,13 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
           eslint: { configPath: '.eslintrc.js' },
         },
         logging: { level: 'debug' },
-      };
+      } as Record<string, unknown>;
 
       const project = {
         tools: {
           typescript: { strict: false },
         },
-      };
+      } as Record<string, unknown>;
 
       const result = deepMerge(deepMerge(defaults, global), project);
 
@@ -465,8 +465,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
   describe('Mutation Testing - Additional Edge Cases', () => {
     it('should handle arrays correctly (not treated as plain objects)', () => {
-      const base = { values: [1, 2, 3] };
-      const override = { values: [4, 5, 6] };
+      const base = { values: [1, 2, 3] } as Record<string, unknown>;
+      const override = { values: [4, 5, 6] } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -475,8 +475,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should handle null values correctly (not treated as plain objects)', () => {
-      const base = { value: 'base' };
-      const override = { value: null };
+      const base = { value: 'base' } as Record<string, unknown>;
+      const override = { value: null } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -485,8 +485,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
     it('should handle custom object types correctly', () => {
       const date = new Date();
-      const base = { timestamp: date };
-      const override = { other: 'value' };
+      const base = { timestamp: date } as Record<string, unknown>;
+      const override = { other: 'value' } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -496,7 +496,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     it('should handle objects with null prototype correctly', () => {
       const base = Object.create(null);
       base.value = 'base';
-      const override = { other: 'value' };
+      const override = { other: 'value' } as Record<string, unknown>;
 
       const result = deepMerge(base as Record<string, unknown>, override);
 
@@ -504,8 +504,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should ignore undefined override values', () => {
-      const base = { value: 'base', other: 'base' };
-      const override = { value: undefined, new: 'override' };
+      const base = { value: 'base', other: 'base' } as Record<string, unknown>;
+      const override = { value: undefined, new: 'override' } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -513,8 +513,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should handle empty override objects', () => {
-      const base = { value: 'base' };
-      const override = {};
+      const base = { value: 'base' } as Record<string, unknown>;
+      const override = {} as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -522,8 +522,8 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should handle override objects without own properties', () => {
-      const base = { value: 'base' };
-      const override = Object.create({ inherited: 'value' });
+      const base = { value: 'base' } as Record<string, unknown>;
+      const override = Object.create({ inherited: 'value' }) as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -533,12 +533,12 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
     // Additional tests to kill remaining isPlainObject mutants
     it('should reject functions as plain objects', () => {
-      const base = { value: 'base' };
+      const base = { value: 'base' } as Record<string, unknown>;
       const override = {
         fn: function() { return 'test'; },
         arrow: () => 'test',
         async: async function() { return 'test'; }
-      };
+      } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -551,12 +551,12 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should reject built-in object types as plain objects', () => {
-      const base = { value: 'base' };
+      const base = { value: 'base' } as Record<string, unknown>;
       const override = {
         regex: /test/,
         date: new Date(),
         error: new Error('test')
-      };
+      } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -569,9 +569,9 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should reject string objects as plain objects', () => {
-      const base = { value: 'base' };
+      const base = { value: 'base' } as Record<string, unknown>;
       const strObj = Object('test'); // Equivalent to new String() without constructor
-      const override = { str: strObj };
+      const override = { str: strObj } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 
@@ -582,9 +582,9 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
     });
 
     it('should reject number objects as plain objects', () => {
-      const base = { value: 'base' };
+      const base = { value: 'base' } as Record<string, unknown>;
       const numObj = Object(42); // Equivalent to new Number() without constructor
-      const override = { num: numObj };
+      const override = { num: numObj } as Record<string, unknown>;
 
       const result = deepMerge(base, override);
 

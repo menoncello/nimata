@@ -119,7 +119,7 @@ describe('Unit Test Example', () => {
       const pkg1 = createPackageJson();
       const pkg2 = createPackageJson();
 
-      expect(pkg1.name).not.toBe(pkg2.name);
+      expect(pkg1['name']).not.toBe(pkg2['name']);
     });
 
     test('should generate parallel-safe identifiers', () => {

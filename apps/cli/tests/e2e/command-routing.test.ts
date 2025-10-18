@@ -18,7 +18,7 @@ describe('Command Routing', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('init command');
     expect(stdout).toContain('Not implemented yet');
@@ -34,7 +34,7 @@ describe('Command Routing', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('validate command');
     expect(stdout).toContain('Not implemented yet');
@@ -50,7 +50,7 @@ describe('Command Routing', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('fix command');
     expect(stdout).toContain('Not implemented yet');
@@ -66,7 +66,7 @@ describe('Command Routing', () => {
     });
 
     const exitCode = await proc.exited;
-    const stdout = await new Response(proc.stdout).text();
+    const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
     expect(stdout).toContain('prompt command');
     expect(stdout).toContain('Not implemented yet');
@@ -82,7 +82,7 @@ describe('Command Routing', () => {
     });
 
     const exitCode = await proc.exited;
-    const stderr = await new Response(proc.stderr).text();
+    const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
     expect(stderr).toContain('Unknown');
     expect(exitCode).not.toBe(0);

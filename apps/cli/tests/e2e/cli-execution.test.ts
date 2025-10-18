@@ -61,7 +61,7 @@ describe('Story 1.1 - AC1: CLI Framework Setup Execution', () => {
 
         // When executing CLI (no network calls expected)
         const exitCode = await proc.exited;
-        const stderr = await new Response(proc.stderr).text();
+        const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
         // Then CLI should execute without network dependencies
         expect(exitCode).toBe(1);

@@ -46,7 +46,7 @@ describe.skip('Exit Codes - Negative Paths', () => {
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).not.toBe(0);
       expect(stderr).toContain('Unknown argument'); // Yargs validation

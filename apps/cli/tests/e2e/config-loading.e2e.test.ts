@@ -45,7 +45,7 @@ describe.skip('Configuration Loading E2E (P1-2)', () => {
       });
 
       const exitCode = await proc.exited;
-      const stdout = await new Response(proc.stdout).text();
+      const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBe(0);
       expect(stdout).toContain('Commands:');
@@ -79,7 +79,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stdout = await new Response(proc.stdout).text();
+      const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBe(0);
       expect(stdout).toContain('Commands:');
@@ -106,7 +106,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should fail with validation error
       expect(exitCode).toBeGreaterThan(0);
@@ -134,7 +134,7 @@ aiAssistants:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should fail with validation error
       expect(exitCode).toBeGreaterThan(0);
@@ -169,7 +169,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should fail with YAML parsing error
       expect(exitCode).toBeGreaterThan(0);
@@ -197,7 +197,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should fail with size limit error
       expect(exitCode).toBeGreaterThan(0);
@@ -232,7 +232,7 @@ tools:
       });
 
       const exitCode = await proc.exited;
-      const stderr = await new Response(proc.stderr).text();
+      const stderr = await new Response(proc.stderr as ReadableStream<Uint8Array>).text();
 
       // Should fail with security error
       expect(exitCode).toBeGreaterThan(0);
@@ -322,7 +322,7 @@ logging:
       });
 
       const exitCode = await proc.exited;
-      const stdout = await new Response(proc.stdout).text();
+      const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
       expect(exitCode).toBe(0);
       expect(stdout).toContain('Commands:');

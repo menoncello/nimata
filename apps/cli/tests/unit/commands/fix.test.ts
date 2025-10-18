@@ -9,22 +9,8 @@ import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { container } from 'tsyringe';
 import { fixCommand } from '../../../src/commands/fix.js';
 import type { OutputWriter } from '../../../src/output.js';
+import { MockOutputWriter } from '../test-helpers.js';
 
-// Mock OutputWriter
-class MockOutputWriter implements OutputWriter {
-  stdout(): void {
-    /* Intentionally empty - stub for testing */
-  }
-  stderr(): void {
-    /* Intentionally empty - stub for testing */
-  }
-  log(): void {
-    /* Intentionally empty - stub for testing */
-  }
-  error(): void {
-    /* Intentionally empty - stub for testing */
-  }
-}
 
 describe('FixCommand', () => {
   beforeEach(() => {

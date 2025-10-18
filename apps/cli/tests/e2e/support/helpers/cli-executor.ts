@@ -63,8 +63,12 @@ function createTimeoutPromise(timeout: number, args: string[], proc: Subprocess)
 }
 
 async function captureProcessOutput(proc: Subprocess): Promise<{ stdout: string; stderr: string }> {
-  const stdout = proc.stdout ? await new Response(proc.stdout).text() : '';
-  const stderr = proc.stderr ? await new Response(proc.stderr).text() : '';
+  const stdout = proc.stdout && typeof proc.stdout !== 'number'
+    ? await new Response(proc.stdout as ReadableStream<Uint8Array>).text()
+    : '';
+  const stderr = proc.stderr && typeof proc.stderr !== 'number'
+    ? await new Response(proc.stderr as ReadableStream<Uint8Array>).text()
+    : '';
   return { stdout, stderr };
 }
 
