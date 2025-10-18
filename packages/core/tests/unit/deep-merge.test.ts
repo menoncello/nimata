@@ -570,7 +570,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
     it('should reject string objects as plain objects', () => {
       const base = { value: 'base' };
-      const strObj = new String('test');
+      const strObj = Object('test'); // Equivalent to new String() without constructor
       const override = { str: strObj };
 
       const result = deepMerge(base, override);
@@ -583,7 +583,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
     it('should reject number objects as plain objects', () => {
       const base = { value: 'base' };
-      const numObj = new Number(42);
+      const numObj = Object(42); // Equivalent to new Number() without constructor
       const override = { num: numObj };
 
       const result = deepMerge(base, override);
