@@ -194,9 +194,7 @@ tools:
       await expect(repo.save(config, tempDir)).resolves.toBeUndefined();
 
       // But loading should fail
-      await expect(repo.load(tempDir)).rejects.toThrow(
-        /parent directory references.*not allowed/
-      );
+      await expect(repo.load(tempDir)).rejects.toThrow(/parent directory references.*not allowed/);
     });
 
     it('should accept relative paths', async () => {

@@ -32,7 +32,7 @@ describe.skip('Security: Argument Injection Prevention', () => {
       // Should treat as literal path, not execute command
       expect(exitCode).not.toBe(0);
       expect(stderr).not.toContain('root'); // Should not show whoami output
-      expect(stderr).not.toContain(process.env["USER"] || ''); // Should not execute
+      expect(stderr).not.toContain(process.env['USER'] || ''); // Should not execute
     });
 
     it('should not execute commands with pipe operators', async () => {

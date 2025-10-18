@@ -43,7 +43,7 @@ describe('ValidateCommand', () => {
   it('should have description', () => {
     expect(validateCommand.describe).toBeDefined();
     expect(typeof validateCommand.describe).toBe('string');
-    expect(validateCommand.describe as string)?.length).toBeGreaterThan(0);
+    expect((validateCommand.describe as string)?.length).toBeGreaterThan(0);
   });
 
   it('should define builder function', () => {

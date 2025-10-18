@@ -321,9 +321,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
       const base = 'invalid';
       const override = {};
 
-      expect(() => deepMerge(base, override)).toThrow(
-        'Base must be a plain object'
-      );
+      expect(() => deepMerge(base, override)).toThrow('Base must be a plain object');
     });
   });
 
@@ -371,7 +369,9 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
       // Verify linear time complexity (time should scale proportionally with size)
       console.log('✅ Deep Merge Complexity Evidence:');
       testSizes.forEach((size, index) => {
-        console.log(`  ${size} keys: ${times[index].toFixed(3)}ms (${(times[index] / size * 1000).toFixed(3)}μs per key)`);
+        console.log(
+          `  ${size} keys: ${times[index].toFixed(3)}ms (${((times[index] / size) * 1000).toFixed(3)}μs per key)`
+        );
       });
       console.log('  Complexity: O(n) verified - Linear time complexity');
 
@@ -459,6 +459,138 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
           typescript: { enabled: true, strict: false },
         },
         logging: { level: 'debug' },
+      });
+    });
+  });
+
+  describe('Mutation Testing - Additional Edge Cases', () => {
+    it('should handle arrays correctly (not treated as plain objects)', () => {
+      const base = { values: [1, 2, 3] };
+      const override = { values: [4, 5, 6] };
+
+      const result = deepMerge(base, override);
+
+      // Arrays should be replaced, not merged
+      expect(result).toEqual({ values: [4, 5, 6] });
+    });
+
+    it('should handle null values correctly (not treated as plain objects)', () => {
+      const base = { value: 'base' };
+      const override = { value: null };
+
+      const result = deepMerge(base, override);
+
+      expect(result).toEqual({ value: null });
+    });
+
+    it('should handle custom object types correctly', () => {
+      const date = new Date();
+      const base = { timestamp: date };
+      const override = { other: 'value' };
+
+      const result = deepMerge(base, override);
+
+      expect(result).toEqual({ timestamp: date, other: 'value' });
+    });
+
+    it('should handle objects with null prototype correctly', () => {
+      const base = Object.create(null);
+      base.value = 'base';
+      const override = { other: 'value' };
+
+      const result = deepMerge(base as Record<string, unknown>, override);
+
+      expect(result).toEqual({ value: 'base', other: 'value' });
+    });
+
+    it('should ignore undefined override values', () => {
+      const base = { value: 'base', other: 'base' };
+      const override = { value: undefined, new: 'override' };
+
+      const result = deepMerge(base, override);
+
+      expect(result).toEqual({ value: 'base', other: 'base', new: 'override' });
+    });
+
+    it('should handle empty override objects', () => {
+      const base = { value: 'base' };
+      const override = {};
+
+      const result = deepMerge(base, override);
+
+      expect(result).toEqual({ value: 'base' });
+    });
+
+    it('should handle override objects without own properties', () => {
+      const base = { value: 'base' };
+      const override = Object.create({ inherited: 'value' });
+
+      const result = deepMerge(base, override);
+
+      // Should ignore inherited properties
+      expect(result).toEqual({ value: 'base' });
+    });
+
+    // Additional tests to kill remaining isPlainObject mutants
+    it('should reject functions as plain objects', () => {
+      const base = { value: 'base' };
+      const override = {
+        fn: function() { return 'test'; },
+        arrow: () => 'test',
+        async: async function() { return 'test'; }
+      };
+
+      const result = deepMerge(base, override);
+
+      expect(result).toEqual({
+        value: 'base',
+        fn: override.fn,
+        arrow: override.arrow,
+        async: override.async
+      });
+    });
+
+    it('should reject built-in object types as plain objects', () => {
+      const base = { value: 'base' };
+      const override = {
+        regex: /test/,
+        date: new Date(),
+        error: new Error('test')
+      };
+
+      const result = deepMerge(base, override);
+
+      expect(result).toEqual({
+        value: 'base',
+        regex: override.regex,
+        date: override.date,
+        error: override.error
+      });
+    });
+
+    it('should reject string objects as plain objects', () => {
+      const base = { value: 'base' };
+      const strObj = new String('test');
+      const override = { str: strObj };
+
+      const result = deepMerge(base, override);
+
+      expect(result).toEqual({
+        value: 'base',
+        str: strObj
+      });
+    });
+
+    it('should reject number objects as plain objects', () => {
+      const base = { value: 'base' };
+      const numObj = new Number(42);
+      const override = { num: numObj };
+
+      const result = deepMerge(base, override);
+
+      expect(result).toEqual({
+        value: 'base',
+        num: numObj
       });
     });
   });

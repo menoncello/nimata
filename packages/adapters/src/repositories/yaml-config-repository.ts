@@ -158,12 +158,16 @@ export class YAMLConfigRepository implements ConfigRepository {
    * @param file - File to validate
    * @param file.size - File size function
    */
-  private readonly validateFileSize = async (file: { size: () => Promise<number> }): Promise<void> => {
+  private readonly validateFileSize = async (file: {
+    size: () => Promise<number>;
+  }): Promise<void> => {
     const size = await file.size();
     if (size > YAMLConfigRepository.MAX_FILE_SIZE) {
-      throw new Error(`Configuration file too large: ${size} bytes (max: ${YAMLConfigRepository.MAX_FILE_SIZE} bytes)`);
+      throw new Error(
+        `Configuration file too large: ${size} bytes (max: ${YAMLConfigRepository.MAX_FILE_SIZE} bytes)`
+      );
     }
-  }
+  };
 
   /**
    * Parses and validates YAML content
@@ -199,7 +203,9 @@ export class YAMLConfigRepository implements ConfigRepository {
   private async validateYAMLSecurity(yamlString: string): Promise<void> {
     // Check for YAML anchors/aliases (potential DoS vectors)
     if (yamlString.includes('&') || yamlString.includes('*')) {
-      throw new Error('Config file contains YAML anchors/aliases which are not allowed for security reasons');
+      throw new Error(
+        'Config file contains YAML anchors/aliases which are not allowed for security reasons'
+      );
     }
 
     // Check for suspicious patterns
@@ -240,6 +246,8 @@ export class YAMLConfigRepository implements ConfigRepository {
    * @returns Number of enabled tools
    */
   private countEnabledTools(config: Config): number {
-    return Object.values(config.tools).filter((tool) => Boolean(tool && (tool as Record<string, unknown>)['enabled'])).length;
+    return Object.values(config.tools).filter((tool) =>
+      Boolean(tool && (tool as Record<string, unknown>)['enabled'])
+    ).length;
   }
 }

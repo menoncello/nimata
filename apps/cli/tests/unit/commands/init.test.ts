@@ -43,7 +43,7 @@ describe('InitCommand', () => {
   it('should have description', () => {
     expect(initCommand.describe).toBeDefined();
     expect(typeof initCommand.describe).toBe('string');
-    expect(initCommand.describe as string)?.length).toBeGreaterThan(0);
+    expect((initCommand.describe as string)?.length).toBeGreaterThan(0);
   });
 
   it('should define builder function', () => {

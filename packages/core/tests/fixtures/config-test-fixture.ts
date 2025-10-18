@@ -29,10 +29,10 @@ export function createConfigTestFixture(repoFactory: () => any): () => ConfigTes
 
   beforeEach(async () => {
     const tempDir = await mkdtemp(join(tmpdir(), 'nimata-config-test-'));
-    const originalHome = process.env["HOME"];
+    const originalHome = process.env['HOME'];
 
     // Set up test environment
-    process.env["HOME"] = tempDir;
+    process.env['HOME'] = tempDir;
 
     const globalConfigDir = join(tempDir, '.nimata');
     await mkdir(globalConfigDir, { recursive: true });
@@ -50,7 +50,7 @@ export function createConfigTestFixture(repoFactory: () => any): () => ConfigTes
 
   afterEach(async () => {
     if (fixture?.originalHome) {
-      process.env["HOME"] = fixture.originalHome;
+      process.env['HOME'] = fixture.originalHome;
     }
     if (fixture?.tempDir) {
       rm(fixture.tempDir, { recursive: true, force: true });

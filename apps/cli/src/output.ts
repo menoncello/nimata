@@ -83,27 +83,27 @@ export class ConsoleOutputWriter implements OutputWriter {
  */
 @injectable()
 export class SilentOutputWriter implements OutputWriter {
-  stdout(message: string): void {
+  stdout(_message: string): void {
     /* no-op for testing */
   }
 
-  stderr(message: string): void {
+  stderr(_message: string): void {
     /* no-op for testing */
   }
 
-  log(...messages: unknown[]): void {
+  log(..._messages: unknown[]): void {
     /* no-op for testing */
   }
 
-  error(...messages: unknown[]): void {
+  error(..._messages: unknown[]): void {
     /* no-op for testing */
   }
 
-  success(message: string): void {
+  success(_message: string): void {
     /* no-op for testing */
   }
 
-  info(message: string): void {
+  info(_message: string): void {
     /* no-op for testing */
   }
 }

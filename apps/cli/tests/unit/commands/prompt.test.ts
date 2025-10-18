@@ -43,7 +43,7 @@ describe('PromptCommand', () => {
   it('should have description', () => {
     expect(promptCommand.describe).toBeDefined();
     expect(typeof promptCommand.describe).toBe('string');
-    expect(promptCommand.describe as string)?.length).toBeGreaterThan(0);
+    expect((promptCommand.describe as string)?.length).toBeGreaterThan(0);
   });
 
   it('should define builder function', () => {
