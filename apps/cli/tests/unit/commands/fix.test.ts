@@ -8,7 +8,6 @@ import 'reflect-metadata';
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { container } from 'tsyringe';
 import { fixCommand } from '../../../src/commands/fix.js';
-import type { OutputWriter } from '../../../src/output.js';
 import { MockOutputWriter } from '../test-helpers.js';
 
 

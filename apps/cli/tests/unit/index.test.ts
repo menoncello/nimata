@@ -70,7 +70,7 @@ describe('Index Module', () => {
         output: {} as any,
         cliBuilder: {} as any,
         getVersion: () => '1.0.0',
-        setupInterruptHandler: () => {},
+        setupInterruptHandler: () => {   },
         createCli: () => mockApp,
       } as CliApp;
 
@@ -105,7 +105,7 @@ describe('Index Module', () => {
         output: {} as any,
         cliBuilder: {} as any,
         getVersion: () => '1.0.0',
-        setupInterruptHandler: () => {},
+        setupInterruptHandler: () => {   },
         createCli: () => mockApp,
       } as CliApp;
 
