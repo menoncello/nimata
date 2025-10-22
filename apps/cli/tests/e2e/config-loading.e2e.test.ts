@@ -23,7 +23,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 
 const CLI_PATH = join(__dirname, '../../bin/nimata');
 
-describe.skip('Configuration Loading E2E (P1-2)', () => {
+describe('Configuration Loading E2E (P1-2)', () => {
   let testDir: string;
 
   beforeEach(async () => {

@@ -1,0 +1,175 @@
+$ eslint "src/**/*.ts" "tests/**/*.ts"
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/commands/project-generation-orchestrator.ts
+  104:3   error  Async method 'executeCoreGenerationSteps' has too many lines (34). Maximum allowed is 30       max-lines-per-function
+  104:43  error  Async method 'executeCoreGenerationSteps' has too many statements (28). Maximum allowed is 15  max-statements
+  223:25  error  Make sure the "PATH" variable only contains fixed, unwriteable directories                     sonarjs/no-os-command-from-path
+  262:34  error  'reject' is defined but never used. Allowed unused args must match /^_/u                       @typescript-eslint/no-unused-vars
+  263:25  error  Make sure the "PATH" variable only contains fixed, unwriteable directories                     sonarjs/no-os-command-from-path
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/commands/project-templates.ts
+   54:5  error  Replace this "switch" statement by "if" statements to increase readability        sonarjs/no-small-switch
+  110:3  error  Method 'generateGitignoreContent' has too many lines (35). Maximum allowed is 30  max-lines-per-function
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/ai-context-constants.ts
+  9:10  error  Define a constant instead of duplicating this literal 4 times  sonarjs/no-duplicate-string
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/claude-md-content-builders-v2.ts
+  8:42  error  'CodeStyleConfig' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  8:42  error  Remove this unused import of 'CodeStyleConfig'                                     sonarjs/unused-import
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/claude-md-content-builders.ts
+  18:8  error  Function 'getArchitectureSection' has too many lines (32). Maximum allowed is 30  max-lines-per-function
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/copilot-content-builders-v2.ts
+    8:29  error  'ProjectType' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+    8:29  error  Remove this unused import of 'ProjectType'                                     sonarjs/unused-import
+   46:63  error  Refactor this code to not use nested template literals                         sonarjs/no-nested-template-literals
+  117:49  error  'options' is defined but never used. Allowed unused args must match /^_/u      @typescript-eslint/no-unused-vars
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/copilot-content-builders.ts
+  127:10  error  'getEnvironmentName' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/eslint-typescript-rules.ts
+   7:1  error  Missing JSDoc block description                                               jsdoc/require-description
+   7:1  error  Missing JSDoc @returns declaration                                            jsdoc/require-returns
+   9:1  error  Missing JSDoc @param "qualityLevel" description                               jsdoc/require-param-description
+  11:8  error  Function 'getTypeScriptRules' has too many lines (36). Maximum allowed is 30  max-lines-per-function
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/eslint-utils.ts
+   16:1   error  Missing JSDoc block description                                                 jsdoc/require-description
+   16:1   error  Missing JSDoc @returns declaration                                              jsdoc/require-returns
+   18:1   error  Missing JSDoc @param "projectType" description                                  jsdoc/require-param-description
+   33:1   error  Missing JSDoc block description                                                 jsdoc/require-description
+   33:1   error  Missing JSDoc @returns declaration                                              jsdoc/require-returns
+   35:1   error  Missing JSDoc @param "projectType" description                                  jsdoc/require-param-description
+   55:1   error  Missing JSDoc block description                                                 jsdoc/require-description
+   55:1   error  Missing JSDoc @returns declaration                                              jsdoc/require-returns
+   57:1   error  Missing JSDoc @param "targetEnvironment" description                            jsdoc/require-param-description
+   89:1   error  Missing JSDoc block description                                                 jsdoc/require-description
+   89:1   error  Missing JSDoc @returns declaration                                              jsdoc/require-returns
+  105:1   error  Missing JSDoc block description                                                 jsdoc/require-description
+  105:1   error  Missing JSDoc @returns declaration                                              jsdoc/require-returns
+  107:1   error  Missing JSDoc @param "qualityLevel" description                                 jsdoc/require-param-description
+  109:33  error  'qualityLevel' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/prettier-config-builders.ts
+  76:8  error  Function 'getOverrides' has too many lines (52). Maximum allowed is 30  max-lines-per-function
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/prettier-file-generators.ts
+   14:36  error  'options' is defined but never used. Allowed unused args must match /^_/u       @typescript-eslint/no-unused-vars
+   29:8   error  Function 'generateIgnoreFile' has too many lines (59). Maximum allowed is 30    max-lines-per-function
+  109:8   error  Function 'generateEditorConfig' has too many lines (43). Maximum allowed is 30  max-lines-per-function
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/test-config-builders.ts
+  24:8  error  Function 'buildTestConfigBody' has too many lines (36). Maximum allowed is 30  max-lines-per-function
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/typescript-generator.ts
+  388:3  error  Method 'buildEsbuildConfigContent' has too many lines (34). Maximum allowed is 30  max-lines-per-function
+  447:1  error  File has too many lines (608). Maximum allowed is 300                              max-lines
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/index.ts
+  29:4  error  Complete the task associated to this "TODO" comment  sonarjs/todo-tag
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/template-engine/template-processor.ts
+    8:1   error  `./types.js` type import should occur after import of `./argument-processor.js`                                                   import/order
+    8:32  error  'ProjectTemplate' is defined but never used. Allowed unused vars must match /^_/u                                                 @typescript-eslint/no-unused-vars
+    8:32  error  Remove this unused import of 'ProjectTemplate'                                                                                    sonarjs/unused-import
+    8:49  error  'GeneratedFile' is defined but never used. Allowed unused vars must match /^_/u                                                   @typescript-eslint/no-unused-vars
+    8:49  error  Remove this unused import of 'GeneratedFile'                                                                                      sonarjs/unused-import
+    8:64  error  'ValidationResult' is defined but never used. Allowed unused vars must match /^_/u                                                @typescript-eslint/no-unused-vars
+    8:64  error  Remove this unused import of 'ValidationResult'                                                                                   sonarjs/unused-import
+    9:1   error  There should be no empty line between import groups                                                                               import/order
+    9:32  error  './argument-processor.js' imported multiple times                                                                                 import/no-duplicates
+   49:23  error  Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+  341:1   error  './argument-processor.js' import is duplicated                                                                                    no-duplicate-imports
+  341:40  error  './argument-processor.js' imported multiple times                                                                                 import/no-duplicates
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/template-engine/template-validator.ts
+  164:38  error  Argument 'file' should be typed with a non-any type  @typescript-eslint/explicit-module-boundary-types
+  164:44  error  Unexpected any. Specify a different type             @typescript-eslint/no-explicit-any
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/cli-helpers.ts
+  197:3   error  Missing return type on function                                                      @typescript-eslint/explicit-function-return-type
+  197:3   error  Missing return type on function                                                      @typescript-eslint/explicit-module-boundary-types
+  411:25  error  Method 'inferErrorType' has a complexity of 11. Maximum allowed is 10                complexity
+  435:33  error  Method 'getSuggestionsForError' has too many statements (18). Maximum allowed is 15  max-statements
+  532:20  error  No magic number: 1024                                                                no-magic-numbers
+  533:15  error  No magic number: 1024                                                                no-magic-numbers
+  545:1   error  File has too many lines (321). Maximum allowed is 300                                max-lines
+  546:14  error  No magic number: 1000                                                                no-magic-numbers
+  548:21  error  No magic number: 60000                                                               no-magic-numbers
+  549:23  error  No magic number: 1000                                                                no-magic-numbers
+  551:37  error  No magic number: 60000                                                               no-magic-numbers
+  552:38  error  No magic number: 60000                                                               no-magic-numbers
+  552:47  error  No magic number: 1000                                                                no-magic-numbers
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/constants-new.ts
+  16:23  error  Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+  18:16  error  Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+  19:22  error  Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+  20:15  error  Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+  23:20  error  Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/help-system.ts
+  423:1  error  File has too many lines (328). Maximum allowed is 300  max-lines
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/help-topics.ts
+   13:8   error  Function 'createHelpTopics' has too many lines (91). Maximum allowed is 30   max-lines-per-function
+   16:14  error  Define a constant instead of duplicating this literal 5 times                sonarjs/no-duplicate-string
+   33:15  error  Define a constant instead of duplicating this literal 4 times                sonarjs/no-duplicate-string
+   33:33  error  Define a constant instead of duplicating this literal 3 times                sonarjs/no-duplicate-string
+   67:19  error  Define a constant instead of duplicating this literal 4 times                sonarjs/no-duplicate-string
+  115:8   error  Function 'createCommandHelp' has too many lines (72). Maximum allowed is 30  max-lines-per-function
+  153:22  error  Define a constant instead of duplicating this literal 3 times                sonarjs/no-duplicate-string
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/project-generation-helpers.ts
+   86:8   error  Function 'validateRequiredConfigFields' has too many lines (51). Maximum allowed is 30       max-lines-per-function
+   86:8   error  Function 'validateRequiredConfigFields' has too many statements (19). Maximum allowed is 15  max-statements
+  159:47  error  No magic number: 100                                                                         no-magic-numbers
+  198:3   error  Argument 'templateEngine' should be typed with a non-any type                                @typescript-eslint/explicit-module-boundary-types
+  198:19  error  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  312:8   error  Async function 'validatePackageJson' has too many statements (17). Maximum allowed is 15     max-statements
+  329:9   error  Blocks are nested too deeply (4). Maximum allowed is 3                                       max-depth
+  453:1   error  File has too many lines (323). Maximum allowed is 300                                        max-lines
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/wizards/wizard-prompts.ts
+   99:8   error  Async function 'promptCheckbox' has too many lines (40). Maximum allowed is 30                                          max-lines-per-function
+  121:40  error  Refactor this code to not nest functions more than 4 levels deep                                                        sonarjs/no-nested-functions
+  240:19  error  Extract this nested ternary operation into an independent statement                                                     sonarjs/no-nested-conditional
+  340:1   error  @param path declaration ("rule.message") root node name ("rule") does not match previous real parameter name ("value")  jsdoc/check-param-names
+  379:1   error  @param path declaration ("rule.message") root node name ("rule") does not match previous real parameter name ("value")  jsdoc/check-param-names
+  401:1   error  @param path declaration ("rule.max") root node name ("rule") does not match previous real parameter name ("value")      jsdoc/check-param-names
+  428:1   error  @param path declaration ("rule.message") root node name ("rule") does not match previous real parameter name ("value")  jsdoc/check-param-names
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/wizards/wizard-steps.ts
+  108:8  error  Function 'createProjectTypeStep' has too many lines (33). Maximum allowed is 30  max-lines-per-function
+  214:1  error  Function 'createLicenseOptions' has too many lines (34). Maximum allowed is 30   max-lines-per-function
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/src/wizards/wizard-validators.ts
+  42:8  error  Function 'validateRequiredFields' has too many lines (31). Maximum allowed is 30       max-lines-per-function
+  42:8  error  Function 'validateRequiredFields' has too many statements (17). Maximum allowed is 15  max-statements
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/tests/integration/template-generation.test.ts
+   17:7   error  'configProcessor' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   24:5   error  Remove this useless assignment to variable "configProcessor"                                sonarjs/no-dead-store
+  125:13  error  'srcDir' is assigned a value but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+  125:13  error  Remove the declaration of the unused 'srcDir' variable                                      sonarjs/no-unused-vars
+  125:13  error  Remove this useless assignment to variable "srcDir"                                         sonarjs/no-dead-store
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/tests/typescript-generator.test.ts
+  332:21  error  Refactor this code to not nest functions more than 4 levels deep  sonarjs/no-nested-functions
+
+/Users/menoncello/repos/dev/nimata/packages/adapters/tests/utils/performance.test.ts
+  315:33  error  Missing return type on function                                                      @typescript-eslint/explicit-function-return-type
+  320:33  error  Missing return type on function                                                      @typescript-eslint/explicit-function-return-type
+  335:45  error  Missing return type on function                                                      @typescript-eslint/explicit-function-return-type
+  357:33  error  Missing return type on function                                                      @typescript-eslint/explicit-function-return-type
+  361:33  error  Missing return type on function                                                      @typescript-eslint/explicit-function-return-type
+  361:33  error  Move async arrow function 'operation2' to the outer scope                            unicorn/consistent-function-scoping
+  384:32  error  Missing return type on function                                                      @typescript-eslint/explicit-function-return-type
+  390:5   error  Verify this is the index that was intended; "operation" was already set on line 389  sonarjs/no-element-overwrite
+
+✖ 116 problems (116 errors, 0 warnings)
+
+error: script "lint" exited with code 1

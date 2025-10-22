@@ -1,0 +1,118 @@
+{
+  "name": "web",
+  "description": "Web application template with HTTP server and routing",
+  "version": "1.0.0",
+  "supportedProjectTypes": ["web"],
+  "variables": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Project name",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Project description",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "author",
+      "type": "string",
+      "description": "Project author",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "license",
+      "type": "string",
+      "description": "Project license",
+      "required": false,
+      "default": "MIT"
+    },
+    {
+      "name": "qualityLevel",
+      "type": "select",
+      "description": "Code quality level",
+      "required": true,
+      "default": "medium"
+    },
+    {
+      "name": "aiAssistants",
+      "type": "multiselect",
+      "description": "AI assistants to configure",
+      "required": true,
+      "default": ["claude-code"]
+    },
+    {
+      "name": "year",
+      "type": "string",
+      "description": "Current year",
+      "required": false,
+      "default": "{{helper:year}}"
+    }
+  ],
+  "files": [
+    {
+      "path": "package.json",
+      "template": "{\n  \"name\": \"{{name}}\",\n  \"version\": \"1.0.0\",\n  \"description\": \"{{description}}\",\n  \"main\": \"dist/server.js\",\n  \"scripts\": {\n    \"build\": \"tsc\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"dev\": \"tsc --watch\",\n    \"start\": \"node dist/server.js\",\n    \"start:dev\": \"bun run src/server.ts\",\n    \"test\": \"bun test\",\n    \"test:unit\": \"bun test tests/unit/\",\n    \"test:integration\": \"bun test tests/integration/\",\n    \"test:coverage\": \"bun test --coverage\",\n    \"test:watch\": \"bun test --watch\",\n    \"lint\": \"eslint \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"\",\n    \"lint:fix\": \"eslint \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\" --fix\",\n    \"format\": \"prettier --write \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"\",\n    \"format:check\": \"prettier --check \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"\",\n    \"clean\": \"rm -rf dist node_modules coverage\"\n  },\n  \"dependencies\": {\n    \"express\": \"^4.18.2\",\n    \"cors\": \"^2.8.5\",\n    \"helmet\": \"^7.1.0\",\n    \"morgan\": \"^1.10.0\",\n    \"dotenv\": \"^16.3.1\"\n  },\n  \"devDependencies\": {\n    \"@types/node\": \"^24.8.0\",\n    \"@types/express\": \"^4.17.21\",\n    \"@types/cors\": \"^2.8.17\",\n    \"@types/morgan\": \"^1.9.9\",\n    \"typescript\": \"^5.3.3\",\n    \"bun\": \"latest\",\n    \"eslint\": \"^8.56.0\",\n    \"prettier\": \"^3.1.0\",\n    \"supertest\": \"^6.3.3\",\n    \"@types/supertest\": \"^6.0.2\"\n  },\n  \"engines\": {\n    \"bun\": \">=1.3.0\",\n    \"node\": \">=18.0.0\"\n  },\n  \"keywords\": [\n    \"web\",\n    \"express\",\n    \"api\",\n    \"{{helper:kebabCase name}}\"\n  ],\n  \"author\": \"{{author}}\",\n  \"license\": \"{{license}}\"\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "tsconfig.json",
+      "template": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"CommonJS\",\n    \"moduleResolution\": \"node\",\n    \"allowSyntheticDefaultImports\": true,\n    \"esModuleInterop\": true,\n    \"allowJs\": true,\n    \"strict\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"skipLibCheck\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"declaration\": true,\n    \"declarationMap\": true,\n    \"sourceMap\": true,\n    \"outDir\": \"./dist\",\n    \"rootDir\": \"./src\",\n    \"removeComments\": false,\n    \"noImplicitAny\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"noImplicitReturns\": {{#if (eq qualityLevel 'medium')}}true{{else}}{{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}}{{/if}},\n    \"noImplicitThis\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"noUnusedLocals\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"noUnusedParameters\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"exactOptionalPropertyTypes\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"resolveJsonModule\": true,\n    \"experimentalDecorators\": true,\n    \"emitDecoratorMetadata\": true\n  },\n  \"include\": [\n    \"src/**/*\"\n  ],\n  \"exclude\": [\n    \"node_modules\",\n    \"dist\",\n    \"coverage\"\n  ]\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "src/server.ts",
+      "template": "/**\n * {{helper:pascalCase name}} Web Server\n *\n * {{description}}\n *\n * @author {{author}}\n * @license {{license}}\n * @version 1.0.0\n * @since {{year}}\n */\n\nimport express from 'express';\nimport cors from 'cors';\nimport helmet from 'helmet';\nimport morgan from 'morgan';\nimport dotenv from 'dotenv';\nimport { createApiRouter } from './routes/api.js';\nimport { errorHandler } from './middleware/errorHandler.js';\nimport { notFoundHandler } from './middleware/notFoundHandler.js';\n\n// Load environment variables\ndotenv.config();\n\nconst app = express();\nconst PORT = process.env.PORT || 3000;\nconst NODE_ENV = process.env.NODE_ENV || 'development';\n\n// Security middleware\napp.use(helmet());\napp.use(cors({\n  origin: NODE_ENV === 'production' ? false : true,\n  credentials: true\n}));\n\n// Logging middleware\nif (NODE_ENV === 'development') {\n  app.use(morgan('dev'));\n} else {\n  app.use(morgan('combined'));\n}\n\n// Body parsing middleware\napp.use(express.json({ limit: '10mb' }));\napp.use(express.urlencoded({ extended: true, limit: '10mb' }));\n\n// Health check endpoint\napp.get('/health', (req, res) => {\n  res.status(200).json({\n    status: 'ok',\n    timestamp: new Date().toISOString(),\n    uptime: process.uptime(),\n    environment: NODE_ENV,\n    version: '1.0.0'\n  });\n});\n\n// API routes\napp.use('/api', createApiRouter());\n\n// Serve static files in production\nif (NODE_ENV === 'production') {\n  app.use(express.static('public'));\n}\n\n// Error handling middleware\napp.use(notFoundHandler);\napp.use(errorHandler);\n\n// Start server\nconst server = app.listen(PORT, () => {\n  console.log(`🚀 {{helper:pascalCase name}} server running on port ${PORT}`);\n  console.log(`📍 Environment: ${NODE_ENV}`);\n  console.log(`🏥 Health check: http://localhost:${PORT}/health`);\n  if (NODE_ENV === 'development') {\n    console.log(`🔗 API docs: http://localhost:${PORT}/api`);\n  }\n});\n\n// Graceful shutdown\nprocess.on('SIGTERM', () => {\n  console.log('SIGTERM received, shutting down gracefully');\n  server.close(() => {\n    console.log('Process terminated');\n    process.exit(0);\n  });\n});\n\nprocess.on('SIGINT', () => {\n  console.log('SIGINT received, shutting down gracefully');\n  server.close(() => {\n    console.log('Process terminated');\n    process.exit(0);\n  });\n});\n\nexport default app;",
+      "permissions": "644"
+    },
+    {
+      "path": "src/routes/api.ts",
+      "template": "/**\n * API Routes\n */\n\nimport { Router } from 'express';\nimport { helloRouter } from './hello.js';\n\nconst router = Router();\n\n// API documentation endpoint\nrouter.get('/', (req, res) => {\n  res.json({\n    name: '{{helper:pascalCase name}} API',\n    version: '1.0.0',\n    description: '{{description}}',\n    endpoints: {\n      '/health': 'Health check endpoint',\n      '/hello': 'Greeting endpoint',\n      '/docs': 'API documentation'\n    }\n  });\n});\n\n// Mount sub-routes\nrouter.use('/hello', helloRouter);\n\nexport function createApiRouter(): Router {\n  return router;\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "src/routes/hello.ts",
+      "template": "/**\n * Hello API Routes\n */\n\nimport { Router } from 'express';\nimport { hello } from '../services/helloService.js';\n\nconst router = Router();\n\n/**\n * GET /api/hello\n * Get a simple greeting\n */\nrouter.get('/', (req, res) => {\n  const { name = 'World' } = req.query;\n  \n  try {\n    const greeting = hello(String(name));\n    res.json({\n      message: greeting,\n      timestamp: new Date().toISOString()\n    });\n  } catch (error) {\n    res.status(500).json({\n      error: 'Failed to generate greeting',\n      message: error instanceof Error ? error.message : 'Unknown error'\n    });\n  }\n});\n\n/**\n * POST /api/hello\n * Create a custom greeting\n */\nrouter.post('/', (req, res) => {\n  const { name, options = {} } = req.body;\n  \n  if (!name) {\n    return res.status(400).json({\n      error: 'Name is required',\n      message: 'Please provide a name in the request body'\n    });\n  }\n  \n  try {\n    const greeting = hello(name, options);\n    res.status(201).json({\n      message: greeting,\n      options,\n      timestamp: new Date().toISOString()\n    });\n  } catch (error) {\n    res.status(500).json({\n      error: 'Failed to generate greeting',\n      message: error instanceof Error ? error.message : 'Unknown error'\n    });\n  }\n});\n\nexport { router as helloRouter };",
+      "permissions": "644"
+    },
+    {
+      "path": "src/services/helloService.ts",
+      "template": "/**\n * Hello Service\n */\n\nexport interface HelloOptions {\n  uppercase?: boolean;\n  exclamation?: boolean;\n  language?: 'en' | 'es' | 'fr' | 'de';\n}\n\nexport interface GreetingResponse {\n  message: string;\n  language: string;\n  timestamp: string;\n}\n\nconst greetings = {\n  en: 'Hello',\n  es: 'Hola',\n  fr: 'Bonjour',\n  de: 'Hallo'\n};\n\n/**\n * Generate a greeting message\n *\n * @param name - Name to greet\n * @param options - Additional options for formatting\n * @returns Formatted greeting message\n */\nexport function hello(name: string = 'World', options: HelloOptions = {}): string {\n  const language = options.language || 'en';\n  const greeting = greetings[language];\n  let message = `${greeting}, ${name}`;\n  \n  if (options.uppercase) {\n    message = message.toUpperCase();\n  }\n  \n  const punctuation = options.exclamation ? '!' : '.';\n  message += punctuation;\n  \n  return message;\n}\n\n/**\n * Generate a detailed greeting response\n *\n * @param name - Name to greet\n * @param options - Additional options for formatting\n * @returns Detailed greeting response\n */\nexport function createGreetingResponse(name: string, options: HelloOptions = {}): GreetingResponse {\n  return {\n    message: hello(name, options),\n    language: options.language || 'en',\n    timestamp: new Date().toISOString()\n  };\n}\n\n/**\n * Get supported languages\n *\n * @returns Array of supported language codes\n */\nexport function getSupportedLanguages(): string[] {\n  return Object.keys(greetings);\n}\n\n/**\n * Validate greeting options\n *\n * @param options - Options to validate\n * @returns Validation result\n */\nexport function validateHelloOptions(options: HelloOptions): { valid: boolean; errors: string[] } {\n  const errors: string[] = [];\n  \n  if (options.language && !greetings[options.language]) {\n    errors.push(`Unsupported language: ${options.language}. Supported languages: ${getSupportedLanguages().join(', ')}`);\n  }\n  \n  return {\n    valid: errors.length === 0,\n    errors\n  };\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "src/middleware/errorHandler.ts",
+      "template": "/**\n * Error Handling Middleware\n */\n\nimport { Request, Response, NextFunction } from 'express';\n\nexport interface AppError extends Error {\n  statusCode?: number;\n  status?: string;\n  isOperational?: boolean;\n}\n\n/**\n * Custom error class\n */\nexport class CustomError extends Error implements AppError {\n  statusCode: number;\n  status: string;\n  isOperational: boolean;\n  \n  constructor(message: string, statusCode: number = 500) {\n    super(message);\n    \n    this.statusCode = statusCode;\n    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';\n    this.isOperational = true;\n    \n    Error.captureStackTrace(this, this.constructor);\n  }\n}\n\n/**\n * Global error handler middleware\n */\nexport function errorHandler(\n  error: AppError,\n  req: Request,\n  res: Response,\n  next: NextFunction\n): void {\n  const statusCode = error.statusCode || 500;\n  const status = error.status || 'error';\n  \n  // Log error details\n  console.error('Error:', {\n    message: error.message,\n    stack: error.stack,\n    url: req.url,\n    method: req.method,\n    timestamp: new Date().toISOString()\n  });\n  \n  // Send error response\n  res.status(statusCode).json({\n    status,\n    message: error.message,\n    ...(process.env.NODE_ENV === 'development' && { stack: error.stack })\n  });\n}\n\n/**\n * Async error wrapper\n */\nexport function catchAsync(fn: Function) {\n  return (req: Request, res: Response, next: NextFunction) => {\n    Promise.resolve(fn(req, res, next)).catch(next);\n  };\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "src/middleware/notFoundHandler.ts",
+      "template": "/**\n * 404 Not Found Middleware\n */\n\nimport { Request, Response } from 'express';\n\n/**\n * 404 Not Found handler\n */\nexport function notFoundHandler(req: Request, res: Response): void {\n  res.status(404).json({\n    status: 'fail',\n    message: `Route ${req.originalUrl} not found`,\n    availableRoutes: [\n      '/health',\n      '/api',\n      '/api/hello'\n    ]\n  });\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "tests/server.test.ts",
+      "template": "/**\n * Integration tests for the web server\n */\n\nimport { describe, it, expect, beforeAll, afterAll } from 'bun:test';\nimport request from 'supertest';\nimport app from '../src/server';\n\ndescribe('{{helper:pascalCase name}} Web Server', () => {\n  describe('Health Check', () => {\n    it('should return 200 OK for health check', async () => {\n      const response = await request(app)\n        .get('/health')\n        .expect(200);\n      \n      expect(response.body).toHaveProperty('status', 'ok');\n      expect(response.body).toHaveProperty('timestamp');\n      expect(response.body).toHaveProperty('uptime');\n      expect(response.body).toHaveProperty('environment');\n      expect(response.body).toHaveProperty('version', '1.0.0');\n    });\n  });\n  \n  describe('API Routes', () => {\n    it('should return API documentation', async () => {\n      const response = await request(app)\n        .get('/api')\n        .expect(200);\n      \n      expect(response.body).toHaveProperty('name', '{{helper:pascalCase name}} API');\n      expect(response.body).toHaveProperty('version', '1.0.0');\n      expect(response.body).toHaveProperty('endpoints');\n    });\n  });\n  \n  describe('Hello API', () => {\n    it('should return default greeting', async () => {\n      const response = await request(app)\n        .get('/api/hello')\n        .expect(200);\n      \n      expect(response.body).toHaveProperty('message');\n      expect(response.body).toHaveProperty('timestamp');\n      expect(response.body.message).toContain('Hello, World');\n    });\n    \n    it('should return custom greeting with query parameter', async () => {\n      const response = await request(app)\n        .get('/api/hello?name=TypeScript')\n        .expect(200);\n      \n      expect(response.body.message).toContain('Hello, TypeScript');\n    });\n    \n    it('should create custom greeting with POST', async () => {\n      const response = await request(app)\n        .post('/api/hello')\n        .send({ name: 'Bun', options: { uppercase: true, exclamation: true } })\n        .expect(201);\n      \n      expect(response.body.message).toContain('HELLO, BUN!');\n      expect(response.body).toHaveProperty('options');\n      expect(response.body).toHaveProperty('timestamp');\n    });\n    \n    it('should return 400 for missing name in POST request', async () => {\n      const response = await request(app)\n        .post('/api/hello')\n        .send({ options: { uppercase: true } })\n        .expect(400);\n      \n      expect(response.body).toHaveProperty('error', 'Name is required');\n    });\n  });\n  \n  describe('404 Handling', () => {\n    it('should return 404 for unknown routes', async () => {\n      const response = await request(app)\n        .get('/unknown-route')\n        .expect(404);\n      \n      expect(response.body).toHaveProperty('status', 'fail');\n      expect(response.body).toHaveProperty('message');\n      expect(response.body).toHaveProperty('availableRoutes');\n    });\n  });\n});",
+      "permissions": "644"
+    },
+    {
+      "path": "tests/helloService.test.ts",
+      "template": "/**\n * Unit tests for hello service\n */\n\nimport { describe, it, expect } from 'bun:test';\nimport { hello, createGreetingResponse, getSupportedLanguages, validateHelloOptions, type HelloOptions } from '../src/services/helloService';\n\ndescribe('Hello Service', () => {\n  describe('hello function', () => {\n    it('should return default greeting', () => {\n      expect(hello()).toBe('Hello, World.');\n    });\n    \n    it('should return greeting with custom name', () => {\n      expect(hello('TypeScript')).toBe('Hello, TypeScript.');\n    });\n    \n    it('should return uppercase greeting', () => {\n      expect(hello('TypeScript', { uppercase: true })).toBe('HELLO, TYPESCRIPT.');\n    });\n    \n    it('should return greeting with exclamation', () => {\n      expect(hello('TypeScript', { exclamation: true })).toBe('Hello, TypeScript!');\n    });\n    \n    it('should return greeting in Spanish', () => {\n      expect(hello('Mundo', { language: 'es' })).toBe('Hola, Mundo.');\n    });\n    \n    it('should return greeting in French', () => {\n      expect(hello('Monde', { language: 'fr' })).toBe('Bonjour, Monde.');\n    });\n    \n    it('should return greeting in German', () => {\n      expect(hello('Welt', { language: 'de' })).toBe('Hallo, Welt.');\n    });\n    \n    it('should apply all options together', () => {\n      const options: HelloOptions = {\n        uppercase: true,\n        exclamation: true,\n        language: 'es'\n      };\n      expect(hello('Mundo', options)).toBe('HOLA, MUNDO!');\n    });\n  });\n  \n  describe('createGreetingResponse', () => {\n    it('should create detailed response', () => {\n      const response = createGreetingResponse('TypeScript', { language: 'fr' });\n      \n      expect(response).toHaveProperty('message', 'Bonjour, TypeScript.');\n      expect(response).toHaveProperty('language', 'fr');\n      expect(response).toHaveProperty('timestamp');\n      expect(new Date(response.timestamp)).toBeInstanceOf(Date);\n    });\n  });\n  \n  describe('getSupportedLanguages', () => {\n    it('should return all supported languages', () => {\n      const languages = getSupportedLanguages();\n      expect(languages).toEqual(['en', 'es', 'fr', 'de']);\n    });\n  });\n  \n  describe('validateHelloOptions', () => {\n    it('should validate valid options', () => {\n      const result = validateHelloOptions({ language: 'es', uppercase: true });\n      expect(result.valid).toBe(true);\n      expect(result.errors).toHaveLength(0);\n    });\n    \n    it('should reject invalid language', () => {\n      const result = validateHelloOptions({ language: 'invalid' as any });\n      expect(result.valid).toBe(false);\n      expect(result.errors).toContain('Unsupported language: invalid. Supported languages: en, es, fr, de');\n    });\n    \n    it('should accept empty options', () => {\n      const result = validateHelloOptions({});\n      expect(result.valid).toBe(true);\n      expect(result.errors).toHaveLength(0);\n    });\n  });\n});",
+      "permissions": "644"
+    },
+    {
+      "path": ".env.example",
+      "template": "# Environment Variables\nNODE_ENV=development\nPORT=3000\n\n# Database (if needed)\n# DATABASE_URL=postgresql://user:password@localhost:5432/dbname\n\n# API Keys (if needed)\n# API_KEY=your-api-key-here\n\n# JWT Secret (if needed)\n# JWT_SECRET=your-jwt-secret-here\n\n# CORS Origins (comma-separated)\n# CORS_ORIGINS=http://localhost:3000,http://localhost:5173",
+      "permissions": "644"
+    },
+    {
+      "path": "README.md",
+      "template": "# {{helper:pascalCase name}}\n\n{{description}}\n\n## Features\n\n- Express.js web server with TypeScript\n- RESTful API with proper error handling\n- Health check endpoint\n- CORS support\n- Security headers with Helmet\n- Request logging with Morgan\n- Environment-based configuration\n- Graceful shutdown handling\n\n## Installation\n\n```bash\n# Clone and install dependencies\nbun install\n\n# Copy environment file\ncp .env.example .env\n\n# Configure your environment variables\nnano .env\n```\n\n## Development\n\n```bash\n# Start development server with hot reload\nbun run start:dev\n\n# Run in watch mode\nbun run dev\n\n# Type checking\nbun run typecheck\n\n# Run tests\nbun test\n\n# Run tests with coverage\nbun run test:coverage\n\n# Linting\nbun run lint\n\n# Formatting\nbun run format\n```\n\n## Production\n\n```bash\n# Build the project\nbun run build\n\n# Start production server\nbun run start\n\n# Or use PM2 for process management\npm2 start dist/server.js --name \"{{name}}\"\n```\n\n## API Endpoints\n\n### Health Check\n\n```bash\nGET /health\n```\n\nReturns server health status and basic information.\n\n### API Documentation\n\n```bash\nGET /api\n```\n\nReturns API documentation and available endpoints.\n\n### Hello API\n\n```bash\n# Get greeting\nGET /api/hello?name=World\n\n# Create custom greeting\nPOST /api/hello\nContent-Type: application/json\n\n{\n  \"name\": \"TypeScript\",\n  \"options\": {\n    \"uppercase\": true,\n    \"exclamation\": true,\n    \"language\": \"es\"\n  }\n}\n```\n\n### Response Format\n\nAll API responses follow a consistent format:\n\n```json\n{\n  \"status\": \"success|fail|error\",\n  \"message\": \"Descriptive message\",\n  \"data\": {},\n  \"timestamp\": \"2024-01-01T00:00:00.000Z\"\n}\n```\n\n## Error Handling\n\nThe application includes comprehensive error handling:\n\n- Global error handler middleware\n- Custom error classes\n- Proper HTTP status codes\n- Error logging\n- Development vs production error responses\n\n## Environment Variables\n\n| Variable | Default | Description |\n|----------|---------|-------------|\n| `NODE_ENV` | `development` | Application environment |\n| `PORT` | `3000` | Server port |\n| `CORS_ORIGINS` | `*` | Allowed CORS origins |\n\n## Project Structure\n\n```\nsrc/\n├── server.ts              # Main server file\n├── routes/\n│   ├── api.ts            # API router\n│   └── hello.ts          # Hello routes\n├── services/\n│   └── helloService.ts   # Business logic\n├── middleware/\n│   ├── errorHandler.ts  # Error handling\n│   └── notFoundHandler.ts # 404 handling\n└── types/\n    └── index.ts         # Type definitions\n```\n\n## License\n\n{{license}} © {{year}} {{author}}",
+      "permissions": "644"
+    }
+  ]
+}

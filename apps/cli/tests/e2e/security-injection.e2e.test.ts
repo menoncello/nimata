@@ -16,7 +16,7 @@ import { describe, it, expect } from 'bun:test';
 
 const CLI_PATH = './bin/nimata';
 
-describe.skip('Security: Argument Injection Prevention', () => {
+describe('Security: Argument Injection Prevention', () => {
   describe('Shell Injection Attempts', () => {
     it('should not execute shell commands in config path', async () => {
       const proc = spawn({

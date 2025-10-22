@@ -11,7 +11,7 @@ const CLI_PATH = './bin/nimata';
 describe('Command Routing', () => {
   it('should route to init command', async () => {
     const proc = spawn({
-      cmd: ['bun', CLI_PATH, 'init'],
+      cmd: ['bun', CLI_PATH, 'init', '--help'],
       cwd: `${import.meta.dir}/../..`,
       stdout: 'pipe',
       stderr: 'pipe',
@@ -20,8 +20,9 @@ describe('Command Routing', () => {
     const exitCode = await proc.exited;
     const stdout = await new Response(proc.stdout as ReadableStream<Uint8Array>).text();
 
-    expect(stdout).toContain('init command');
-    expect(stdout).toContain('Not implemented yet');
+    // Init command is now implemented - verify help output
+    expect(stdout).toContain('init');
+    expect(stdout).toContain('Initialize a new TypeScript project');
     expect(exitCode).toBe(0);
   });
 

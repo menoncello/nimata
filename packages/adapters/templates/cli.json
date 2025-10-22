@@ -1,0 +1,114 @@
+{
+  "name": "cli",
+  "description": "CLI application template with argument parsing and command structure",
+  "version": "1.0.0",
+  "supportedProjectTypes": ["cli"],
+  "variables": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Project name",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Project description",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "author",
+      "type": "string",
+      "description": "Project author",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "license",
+      "type": "string",
+      "description": "Project license",
+      "required": false,
+      "default": "MIT"
+    },
+    {
+      "name": "qualityLevel",
+      "type": "select",
+      "description": "Code quality level",
+      "required": true,
+      "default": "medium"
+    },
+    {
+      "name": "aiAssistants",
+      "type": "multiselect",
+      "description": "AI assistants to configure",
+      "required": true,
+      "default": ["claude-code"]
+    },
+    {
+      "name": "year",
+      "type": "string",
+      "description": "Current year",
+      "required": false,
+      "default": "{{helper:year}}"
+    }
+  ],
+  "files": [
+    {
+      "path": "package.json",
+      "template": "{\n  \"name\": \"{{name}}\",\n  \"version\": \"1.0.0\",\n  \"description\": \"{{description}}\",\n  \"main\": \"dist/index.js\",\n  \"bin\": {\n    \"{{name}}\": \"dist/cli.js\"\n  },\n  \"scripts\": {\n    \"build\": \"tsc\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"dev\": \"tsc --watch\",\n    \"start\": \"node dist/cli.js\",\n    \"start:dev\": \"bun run src/cli.ts\",\n    \"test\": \"bun test\",\n    \"test:unit\": \"bun test tests/unit/\",\n    \"test:integration\": \"bun test tests/integration/\",\n    \"test:coverage\": \"bun test --coverage\",\n    \"test:watch\": \"bun test --watch\",\n    \"lint\": \"eslint \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"\",\n    \"lint:fix\": \"eslint \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\" --fix\",\n    \"format\": \"prettier --write \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"\",\n    \"format:check\": \"prettier --check \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"\",\n    \"clean\": \"rm -rf dist node_modules coverage\"\n  },\n  \"dependencies\": {\n    \"commander\": \"^11.1.0\",\n    \"chalk\": \"^4.1.2\",\n    \"ora\": \"^5.4.1\"\n  },\n  \"devDependencies\": {\n    \"@types/node\": \"^24.8.0\",\n    \"typescript\": \"^5.3.3\",\n    \"bun\": \"latest\",\n    \"eslint\": \"^8.56.0\",\n    \"prettier\": \"^3.1.0\"\n  },\n  \"engines\": {\n    \"bun\": \">=1.3.0\",\n    \"node\": \">=18.0.0\"\n  },\n  \"keywords\": [\n    \"cli\",\n    \"command-line\",\n    \"{{helper:kebabCase name}}\"\n  ],\n  \"author\": \"{{author}}\",\n  \"license\": \"{{license}}\"\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "tsconfig.json",
+      "template": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"node\",\n    \"allowSyntheticDefaultImports\": true,\n    \"esModuleInterop\": true,\n    \"allowJs\": true,\n    \"strict\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"skipLibCheck\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"declaration\": true,\n    \"declarationMap\": true,\n    \"sourceMap\": true,\n    \"outDir\": \"./dist\",\n    \"rootDir\": \"./src\",\n    \"removeComments\": false,\n    \"noImplicitAny\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"noImplicitReturns\": {{#if (eq qualityLevel 'medium')}}true{{else}}{{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}}{{/if}},\n    \"noImplicitThis\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"noUnusedLocals\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"noUnusedParameters\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"exactOptionalPropertyTypes\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"resolveJsonModule\": true\n  },\n  \"include\": [\n    \"src/**/*\"\n  ],\n  \"exclude\": [\n    \"node_modules\",\n    \"dist\",\n    \"coverage\"\n  ]\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "src/cli.ts",
+      "template": "#!/usr/bin/env node\n\n/**\n * {{helper:pascalCase name}} CLI\n *\n * {{description}}\n *\n * @author {{author}}\n * @license {{license}}\n * @version 1.0.0\n * @since {{year}}\n */\n\nimport { Command } from 'commander';\nimport chalk from 'chalk';\nimport ora from 'ora';\nimport { hello } from './index.js';\n\nconst program = new Command();\n\nprogram\n  .name('{{name}}')\n  .description('{{description}}')\n  .version('1.0.0');\n\n// Hello command\nprogram\n  .command('hello')\n  .description('Say hello to someone')\n  .argument('[name]', 'Name to greet', 'World')\n  .option('-c, --capitalize', 'Capitalize the greeting')\n  .action(async (name: string, options: { capitalize?: boolean }) => {\n    const spinner = ora('Processing greeting...').start();\n    \n    try {\n      // Simulate some async processing\n      await new Promise(resolve => setTimeout(resolve, 1000));\n      \n      const greeting = hello(name);\n      const finalGreeting = options.capitalize ? greeting.toUpperCase() : greeting;\n      \n      spinner.succeed('Done!');\n      console.log(chalk.green(finalGreeting));\n    } catch (error) {\n      spinner.fail('Error occurred');\n      console.error(chalk.red('Failed to process greeting:'), error);\n      process.exit(1);\n    }\n  });\n\n// Status command\nprogram\n  .command('status')\n  .description('Show application status')\n  .action(() => {\n    console.log(chalk.blue('{{helper:pascalCase name}} CLI Status'));\n    console.log(chalk.gray('─'.repeat(30)));\n    console.log(`Version: ${chalk.yellow('1.0.0')}`);\n    console.log(`Environment: ${chalk.yellow(process.env.NODE_ENV || 'development')}`);\n    console.log(`Platform: ${chalk.yellow(process.platform)}`);\n    console.log(`Node.js: ${chalk.yellow(process.version)}`);\n  });\n\n// Global error handling\nprogram.exitOverride();\n\nprocess.on('uncaughtException', (error) => {\n  console.error(chalk.red('Uncaught Exception:'), error);\n  process.exit(1);\n});\n\nprocess.on('unhandledRejection', (reason, promise) => {\n  console.error(chalk.red('Unhandled Rejection at:'), promise, 'reason:', reason);\n  process.exit(1);\n});\n\n// Parse command line arguments\nprogram.parse();",
+      "permissions": "755"
+    },
+    {
+      "path": "src/index.ts",
+      "template": "/**\n * {{helper:pascalCase name}} CLI Library\n *\n * {{description}}\n *\n * @author {{author}}\n * @license {{license}}\n * @version 1.0.0\n * @since {{year}}\n */\n\nexport const VERSION = '1.0.0';\n\nexport interface HelloOptions {\n  uppercase?: boolean;\n  exclamation?: boolean;\n}\n\n/**\n * Generate a greeting message\n *\n * @param name - Name to greet\n * @param options - Additional options for formatting\n * @returns Formatted greeting message\n */\nexport function hello(name: string = 'World', options: HelloOptions = {}): string {\n  let greeting = `Hello, ${name}`;\n  \n  if (options.uppercase) {\n    greeting = greeting.toUpperCase();\n  }\n  \n  if (options.exclamation) {\n    greeting += '!';\n  } else {\n    greeting += '.';\n  }\n  \n  return greeting;\n}\n\nexport default {\n  VERSION,\n  hello\n};",
+      "permissions": "644"
+    },
+    {
+      "path": "README.md",
+      "template": "# {{helper:pascalCase name}}\n\n{{description}}\n\n## Installation\n\n```bash\n# Global installation\nnpm install -g {{name}}\n\n# Local installation\nnpm install {{name}}\n```\n\n## Usage\n\n### Command Line Interface\n\n```bash\n# Greet someone\n{{name}} hello World\n\n# Greet with capitalization\n{{name}} hello --capitalize\n\n# Check status\n{{name}} status\n\n# Get help\n{{name}} --help\n```\n\n### Programmatic Usage\n\n```typescript\nimport { hello } from '{{name}}';\n\nconsole.log(hello('TypeScript'));\n// Output: Hello, TypeScript.\n\nconsole.log(hello('TypeScript', { uppercase: true, exclamation: true }));\n// Output: HELLO, TYPESCRIPT!\n```\n\n## Development\n\n```bash\n# Install dependencies\nbun install\n\n# Run in development mode\nbun run start:dev\n\n# Build project\nbun run build\n\n# Start the built CLI\nbun run start\n\n# Run tests\nbun test\n\n# Run linter\nbun run lint\n\n# Format code\nbun run format\n```\n\n## Commands\n\n### `hello [name]`\nSay hello to someone.\n\n- **name**: Name to greet (default: \"World\")\n- **Options**:\n  - `-c, --capitalize`: Capitalize the greeting\n\n### `status`\nShow application status and environment information.\n\n## License\n\n{{license}} © {{year}} {{author}}",
+      "permissions": "644"
+    },
+    {
+      "path": "LICENSE",
+      "template": "{{#if (eq license 'MIT')}}MIT License\n\nCopyright (c) {{year}} {{author}}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.{{else}}{{license}} License\n\nPlease refer to the LICENSE file for the {{license}} license terms.{{/if}}",
+      "permissions": "644",
+      "condition": "license"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "template": "// ESLint configuration for {{name}}\n// Quality level: {{qualityLevel}}\n\nimport eslint from '@eslint/js';\nimport typescriptPlugin from '@typescript-eslint/eslint-plugin';\nimport typescriptParser from '@typescript-eslint/parser';\n\nexport default [\n  eslint.configs.recommended,\n  {\n    files: ['**/*.ts'],\n    languageOptions: {\n      parser: typescriptParser,\n      parserOptions: {\n        ecmaVersion: 'latest',\n        sourceType: 'module',\n      },\n    },\n    plugins: {\n      '@typescript-eslint': typescriptPlugin,\n    },\n    rules: {\n      '@typescript-eslint/no-unused-vars': {{#if (eq qualityLevel 'strict')}}'error'{{else}}{{#if (eq qualityLevel 'medium')}}'warn'{{else}}'off'{{/if}}{{/if}},\n      '@typescript-eslint/no-explicit-any': {{#if (eq qualityLevel 'strict')}}'error'{{else}}{{#if (eq qualityLevel 'medium')}}'warn'{{else}}'off'{{/if}}{{/if}},\n      '@typescript-eslint/prefer-const': 'error',\n      'prefer-const': 'error',\n      'no-var': 'error',\n      {{#if (eq qualityLevel 'strict')}}\n      'no-console': 'warn',\n      'no-debugger': 'error',\n      {{/if}}\n    },\n  },\n  {\n    files: ['tests/**/*.ts'],\n    rules: {\n      '@typescript-eslint/no-explicit-any': 'off',\n      'no-console': 'off',\n    },\n  },\n  {\n    ignores: [\n      'dist/',\n      'node_modules/',\n      'coverage/',\n      '*.config.js',\n      '*.config.mjs',\n    ],\n  },\n];",
+      "permissions": "644"
+    },
+    {
+      "path": "prettier.config.mjs",
+      "template": "// Prettier configuration for {{name}}\n\nexport default {\n  semi: true,\n  trailingComma: 'es5',\n  singleQuote: true,\n  printWidth: 100,\n  tabWidth: 2,\n  useTabs: false,\n  quoteProps: 'as-needed',\n  bracketSpacing: true,\n  arrowParens: 'avoid',\n  endOfLine: 'lf',\n  plugins: [],\n  overrides: [\n    {\n      files: '*.json',\n      options: {\n        printWidth: 80,\n        tabWidth: 2,\n      },\n    },\n  ],\n};",
+      "permissions": "644"
+    },
+    {
+      "path": ".gitignore",
+      "template": "# Dependencies\nnode_modules/\n\n# Build outputs\ndist/\nbuild/\n*.tsbuildinfo\n\n# Coverage reports\ncoverage/\n*.lcov\n\n# IDE\n.vscode/\n.idea/\n*.swp\n*.swo\n\n# OS\n.DS_Store\nThumbs.db\n\n# Logs\n*.log\nnpm-debug.log*\nyarn-debug.log*\nyarn-error.log*\n\n# Runtime\n*.pid\n*.seed\n*.pid.lock\n\n# Environment\n.env\n.env.local\n.env.development.local\n.env.test.local\n.env.production.local\n\n# Temporary\n.tmp/\ntmp/",
+      "permissions": "644"
+    },
+    {
+      "path": "tests/index.test.ts",
+      "template": "/**\n * Unit tests for {{name}}\n */\n\nimport { describe, it, expect, beforeEach } from 'bun:test';\nimport { hello, VERSION } from '../src/index';\n\ndescribe('{{name}}', () => {\n  describe('hello function', () => {\n    it('should return greeting with default name', () => {\n      expect(hello()).toBe('Hello, World.');\n    });\n\n    it('should return greeting with custom name', () => {\n      expect(hello('TypeScript')).toBe('Hello, TypeScript.');\n    });\n\n    it('should capitalize greeting when uppercase option is true', () => {\n      expect(hello('TypeScript', { uppercase: true })).toBe('HELLO, TYPESCRIPT.');\n    });\n\n    it('should add exclamation when exclamation option is true', () => {\n      expect(hello('TypeScript', { exclamation: true })).toBe('Hello, TypeScript!');\n    });\n\n    it('should apply both options together', () => {\n      expect(hello('TypeScript', { uppercase: true, exclamation: true })).toBe('HELLO, TYPESCRIPT!');\n    });\n  });\n\n  describe('VERSION', () => {\n    it('should have correct version', () => {\n      expect(VERSION).toBe('1.0.0');\n    });\n  });\n});",
+      "permissions": "644"
+    },
+    {
+      "path": "tests/cli.test.ts",
+      "template": "/**\n * Integration tests for CLI commands\n */\n\nimport { describe, it, expect, beforeEach } from 'bun:test';\nimport { spawn } from 'child_process';\nimport path from 'path';\nimport fs from 'fs';\n\nconst cliPath = path.join(__dirname, '../dist/cli.js');\n\ndescribe('CLI Commands', () => {\n  beforeEach(async () => {\n    // Ensure CLI is built before tests\n    if (!fs.existsSync(cliPath)) {\n      await new Promise((resolve, reject) => {\n        const build = spawn('bun', ['run', 'build'], { stdio: 'inherit' });\n        build.on('close', (code) => {\n          if (code === 0) resolve(undefined);\n          else reject(new Error(`Build failed with code ${code}`));\n        });\n      });\n    }\n  });\n\n  describe('hello command', () => {\n    it('should greet with default name', async () => {\n      const result = await runCli(['hello']);\n      expect(result.stdout).toContain('Hello, World');\n      expect(result.code).toBe(0);\n    }, 10000);\n\n    it('should greet with custom name', async () => {\n      const result = await runCli(['hello', 'TypeScript']);\n      expect(result.stdout).toContain('Hello, TypeScript');\n      expect(result.code).toBe(0);\n    }, 10000);\n\n    it('should capitalize when flag is provided', async () => {\n      const result = await runCli(['hello', 'TypeScript', '--capitalize']);\n      expect(result.stdout).toContain('HELLO, TYPESCRIPT');\n      expect(result.code).toBe(0);\n    }, 10000);\n  });\n\n  describe('status command', () => {\n    it('should show status information', async () => {\n      const result = await runCli(['status']);\n      expect(result.stdout).toContain('{{helper:pascalCase name}} CLI Status');\n      expect(result.stdout).toContain('Version:');\n      expect(result.stdout).toContain('Environment:');\n      expect(result.code).toBe(0);\n    }, 10000);\n  });\n});\n\ninterface CliResult {\n  code: number | null;\n  stdout: string;\n  stderr: string;\n}\n\nfunction runCli(args: string[]): Promise<CliResult> {\n  return new Promise((resolve) => {\n    const cli = spawn('node', [cliPath, ...args]);\n    let stdout = '';\n    let stderr = '';\n\n    cli.stdout?.on('data', (data) => {\n      stdout += data.toString();\n    });\n\n    cli.stderr?.on('data', (data) => {\n      stderr += data.toString();\n    });\n\n    cli.on('close', (code) => {\n      resolve({ code, stdout, stderr });\n    });\n\n    cli.on('error', (error) => {\n      stderr += error.toString();\n      resolve({ code: 1, stdout, stderr });\n    });\n  });\n}",
+      "permissions": "644"
+    }
+  ]
+}
