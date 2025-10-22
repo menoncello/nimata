@@ -165,7 +165,7 @@ jobs:
           name: build-artifacts
 
       - name: Run integration tests
-        run: bun test apps/cli/tests/integration/**/*.test.ts
+        run: bun test apps/cli/tests/e2e/*integration*.test.ts
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
