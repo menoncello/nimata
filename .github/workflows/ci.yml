@@ -213,6 +213,7 @@ jobs:
           set +e  # Don't fail on non-zero exit
 
           echo "Testing: nimata --help should exit with 0"
+          chmod +x ./apps/cli/bin/nimata
           ./apps/cli/bin/nimata --help
           EXIT_CODE=$?
 
@@ -231,6 +232,7 @@ jobs:
           set +e
 
           echo "Testing: nimata --version should exit with 0"
+          chmod +x ./apps/cli/bin/nimata
           ./apps/cli/bin/nimata --version
           EXIT_CODE=$?
 
@@ -249,6 +251,7 @@ jobs:
           set +e
 
           echo "Testing: nimata invalid-command should exit with 1"
+          chmod +x ./apps/cli/bin/nimata
           ./apps/cli/bin/nimata invalid-command 2>/dev/null
           EXIT_CODE=$?
 
@@ -267,6 +270,7 @@ jobs:
           set +e
 
           echo "Testing: nimata (no args) should exit with 1"
+          chmod +x ./apps/cli/bin/nimata
           ./apps/cli/bin/nimata 2>/dev/null
           EXIT_CODE=$?
 
