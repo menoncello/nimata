@@ -69,7 +69,7 @@
 /bmad:bmm:agents:tea *atdd X.X
 
 # 3. Implementation
-/bmad:bmm:agents:dev *develop X.X
+/bmad:bmm:agents:dev *develop X.X  # Quality gates enforced automatically
 
 # 4. Quality Checks
 /bmad:bmm:agents:tea *test-review X.X
