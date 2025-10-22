@@ -96,7 +96,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: performance-results
-        path: performance/
+        path: tests/performance/
 
   
   notify:
