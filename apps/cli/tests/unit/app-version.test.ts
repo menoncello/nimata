@@ -22,7 +22,6 @@ const createThrowingBunFileMock = (): (() => never) => {
   };
 };
 
-
 describe('App Module - Version Logic', () => {
   let app: CliApp;
 

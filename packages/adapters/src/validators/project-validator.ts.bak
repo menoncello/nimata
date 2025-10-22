@@ -1,0 +1,754 @@
+/**
+ * Project Validator
+ *
+ * Validates generated projects and verifies setup correctness
+ */
+
+// Inline type to avoid import issues
+interface ProjectConfig {
+  name: string;
+  description?: string;
+  qualityLevel: 'light' | 'medium' | 'strict';
+  projectType: 'basic' | 'web' | 'cli' | 'library';
+  aiAssistants: Array<'claude-code' | 'copilot'>;
+}
+
+export interface ProjectValidationResult {
+  success: boolean;
+  errors: string[];
+  warnings: string[];
+  info: string[];
+}
+
+export interface ProjectStructure {
+  files: string[];
+  directories: string[];
+  configurations: string[];
+  scripts: string[];
+}
+
+export interface ProjectValidatorOptions {
+  projectPath: string;
+  config: ProjectConfig;
+  verbose?: boolean;
+  skipOptional?: boolean;
+}
+
+/**
+ * Project Validator Class
+ */
+export class ProjectValidator {
+  /**
+   * Validate a generated project
+   *
+   * @param options - Validator options
+   * @returns Validation result with detailed information
+   */
+  async validateProject(options: ProjectValidatorOptions): Promise<ProjectValidationResult> {
+    const result: ProjectValidationResult = {
+      success: true,
+      errors: [],
+      warnings: [],
+      info: [],
+    };
+
+    try {
+      // Check project structure
+      await this.validateProjectStructure(options, result);
+
+      // Validate configuration files
+      await this.validateConfigurations(options, result);
+
+      // Validate package.json
+      await this.validatePackageJson(options, result);
+
+      // Validate TypeScript configuration
+      await this.validateTypeScriptConfig(options, result);
+
+      // Validate ESLint configuration
+      await this.validateESLintConfig(options, result);
+
+      // Validate test configuration
+      await this.validateTestConfig(options, result);
+
+      // Validate AI assistant configurations
+      await this.validateAIConfigurations(options, result);
+
+      // Check for required dependencies
+      await this.validateDependencies(options, result);
+
+      // Validate project-specific requirements
+      await this.validateProjectSpecificRequirements(options, result);
+
+      // Determine overall success
+      result.success = result.errors.length === 0;
+    } catch (error) {
+      result.success = false;
+      result.errors.push(
+        `Validation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+
+    return result;
+  }
+
+  /**
+   * Validate basic project structure
+   * @param options - Validator options
+   * @param result - Validation result
+   */
+  private async validateProjectStructure(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    const requiredDirs = this.getRequiredDirectories(options.config.projectType);
+    const requiredFiles = this.getRequiredFiles(options.config.projectType);
+
+    // Check directories
+    for (const dir of requiredDirs) {
+      const dirPath = `${options.projectPath}/${dir}`;
+      if (!(await this.directoryExists(dirPath))) {
+        result.errors.push(`Missing required directory: ${dir}`);
+      }
+    }
+
+    // Check files
+    for (const file of requiredFiles) {
+      const filePath = `${options.projectPath}/${file}`;
+      if (!(await this.fileExists(filePath))) {
+        result.errors.push(`Missing required file: ${file}`);
+      }
+    }
+
+    result.info.push(`Project structure validation completed`);
+  }
+
+  /**
+   * Validate configuration files
+   * @param options - Validator options
+   * @param result - Validation result
+   */
+  private async validateConfigurations(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    const configFiles = [
+      'tsconfig.json',
+      'tsconfig.base.json',
+      'tsconfig.test.json',
+      '.eslintrc.json',
+    ];
+
+    for (const file of configFiles) {
+      const filePath = `${options.projectPath}/${file}`;
+      if (await this.fileExists(filePath)) {
+        try {
+          const content = await this.readFile(filePath);
+          JSON.parse(content);
+          result.info.push(`✓ ${file} is valid JSON`);
+        } catch (error) {
+          result.errors.push(
+            `${file} contains invalid JSON: ${error instanceof Error ? error.message : 'Unknown error'}`
+          );
+        }
+      } else {
+        result.warnings.push(`Optional configuration file missing: ${file}`);
+      }
+    }
+  }
+
+  /**
+   * Validate package.json content and structure
+   * @param options - Validator options containing project path and config
+   * @param result - Validation result to populate with findings
+   */
+  private async validatePackageJson(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    const packagePath = `${options.projectPath}/package.json`;
+
+    if (!(await this.fileExists(packagePath))) {
+      result.errors.push('package.json is missing');
+      return;
+    }
+
+    try {
+      const content = await this.readFile(packagePath);
+      const packageJson = JSON.parse(content);
+
+      // Validate required fields
+      const requiredFields = ['name', 'version', 'description'];
+      for (const field of requiredFields) {
+        if (!packageJson[field]) {
+          result.errors.push(`package.json missing required field: ${field}`);
+        }
+      }
+
+      // Validate name matches project
+      if (packageJson.name !== options.config.name) {
+        result.warnings.push(
+          `package.json name "${packageJson.name}" does not match project name "${options.config.name}"`
+        );
+      }
+
+      // Check for required scripts
+      const requiredScripts = this.getRequiredScripts(options.config.projectType);
+      for (const script of requiredScripts) {
+        if (!packageJson.scripts || !packageJson.scripts[script]) {
+          result.warnings.push(`Missing recommended script: ${script}`);
+        }
+      }
+
+      // Check for quality-related dependencies
+      const qualityDeps = this.getQualityDependencies(options.config.qualityLevel);
+      for (const dep of qualityDeps) {
+        if (!packageJson.devDependencies || !packageJson.devDependencies[dep]) {
+          result.warnings.push(`Missing quality dependency: ${dep}`);
+        }
+      }
+
+      result.info.push(`✓ package.json validated successfully`);
+    } catch (error) {
+      result.errors.push(
+        `Invalid package.json: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  /**
+   * Validate TypeScript configuration and compiler options
+   * @param options - Validator options containing project path and config
+   * @param result - Validation result to populate with findings
+   */
+  private async validateTypeScriptConfig(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    const tsconfigPath = `${options.projectPath}/tsconfig.json`;
+
+    if (!(await this.fileExists(tsconfigPath))) {
+      result.errors.push('tsconfig.json is missing');
+      return;
+    }
+
+    try {
+      const content = await this.readFile(tsconfigPath);
+      const tsconfig = JSON.parse(content);
+
+      // Check for strict mode in strict quality
+      if (options.config.qualityLevel === 'strict') {
+        if (tsconfig.compilerOptions?.strict !== true) {
+          result.warnings.push('Strict quality level recommends strict TypeScript mode');
+        }
+      }
+
+      // Check for proper includes
+      if (!tsconfig.include || !Array.isArray(tsconfig.include)) {
+        result.errors.push('tsconfig.json missing include array');
+      }
+
+      // Check for proper exclude patterns
+      if (!tsconfig.exclude || !Array.isArray(tsconfig.exclude)) {
+        result.warnings.push('tsconfig.json missing exclude array');
+      }
+
+      result.info.push(`✓ TypeScript configuration validated`);
+    } catch (error) {
+      result.errors.push(
+        `Invalid tsconfig.json: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  /**
+   * Validate ESLint configuration and rules
+   * @param options - Validator options containing project path and config
+   * @param result - Validation result to populate with findings
+   */
+  private async validateESLintConfig(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    const eslintConfigs = ['.eslintrc.json', 'eslint.config.mjs', '.eslintrc.js'];
+
+    let eslintFound = false;
+    for (const config of eslintConfigs) {
+      const configPath = `${options.projectPath}/${config}`;
+      if (await this.fileExists(configPath)) {
+        eslintFound = true;
+        result.info.push(`✓ ESLint configuration found: ${config}`);
+        break;
+      }
+    }
+
+    if (!eslintFound) {
+      result.warnings.push('No ESLint configuration file found');
+    }
+  }
+
+  /**
+   * Validate test configuration and setup
+   * @param options - Validator options containing project path and config
+   * @param result - Validation result to populate with findings
+   */
+  private async validateTestConfig(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    const testConfigs = [
+      'vitest.config.ts',
+      'vitest.config.js',
+      'jest.config.js',
+      'jest.config.json',
+    ];
+
+    let testConfigFound = false;
+    for (const config of testConfigs) {
+      const configPath = `${options.projectPath}/${config}`;
+      if (await this.fileExists(configPath)) {
+        testConfigFound = true;
+        result.info.push(`✓ Test configuration found: ${config}`);
+        break;
+      }
+    }
+
+    if (!testConfigFound) {
+      result.warnings.push('No test configuration file found');
+    }
+
+    // Check for test directories
+    const testDirs = ['tests', 'test', '__tests__'];
+    let testDirFound = false;
+    for (const dir of testDirs) {
+      const dirPath = `${options.projectPath}/${dir}`;
+      if (await this.directoryExists(dirPath)) {
+        testDirFound = true;
+        result.info.push(`✓ Test directory found: ${dir}`);
+        break;
+      }
+    }
+
+    if (!testDirFound) {
+      result.warnings.push('No test directory found');
+    }
+  }
+
+  /**
+   * Validate AI assistant configurations and files
+   * @param options - Validator options containing project path and config
+   * @param result - Validation result to populate with findings
+   */
+  private async validateAIConfigurations(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    // Validate Claude Code configuration
+    if (options.config.aiAssistants.includes('claude-code')) {
+      const claudeConfigPath = `${options.projectPath}/CLAUDE.md`;
+      if (await this.fileExists(claudeConfigPath)) {
+        result.info.push('✓ Claude Code configuration found');
+      } else {
+        result.warnings.push('CLAUDE.md not found (Claude Code assistant enabled)');
+      }
+
+      // Check for AI context directory
+      const aiContextPath = `${options.projectPath}/.ai`;
+      if (await this.directoryExists(aiContextPath)) {
+        result.info.push('✓ AI context directory found');
+      } else {
+        result.warnings.push('.ai directory not found (AI context integration)');
+      }
+    }
+
+    // Validate GitHub Copilot configuration
+    if (options.config.aiAssistants.includes('copilot')) {
+      const copilotConfigPath = `${options.projectPath}/.github/copilot-instructions.md`;
+      if (await this.fileExists(copilotConfigPath)) {
+        result.info.push('✓ GitHub Copilot configuration found');
+      } else {
+        result.warnings.push('GitHub Copilot instructions not found (Copilot assistant enabled)');
+      }
+
+      // Check for GitHub directory
+      const githubPath = `${options.projectPath}/.github`;
+      if (await this.directoryExists(githubPath)) {
+        result.info.push('✓ .github directory found');
+      } else {
+        result.warnings.push('.github directory not found (GitHub integration)');
+      }
+    }
+  }
+
+  /**
+   * Validate dependencies and installations
+   * @param options - Validator options containing project path and config
+   * @param result - Validation result to populate with findings
+   */
+  private async validateDependencies(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    const packagePath = `${options.projectPath}/package.json`;
+
+    if (!(await this.fileExists(packagePath))) {
+      return;
+    }
+
+    try {
+      const content = await this.readFile(packagePath);
+      const packageJson = JSON.parse(content);
+
+      const allDeps = {
+        ...packageJson.dependencies,
+        ...packageJson.devDependencies,
+      };
+
+      // Check for TypeScript
+      if (!allDeps.typescript) {
+        result.warnings.push('TypeScript not found in dependencies');
+      }
+
+      // Check for essential dev dependencies
+      const essentialDeps = ['eslint', 'prettier'];
+      for (const dep of essentialDeps) {
+        if (!allDeps[dep]) {
+          result.warnings.push(`${dep} not found in dependencies`);
+        }
+      }
+
+      // Check for project-specific dependencies
+      const projectDeps = this.getProjectDependencies(options.config.projectType);
+      for (const dep of projectDeps) {
+        if (!allDeps[dep]) {
+          result.warnings.push(
+            `${dep} not found (recommended for ${options.config.projectType} projects)`
+          );
+        }
+      }
+
+      result.info.push(`✓ Dependency validation completed`);
+    } catch (error) {
+      result.errors.push(
+        `Failed to validate dependencies: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  /**
+   * Validate project-specific requirements
+   * @param options - Validator options
+   * @param result - Validation result
+   
+   * @param result - Validation result
+   */
+  private async validateProjectSpecificRequirements(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    switch (options.config.projectType) {
+      case 'cli':
+        await this.validateCLIRequirements(options, result);
+        break;
+      case 'web':
+        await this.validateWebRequirements(options, result);
+        break;
+      case 'library':
+        await this.validateLibraryRequirements(options, result);
+        break;
+      default:
+        result.info.push('Basic project type - no specific validation required');
+    }
+  }
+
+  /**
+   * Validate CLI project requirements
+   * @param options - Validator options
+   * @param result - Validation result
+   
+   * @param result - Validation result
+   */
+  private async validateCLIRequirements(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    // Check for CLI-specific files
+    const cliFiles = ['src/index.ts', 'src/cli.ts', 'src/bin.ts'];
+    let hasMainFile = false;
+    for (const file of cliFiles) {
+      const filePath = `${options.projectPath}/${file}`;
+      if (await this.fileExists(filePath)) {
+        hasMainFile = true;
+        result.info.push(`✓ CLI main file found: ${file}`);
+        break;
+      }
+    }
+
+    if (!hasMainFile) {
+      result.warnings.push('CLI project missing main entry file');
+    }
+
+    // Check for bin configuration in package.json
+    const packagePath = `${options.projectPath}/package.json`;
+    if (await this.fileExists(packagePath)) {
+      try {
+        const content = await this.readFile(packagePath);
+        const packageJson = JSON.parse(content);
+        if (packageJson.bin) {
+          result.info.push('✓ CLI bin configuration found');
+        } else {
+          result.warnings.push('CLI project missing bin configuration in package.json');
+        }
+      } catch {
+        // Ignore package.json parsing errors here as they're caught elsewhere
+      }
+    }
+  }
+
+  /**
+   * Validate web project requirements
+   * @param options - Validator options
+   * @param result - Validation result
+   
+   * @param result - Validation result
+   */
+  private async validateWebRequirements(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    // Check for server file
+    const serverFiles = ['src/server.ts', 'src/app.ts', 'src/index.ts'];
+    let hasServerFile = false;
+    for (const file of serverFiles) {
+      const filePath = `${options.projectPath}/${file}`;
+      if (await this.fileExists(filePath)) {
+        hasServerFile = true;
+        result.info.push(`✓ Web server file found: ${file}`);
+        break;
+      }
+    }
+
+    if (!hasServerFile) {
+      result.warnings.push('Web project missing server file');
+    }
+
+    // Check for public directory
+    const publicPath = `${options.projectPath}/public`;
+    if (await this.directoryExists(publicPath)) {
+      result.info.push('✓ Public directory found');
+    } else {
+      result.warnings.push('Web project missing public directory');
+    }
+  }
+
+  /**
+   * Validate library project requirements
+   * @param options - Validator options
+   * @param result - Validation result
+   
+   * @param result - Validation result
+   */
+  private async validateLibraryRequirements(
+    options: ProjectValidatorOptions,
+    result: ProjectValidationResult
+  ): Promise<void> {
+    // Check for main entry file
+    const mainFiles = ['src/index.ts', 'index.ts'];
+    let hasMainFile = false;
+    for (const file of mainFiles) {
+      const filePath = `${options.projectPath}/${file}`;
+      if (await this.fileExists(filePath)) {
+        hasMainFile = true;
+        result.info.push(`✓ Library main file found: ${file}`);
+        break;
+      }
+    }
+
+    if (!hasMainFile) {
+      result.errors.push('Library project missing main entry file');
+    }
+
+    // Check for types directory
+    const typesPath = `${options.projectPath}/types`;
+    if (await this.directoryExists(typesPath)) {
+      result.info.push('✓ Types directory found');
+    } else {
+      result.warnings.push('Library project missing types directory (recommended)');
+    }
+
+    // Check for proper package.json configuration
+    const packagePath = `${options.projectPath}/package.json`;
+    if (await this.fileExists(packagePath)) {
+      try {
+        const content = await this.readFile(packagePath);
+        const packageJson = JSON.parse(content);
+
+        if (packageJson.main || packageJson.exports) {
+          result.info.push('✓ Library entry point configured');
+        } else {
+          result.warnings.push('Library package.json missing main or exports field');
+        }
+
+        if (packageJson.types || packageJson.typings) {
+          result.info.push('✓ TypeScript types configured');
+        } else {
+          result.warnings.push('Library package.json missing types field');
+        }
+      } catch {
+        // Ignore package.json parsing errors here as they're caught elsewhere
+      }
+    }
+  }
+
+  /**
+   * Get required directories for project type
+   * @param projectType - Project type
+   * @returns Required directories
+   */
+  private getRequiredDirectories(projectType: string): string[] {
+    const baseDirs = ['src'];
+
+    switch (projectType) {
+      case 'cli':
+        return [...baseDirs, 'src/commands', 'src/utils'];
+      case 'web':
+        return [...baseDirs, 'src/routes', 'src/middleware', 'public'];
+      case 'library':
+        return [...baseDirs, 'types'];
+      default:
+        return baseDirs;
+    }
+  }
+
+  /**
+   * Get required files for project type
+   * @param projectType - Project type
+   
+   * @param projectType - Project type
+   */
+  private getRequiredFiles(projectType: string): string[] {
+    const baseFiles = ['package.json', 'README.md', '.gitignore'];
+
+    switch (projectType) {
+      case 'cli':
+        return [...baseFiles, 'src/index.ts'];
+      case 'web':
+        return [...baseFiles, 'src/app.ts', 'public/index.html'];
+      case 'library':
+        return [...baseFiles, 'src/index.ts'];
+      default:
+        return [...baseFiles, 'src/index.ts'];
+    }
+  }
+
+  /**
+   * Get required scripts for project type
+   * @param projectType - Project type
+   
+   * @param projectType - Project type
+   */
+  private getRequiredScripts(projectType: string): string[] {
+    const baseScripts = ['test', 'lint', 'build'];
+
+    switch (projectType) {
+      case 'cli':
+        return [...baseScripts, 'start', 'dev'];
+      case 'web':
+        return [...baseScripts, 'start', 'dev'];
+      case 'library':
+        return [...baseScripts, 'build'];
+      default:
+        return baseScripts;
+    }
+  }
+
+  /**
+   * Get quality-related dependencies
+   * @param qualityLevel- Parameter description
+   
+   * @param qualityLevel - Quality level
+   */
+  private getQualityDependencies(qualityLevel: string): string[] {
+    const baseDeps = ['eslint', 'prettier', '@types/node'];
+
+    switch (qualityLevel) {
+      case 'strict':
+        return [...baseDeps, '@typescript-eslint/eslint-plugin', '@typescript-eslint/parser'];
+      case 'medium':
+        return baseDeps;
+      case 'light':
+        return ['@types/node'];
+      default:
+        return baseDeps;
+    }
+  }
+
+  /**
+   * Get project-specific dependencies
+   * @param projectType - Project type
+   
+   * @param projectType - Project type
+   */
+  private getProjectDependencies(projectType: string): string[] {
+    switch (projectType) {
+      case 'cli':
+        return ['commander', 'inquirer'];
+      case 'web':
+        return ['express', '@types/express'];
+      case 'library':
+        return ['rollup', 'typescript'];
+      default:
+        return [];
+    }
+  }
+
+  /**
+   * Helper methods for file system operations
+   * @param filePath - File path
+   
+   * @param filePath - File path
+   */
+  private async fileExists(filePath: string): Promise<boolean> {
+    try {
+      const { access } = await import('fs/promises');
+      await access(filePath);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   *
+   * @param dirPath - Directory path
+   
+   * @param dirPath - Directory path
+   */
+  private async directoryExists(dirPath: string): Promise<boolean> {
+    try {
+      const { access } = await import('fs/promises');
+      await access(dirPath);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   *
+   * @param filePath - File path
+   
+   * @param filePath - File path
+   */
+  private async readFile(filePath: string): Promise<string> {
+    const { readFile } = await import('fs/promises');
+    return await readFile(filePath, 'utf-8');
+  }
+}
+
+/**
+ * Create a project validator instance
+ */
+export function createProjectValidator(): ProjectValidator {
+  return new ProjectValidator();
+}

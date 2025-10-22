@@ -20,6 +20,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "clean": "turbo run clean && rm -rf node_modules",
+    "cli": "bun run apps/cli/src/index.ts",
     "bmad:rebuild": "./scripts/rebuild-bmad-agents.sh --all"
   },
   "devDependencies": {

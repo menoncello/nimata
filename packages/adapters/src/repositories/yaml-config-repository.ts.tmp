@@ -1,0 +1,398 @@
+import { homedir } from 'os';
+import { join } from 'path';
+import { DEFAULT_CONFIG } from '@nimata/core/config/defaults';
+import type { ConfigRepository } from '@nimata/core/interfaces/config-repository';
+import { ConfigSchema, validateConfigPaths, type Config } from '@nimata/core/types/config';
+import { deepMerge } from '@nimata/core/utils/deep-merge';
+
+/**
+ * YAML Configuration Repository
+ *
+ * Implements ConfigRepository using Bun native YAML parsing.
+ *
+ * Security limits (P0-1):
+ * - Max file size: 1MB
+ * - Max nesting depth: 10 levels
+ * - Rejects YAML anchors/aliases (anchor bombs)
+ * - Validates all paths are relative
+ *
+ * Performance (P0-2):
+ * - In-memory cache (per-process lifetime)
+ * - Target: <50ms load time (p95) for 100-key config
+ */
+const BYTES_PER_KB = 1024;
+const KB_PER_MB = 1024;
+const BYTES_PER_MB = BYTES_PER_KB * KB_PER_MB;
+const MAX_NESTING_DEPTH = 10;
+const YAML_INDENT_LEVEL = 2;
+const CONFIG_LOAD_OPERATION = 'config-load';
+const CONFIG_MERGE_OPERATION = 'config-merge';
+const CONFIG_VALIDATION_OPERATION = 'config-validation';
+
+/**
+ * YAML Configuration Repository implementation
+ */
+export class YAMLConfigRepository implements ConfigRepository {
+  private static readonly MAX_FILE_SIZE_MB = 1;
+  private static readonly MAX_FILE_SIZE = YAMLConfigRepository.MAX_FILE_SIZE_MB * BYTES_PER_MB;
+  private static readonly PROJECT_CONFIG_NAME = '.nimatarc';
+
+  private cachedConfig: Config | null = null;
+  private cacheKey: string | null = null;
+
+  /**
+   * Loads configuration with cascade: defaults → global → project
+   * @param projectRoot - Optional project root directory (defaults to process.cwd())
+   * @returns Merged configuration with all cascade levels applied
+   */
+  async load(projectRoot?: string): Promise<Config> {
+    const root = projectRoot || process.cwd();
+
+    // Check cache first
+    if (this.cachedConfig && this.cacheKey === root) {
+        source: 'cache',
+        projectRoot: root,
+      });
+      return this.cachedConfig;
+    }
+
+      projectRoot: root,
+      sources: ['defaults', 'global', 'project'],
+    });
+
+    let config = { ...DEFAULT_CONFIG };
+    config = await this.loadAndMergeGlobalConfig(config);
+    config = await this.loadAndMergeProjectConfig(config, root);
+
+    this.cachedConfig = config;
+    this.cacheKey = root;
+
+      projectRoot: root,
+      qualityLevel: config.qualityLevel,
+      aiAssistantsCount: config.aiAssistants.length,
+      toolsEnabled: this.countEnabledTools(config),
+    });
+
+    return config;
+  }
+
+  /**
+   * Loads and merges global configuration
+   * @param config - Base configuration
+   * @returns Merged configuration
+   */
+  private async loadAndMergeGlobalConfig(config: Config): Promise<Config> {
+    const home = process.env['HOME'] || homedir();
+    const globalConfigPath = join(home, '.nimata', 'config.yaml');
+    const globalConfig = await this.loadConfigFile(globalConfigPath);
+
+    if (globalConfig) {
+        source: 'global',
+        configPath: globalConfigPath,
+        overrideKeys: Object.keys(globalConfig),
+      });
+      return this.merge(config, globalConfig);
+    }
+
+      source: 'global',
+      configPath: globalConfigPath,
+    });
+    return config;
+  }
+
+  /**
+   * Loads and merges project configuration
+   * @param config - Base configuration
+   * @param root - Project root directory
+   * @returns Merged configuration
+   */
+  private async loadAndMergeProjectConfig(config: Config, root: string): Promise<Config> {
+    const projectConfigPath = join(root, YAMLConfigRepository.PROJECT_CONFIG_NAME);
+    const projectConfig = await this.loadConfigFile(projectConfigPath);
+
+    if (projectConfig) {
+        source: 'project',
+        configPath: projectConfigPath,
+        overrideKeys: Object.keys(projectConfig),
+      });
+      return this.merge(config, projectConfig);
+    }
+
+      source: 'project',
+      configPath: projectConfigPath,
+    });
+    return config;
+  }
+
+  /**
+   * Saves configuration to project .nimatarc file
+   * @param config - Configuration object to save
+   * @param projectRoot - Project root directory
+   */
+  async save(config: Config, projectRoot: string): Promise<void> {
+    const validated = ConfigSchema.parse(config);
+
+    const pathErrors = validateConfigPaths(validated);
+    if (pathErrors.length > 0) {
+      throw new Error(`Invalid config paths:\n${pathErrors.join('\n')}`);
+    }
+
+    const projectConfigPath = join(projectRoot, YAMLConfigRepository.PROJECT_CONFIG_NAME);
+
+    const yaml = this.toYAML(validated);
+    await Bun.write(projectConfigPath, yaml);
+
+    this.cachedConfig = null;
+    this.cacheKey = null;
+  }
+
+  /**
+   * Deep merges configurations
+   * @param base - Base configuration
+   * @param override - Override configuration (partial)
+   * @returns Merged configuration
+   */
+  merge(base: Config, override: Partial<Config>): Config {
+    return deepMerge(base, override);
+  }
+
+  /**
+   * Loads and validates a YAML config file
+   * Returns null if file doesn't exist
+   * @param path - File path to load
+   * @returns Partial config or null if file doesn't exist
+   */
+  private async loadConfigFile(path: string): Promise<Partial<Config> | null> {
+    try {
+      const file = Bun.file(path);
+      if (!(await file.exists())) {
+        return null;
+      }
+
+      await this.validateFileSize(file);
+      const content = await file.text();
+      return await this.parseAndValidateYAML(content, path);
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('No such file')) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Parses and validates YAML content
+   * @param content - YAML content string
+   * @param path - File path for error messages
+   * @returns Validated partial config
+   */
+  private async parseAndValidateYAML(content: string, path: string): Promise<Partial<Config>> {
+    try {
+      await this.validateYAMLSecurity(content);
+      const data = Bun.YAML.parse(content) as Record<string, unknown>;
+      await this.validateNestingDepth(data);
+
+      const validated = ConfigSchema.partial().parse(data);
+      const pathErrors = validateConfigPaths(validated as Config);
+      if (pathErrors.length > 0) {
+          filePath: path,
+          fieldPaths: pathErrors,
+        });
+        throw new Error(`Invalid paths in ${path}:\n${pathErrors.join('\n')}`);
+      }
+
+        filePath: path,
+        keysCount: Object.keys(validated).length,
+      });
+
+      return validated;
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('Invalid paths')) {
+        // Re-throw path validation errors as-is
+        throw error;
+      }
+
+        filePath: path,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Validates file size is within limits (P0-1)
+   * @param file - File blob to validate
+   */
+  private async validateFileSize(file: Blob): Promise<void> {
+    if (file.size > YAMLConfigRepository.MAX_FILE_SIZE) {
+      throw new Error(
+        `Config file exceeds maximum size of ${YAMLConfigRepository.MAX_FILE_SIZE} bytes (got ${file.size} bytes)`
+      );
+    }
+  }
+
+  /**
+   * Validates YAML doesn't contain malicious patterns (P0-1)
+   * @param content - YAML content to validate
+   */
+  private async validateYAMLSecurity(content: string): Promise<void> {
+    if (content.includes('&') || content.includes('*')) {
+      throw new Error(
+        'Config file contains YAML anchors/aliases which are not allowed for security reasons'
+      );
+    }
+  }
+
+  /**
+   * Validates nesting depth is within limits (P0-1)
+   * @param obj - Object to validate
+   * @param depth - Current depth (default 1)
+   */
+  private async validateNestingDepth(obj: unknown, depth = 1): Promise<void> {
+    if (depth > MAX_NESTING_DEPTH) {
+      throw new Error(`Config exceeds maximum nesting depth of ${MAX_NESTING_DEPTH} levels`);
+    }
+
+    if (typeof obj === 'object' && obj !== null && !Array.isArray(obj)) {
+      for (const value of Object.values(obj)) {
+        await this.validateNestingDepth(value, depth + 1);
+      }
+    }
+  }
+
+  /**
+   * Converts config object to YAML string
+   * @param config - Configuration to serialize
+   * @returns YAML formatted string
+   */
+  private toYAML(config: Config): string {
+    const lines: string[] = [];
+    this.addHeader(lines);
+    this.addBasicFields(config, lines);
+    this.addConfigSections(config, lines);
+    return `${lines.join('\n')}\n`;
+  }
+
+  /**
+   * Adds YAML header and basic fields
+   * @param lines - Output lines array
+   */
+  private addHeader(lines: string[]): void {
+    const timestamp = new Date().toISOString();
+    lines.push('# Nìmata Configuration');
+    lines.push(`# Generated on ${timestamp}`);
+    lines.push('');
+  }
+
+  /**
+   * Adds basic configuration fields
+   * @param config - Configuration object
+   * @param lines - Output lines array
+   */
+  private addBasicFields(config: Config, lines: string[]): void {
+    lines.push(`version: ${config.version}`);
+    lines.push(`qualityLevel: ${config.qualityLevel}`);
+    lines.push('');
+    lines.push('aiAssistants:');
+    for (const assistant of config.aiAssistants) {
+      lines.push(`  - ${assistant}`);
+    }
+  }
+
+  /**
+   * Adds configuration sections (tools, scaffolding, etc.)
+   * @param config - Configuration object
+   * @param lines - Output lines array
+   */
+  private addConfigSections(config: Config, lines: string[]): void {
+    this.addSectionIfPresent('tools', config.tools, lines, () =>
+      this.serializeTools(config.tools, lines)
+    );
+    this.addSectionIfPresent('scaffolding', config.scaffolding, lines);
+    this.addSectionIfPresent('validation', config.validation, lines);
+    this.addSectionIfPresent('refactoring', config.refactoring, lines);
+    this.addSectionIfPresent('logging', config.logging, lines);
+  }
+
+  /**
+   * Adds a configuration section if it has content
+   * @param name - Section name
+   * @param section - Section object
+   * @param lines - Output lines array
+   * @param customSerializer - Optional custom serializer
+   */
+  private addSectionIfPresent(
+    name: string,
+    section: Record<string, unknown> | undefined,
+    lines: string[],
+    customSerializer?: () => void
+  ): void {
+    if (section && Object.keys(section).length > 0) {
+      lines.push('');
+      lines.push(`${name}:`);
+      if (customSerializer) {
+        customSerializer();
+      } else {
+        this.serializeObject(section, lines, 1);
+      }
+    }
+  }
+
+  /**
+   * Serializes tools configuration to YAML lines
+   * @param tools - Tools configuration
+   * @param lines - Output lines array
+   */
+  private serializeTools(tools: Config['tools'], lines: string[]): void {
+    const indent = YAML_INDENT_LEVEL;
+    if (tools?.eslint) {
+      lines.push('  eslint:');
+      this.serializeObject(tools.eslint, lines, indent);
+    }
+    if (tools?.typescript) {
+      lines.push('  typescript:');
+      this.serializeObject(tools.typescript, lines, indent);
+    }
+    if (tools?.prettier) {
+      lines.push('  prettier:');
+      this.serializeObject(tools.prettier, lines, indent);
+    }
+    if (tools?.bunTest) {
+      lines.push('  bunTest:');
+      this.serializeObject(tools.bunTest, lines, indent);
+    }
+  }
+
+  /**
+   * Serializes an object to YAML lines with indentation
+   * @param obj - Object to serialize
+   * @param lines - Output lines array
+   * @param indent - Indentation level
+   */
+  private serializeObject(obj: Record<string, unknown>, lines: string[], indent: number): void {
+    const prefix = '  '.repeat(indent);
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== undefined) {
+        lines.push(`${prefix}${key}: ${String(value)}`);
+      }
+    }
+  }
+
+  /**
+   * Counts enabled tools in configuration
+   * @param config - Configuration object
+   * @returns Number of enabled tools
+   */
+  private countEnabledTools(config: Config): number {
+    if (!config.tools) return 0;
+
+    const tools = [
+      config.tools.eslint?.enabled,
+      config.tools.typescript?.enabled,
+      config.tools.prettier?.enabled,
+      config.tools.bunTest?.enabled,
+    ];
+
+    return tools.filter(Boolean).length;
+  }
+}

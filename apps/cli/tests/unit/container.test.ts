@@ -40,4 +40,35 @@ describe('DI Container', () => {
     expect(clearSpy).toHaveBeenCalled();
     clearSpy.mockRestore();
   });
+
+  it('should register OutputWriter service', () => {
+    configureContainer();
+    const container = getContainer();
+
+    const outputWriter = container.resolve('OutputWriter');
+
+    expect(outputWriter).toBeDefined();
+    expect(typeof outputWriter.stdout).toBe('function');
+    expect(typeof outputWriter.stderr).toBe('function');
+    expect(typeof outputWriter.log).toBe('function');
+  });
+
+  it('should register CliBuilder service', () => {
+    configureContainer();
+    const container = getContainer();
+
+    const cliBuilder = container.resolve('CliBuilder');
+
+    expect(cliBuilder).toBeDefined();
+    expect(typeof cliBuilder.create).toBe('function');
+  });
+
+  it('should configure container with actual registrations (not empty)', () => {
+    const container = getContainer();
+    configureContainer();
+
+    // Verify container has registrations by attempting to resolve
+    expect(() => container.resolve('OutputWriter')).not.toThrow();
+    expect(() => container.resolve('CliBuilder')).not.toThrow();
+  });
 });

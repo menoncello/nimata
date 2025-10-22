@@ -6,14 +6,65 @@
  */
 import pc from 'picocolors';
 import { injectable, inject } from 'tsyringe';
+import type { CommandModule } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import type { CliBuilder } from './cli-builder.js';
-import { fixCommand } from './commands/fix.js';
-import { initCommand } from './commands/init.js';
-import { promptCommand } from './commands/prompt.js';
-import { validateCommand } from './commands/validate.js';
 import { EXIT_CODES } from './constants.js';
 import type { OutputWriter } from './output.js';
+
+/**
+ * Lazy load all CLI commands for better cold start performance
+ * @returns Array of command instances
+ */
+async function loadCommands(): Promise<{
+  initCommand: CommandModule;
+  validateCommand: CommandModule;
+  fixCommand: CommandModule;
+  promptCommand: CommandModule;
+}> {
+  const [initCommand, validateCommand, fixCommand, promptCommand] = await Promise.all([
+    import('./commands/init.js').then(m => m.initCommand),
+    import('./commands/validate.js').then(m => m.validateCommand),
+    import('./commands/fix.js').then(m => m.fixCommand),
+    import('./commands/prompt.js').then(m => m.promptCommand),
+  ]);
+  return { initCommand, validateCommand, fixCommand, promptCommand };
+}
+
+/**
+ * Configure CLI with common options and settings
+ * @param cli - CLI builder instance
+ * @param version - Application version
+ * @returns Configured CLI builder
+ */
+function configureCli(cli: CliBuilder, version: string): CliBuilder {
+  return cli
+    .scriptName('nimata')
+    .version(version)
+    .usage('$0 <command> [options]')
+    .option('config', {
+      type: 'string',
+      description: 'Path to custom configuration file',
+      alias: 'c',
+      global: true,
+    })
+    .demandCommand(1, pc.red('You must specify a command'))
+    .help('h')
+    .alias('h', 'help')
+    .alias('v', 'version')
+    .strict()
+    .wrap(null)
+    .epilogue(pc.dim('For more information, visit: https://github.com/yourusername/nimata'));
+}
+
+/**
+ * Configure CLI for test mode (suppress output, disable exit)
+ * @param cli - CLI builder instance
+ * @returns CLI builder configured for testing
+ */
+function configureForTestMode(cli: CliBuilder): CliBuilder {
+  return cli.exitProcess(false).showHelpOnFail(false).fail(false);
+}
 
 /**
  * CLI Application Service
@@ -62,35 +113,22 @@ export class CliApp {
    * @param version - The CLI version string
    * @param argv - Command line arguments array
    * @param suppressOutput - Suppress console output (for testing)
-   * @returns Configured CLI builder instance
+   * @returns Promise that resolves to configured CLI builder instance
    */
-  createCli(version: string, argv: string[], suppressOutput = false): CliBuilder {
-    const cli = this.cliBuilder
-      .create(argv)
-      .scriptName('nimata')
-      .version(version)
-      .usage('$0 <command> [options]')
-      .command(initCommand)
-      .command(validateCommand)
-      .command(fixCommand)
-      .command(promptCommand)
-      .option('config', {
-        type: 'string',
-        description: 'Path to custom configuration file',
-        alias: 'c',
-        global: true,
-      })
-      .demandCommand(1, pc.red('You must specify a command'))
-      .help('h')
-      .alias('h', 'help')
-      .alias('v', 'version')
-      .strict()
-      .wrap(null)
-      .epilogue(pc.dim('For more information, visit: https://github.com/yourusername/nimata'));
+  async createCli(version: string, argv: string[], suppressOutput = false): Promise<CliBuilder> {
+    const commands = await loadCommands();
 
-    // Suppress output and exit in test mode
+    let cli = configureCli(
+      this.cliBuilder.create(argv)
+        .command(commands.initCommand)
+        .command(commands.validateCommand)
+        .command(commands.fixCommand)
+        .command(commands.promptCommand),
+      version
+    );
+
     if (suppressOutput) {
-      cli.exitProcess(false).showHelpOnFail(false).fail(false);
+      cli = configureForTestMode(cli);
     }
 
     return cli;
@@ -109,8 +147,8 @@ export class CliApp {
       // Get version
       const version = await this.getVersion();
 
-      // Create and configure CLI
-      const cli = this.createCli(version, argv);
+      // Create and configure CLI (now async for lazy loading)
+      const cli = await this.createCli(version, argv);
 
       // Parse and execute
       await cli.parse();

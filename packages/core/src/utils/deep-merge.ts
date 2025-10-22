@@ -23,7 +23,8 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
     typeof value === 'object' &&
     value !== null &&
     !Array.isArray(value) &&
-    Object.prototype.toString.call(value) === '[object Object]'
+    Object.prototype.toString.call(value) === '[object Object]' &&
+    Object.getPrototypeOf(value) === Object.prototype
   );
 }
 
@@ -55,8 +56,8 @@ export function deepMerge<T extends Record<string, unknown>>(base: T, override: 
  * @param base - Base object
  */
 function validateInputs<T extends Record<string, unknown>>(base: T): void {
-  if (!isPlainObject(base)) {
-    throw new TypeError('Base must be a plain object');
+  if (typeof base !== 'object' || base === null || Array.isArray(base)) {
+    throw new TypeError('Base must be an object');
   }
 }
 

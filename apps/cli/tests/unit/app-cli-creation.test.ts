@@ -16,7 +16,6 @@ const findConfigCall = (calls: unknown[][]): unknown[] | undefined => {
   return calls.find((call) => call[0] === 'config');
 };
 
-
 describe('App Module - CLI Creation', () => {
   let app: CliApp;
 

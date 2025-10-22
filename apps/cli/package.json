@@ -20,7 +20,8 @@
     "lint:fix": "eslint \"src/**/*.ts\" \"tests/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
-    "clean": "rm -rf dist node_modules reports .stryker-tmp"
+    "clean": "rm -rf dist node_modules reports .stryker-tmp",
+    "cli": "bun run src/index.ts"
   },
   "dependencies": {
     "@nimata/core": "workspace:*",

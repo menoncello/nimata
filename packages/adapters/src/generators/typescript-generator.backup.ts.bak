@@ -1,0 +1,955 @@
+/**
+ * TypeScript Configuration Generator
+ *
+ * Generates TypeScript configuration files based on project requirements and quality levels
+ */
+
+import { JSON_SERIALIZATION, NETWORK } from '../utils/constants.js';
+
+// Common path mappings
+const BASE_PATHS = {
+  '@': './src/*',
+  '@/utils': './src/utils/*',
+  '@/types': './src/types/*',
+} as const;
+
+const COMPONENT_PATHS = {
+  '@/components': './src/components/*',
+} as const;
+
+const COMMAND_PATHS = {
+  '@/commands': './src/commands/*',
+} as const;
+
+// Inline type to avoid import issues
+interface ProjectConfig {
+  name: string;
+  description?: string;
+  qualityLevel: 'light' | 'medium' | 'strict';
+  projectType: 'basic' | 'web' | 'cli' | 'library';
+  aiAssistants: Array<'claude-code' | 'copilot'>;
+}
+
+// Type for compiler options
+type CompilerOptions = Record<
+  string,
+  string | boolean | number | string[] | Record<string, string>
+>;
+
+export interface TypeScriptConfigOptions {
+  qualityLevel: 'light' | 'medium' | 'strict';
+  projectType: 'basic' | 'web' | 'cli' | 'library';
+  targetEnvironment: 'node' | 'browser' | 'both';
+  buildSystem: 'esbuild' | 'tsc' | 'both';
+  testing: boolean;
+  jsx: boolean;
+  decorators: boolean;
+  paths?: Record<string, string[]>;
+  baseUrl?: string;
+}
+
+export interface GeneratedTypeScriptConfig {
+  filename: string;
+  content: string;
+  description: string;
+}
+
+/**
+ * TypeScript Configuration Generator
+ */
+export class TypeScriptGenerator {
+  /**
+   * Generate TypeScript configuration for a project
+   *
+   * @param config - Project configuration
+   * @returns Generated TypeScript configuration files
+   */
+  generate(config: ProjectConfig): GeneratedTypeScriptConfig[] {
+    const options: TypeScriptConfigOptions = {
+      qualityLevel: config.qualityLevel,
+      projectType: config.projectType,
+      targetEnvironment: this.getTargetEnvironment(config.projectType),
+      buildSystem: this.getBuildSystem(config.projectType),
+      testing: true,
+      jsx: config.projectType === 'web',
+      decorators: true,
+      baseUrl: './src',
+      paths: this.getDefaultPaths(config.projectType),
+    };
+
+    const configs: GeneratedTypeScriptConfig[] = [];
+
+    // Generate main TypeScript configuration
+    configs.push(this.generateMainConfig(options));
+
+    // Generate build configurations
+    if (options.buildSystem === 'tsc' || options.buildSystem === 'both') {
+      configs.push(this.generateTscConfig(options));
+      configs.push(this.generateTscTypesConfig(options));
+    }
+
+    if (options.buildSystem === 'esbuild' || options.buildSystem === 'both') {
+      configs.push(this.generateEsbuildConfig(options));
+    }
+
+    // Generate testing configuration
+    if (options.testing) {
+      configs.push(this.generateTestingConfig(options));
+    }
+
+    // Generate base configuration
+    configs.push(this.generateBaseConfig(options));
+
+    return configs;
+  }
+
+  /**
+   * Generate main TypeScript configuration
+   * @param options - TypeScript configuration options
+   * @returns Generated TypeScript configuration
+   */
+  private generateMainConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
+    const filename = 'tsconfig.json';
+    const content = this.buildMainConfigContent(options);
+
+    return {
+      filename,
+      content,
+      description: 'Main TypeScript configuration',
+    };
+  }
+
+  /**
+   * Generate TypeScript compiler configuration
+   * @param options - TypeScript configuration options
+   * @returns Generated TypeScript compiler configuration
+   */
+  private generateTscConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
+    const filename = 'tsconfig.build.json';
+    const content = this.buildTscConfigContent(options);
+
+    return {
+      filename,
+      content,
+      description: 'TypeScript build configuration',
+    };
+  }
+
+  /**
+   * Generate TypeScript types configuration
+   * @param options - TypeScript configuration options
+   * @returns Generated TypeScript types configuration
+   */
+  private generateTscTypesConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
+    const filename = 'tsconfig.types.json';
+    const content = this.buildTscTypesConfigContent(options);
+
+    return {
+      filename,
+      content,
+      description: 'TypeScript types-only configuration',
+    };
+  }
+
+  /**
+   * Generate ESBuild configuration
+   * @param options - TypeScript configuration options
+   * @returns Generated ESBuild configuration
+   */
+  private generateEsbuildConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
+    const filename = 'esbuild.config.mjs';
+    const content = this.buildEsbuildConfigContent(options);
+
+    return {
+      filename,
+      content,
+      description: 'ESBuild configuration for fast compilation',
+    };
+  }
+
+  /**
+   * Generate testing TypeScript configuration
+   * @param options - TypeScript configuration options
+   * @returns Generated testing TypeScript configuration
+   */
+  private generateTestingConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
+    const filename = 'tsconfig.test.json';
+    const content = this.buildTestingConfigContent(options);
+
+    return {
+      filename,
+      content,
+      description: 'TypeScript configuration for tests',
+    };
+  }
+
+  /**
+   * Generate base TypeScript configuration
+   * @param options - TypeScript configuration options
+   * @returns Generated base TypeScript configuration
+   */
+  private generateBaseConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
+    const filename = 'tsconfig.base.json';
+    const content = this.buildBaseConfigContent(options);
+
+    return {
+      filename,
+      content,
+      description: 'Base TypeScript configuration with shared settings',
+    };
+  }
+
+  /**
+   * Build main TypeScript configuration content
+   * @param options - TypeScript configuration options
+   * @returns Main TypeScript configuration content
+   */
+  private buildMainConfigContent(options: TypeScriptConfigOptions): string {
+    const compilerOptions = this.getCompilerOptions(options);
+    const include = this.getIncludePatterns(options);
+    const exclude = this.getExcludePatterns(options);
+
+    return `{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": ${JSON.stringify(compilerOptions, null, JSON_SERIALIZATION.PRETTY_INDENT)},
+  "include": ${JSON.stringify(include, null, JSON_SERIALIZATION.PRETTY_INDENT)},
+  "exclude": ${JSON.stringify(exclude, null, JSON_SERIALIZATION.PRETTY_INDENT)}
+}
+`;
+  }
+
+  /**
+   * Build TSC build configuration content
+   * @param options - TypeScript configuration options
+   * @returns TSC build configuration content
+   */
+  private buildTscConfigContent(options: TypeScriptConfigOptions): string {
+    const compilerOptions = {
+      ...this.getCompilerOptions(options),
+      outDir: './dist',
+      rootDir: './src',
+      declaration: true,
+      declarationMap: true,
+      sourceMap: true,
+      removeComments: false,
+      incremental: true,
+      tsBuildInfoFile: './dist/.tsbuildinfo',
+    };
+
+    return `{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": ${JSON.stringify(compilerOptions, null, JSON_SERIALIZATION.PRETTY_INDENT)},
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "tests",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}
+`;
+  }
+
+  /**
+   * Build TSC types configuration content
+   * @param options - TypeScript configuration options
+   * @returns TSC types configuration content
+   */
+  private buildTscTypesConfigContent(options: TypeScriptConfigOptions): string {
+    const compilerOptions = {
+      ...this.getCompilerOptions(options),
+      declaration: true,
+      declarationOnly: true,
+      emitDeclarationOnly: true,
+      outDir: './dist',
+      skipLibCheck: true,
+    };
+
+    return `{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": ${JSON.stringify(compilerOptions, null, JSON_SERIALIZATION.PRETTY_INDENT)},
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "tests",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}
+`;
+  }
+
+  /**
+   * Get ESBuild base configuration
+   * @param options - TypeScript configuration options
+   * @returns ESBuild base configuration
+   */
+  private getESBuildBaseConfig(options: TypeScriptConfigOptions): string {
+    return `const baseConfig = {
+  entryPoints: ['src/index.ts'],
+  bundle: false,
+  platform: '${options.targetEnvironment}',
+  target: '${this.getESBuildTarget(options.targetEnvironment)}',
+  format: '${options.targetEnvironment === 'browser' ? 'esm' : 'cjs'}',
+  sourcemap: true,
+  minify: process.env.NODE_ENV === 'production',
+  outdir: 'dist',
+  ${options.jsx ? 'jsxFactory: "react",\n  jsx: "automatic",' : ''}
+  ${options.decorators ? 'loader: {\n    ".ts": "ts"\n  },' : ''}`;
+  }
+
+  /**
+   * Get ESBuild environment defines
+   * @param options - TypeScript configuration options
+   * @returns ESBuild environment defines
+   */
+  private getESBuildDefines(options: TypeScriptConfigOptions): string {
+    const nodeEnv = `    'process.env.NODE_ENV': "\\"${process.env.NODE_ENV || 'development'}\\""`;
+
+    if (options.targetEnvironment === 'browser') {
+      return `define: {
+${nodeEnv}
+  }`;
+    }
+
+    if (options.targetEnvironment === 'node') {
+      return `define: {
+${nodeEnv}
+  }`;
+    }
+
+    return 'define: {}';
+  }
+
+  /**
+   * Get ESBuild plugins configuration
+   * @returns ESBuild plugins configuration
+   */
+  private getESBuildPlugins(): string {
+    return `plugins: [
+    {
+      name: 'watch-rebuild',
+      setup(build) {
+        build.onStart(() => {
+          console.log('Building...');
+        });
+        build.onEnd((result) => {
+          if (result.errors.length === 0) {
+            console.log('Build completed successfully');
+          } else {
+            console.log('Build failed with errors');
+          }
+        });
+      }
+    }
+  ]`;
+  }
+
+  /**
+   * Get ESBuild build configuration
+   * @returns ESBuild build configuration
+   */
+  private getESBuildBuildConfig(): string {
+    return `if (isWatchMode) {
+  await build({
+    ...baseConfig,
+    ...buildConfig,
+    watch: {
+      onRebuild(error, result) {
+        if (error) {
+          console.error('Watch build failed:', error);
+        } else {
+          console.log('Watch build succeeded');
+        }
+      },
+    },
+  });
+} else {
+  await build({
+    ...baseConfig,
+    ...buildConfig,
+  });
+}`;
+  }
+
+  /**
+   * Build ESBuild configuration header
+   * @param projectType - Project type
+   * @returns ESBuild configuration header
+   */
+  private buildEsbuildConfigHeader(projectType: string): string {
+    return `/**
+ * ESBuild Configuration for ${this.getProjectTypeName(projectType)}
+ * Generated by Nìmata CLI
+ */
+
+import { build } from 'esbuild';
+
+const isWatchMode = process.argv.includes('--watch');`;
+  }
+
+  /**
+   * Build ESBuild configuration sections
+   * @param options - TypeScript configuration options
+   * @returns ESBuild configuration sections
+   */
+  private buildEsbuildConfigSections(options: TypeScriptConfigOptions): string {
+    return `${this.getESBuildBaseConfig(options)};
+
+${this.getESBuildDefines(options)};
+
+${this.getESBuildPlugins()};`;
+  }
+
+  /**
+   * Build ESBuild watch configuration
+   * @returns ESBuild watch configuration
+   */
+  private buildEsbuildWatchConfig(): string {
+    return `if (isWatchMode) {
+  config.watch = {
+    onRebuild(error, result) {
+      if (error) {
+        console.error('watch build failed:', error);
+      } else {
+        console.log('watch build succeeded');
+      }
+    }
+  };
+}`;
+  }
+
+  /**
+   * Build ESBuild execution block
+   * @returns ESBuild execution block
+   */
+  private buildEsbuildExecutionBlock(): string {
+    return `try {
+  await build(config);
+} catch (error) {
+  console.error('Build failed:', error);
+  process.exit(1);
+}`;
+  }
+
+  /**
+   * Build ESBuild configuration content
+   * @param options - TypeScript configuration options
+   * @returns ESBuild configuration content
+   */
+  private buildEsbuildConfigContent(options: TypeScriptConfigOptions): string {
+    const header = this.buildEsbuildConfigHeader(options.projectType);
+    const sections = this.buildEsbuildConfigSections(options);
+    const watchConfig = this.buildEsbuildWatchConfig();
+    const execution = this.buildEsbuildExecutionBlock();
+
+    return `${header}
+
+${sections}
+
+const config = {
+  ...baseConfig,
+  logLevel: 'info',
+  color: true
+};
+
+${watchConfig}
+
+${execution}
+`;
+  }
+
+  /**
+   * Build testing TypeScript configuration content
+   * @param options - TypeScript configuration options
+   * @returns Testing TypeScript configuration content
+   */
+  private buildTestingConfigContent(options: TypeScriptConfigOptions): string {
+    const compilerOptions = {
+      ...this.getCompilerOptions(options),
+      types: ['node', 'bun-test'],
+      esModuleInterop: true,
+      allowSyntheticDefaultImports: true,
+      skipLibCheck: true,
+      noEmit: true,
+    };
+
+    return `{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": ${JSON.stringify(compilerOptions, null, JSON_SERIALIZATION.PRETTY_INDENT)},
+  "include": [
+    "tests/**/*.ts",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ],
+  "ts-node": {
+    "esm": true
+  }
+}
+`;
+  }
+
+  /**
+   * Build base TypeScript configuration content
+   * @param options - TypeScript configuration options
+   * @returns Base TypeScript configuration content
+   */
+  private buildBaseConfigContent(options: TypeScriptConfigOptions): string {
+    const baseOptions = this.getBaseCompilerOptions(options);
+
+    return `{
+  "compilerOptions": ${JSON.stringify(baseOptions, null, JSON_SERIALIZATION.PRETTY_INDENT)}
+}
+`;
+  }
+
+  /**
+   * Get compiler options based on quality level and project type
+   * @param options - TypeScript configuration options
+   * @returns Compiler options
+   */
+  private getCompilerOptions(options: TypeScriptConfigOptions): CompilerOptions {
+    const baseOptions = this.getBaseCompilerOptions(options);
+
+    // Add project-specific options
+    const projectOptions = this.getProjectSpecificOptions(options);
+
+    // Add quality-level specific options
+    const qualityOptions = this.getQualitySpecificOptions(options.qualityLevel);
+
+    return {
+      ...baseOptions,
+      ...projectOptions,
+      ...qualityOptions,
+      ...this.getAdvancedOptions(options),
+    };
+  }
+
+  /**
+   * Get base compiler options
+   * @param options - TypeScript configuration options
+   * @returns Base compiler options
+   */
+  private getBaseCompilerOptions(options: TypeScriptConfigOptions): CompilerOptions {
+    return {
+      target: this.getLanguageTarget(options.targetEnvironment),
+      lib: this.getLibraryIncludes(options.targetEnvironment),
+      module: this.getModuleType(options.targetEnvironment),
+      moduleResolution: 'node',
+      allowSyntheticDefaultImports: true,
+      esModuleInterop: true,
+      allowJs: true,
+      strict: true,
+      skipLibCheck: true,
+      forceConsistentCasingInFileNames: true,
+      resolveJsonModule: true,
+      isolatedModules: true,
+      verbatimModuleSyntax: false,
+      noEmitOnError: false,
+      incremental: true,
+      noUncheckedIndexedAccess: options.qualityLevel === 'strict',
+      exactOptionalPropertyTypes: options.qualityLevel === 'strict',
+    };
+  }
+
+  /**
+   * Get web project compiler options
+   * @returns Web project compiler options
+   */
+  private getWebProjectOptions(): CompilerOptions {
+    return {
+      jsx: 'react-jsx',
+      // jsxImportSource: undefined,
+      allowSyntheticDefaultImports: true,
+    };
+  }
+
+  /**
+   * Get library project compiler options
+   * @returns Library project compiler options
+   */
+  private getLibraryProjectOptions(): CompilerOptions {
+    return {
+      declaration: true,
+      declarationMap: true,
+      sourceMap: true,
+      outDir: './dist',
+      rootDir: './src',
+      baseUrl: './src',
+      paths: {
+        '@/*': './src/*',
+      },
+    };
+  }
+
+  /**
+   * Get CLI project compiler options
+   * @returns CLI project compiler options
+   */
+  private getCliProjectOptions(): CompilerOptions {
+    return {
+      esModuleInterop: true,
+      allowSyntheticDefaultImports: true,
+    };
+  }
+
+  /**
+   * Get custom path options
+   * @param options - TypeScript configuration options
+   * @returns Custom path options
+   */
+  private getCustomPathOptions(options: TypeScriptConfigOptions): CompilerOptions {
+    const result: CompilerOptions = {};
+
+    if (options.baseUrl !== undefined) {
+      result['baseUrl'] = options.baseUrl;
+    }
+
+    if (options.paths !== undefined) {
+      result['paths'] = options.paths as unknown as Record<string, string>;
+    }
+
+    return result;
+  }
+
+  /**
+   * Get project-specific compiler options
+   * @param options - TypeScript configuration options
+   * @returns Project-specific compiler options
+   */
+  private getProjectSpecificOptions(options: TypeScriptConfigOptions): CompilerOptions {
+    switch (options.projectType) {
+      case 'web':
+        return this.getWebProjectOptions();
+      case 'library':
+        return this.getLibraryProjectOptions();
+      case 'cli':
+        return this.getCliProjectOptions();
+      default:
+        if (options.paths) {
+          return this.getCustomPathOptions(options);
+        }
+        return {};
+    }
+  }
+
+  /**
+   * Get light quality compiler options
+   * @returns Light quality compiler options
+   */
+  private getLightQualityOptions(): CompilerOptions {
+    return {
+      noImplicitAny: false,
+      noImplicitReturns: false,
+      noImplicitThis: false,
+      noUnusedLocals: false,
+      noUnusedParameters: false,
+    };
+  }
+
+  /**
+   * Get medium quality compiler options
+   * @returns Medium quality compiler options
+   */
+  private getMediumQualityOptions(): CompilerOptions {
+    return {
+      noImplicitAny: true,
+      noImplicitReturns: true,
+      noImplicitThis: true,
+      noUnusedLocals: false,
+      noUnusedParameters: false,
+      noImplicitOverride: true,
+      noPropertyAccessFromIndexSignature: false,
+    };
+  }
+
+  /**
+   * Get strict quality compiler options
+   * @returns Strict quality compiler options
+   */
+  private getStrictQualityOptions(): CompilerOptions {
+    return {
+      noImplicitAny: true,
+      noImplicitReturns: true,
+      noImplicitThis: true,
+      noUnusedLocals: true,
+      noUnusedParameters: true,
+      noImplicitOverride: true,
+      noPropertyAccessFromIndexSignature: true,
+      noUncheckedIndexedAccess: true,
+      exactOptionalPropertyTypes: true,
+      noFallthroughCasesInSwitch: true,
+      noUncheckedSideEffectImports: true,
+    };
+  }
+
+  /**
+   * Get quality-specific compiler options
+   * @param qualityLevel - Quality level
+   * @returns Quality-specific compiler options
+   */
+  private getQualitySpecificOptions(qualityLevel: string): CompilerOptions {
+    switch (qualityLevel) {
+      case 'light':
+        return this.getLightQualityOptions();
+      case 'medium':
+        return this.getMediumQualityOptions();
+      case 'strict':
+        return this.getStrictQualityOptions();
+      default:
+        return {};
+    }
+  }
+
+  /**
+   * Get advanced compiler options
+   * @param options - TypeScript configuration options
+   * @returns Advanced compiler options
+   */
+  private getAdvancedOptions(options: TypeScriptConfigOptions): CompilerOptions {
+    const advanced: CompilerOptions = {};
+
+    if (options.decorators) {
+      advanced['experimentalDecorators'] = true;
+      advanced['emitDecoratorMetadata'] = true;
+    }
+
+    if (options.jsx) {
+      advanced['jsx'] = 'react-jsx';
+    }
+
+    if (options.targetEnvironment === 'node' && process.versions?.node) {
+      const nodeVersionStr = process.versions.node;
+      if (!nodeVersionStr) return advanced;
+
+      const majorVersion = nodeVersionStr.split('.')[0];
+      if (!majorVersion) return advanced;
+
+      const nodeVersion = Number.parseInt(majorVersion, 10);
+      if (Number.isNaN(nodeVersion)) return advanced;
+
+      advanced['target'] =
+        `es${Math.min(NETWORK.MAX_ES_YEAR_2020, NETWORK.ES_BASE_YEAR + (nodeVersion - NETWORK.MIN_NODE_VERSION) * NETWORK.ES_VERSION_MULTIPLIER)}`;
+    }
+
+    return advanced;
+  }
+
+  /**
+   * Get include patterns
+   * @param options - TypeScript configuration options
+   * @returns Include patterns
+   */
+  private getIncludePatterns(options: TypeScriptConfigOptions): string[] {
+    const patterns = ['src/**/*'];
+
+    if (options.projectType === 'library') {
+      patterns.push('types/**/*');
+    }
+
+    return patterns;
+  }
+
+  /**
+   * Get exclude patterns
+   * @param _options - TypeScript configuration options (unused)
+   * @returns Exclude patterns
+   */
+  private getExcludePatterns(_options: TypeScriptConfigOptions): string[] {
+    return [
+      'node_modules',
+      'dist',
+      'build',
+      'coverage',
+      '*.tsbuildinfo',
+      '**/*.test.ts',
+      '**/*.spec.ts',
+    ];
+  }
+
+  /**
+   * Get language target based on environment
+   * @param targetEnvironment - Target environment
+   * @returns Language target
+   */
+  private getLanguageTarget(targetEnvironment: string): string {
+    switch (targetEnvironment) {
+      case 'browser':
+        return 'ES2020';
+      case 'node':
+        const nodeVersionStr = process.versions?.node;
+        if (nodeVersionStr) {
+          const majorVersion = nodeVersionStr.split('.')[0];
+          if (majorVersion) {
+            const nodeVersion = Number.parseInt(majorVersion, 10);
+            return `es${Math.min(NETWORK.MAX_ES_YEAR_2022, NETWORK.ES_BASE_YEAR + (nodeVersion - NETWORK.MIN_NODE_VERSION) * NETWORK.ES_VERSION_MULTIPLIER)}`;
+          }
+        }
+        return 'ES2020';
+      default:
+        return 'ES2020';
+    }
+  }
+
+  /**
+   * Get library includes based on environment
+   * @param targetEnvironment - Target environment
+   * @returns Library includes
+   */
+  private getLibraryIncludes(targetEnvironment: string): string[] {
+    const libs = ['ES2020'];
+
+    if (targetEnvironment === 'browser') {
+      libs.push('DOM', 'DOM.Iterable');
+    }
+
+    if (targetEnvironment === 'node' || targetEnvironment === 'both') {
+      libs.push('Node');
+    }
+
+    return libs;
+  }
+
+  /**
+   * Get module type based on environment
+   * @param targetEnvironment - Target environment
+   * @returns Module type
+   */
+  private getModuleType(targetEnvironment: string): string {
+    switch (targetEnvironment) {
+      case 'browser':
+        return 'ESNext';
+      case 'node':
+        return 'NodeNext';
+      default:
+        return 'ESNext';
+    }
+  }
+
+  /**
+   * Get ESBuild target
+   * @param targetEnvironment - Target environment
+   * @returns ESBuild target
+   */
+  private getESBuildTarget(targetEnvironment: string): string {
+    switch (targetEnvironment) {
+      case 'browser':
+        return 'es2020';
+      case 'node':
+        return process.versions.node ? `node${process.versions.node.split('.')[0]}` : 'node18';
+      default:
+        return 'es2020';
+    }
+  }
+
+  /**
+   * Get default path mappings
+   * @param projectType - Project type
+   * @returns Default path mappings
+   */
+  private getDefaultPaths(projectType: string): Record<string, string[]> {
+    switch (projectType) {
+      case 'web':
+        return {
+          [`${BASE_PATHS['@']}/*`]: [BASE_PATHS['@']],
+          [`${COMPONENT_PATHS['@/components']}/*`]: [COMPONENT_PATHS['@/components']],
+          [`${BASE_PATHS['@/utils']}/*`]: [BASE_PATHS['@/utils']],
+          [`${BASE_PATHS['@/types']}/*`]: [BASE_PATHS['@/types']],
+        };
+
+      case 'cli':
+        return {
+          [`${BASE_PATHS['@']}/*`]: [BASE_PATHS['@']],
+          [`${COMMAND_PATHS['@/commands']}/*`]: [COMMAND_PATHS['@/commands']],
+          [`${BASE_PATHS['@/utils']}/*`]: [BASE_PATHS['@/utils']],
+          [`${BASE_PATHS['@/types']}/*`]: [BASE_PATHS['@/types']],
+        };
+
+      case 'library':
+        return {
+          [`${BASE_PATHS['@']}/*`]: [BASE_PATHS['@']],
+          [`${BASE_PATHS['@/types']}/*`]: [BASE_PATHS['@/types']],
+          [`${BASE_PATHS['@/utils']}/*`]: [BASE_PATHS['@/utils']],
+        };
+
+      default:
+        return {
+          [`${BASE_PATHS['@']}/*`]: [BASE_PATHS['@']],
+          [`${BASE_PATHS['@/utils']}/*`]: [BASE_PATHS['@/utils']],
+        };
+    }
+  }
+
+  /**
+   * Get target environment based on project type
+   * @param projectType - Project type
+   * @returns Target environment
+   */
+  private getTargetEnvironment(projectType: string): 'node' | 'browser' | 'both' {
+    switch (projectType) {
+      case 'web':
+        return 'browser';
+      case 'cli':
+        return 'node';
+      case 'library':
+        return 'both';
+      default:
+        return 'node';
+    }
+  }
+
+  /**
+   * Get build system based on project type
+   * @param projectType - Project type
+   * @returns Build system
+   */
+  private getBuildSystem(projectType: string): 'esbuild' | 'tsc' | 'both' {
+    switch (projectType) {
+      case 'web':
+        return 'both';
+      case 'cli':
+        return 'tsc';
+      case 'library':
+        return 'both';
+      default:
+        return 'tsc';
+    }
+  }
+
+  /**
+   * Get project type name for display
+   * @param projectType - Project type
+   * @returns Project type name
+   */
+  private getProjectTypeName(projectType: string): string {
+    const names = {
+      basic: 'Basic TypeScript Project',
+      web: 'Web Application',
+      cli: 'CLI Application',
+      library: 'Library Package',
+    };
+    return names[projectType as keyof typeof names] || 'Unknown';
+  }
+}
+
+/**
+ * Create a TypeScript generator instance
+ * @returns TypeScript generator instance
+ */
+export function createTypeScriptGenerator(): TypeScriptGenerator {
+  return new TypeScriptGenerator();
+}

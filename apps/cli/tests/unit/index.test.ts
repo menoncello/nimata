@@ -5,7 +5,7 @@
  * Most application logic is now in app.ts and tested there
  */
 import 'reflect-metadata';
-import { describe, it, expect, spyOn, beforeEach, afterEach } from 'bun:test';
+import { describe, it, expect, spyOn, beforeEach, afterEach, vi } from 'bun:test';
 import { container } from 'tsyringe';
 import { CliApp } from '../../src/app.js';
 import { EXIT_CODES } from '../../src/index.js';
@@ -70,7 +70,7 @@ describe('Index Module', () => {
         output: {} as any,
         cliBuilder: {} as any,
         getVersion: () => '1.0.0',
-        setupInterruptHandler: () => {},
+        setupInterruptHandler: vi.fn(),
         createCli: () => mockApp,
       } as CliApp;
 
@@ -105,7 +105,7 @@ describe('Index Module', () => {
         output: {} as any,
         cliBuilder: {} as any,
         getVersion: () => '1.0.0',
-        setupInterruptHandler: () => {},
+        setupInterruptHandler: vi.fn(),
         createCli: () => mockApp,
       } as CliApp;
 
