@@ -31,52 +31,78 @@ export class MockOutputWriter implements OutputWriter {
 
 // Mock CliBuilder for testing
 export class MockCliBuilder implements CliBuilder {
-  create(): CliBuilder {
+  // Track method calls and arguments
+  public calls: Record<string, unknown[][]> = {};
+
+  private trackCall(method: string, args: unknown[]): void {
+    if (!this.calls[method]) {
+      this.calls[method] = [];
+    }
+    this.calls[method].push(args);
+  }
+
+  create(argv?: string[]): CliBuilder {
+    this.trackCall('create', [argv]);
     return this;
   }
-  scriptName(): CliBuilder {
+  scriptName(name?: string): CliBuilder {
+    this.trackCall('scriptName', [name]);
     return this;
   }
-  version(): CliBuilder {
+  version(version?: string): CliBuilder {
+    this.trackCall('version', [version]);
     return this;
   }
-  usage(): CliBuilder {
+  usage(usage?: string): CliBuilder {
+    this.trackCall('usage', [usage]);
     return this;
   }
-  command(): CliBuilder {
+  command(command?: unknown): CliBuilder {
+    this.trackCall('command', [command]);
     return this;
   }
-  option(): CliBuilder {
+  option(key?: string, options?: unknown): CliBuilder {
+    this.trackCall('option', [key, options]);
     return this;
   }
-  demandCommand(): CliBuilder {
+  demandCommand(min?: number, minMsg?: string): CliBuilder {
+    this.trackCall('demandCommand', [min, minMsg]);
     return this;
   }
-  help(): CliBuilder {
+  help(enable?: boolean | string): CliBuilder {
+    this.trackCall('help', [enable]);
     return this;
   }
-  alias(): CliBuilder {
+  alias(key?: string, value?: string): CliBuilder {
+    this.trackCall('alias', [key, value]);
     return this;
   }
-  strict(): CliBuilder {
+  strict(enable?: boolean): CliBuilder {
+    this.trackCall('strict', [enable]);
     return this;
   }
-  wrap(): CliBuilder {
+  wrap(enable?: boolean | number): CliBuilder {
+    this.trackCall('wrap', [enable]);
     return this;
   }
-  epilogue(): CliBuilder {
+  epilogue(epilogue?: string): CliBuilder {
+    this.trackCall('epilogue', [epilogue]);
     return this;
   }
-  exitProcess(): CliBuilder {
+  exitProcess(enable?: boolean): CliBuilder {
+    this.trackCall('exitProcess', [enable]);
     return this;
   }
-  showHelpOnFail(): CliBuilder {
+  showHelpOnFail(enable?: boolean, message?: string): CliBuilder {
+    this.trackCall('showHelpOnFail', [enable, message]);
     return this;
   }
-  fail(): CliBuilder {
+  fail(enable?: boolean): CliBuilder {
+    this.trackCall('fail', [enable]);
     return this;
   }
   async parse(): Promise<void> {
+    this.trackCall('parse', []);
     /* Intentionally empty - test stub */
   }
 }

@@ -23,10 +23,10 @@ async function loadCommands(): Promise<{
   promptCommand: CommandModule;
 }> {
   const [initCommand, validateCommand, fixCommand, promptCommand] = await Promise.all([
-    import('./commands/init.js').then(m => m.initCommand),
-    import('./commands/validate.js').then(m => m.validateCommand),
-    import('./commands/fix.js').then(m => m.fixCommand),
-    import('./commands/prompt.js').then(m => m.promptCommand),
+    import('./commands/init.js').then((m) => m.initCommand),
+    import('./commands/validate.js').then((m) => m.validateCommand),
+    import('./commands/fix.js').then((m) => m.fixCommand),
+    import('./commands/prompt.js').then((m) => m.promptCommand),
   ]);
   return { initCommand, validateCommand, fixCommand, promptCommand };
 }
@@ -119,7 +119,8 @@ export class CliApp {
     const commands = await loadCommands();
 
     let cli = configureCli(
-      this.cliBuilder.create(argv)
+      this.cliBuilder
+        .create(argv)
         .command(commands.initCommand)
         .command(commands.validateCommand)
         .command(commands.fixCommand)

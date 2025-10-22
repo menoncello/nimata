@@ -6,7 +6,10 @@
  * - src/commands/init-handlers.ts
  */
 import 'reflect-metadata';
-import { ProjectWizardImplementation, type ProjectConfig } from '@nimata/adapters/wizards/project-wizard';
+import {
+  ProjectWizardImplementation,
+  type ProjectConfig,
+} from '@nimata/adapters/wizards/project-wizard';
 import { describe, it, expect, beforeEach } from 'bun:test';
 import { runNonInteractive } from '../../../src/commands/init-config.js';
 import {
@@ -139,7 +142,11 @@ describe('Critical Mutant Tests - Validation Logic', () => {
     it('should display each error in errors array (kills loop BlockStatement)', () => {
       const validation = {
         valid: false,
-        errors: ['Error 1: Name is required', 'Error 2: Invalid quality level', 'Error 3: Missing type'],
+        errors: [
+          'Error 1: Name is required',
+          'Error 2: Invalid quality level',
+          'Error 3: Missing type',
+        ],
         warnings: [],
       };
 
