@@ -4,7 +4,7 @@
  * Tests for CLI configuration in app.ts
  */
 import 'reflect-metadata';
-import { describe, it, expect, beforeEach, afterEach, spyOn } from 'bun:test';
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { container } from 'tsyringe';
 import { CliApp } from '../../src/app.js';
 import type { CliBuilder } from '../../src/cli-builder.js';
