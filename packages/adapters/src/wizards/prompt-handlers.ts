@@ -23,11 +23,12 @@ function withSigIntHandling<T extends unknown[], R>(
       return await promptFunction(...args);
     } catch (error) {
       // Check if error is from SIGINT
-      if (error instanceof Error && (
-        error.message.includes('SIGINT') ||
-        error.message.includes('User force closed') ||
-        error.name === 'ExitPromptError'
-      )) {
+      if (
+        error instanceof Error &&
+        (error.message.includes('SIGINT') ||
+          error.message.includes('User force closed') ||
+          error.name === 'ExitPromptError')
+      ) {
         process.exit(SIGINT_EXIT_CODE);
       }
       throw error;
@@ -41,12 +42,14 @@ function withSigIntHandling<T extends unknown[], R>(
  * @param defaultValue - Default value if user provides empty input
  * @returns User input text
  */
-export const promptText = withSigIntHandling(async (message: string, defaultValue?: string): Promise<string> => {
-  return input({
-    message,
-    default: defaultValue,
-  });
-});
+export const promptText = withSigIntHandling(
+  async (message: string, defaultValue?: string): Promise<string> => {
+    return input({
+      message,
+      default: defaultValue,
+    });
+  }
+);
 
 /**
  * Prompt user to select from a list of options
@@ -55,21 +58,23 @@ export const promptText = withSigIntHandling(async (message: string, defaultValu
  * @param defaultValue - Default selected option
  * @returns Selected option value
  */
-export const promptList = withSigIntHandling(async (
-  message: string,
-  options: Array<{ label: string; value: unknown; description?: string }>,
-  defaultValue?: unknown
-): Promise<unknown> => {
-  return select({
-    message,
-    choices: options.map((opt) => ({
-      name: opt.label,
-      value: opt.value,
-      description: opt.description,
-    })),
-    default: defaultValue,
-  });
-});
+export const promptList = withSigIntHandling(
+  async (
+    message: string,
+    options: Array<{ label: string; value: unknown; description?: string }>,
+    defaultValue?: unknown
+  ): Promise<unknown> => {
+    return select({
+      message,
+      choices: options.map((opt) => ({
+        name: opt.label,
+        value: opt.value,
+        description: opt.description,
+      })),
+      default: defaultValue,
+    });
+  }
+);
 
 /**
  * Prompt user to select multiple options from a list
@@ -78,21 +83,23 @@ export const promptList = withSigIntHandling(async (
  * @param defaultValues - Default selected values
  * @returns Array of selected option values
  */
-export const promptCheckbox = withSigIntHandling(async (
-  message: string,
-  options: Array<{ label: string; value: unknown; description?: string }>,
-  defaultValues: string[] = []
-): Promise<unknown[]> => {
-  return checkbox({
-    message,
-    choices: options.map((opt) => ({
-      name: opt.label,
-      value: opt.value,
-      description: opt.description,
-      checked: defaultValues.includes(opt.value as string),
-    })),
-  });
-});
+export const promptCheckbox = withSigIntHandling(
+  async (
+    message: string,
+    options: Array<{ label: string; value: unknown; description?: string }>,
+    defaultValues: string[] = []
+  ): Promise<unknown[]> => {
+    return checkbox({
+      message,
+      choices: options.map((opt) => ({
+        name: opt.label,
+        value: opt.value,
+        description: opt.description,
+        checked: defaultValues.includes(opt.value as string),
+      })),
+    });
+  }
+);
 
 /**
  * Prompt user for yes/no confirmation
@@ -100,9 +107,11 @@ export const promptCheckbox = withSigIntHandling(async (
  * @param defaultValue - Default value if user provides empty input
  * @returns True if user confirms, false otherwise
  */
-export const promptConfirm = withSigIntHandling(async (message: string, defaultValue = true): Promise<boolean> => {
-  return confirm({
-    message,
-    default: defaultValue as boolean,
-  });
-});
+export const promptConfirm = withSigIntHandling(
+  async (message: string, defaultValue = true): Promise<boolean> => {
+    return confirm({
+      message,
+      default: defaultValue as boolean,
+    });
+  }
+);

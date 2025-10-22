@@ -27,8 +27,7 @@ const PROJECT_NAME_VALIDATION: Array<{
   {
     type: 'pattern',
     pattern: /^[\d_a-z-]+$/,
-    message:
-      'Project name must contain only lowercase letters, numbers, hyphens, and underscores',
+    message: 'Project name must contain only lowercase letters, numbers, hyphens, and underscores',
   },
   {
     type: 'length',

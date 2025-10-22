@@ -17,7 +17,11 @@ const UNKNOWN_ERROR_MESSAGE = 'Unknown error';
  * @param help - Optional help text
  * @returns User input
  */
-async function handleTextStep(title: string, defaultValue?: unknown, help?: string): Promise<string> {
+async function handleTextStep(
+  title: string,
+  defaultValue?: unknown,
+  help?: string
+): Promise<string> {
   // Display help separately if provided, then just use title for the prompt
   if (help) {
     console.log(help);
