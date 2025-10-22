@@ -1,0 +1,27 @@
+File,Error Count
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/validators/project-validator.ts",46
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/wizards/wizard-prompts.ts",22
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/eslint-generator.ts",20
+"/Users/menoncello/repos/dev/nimata/packages/adapters/tests/eslint-generator.test.ts",15
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/copilot-generator.ts",13
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/help-topics.ts",10
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/constants-new.ts",9
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/typescript-compiler-options.ts",8
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/help-system.ts",6
+"/Users/menoncello/repos/dev/nimata/packages/adapters/tests/utils/performance.test.ts",6
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/help-commands.ts",5
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/copilot-content-builders.ts",4
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/claude-md-generator.ts",3
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/typescript-generator.ts",3
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/typescript-utilities.ts",3
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/typescript-config-builders.ts",2
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/template-engine.ts",2
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/template-engine/template-processor-helpers.ts",2
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/wizards/wizard-steps.ts",2
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/generators/typescript-generator.backup.ts",1
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/template-engine/template-helpers.ts",1
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/template-engine/template-patterns.ts",1
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/template-engine/template-processor.ts",1
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/help-system.backup.ts",1
+"/Users/menoncello/repos/dev/nimata/packages/adapters/src/utils/project-utilities.ts",1
+"/Users/menoncello/repos/dev/nimata/packages/adapters/tests/typescript-generator.test.ts",1

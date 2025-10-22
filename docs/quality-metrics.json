@@ -1,0 +1,49 @@
+{
+  "timestamp": "2025-10-18T23:02:09.348Z",
+  "qualityScore": 63,
+  "basic": {
+    "linesOfCode": 180866,
+    "fileCount": 1069,
+    "testCount": 334
+  },
+  "packages": {
+    "@nimata/core": {
+      "eslintErrors": 0,
+      "testResults": {
+        "pass": 68,
+        "fail": 0
+      },
+      "coverage": 0,
+      "typeErrors": 0
+    },
+    "@nimata/cli": {
+      "eslintErrors": 0,
+      "testResults": {
+        "pass": 0,
+        "fail": 0
+      },
+      "coverage": 0,
+      "typeErrors": 0
+    },
+    "@nimata/adapters": {
+      "eslintErrors": 1192,
+      "testResults": {
+        "pass": 0,
+        "fail": 0
+      },
+      "coverage": 0,
+      "typeErrors": 0
+    }
+  },
+  "complexity": {
+    "largeFunctions": 0,
+    "complexFunctions": 0,
+    "longFiles": 24,
+    "duplicateStrings": 0
+  },
+  "recommendations": [
+    "- **Fix 1192 ESLint errors** using `bun run lint:fix`",
+    "- **Refactor 24 long files** into focused modules",
+    "- **Increase test coverage** (currently 31.2%)"
+  ]
+}
