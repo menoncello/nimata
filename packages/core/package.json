@@ -10,6 +10,10 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./services/project-config-processor": {
+      "import": "./dist/services/project-config-processor.js",
+      "types": "./dist/services/project-config-processor.d.ts"
+    },
     "./types/config": {
       "import": "./dist/types/config.js",
       "types": "./dist/types/config.d.ts"

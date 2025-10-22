@@ -1,0 +1,288 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>3</storyId>
+    <title>Project Generation System</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-21</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.3.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>developer starting a new TypeScript+Bun CLI project</asA>
+    <iWant>an interactive project initialization wizard that scaffolds a complete, production-ready project with quality tooling and AI context files pre-configured</iWant>
+    <soThat>I can start development immediately with best practices, consistent quality standards, and AI assistants that understand my project structure and requirements</soThat>
+    <tasks>
+      <task priority="P0" id="P0-1">Interactive CLI Framework - Implement prompt interface, question types, help system, navigation, progress tracking, input validation</task>
+      <task priority="P0" id="P0-2">Project Configuration Collection - Define schema, collect metadata, quality level, AI assistants, project type, tech stack options</task>
+      <task priority="P0" id="P0-3">Template Engine Core - Variable substitution, conditional blocks, template loading/validation, file generation, template registry</task>
+      <task priority="P1" id="P1-1">Basic TypeScript Project Template - Directory structure, package.json, entry point, test structure, README</task>
+      <task priority="P1" id="P1-2">CLI Application Template - CLI structure, Commander.js setup, subcommands, CLI testing</task>
+      <task priority="P1" id="P1-3">Web Application Template - Web structure, HTTP server, static serving, frontend TypeScript</task>
+      <task priority="P1" id="P1-4">Library Package Template - Library structure, package.json, declaration files, publishing setup</task>
+      <task priority="P2" id="P2-1">ESLint Configuration Generator - Quality level rule sets, project type adjustments, validation</task>
+      <task priority="P2" id="P2-2">TypeScript Configuration Generator - Project type configs, quality level compiler options, path aliases</task>
+      <task priority="P2" id="P2-3">Prettier and Test Configuration - Prettier rules, test runner setup, coverage configuration</task>
+      <task priority="P3" id="P3-1">CLAUDE.md Generator - Project structure, coding standards, architecture decisions, AI instructions</task>
+      <task priority="P3" id="P3-2">GitHub Copilot Instructions Generator - Copilot format, coding conventions, tech stack guidance</task>
+      <task priority="P3" id="P3-3">AI Context Integration - Multi-assistant support, context file placement, validation</task>
+      <task priority="P4" id="P4-1">nimata init Command Implementation - Command routing, flag support, non-interactive mode, error handling</task>
+      <task priority="P4" id="P4-2">Project Validation and Setup Verification - Post-generation validation, dependency verification, test execution</task>
+      <task priority="P4" id="P4-3">User Experience Polish - Progress indicators, success messaging, error messages, performance optimization</task>
+      <task priority="P5" id="P5-1">Comprehensive Test Coverage - Unit tests, integration tests, E2E tests, performance tests, mutation testing</task>
+      <task priority="P5" id="P5-2">Documentation and Examples - User guide, template customization, troubleshooting, examples</task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1" priority="MUST">
+      <title>Interactive Configuration Wizard</title>
+      <description>Interactive CLI wizard guides user through project setup with inline help, smart defaults, multi-select support, input validation, progress indicator, navigation, and completes in &lt;15 questions</description>
+    </criterion>
+    <criterion id="AC2" priority="MUST">
+      <title>Project Templates System</title>
+      <description>Support multiple project templates (basic, web, cli, library) with variable substitution, conditional blocks, template validation, correct formatting, and error handling</description>
+    </criterion>
+    <criterion id="AC3" priority="MUST">
+      <title>Directory Structure Generation</title>
+      <description>Creates opinionated directory structure, entry point files, configuration files, proper permissions, SOLID architecture support, and project-specific README.md</description>
+    </criterion>
+    <criterion id="AC4" priority="MUST">
+      <title>Quality Tool Configuration</title>
+      <description>Generates ESLint, TypeScript, Prettier, and Bun Test configurations based on quality level that pass validation immediately and work without conflicts</description>
+    </criterion>
+    <criterion id="AC5" priority="MUST">
+      <title>AI Context Files Generation</title>
+      <description>Generates CLAUDE.md and GitHub Copilot instructions adapted to quality level, optimized for AI parsing, with coding standards, architecture decisions, and code pattern examples</description>
+    </criterion>
+    <criterion id="AC6" priority="MUST">
+      <title>nimata init Command Integration</title>
+      <description>End-to-end workflow with CLI flags (--template, --quality, --ai, --non-interactive), interactive/non-interactive modes, project validation, immediate test execution capability, and completes in &lt;30 seconds</description>
+    </criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/PRD-story-1.3.md</path>
+        <title>Story 1.3 Product Requirements Document</title>
+        <section>Goals and Background Context</section>
+        <snippet>Eliminate Project Setup Friction: Reduce 2-4 hours of manual TypeScript project setup to &lt;30 seconds. Enforce Quality Standards: Ensure all projects start with consistent quality tooling. Accelerate AI-Assisted Development: Generate persistent AI context that reduces hallucinations.</snippet>
+      </doc>
+      <doc>
+        <path>docs/solution-architecture.md</path>
+        <title>Nìmata Solution Architecture</title>
+        <section>Architecture Overview - Clean Architecture Lite</section>
+        <snippet>3-layer architecture: CLI Layer (Yargs, Prompts) → Use Case Layer (Services) → Adapter Layer (Repositories, Presenters). Bun 1.3+ native features for 40-60% performance improvement. TSyringe manual DI registration, ts-morph for AST manipulation.</snippet>
+      </doc>
+      <doc>
+        <path>docs/tech-spec-epic-1.md</path>
+        <title>Technical Specification Epic 1</title>
+        <section>Story 1.3: Interactive Wizard &amp; Story 1.5: Template Engine</section>
+        <snippet>ScaffoldWizard with Prompts integration for interactive configuration. TemplateRenderer with Handlebars integration for template processing. Support for basic, web, cli, and library project types.</snippet>
+      </doc>
+      <doc>
+        <path>docs/testing-guide.md</path>
+        <title>Nìmata Testing Guide</title>
+        <section>Test Structure and Types</section>
+        <snippet>Strict TDD with Bun Test for unit/E2E tests, Stryker for mutation testing (80%+ score target). Unit tests in tests/unit/ with 100% mocked dependencies. E2E tests in tests/e2e/ with real CLI execution and temp directory isolation.</snippet>
+      </doc>
+      <doc>
+        <path>docs/LINTING-RULES.md</path>
+        <title>ESLint Configuration Rules</title>
+        <section>Quality Standards</section>
+        <snippet>Strict ESLint rules enforcing max-lines-per-function (300), max-nested-callbacks (3), cyclomatic-complexity (15), no-magic-numbers, comprehensive JSDoc documentation requirements.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>packages/core/src/interfaces/project-generator.ts</path>
+        <kind>interface</kind>
+        <symbol>ProjectGenerator</symbol>
+        <lines>13-60</lines>
+        <reason>Core interface defining project generation contract: generateProject(), validateProjectConfig(), validateProject(), addTemplate(), getAvailableTemplates(), validateProjectName(), getProjectDirectory()</reason>
+      </artifact>
+      <artifact>
+        <path>packages/core/src/interfaces/template-engine.ts</path>
+        <kind>interface</kind>
+        <symbol>TemplateEngine</symbol>
+        <lines>8-54</lines>
+        <reason>Core interface for template processing: loadTemplate(), renderTemplate(), validateTemplate(), processProjectTemplate(), registerHelper(), getAvailableTemplates()</reason>
+      </artifact>
+      <artifact>
+        <path>packages/core/src/interfaces/project-wizard.ts</path>
+        <kind>interface</kind>
+        <symbol>ProjectWizard</symbol>
+        <lines>8-46</lines>
+        <reason>Core interface for interactive wizard: run(), addStep(), validate(), getSteps(), getStep(), reset()</reason>
+      </artifact>
+      <artifact>
+        <path>packages/adapters/src/project-generator.ts</path>
+        <kind>service</kind>
+        <symbol>ProjectGeneratorImpl</symbol>
+        <lines>1-265</lines>
+        <reason>Existing implementation of ProjectGenerator interface. Recently refactored to 265 lines (54% reduction) with helpers extracted to project-generator-helpers.ts and workflow to project-generator-workflow.ts</reason>
+      </artifact>
+      <artifact>
+        <path>packages/adapters/src/template-engine/template-processor.ts</path>
+        <kind>service</kind>
+        <symbol>TemplateProcessor</symbol>
+        <lines>all</lines>
+        <reason>Core template processing engine with variable substitution, conditional blocks, and loop processing. Integrates with variable-processor, conditional-processor, and loop-processor modules</reason>
+      </artifact>
+      <artifact>
+        <path>packages/adapters/src/generators/claude-md-generator.ts</path>
+        <kind>generator</kind>
+        <symbol>CLAUDEmdGenerator</symbol>
+        <lines>1-177</lines>
+        <reason>Generates CLAUDE.md AI context files. Recently refactored to 177 lines (67% reduction) with AI context builders extracted to claude-md-ai-helpers.ts and core helpers to claude-md-core-helpers.ts</reason>
+      </artifact>
+      <artifact>
+        <path>packages/adapters/src/generators/eslint-generator.ts</path>
+        <kind>generator</kind>
+        <symbol>ESLintConfigGenerator</symbol>
+        <lines>all</lines>
+        <reason>Generates quality level-specific ESLint configurations (light/medium/strict) with project type adjustments</reason>
+      </artifact>
+      <artifact>
+        <path>packages/adapters/src/generators/typescript-generator.ts</path>
+        <kind>generator</kind>
+        <symbol>TypeScriptConfigGenerator</symbol>
+        <lines>all</lines>
+        <reason>Generates TypeScript configurations optimized for project type and quality level</reason>
+      </artifact>
+      <artifact>
+        <path>apps/cli/src/commands/init.ts</path>
+        <kind>command</kind>
+        <symbol>initCommand</symbol>
+        <lines>all</lines>
+        <reason>CLI command handler for 'nimata init' - needs integration with project generator and wizard</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <node>
+        <package name="bun" version=">=1.3.0" purpose="Runtime with native SQLite, YAML, file hashing, glob, watch APIs for 40-60% performance improvement" />
+        <package name="typescript" version="^5.3.3" purpose="Type safety, strict mode enforcement" />
+        <package name="yargs" version="17.x" purpose="CLI framework with subcommand routing and completion infrastructure" />
+        <package name="prompts" version="2.x" purpose="Interactive async prompts for wizard interface" />
+        <package name="picocolors" version="^1.0.0" purpose="Terminal colors (6x smaller than chalk, 14x faster)" />
+        <package name="ora" version="7.x" purpose="Spinners and progress indicators" />
+        <package name="turborepo" version="^2.0.0" purpose="Monorepo build system with 80% CI time savings" />
+        <package name="tsyringe" version="4.x" purpose="Dependency injection with manual registration (no decorators)" />
+        <package name="ts-morph" version="22.x" purpose="High-level TypeScript AST API for safe transformations" />
+        <package name="pino" version="9.x" purpose="Structured JSON logging (fastest Node.js logger)" />
+        <package name="zod" version="^4.1.12" purpose="Schema validation for configuration" />
+        <package name="@stryker-mutator/core" version="^9.2.0" devDependency="true" purpose="Mutation testing (80%+ score target)" />
+        <package name="eslint" version="^9.37.0" devDependency="true" purpose="Code quality linting" />
+        <package name="prettier" version="^3.2.5" devDependency="true" purpose="Code formatting" />
+      </node>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint id="ARCH-1">Clean Architecture Lite (3 layers): CLI → Use Cases → Adapters. No Controllers layer (CLI calls use cases directly)</constraint>
+    <constraint id="ARCH-2">Dependency injection via TSyringe with manual registration (no decorators for TDD friendliness)</constraint>
+    <constraint id="PERF-1">Leverage Bun native APIs: Bun.file().yaml(), bun:sqlite, Bun.hash(), Bun.watch(), Bun.Glob for performance</constraint>
+    <constraint id="PERF-2">Project generation must complete in &lt;30 seconds for medium projects (&lt;200 files)</constraint>
+    <constraint id="PERF-3">Interactive wizard responses must be &lt;100ms for user input</constraint>
+    <constraint id="TEST-1">Strict TDD with Bun Test: Unit tests (100% coverage) + E2E tests (80% coverage)</constraint>
+    <constraint id="TEST-2">Mutation testing with Stryker on unit tests (80%+ mutation score required)</constraint>
+    <constraint id="TEST-3">Test isolation: No shared state between tests, use beforeEach/afterEach for cleanup</constraint>
+    <constraint id="CODE-1">ESLint strict rules: max-lines-per-function (300), cyclomatic-complexity (15), no-magic-numbers</constraint>
+    <constraint id="CODE-2">Comprehensive JSDoc documentation for all public interfaces and functions</constraint>
+    <constraint id="CODE-3">NEVER disable ESLint rules via inline comments - fix the underlying code issue</constraint>
+    <constraint id="FILE-1">All file paths in artifacts must be project-relative (strip /Users/.../nimata/ prefix)</constraint>
+  </constraints>
+
+  <interfaces>
+    <interface>
+      <name>ProjectGenerator</name>
+      <kind>TypeScript Interface</kind>
+      <signature>
+        generateProject(config: ProjectConfig): Promise&lt;GenerationResult&gt;;
+        validateProjectConfig(config: ProjectConfig): ValidationResult;
+        validateProject(projectPath: string): Promise&lt;ValidationResult&gt;;
+        addTemplate(template: ProjectTemplate): void;
+        getAvailableTemplates(): string[];
+        validateProjectName(name: string): ValidationResult;
+        getProjectDirectory(config: ProjectConfig): string;
+      </signature>
+      <path>packages/core/src/interfaces/project-generator.ts</path>
+    </interface>
+    <interface>
+      <name>TemplateEngine</name>
+      <kind>TypeScript Interface</kind>
+      <signature>
+        loadTemplate(templateName: string): Promise&lt;ProjectTemplate&gt;;
+        renderTemplate(template: string, context: TemplateContext): Promise&lt;string&gt;;
+        validateTemplate(template: string): ValidationResult;
+        processProjectTemplate(projectTemplate: ProjectTemplate, context: TemplateContext): Promise&lt;GeneratedFile[]&gt;;
+        registerHelper(name: string, helper: (...args: unknown[]) =&gt; unknown): void;
+        getAvailableTemplates(): Promise&lt;string[]&gt;;
+      </signature>
+      <path>packages/core/src/interfaces/template-engine.ts</path>
+    </interface>
+    <interface>
+      <name>ProjectWizard</name>
+      <kind>TypeScript Interface</kind>
+      <signature>
+        run(config?: Partial&lt;ProjectConfig&gt;): Promise&lt;ProjectConfig&gt;;
+        addStep(step: WizardStep): void;
+        validate(config: Partial&lt;ProjectConfig&gt;): ValidationResult;
+        getSteps(): WizardStep[];
+        getStep(stepId: string): WizardStep | undefined;
+        reset(): void;
+      </signature>
+      <path>packages/core/src/interfaces/project-wizard.ts</path>
+    </interface>
+    <interface>
+      <name>ProjectConfig</name>
+      <kind>TypeScript Type</kind>
+      <signature>
+        {
+          name: string;
+          description: string;
+          author?: string;
+          license?: string;
+          qualityLevel: 'light' | 'medium' | 'strict';
+          projectType: 'basic' | 'web' | 'cli' | 'library';
+          aiAssistants: ('claude-code' | 'copilot')[];
+          template?: string;
+          targetDirectory?: string;
+          nonInteractive?: boolean;
+        }
+      </signature>
+      <path>packages/core/src/types/project-config.ts</path>
+    </interface>
+  </interfaces>
+
+  <tests>
+    <standards>
+      Nìmata uses strict TDD with Bun Test for all testing. Unit tests target 100% coverage with 80%+ mutation score via Stryker. E2E tests target 80% coverage focusing on critical user workflows. All tests follow AAA pattern (Arrange, Act, Assert). Test isolation is mandatory - use beforeEach/afterEach for setup/cleanup, no shared state. Unit tests must execute in &lt;10ms per test. E2E tests use temp directories for file system isolation and cleanup.
+    </standards>
+    <locations>
+      <location>apps/cli/tests/unit/ - Unit tests for CLI commands and handlers</location>
+      <location>apps/cli/tests/e2e/ - E2E tests for complete workflows</location>
+      <location>packages/core/tests/unit/ - Unit tests for core services and interfaces</location>
+      <location>packages/adapters/tests/unit/ - Unit tests for adapter implementations</location>
+      <location>packages/adapters/tests/integration/ - Integration tests for adapters</location>
+    </locations>
+    <ideas>
+      <idea ac="AC1" type="unit">Test wizard question flow: verify correct questions presented based on previous answers, validate navigation (forward/back/quit), test help system accessibility, verify progress indicators update correctly</idea>
+      <idea ac="AC1" type="e2e">End-to-end wizard completion: run complete wizard flow with all question types, verify smart defaults pre-selected, test multi-select support, validate input validation with error messages</idea>
+      <idea ac="AC2" type="unit">Test template variable substitution: verify {{variable}} replacement, test conditional blocks ({{#if}}...{{/if}}), validate template validation catches syntax errors, test error handling for missing templates</idea>
+      <idea ac="AC2" type="integration">Test complete template generation: load each template type (basic/web/cli/library), verify all files generated with correct content, validate variable substitution across multiple files</idea>
+      <idea ac="AC3" type="unit">Test directory structure builder: verify correct structure for each project type, validate file permissions set correctly, test README.md generation with project-specific content</idea>
+      <idea ac="AC3" type="e2e">Validate generated project structure: verify all expected directories created, check entry point files exist, validate configuration files present, test SOLID architecture compliance</idea>
+      <idea ac="AC4" type="unit">Test quality config generators: verify ESLint rules for each quality level (light/medium/strict), test TypeScript config variations, validate Prettier rules generation, test Bun Test setup</idea>
+      <idea ac="AC4" type="integration">Test quality tool integration: generate complete project, run ESLint validation (must pass), run TypeScript compilation (tsc --noEmit), verify no tool conflicts</idea>
+      <idea ac="AC5" type="unit">Test AI context generators: verify CLAUDE.md structure and content, test GitHub Copilot instructions format, validate quality level adaptations, test file size optimization (&lt;10KB target)</idea>
+      <idea ac="AC5" type="integration">Test AI context quality: generate AI files for different project types, validate coding standards included, verify architecture decisions documented, check example patterns present</idea>
+      <idea ac="AC6" type="unit">Test init command handler: verify command-line flag parsing (--template, --quality, --ai, --non-interactive), test interactive vs non-interactive modes, validate error handling</idea>
+      <idea ac="AC6" type="e2e">Test complete init workflow: run 'nimata init my-project' end-to-end, verify project generated in &lt;30 seconds, cd into project and run 'bun test' successfully, validate all quality checks pass</idea>
+      <idea ac="ALL" type="performance">Performance benchmarks: measure project generation time for different sizes (&lt;50, 50-200, 200+ files), verify wizard response times &lt;100ms, test template rendering &lt;1ms per file</idea>
+      <idea ac="ALL" type="mutation">Mutation testing coverage: apply Stryker to all unit tests, target 80%+ mutation score, focus on critical paths (template processing, validation, config generation)</idea>
+    </ideas>
+  </tests>
+</story-context>

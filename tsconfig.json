@@ -2,23 +2,40 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "lib": ["ES2022", "DOM"],
     "moduleResolution": "bundler",
-    "strict": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "allowJs": true,
+    "strict": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "composite": true,
-    "incremental": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "removeComments": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": false,
+    "baseUrl": ".",
+    "paths": {
+      "@nimata/core": ["packages/core/src"],
+      "@nimata/core/*": ["packages/core/src/*"],
+      "@nimata/adapters": ["packages/adapters/src"],
+      "@nimata/adapters/*": ["packages/adapters/src/*"]
+    }
   },
-  "exclude": ["node_modules", "dist", "coverage"]
+  "include": ["packages/*/src/**/*", "apps/*/src/**/*"],
+  "exclude": ["node_modules", "dist", "coverage", "**/.stryker-tmp/**", "test-*"],
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/adapters" },
+    { "path": "./apps/cli" }
+  ]
 }

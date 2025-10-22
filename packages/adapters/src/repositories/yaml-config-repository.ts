@@ -6,7 +6,7 @@ import {
   ConfigSchema,
   validateConfigPaths,
   type Config,
-  deepMerge
+  deepMerge,
 } from '@nimata/core';
 
 /**

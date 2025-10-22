@@ -9,6 +9,18 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./wizards/project-wizard": {
+      "import": "./dist/wizards/project-wizard.js",
+      "types": "./dist/wizards/project-wizard.d.ts"
+    },
+    "./template-engine": {
+      "import": "./dist/template-engine.js",
+      "types": "./dist/template-engine.d.ts"
+    },
+    "./project-generator": {
+      "import": "./dist/project-generator.js",
+      "types": "./dist/project-generator.d.ts"
     }
   },
   "scripts": {
@@ -28,7 +40,13 @@
     "clean": "rm -rf dist node_modules reports .stryker-tmp coverage"
   },
   "dependencies": {
-    "@nimata/core": "workspace:*"
+    "@inquirer/checkbox": "^4.3.0",
+    "@inquirer/confirm": "^5.1.19",
+    "@inquirer/input": "^4.2.5",
+    "@inquirer/prompts": "^7.9.0",
+    "@inquirer/select": "^4.4.0",
+    "@nimata/core": "workspace:*",
+    "picocolors": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^24.8.0",

@@ -24,6 +24,11 @@
       "outputs": ["reports/mutation/**", ".stryker-tmp/**"],
       "cache": false
     },
+    "test:performance": {
+      "dependsOn": ["build"],
+      "outputs": ["benchmark-results/**"],
+      "cache": false
+    },
     "lint": {
       "dependsOn": ["^build"],
       "outputs": []

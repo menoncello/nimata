@@ -205,3 +205,22 @@ export async function cleanupTempDirectory(dirPath: string): Promise<void> {
   const { rm } = await import('fs/promises');
   await rm(dirPath, { recursive: true, force: true });
 }
+
+/**
+ * Assert that a directory exists (throws if not found)
+ */
+export async function assertDirectoryExists(basePath: string, relativePath: string): Promise<void> {
+  const fullPath = join(basePath, relativePath);
+  if (!(await directoryExists(fullPath))) {
+    throw new Error(`Expected directory to exist: ${fullPath}`);
+  }
+}
+
+/**
+ * Assert that a file exists (throws if not found)
+ */
+export async function assertFileExists(filePath: string): Promise<void> {
+  if (!(await fileExists(filePath))) {
+    throw new Error(`Expected file to exist: ${filePath}`);
+  }
+}

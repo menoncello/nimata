@@ -13,8 +13,14 @@ export interface CLIExecutionOptions {
   cwd?: string;
   /** Environment variables to merge with process.env */
   env?: Record<string, string>;
-  /** Input to send to stdin */
+  /** Input to send to stdin (string or array of strings) */
   stdin?: string;
+  /** Input lines to send to stdin (will be joined with empty strings) - convenience alias for stdin */
+  input?: string[];
+  /** Callback for output streaming */
+  onOutput?: (output: string) => void;
+  /** Command to execute (defaults to 'nimata' via bin) */
+  command?: string;
   /** Timeout in milliseconds (default: 30s) */
   timeout?: number;
   /** CLI arguments (e.g., ['init', '--yes']) */
@@ -63,12 +69,14 @@ function createTimeoutPromise(timeout: number, args: string[], proc: Subprocess)
 }
 
 async function captureProcessOutput(proc: Subprocess): Promise<{ stdout: string; stderr: string }> {
-  const stdout = proc.stdout && typeof proc.stdout !== 'number'
-    ? await new Response(proc.stdout as ReadableStream<Uint8Array>).text()
-    : '';
-  const stderr = proc.stderr && typeof proc.stderr !== 'number'
-    ? await new Response(proc.stderr as ReadableStream<Uint8Array>).text()
-    : '';
+  const stdout =
+    proc.stdout && typeof proc.stdout !== 'number'
+      ? await new Response(proc.stdout as ReadableStream<Uint8Array>).text()
+      : '';
+  const stderr =
+    proc.stderr && typeof proc.stderr !== 'number'
+      ? await new Response(proc.stderr as ReadableStream<Uint8Array>).text()
+      : '';
   return { stdout, stderr };
 }
 
@@ -80,21 +88,25 @@ function writeStdin(proc: Subprocess, stdin?: string): void {
 }
 
 export async function executeCLI(options: CLIExecutionOptions): Promise<CLIExecutionResult> {
-  const { args, cwd = process.cwd(), env = {}, stdin, timeout = 30_000 } = options;
+  const { args, cwd = process.cwd(), env = {}, stdin, input, command, timeout = 30_000 } = options;
 
-  const cliBin = determineCliBinaryPath();
+  // Convert input array to stdin string if provided
+  const finalStdin = input ? input.join('') : stdin;
+
+  // Determine command binary
+  const cmdBin = command || determineCliBinaryPath();
   const startTime = Date.now();
 
   const proc: Subprocess = spawn({
-    cmd: [cliBin, ...args],
+    cmd: command ? [command, ...args] : [cmdBin, ...args],
     cwd,
     env: { ...process.env, ...env },
     stdout: 'pipe',
     stderr: 'pipe',
-    stdin: stdin ? 'pipe' : 'ignore',
+    stdin: finalStdin ? 'pipe' : 'ignore',
   });
 
-  writeStdin(proc, stdin);
+  writeStdin(proc, finalStdin);
 
   const timeoutPromise = createTimeoutPromise(timeout, args, proc);
 

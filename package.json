@@ -14,12 +14,14 @@
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",
     "test:mutation": "turbo run test:mutation",
+    "test:performance": "turbo run test:performance",
     "typecheck": "turbo run typecheck",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "clean": "turbo run clean && rm -rf node_modules",
+    "cli": "bun run apps/cli/src/index.ts",
     "bmad:rebuild": "./scripts/rebuild-bmad-agents.sh --all"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ config_source: "{project-root}/bmad/bmm/config.yaml"
 output_folder: "{config_source}:output_folder"
 user_name: "{config_source}:user_name"
 communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
 date: system-generated
 
 # Workflow components
@@ -50,5 +51,3 @@ execution_hints:
   interactive: false # Minimize prompts
   autonomous: true # Proceed without user input unless blocked
   iterative: true # Can review multiple files
-
-web_bundle: false

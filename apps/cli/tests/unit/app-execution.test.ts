@@ -12,7 +12,6 @@ import { EXIT_CODES } from '../../src/constants.js';
 import type { OutputWriter } from '../../src/output.js';
 import { MockOutputWriter, MockCliBuilder } from './test-helpers.js';
 
-
 // Helper functions for test mocks
 const throwProcessExitError = (): never => {
   throw new Error('process.exit called');

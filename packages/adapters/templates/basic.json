@@ -1,0 +1,104 @@
+{
+  "name": "basic",
+  "description": "Basic TypeScript project template",
+  "version": "1.0.0",
+  "supportedProjectTypes": ["basic"],
+  "variables": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Project name",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Project description",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "author",
+      "type": "string",
+      "description": "Project author",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "license",
+      "type": "string",
+      "description": "Project license",
+      "required": false,
+      "default": "MIT"
+    },
+    {
+      "name": "qualityLevel",
+      "type": "select",
+      "description": "Code quality level",
+      "required": true,
+      "default": "medium"
+    },
+    {
+      "name": "aiAssistants",
+      "type": "multiselect",
+      "description": "AI assistants to configure",
+      "required": true,
+      "default": ["claude-code"]
+    },
+    {
+      "name": "year",
+      "type": "string",
+      "description": "Current year",
+      "required": false,
+      "default": "{{helper:year}}"
+    }
+  ],
+  "files": [
+    {
+      "path": "package.json",
+      "template": "{\n  \"name\": \"{{name}}\",\n  \"version\": \"1.0.0\",\n  \"description\": \"{{description}}\",\n  \"main\": \"dist/index.js\",\n  \"types\": \"dist/index.d.ts\",\n  \"scripts\": {\n    \"build\": \"tsc\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"dev\": \"tsc --watch\",\n    \"test\": \"bun test\",\n    \"test:unit\": \"bun test tests/unit/\",\n    \"test:integration\": \"bun test tests/integration/\",\n    \"test:coverage\": \"bun test --coverage\",\n    \"test:watch\": \"bun test --watch\",\n    \"lint\": \"eslint \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"\",\n    \"lint:fix\": \"eslint \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\" --fix\",\n    \"format\": \"prettier --write \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"\",\n    \"format:check\": \"prettier --check \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"\",\n    \"clean\": \"rm -rf dist node_modules coverage\"\n  },\n  \"dependencies\": {},\n  \"devDependencies\": {\n    \"@types/node\": \"^24.8.0\",\n    \"typescript\": \"^5.3.3\",\n    \"bun\": \"latest\",\n    \"eslint\": \"^8.56.0\",\n    \"prettier\": \"^3.1.0\"\n  },\n  \"engines\": {\n    \"bun\": \">=1.3.0\"\n  },\n  \"keywords\": [\n    \"typescript\",\n    \"{{helper:kebabCase name}}\"\n  ],\n  \"author\": \"{{author}}\",\n  \"license\": \"{{license}}\"\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "tsconfig.json",
+      "template": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"node\",\n    \"allowSyntheticDefaultImports\": true,\n    \"esModuleInterop\": true,\n    \"allowJs\": true,\n    \"strict\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"skipLibCheck\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"declaration\": true,\n    \"declarationMap\": true,\n    \"sourceMap\": true,\n    \"outDir\": \"./dist\",\n    \"rootDir\": \"./src\",\n    \"removeComments\": false,\n    \"noImplicitAny\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"noImplicitReturns\": {{#if (eq qualityLevel 'medium')}}true{{else}}{{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}}{{/if}},\n    \"noImplicitThis\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"noUnusedLocals\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"noUnusedParameters\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}},\n    \"exactOptionalPropertyTypes\": {{#if (eq qualityLevel 'strict')}}true{{else}}false{{/if}}\n  },\n  \"include\": [\n    \"src/**/*\"\n  ],\n  \"exclude\": [\n    \"node_modules\",\n    \"dist\",\n    \"coverage\"\n  ]\n}",
+      "permissions": "644"
+    },
+    {
+      "path": "src/index.ts",
+      "template": "/**\n * {{helper:pascalCase name}}\n *\n * {{description}}\n *\n * @author {{author}}\n * @license {{license}}\n * @version 1.0.0\n * @since {{year}}\n */\n\nexport const VERSION = '1.0.0';\n\nexport function hello(name: string = 'world'): string {\n  return `Hello, ${name}!`;\n}\n\nexport default {\n  VERSION,\n  hello\n};",
+      "permissions": "644"
+    },
+    {
+      "path": "README.md",
+      "template": "# {{helper:pascalCase name}}\n\n{{description}}\n\n## Installation\n\n```bash\nbun add {{name}}\n```\n\n## Usage\n\n```typescript\nimport { hello } from '{{name}}';\n\nconsole.log(hello('TypeScript'));\n// Output: Hello, TypeScript!\n```\n\n## Development\n\n```bash\n# Install dependencies\nbun install\n\n# Run tests\nbun test\n\n# Build project\nbun run build\n\n# Run linter\nbun run lint\n\n# Format code\nbun run format\n```\n\n## License\n\n{{license}} © {{year}} {{author}}",
+      "permissions": "644"
+    },
+    {
+      "path": "LICENSE",
+      "template": "{{#if (eq license 'MIT')}}MIT License\n\nCopyright (c) {{year}} {{author}}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.{{else}}{{license}} License\n\nPlease refer to the LICENSE file for the {{license}} license terms.{{/if}}",
+      "permissions": "644",
+      "condition": "license"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "template": "// ESLint configuration for {{name}}\n// Quality level: {{qualityLevel}}\n\nimport eslint from '@eslint/js';\nimport typescriptPlugin from '@typescript-eslint/eslint-plugin';\nimport typescriptParser from '@typescript-eslint/parser';\n\nexport default [\n  eslint.configs.recommended,\n  {\n    files: ['**/*.ts'],\n    languageOptions: {\n      parser: typescriptParser,\n      parserOptions: {\n        ecmaVersion: 'latest',\n        sourceType: 'module',\n      },\n    },\n    plugins: {\n      '@typescript-eslint': typescriptPlugin,\n    },\n    rules: {\n      '@typescript-eslint/no-unused-vars': {{#if (eq qualityLevel 'strict')}}'error'{{else}}{{#if (eq qualityLevel 'medium')}}'warn'{{else}}'off'{{/if}}{{/if}},\n      '@typescript-eslint/no-explicit-any': {{#if (eq qualityLevel 'strict')}}'error'{{else}}{{#if (eq qualityLevel 'medium')}}'warn'{{else}}'off'{{/if}}{{/if}},\n      '@typescript-eslint/prefer-const': 'error',\n      'prefer-const': 'error',\n      'no-var': 'error',\n      {{#if (eq qualityLevel 'strict')}}\n      'no-console': 'warn',\n      'no-debugger': 'error',\n      {{/if}}\n    },\n  },\n  {\n    files: ['tests/**/*.ts'],\n    rules: {\n      '@typescript-eslint/no-explicit-any': 'off',\n      'no-console': 'off',\n    },\n  },\n  {\n    ignores: [\n      'dist/',\n      'node_modules/',\n      'coverage/',\n      '*.config.js',\n      '*.config.mjs',\n    ],\n  },\n];",
+      "permissions": "644"
+    },
+    {
+      "path": "prettier.config.mjs",
+      "template": "// Prettier configuration for {{name}}\n\nexport default {\n  semi: true,\n  trailingComma: 'es5',\n  singleQuote: true,\n  printWidth: 100,\n  tabWidth: 2,\n  useTabs: false,\n  quoteProps: 'as-needed',\n  bracketSpacing: true,\n  arrowParens: 'avoid',\n  endOfLine: 'lf',\n  plugins: [],\n  overrides: [\n    {\n      files: '*.json',\n      options: {\n        printWidth: 80,\n        tabWidth: 2,\n      },\n    },\n  ],\n};",
+      "permissions": "644"
+    },
+    {
+      "path": ".gitignore",
+      "template": "# Dependencies\nnode_modules/\n\n# Build outputs\ndist/\nbuild/\n*.tsbuildinfo\n\n# Coverage reports\ncoverage/\n*.lcov\n\n# IDE\n.vscode/\n.idea/\n*.swp\n*.swo\n\n# OS\n.DS_Store\nThumbs.db\n\n# Logs\n*.log\nnpm-debug.log*\nyarn-debug.log*\nyarn-error.log*\n\n# Runtime\n*.pid\n*.seed\n*.pid.lock\n\n# Environment\n.env\n.env.local\n.env.development.local\n.env.test.local\n.env.production.local\n\n# Temporary\n.tmp/\ntmp/",
+      "permissions": "644"
+    },
+    {
+      "path": "tests/index.test.ts",
+      "template": "/**\n * Unit tests for {{name}}\n */\n\nimport { describe, it, expect, beforeEach } from 'bun:test';\nimport { hello, VERSION } from '../src/index';\n\ndescribe('{{name}}', () => {\n  describe('hello function', () => {\n    it('should return greeting with default name', () => {\n      expect(hello()).toBe('Hello, world!');\n    });\n\n    it('should return greeting with custom name', () => {\n      expect(hello('TypeScript')).toBe('Hello, TypeScript!');\n    });\n  });\n\n  describe('VERSION', () => {\n    it('should have correct version', () => {\n      expect(VERSION).toBe('1.0.0');\n    });\n  });\n});",
+      "permissions": "644"
+    }
+  ]
+}

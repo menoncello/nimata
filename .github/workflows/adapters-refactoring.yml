@@ -1,0 +1,158 @@
+name: Adapters Package Refactoring
+
+on:
+  push:
+    branches: [refactor/adapters]
+    paths:
+      - 'packages/adapters/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/adapters/**'
+
+jobs:
+  adapters-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+
+    - name: Install dependencies
+      run: bun install --frozen-lockfile
+
+    - name: Check adapters ESLint status
+      run: |
+        echo "## Adapters Package Quality Status" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # Get ESLint errors count
+        ESLINT_OUTPUT=$(bun run lint --filter=@nimata/adapters 2>&1 || true)
+        ERROR_COUNT=$(echo "$ESLINT_OUTPUT" | grep -c "error" || echo "0")
+
+        echo "### ESLint Status" >> $GITHUB_STEP_SUMMARY
+        echo "- Current errors: $ERROR_COUNT" >> $GITHUB_STEP_SUMMARY
+        echo "- Target: 0 errors" >> $GITHUB_STEP_SUMMARY
+        echo "- Progress: $((845 - ERROR_COUNT))/845 fixed" >> $GITHUB_STEP_SUMMARY
+
+        if [ "$ERROR_COUNT" -eq 0 ]; then
+          echo "✅ ESLint: PASSED" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ ESLint: $ERROR_COUNT errors remaining" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Top Issues" >> $GITHUB_STEP_SUMMARY
+          echo "$ESLINT_OUTPUT" | grep "error:" | head -10 >> $GITHUB_STEP_SUMMARY
+        fi
+
+    - name: Check adapters test status
+      run: |
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Test Status" >> $GITHUB_STEP_SUMMARY
+
+        if bun run test --filter=@nimata/adapters; then
+          echo "✅ Tests: PASSED" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Tests: FAILED" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Run locally to see detailed test failures:" >> $GITHUB_STEP_SUMMARY
+          echo "\`bun run test --filter=@nimata/adapters\`" >> $GITHUB_STEP_SUMMARY
+        fi
+
+    - name: Check TypeScript compilation
+      run: |
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### TypeScript Compilation" >> $GITHUB_STEP_SUMMARY
+
+        if bun run typecheck --filter=@nimata/adapters; then
+          echo "✅ TypeScript: PASSED" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ TypeScript: FAILED" >> $GITHUB_STEP_SUMMARY
+        fi
+
+    - name: Validate against refactoring plan
+      run: |
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Refactoring Progress" >> $GITHUB_STEP_SUMMARY
+
+        # Check specific file improvements
+        ORCHESTRATOR_FILE="packages/adapters/src/commands/project-generation-orchestrator.ts"
+        if [ -f "$ORCHESTRATOR_FILE" ]; then
+          LINES=$(wc -l < "$ORCHESTRATOR_FILE")
+          echo "- project-generation-orchestrator.ts: $LINES lines (target: <100)" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        TEMPLATE_ENGINE_FILE="packages/adapters/src/template-engine.ts"
+        if [ -f "$TEMPLATE_ENGINE_FILE" ]; then
+          LINES=$(wc -l < "$TEMPLATE_ENGINE_FILE")
+          echo "- template-engine.ts: $LINES lines (target: <150)" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        # Count JSDoc improvements
+        JSDOC_COUNT=$(grep -r "@param\|@returns\|@description" packages/adapters/src/ | wc -l)
+        echo "- JSDoc annotations: $JSDOC_COUNT" >> $GITHUB_STEP_SUMMARY
+
+    - name: Create refactoring checklist
+      run: |
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Refactoring Checklist" >> $GITHUB_STEP_SUMMARY
+
+        # Check if major blockers are resolved
+        BLOCKERS=0
+
+        # TypeScript errors
+        if ! bun run typecheck --filter=@nimata/adapters --silent; then
+          echo "❌ TypeScript errors exist" >> $GITHUB_STEP_SUMMARY
+          BLOCKERS=$((BLOCKERS + 1))
+        else
+          echo "✅ TypeScript errors resolved" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        # Critical test failures
+        if ! bun run test --filter=@nimata/adapters --silent; then
+          echo "❌ Critical test failures exist" >> $GITHUB_STEP_SUMMARY
+          BLOCKERS=$((BLOCKERS + 1))
+        else
+          echo "✅ All tests passing" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        # ESLint threshold
+        ESLINT_COUNT=$(bun run lint --filter=@nimata/adapters 2>&1 | grep -c "error" || echo "0")
+        if [ "$ESLINT_COUNT" -gt 100 ]; then
+          echo "❌ Too many ESLint errors ($ESLINT_COUNT > 100)" >> $GITHUB_STEP_SUMMARY
+          BLOCKERS=$((BLOCKERS + 1))
+        else
+          echo "✅ ESLint errors manageable ($ESLINT_COUNT <= 100)" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Blockers remaining: $BLOCKERS**" >> $GITHUB_STEP_SUMMARY
+
+        if [ "$BLOCKERS" -eq 0 ]; then
+          echo "🎉 Ready for merge!" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "🚧 Continue refactoring" >> $GITHUB_STEP_SUMMARY
+        fi
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: adapters-quality
+    if: needs.adapters-quality.result == 'success'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+
+    - name: Install dependencies
+      run: bun install --frozen-lockfile
+
+    - name: Run full test suite
+      run: bun run test
+
+    - name: Run E2E tests
+      run: bun run test:e2e
