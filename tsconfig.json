@@ -31,17 +31,8 @@
       "@nimata/adapters/*": ["packages/adapters/src/*"]
     }
   },
-  "include": [
-    "packages/*/src/**/*",
-    "apps/*/src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "coverage",
-    "**/.stryker-tmp/**",
-    "test-*"
-  ],
+  "include": ["packages/*/src/**/*", "apps/*/src/**/*"],
+  "exclude": ["node_modules", "dist", "coverage", "**/.stryker-tmp/**", "test-*"],
   "references": [
     { "path": "./packages/core" },
     { "path": "./packages/adapters" },

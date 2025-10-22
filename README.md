@@ -38,4 +38,4 @@ bun run format
 
 ## License
 
-MIT © 2025 
+MIT © 2025

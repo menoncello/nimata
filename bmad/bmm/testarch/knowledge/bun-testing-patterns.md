@@ -28,7 +28,9 @@ describe('ComponentName', () => {
   describe('core functionality', () => {
     it('should initialize with default values', () => {
       // Arrange
-      const expectedDefaults = { /* ... */ };
+      const expectedDefaults = {
+        /* ... */
+      };
 
       // Act
       const actual = component.getDefaults();
@@ -44,8 +46,7 @@ describe('ComponentName', () => {
       const invalidInput = null;
 
       // Act & Assert
-      expect(() => component.process(invalidInput))
-        .toThrow('Invalid input provided');
+      expect(() => component.process(invalidInput)).toThrow('Invalid input provided');
     });
   });
 });
@@ -74,8 +75,7 @@ describe('AsyncService', () => {
     const service = new AsyncService();
 
     // Act & Assert
-    await expect(service.fetchData(-1))
-      .rejects.toThrow(NotFoundError);
+    await expect(service.fetchData(-1)).rejects.toThrow(NotFoundError);
   });
 });
 ```
@@ -115,7 +115,7 @@ const createTestData = (overrides: Partial<TestData> = {}): TestData => ({
   id: 1,
   name: 'test-item',
   active: true,
-  ...overrides
+  ...overrides,
 });
 
 // Usage in tests
@@ -136,7 +136,7 @@ class TestDataFactory {
       name: 'Test User',
       email: 'test@example.com',
       createdAt: new Date(),
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -146,7 +146,7 @@ class TestDataFactory {
       name: 'Test Project',
       ownerId: user.id,
       status: 'active',
-      ...overrides
+      ...overrides,
     };
   }
 }
@@ -163,7 +163,7 @@ import { mock } from 'bun:test';
 const mockRepository: Repository = {
   save: mock(() => Promise.resolve({ id: 1 })),
   findById: mock(() => Promise.resolve(null)),
-  delete: mock(() => Promise.resolve(true))
+  delete: mock(() => Promise.resolve(true)),
 };
 
 // Verify mock calls
@@ -186,7 +186,7 @@ import { Database } from '../../src/database';
 // Mock the module
 const mockDatabase = {
   query: mock(() => Promise.resolve([{ id: 1, name: 'test' }])),
-  transaction: mock((callback) => callback(mockDatabase))
+  transaction: mock((callback) => callback(mockDatabase)),
 };
 
 // Replace module for test
@@ -200,12 +200,9 @@ global.mockDatabase = mockDatabase;
 ```typescript
 // Good - Kills multiple mutants
 it('should validate input parameters', () => {
-  expect(() => service.process(null))
-    .toThrow('Invalid input');
-  expect(() => service.process(undefined))
-    .toThrow('Invalid input');
-  expect(() => service.process(''))
-    .toThrow('Invalid input');
+  expect(() => service.process(null)).toThrow('Invalid input');
+  expect(() => service.process(undefined)).toThrow('Invalid input');
+  expect(() => service.process('')).toThrow('Invalid input');
 });
 
 // Bad - Single assertion, easy to bypass
@@ -240,16 +237,19 @@ describe('boundary value testing', () => {
 ## Coverage Requirements
 
 ### Line Coverage
+
 - **100%** line coverage required for business logic
 - **80%** minimum for utility/helper functions
 - Use meaningful assertions, not just coverage
 
 ### Branch Coverage
+
 - Test all conditional branches
 - Include error paths and edge cases
 - Use boundary value testing
 
 ### Mutation Score
+
 - **80%+** mutation score required using Stryker
 - Structure tests to actually catch bugs
 - Avoid redundant or meaningless assertions
@@ -314,14 +314,14 @@ it('should calculate total with tax included', () => {
 
 // Good - Error path testing
 it('should throw specific error for invalid amount', () => {
-  expect(() => calculator.calculateTotal(-100, 0.2))
-    .toThrow(InvalidAmountError);
+  expect(() => calculator.calculateTotal(-100, 0.2)).toThrow(InvalidAmountError);
 });
 ```
 
 ## Integration with Development Workflow
 
 ### Pre-commit Quality Checks
+
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
@@ -346,6 +346,7 @@ echo "All quality gates passed!"
 ```
 
 ### CI/CD Integration
+
 ```yaml
 # .github/workflows/test.yml
 name: Quality Gates

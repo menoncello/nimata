@@ -12,20 +12,10 @@ This document describes Stryker mutation testing configuration and best practice
 // stryker.config.json (per package)
 {
   "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
-  "mutate": [
-    "src/**/*.ts",
-    "!src/**/*.d.ts",
-    "!src/**/*.test.ts",
-    "!src/**/__tests__/**/*"
-  ],
+  "mutate": ["src/**/*.ts", "!src/**/*.d.ts", "!src/**/*.test.ts", "!src/**/__tests__/**/*"],
   "testRunner": "bun",
   "coverageAnalysis": "perTest",
-  "reporters": [
-    "html",
-    "clear-text",
-    "json",
-    "progress"
-  ],
+  "reporters": ["html", "clear-text", "json", "progress"],
   "tempDirName": ".stryker-tmp",
   "thresholds": {
     "high": 80,
@@ -161,8 +151,9 @@ describe('error path testing', () => {
   it('should throw specific error for invalid state', () => {
     const invalidState = { status: null };
 
-    expect(() => service.process(invalidState))
-      .toThrow(new InvalidStateError('State cannot be null'));
+    expect(() => service.process(invalidState)).toThrow(
+      new InvalidStateError('State cannot be null')
+    );
   });
 
   it('should handle network errors gracefully', async () => {
@@ -209,7 +200,7 @@ describe('calculateDiscount', () => {
 ```typescript
 // Source code with mutants
 function findActiveUsers(users: User[]): User[] {
-  return users.filter(user => user.isActive); // Mutation targets: filter, ===
+  return users.filter((user) => user.isActive); // Mutation targets: filter, ===
 }
 
 // Test that kills mutants
@@ -218,19 +209,19 @@ describe('findActiveUsers', () => {
     const users = [
       { id: 1, isActive: true },
       { id: 2, isActive: false },
-      { id: 3, isActive: true }
+      { id: 3, isActive: true },
     ];
 
     const active = findActiveUsers(users);
 
     expect(active).toHaveLength(2);
-    expect(active.map(u => u.id)).toEqual([1, 3]);
+    expect(active.map((u) => u.id)).toEqual([1, 3]);
   });
 
   it('should return empty array for inactive users', () => {
     const users = [
       { id: 1, isActive: false },
-      { id: 2, isActive: false }
+      { id: 2, isActive: false },
     ];
 
     const active = findActiveUsers(users);
@@ -260,7 +251,7 @@ describe('formatUsername', () => {
   });
 
   it('should handle special characters', () => {
-    expect(formatUsername('José', 'O\'Connor')).toBe('josé.o\'connor');
+    expect(formatUsername('José', "O'Connor")).toBe("josé.o'connor");
   });
 });
 ```
@@ -279,12 +270,14 @@ After running `bun run test:mutation`, examine the HTML report:
 
 ```typescript
 // Example: Surviving equality mutant
-if (user.age >= 18) { // Original
+if (user.age >= 18) {
+  // Original
   user.canVote = true;
 }
 
 // Mutant that survived
-if (user.age > 18) { // Changed >= to >
+if (user.age > 18) {
+  // Changed >= to >
   user.canVote = true;
 }
 
@@ -298,15 +291,17 @@ it('should allow voting at exactly 18 years old', () => {
 ### Improving Low Scores
 
 #### 1. Add Boundary Tests
+
 ```typescript
 // Add tests for edge cases
 it('should handle boundary conditions', () => {
   expect(validator.isValid(0)).toBe(false); // Boundary
-  expect(validator.isValid(1)).toBe(true);  // Just above boundary
+  expect(validator.isValid(1)).toBe(true); // Just above boundary
 });
 ```
 
 #### 2. Test Error Conditions
+
 ```typescript
 it('should throw error for negative values', () => {
   expect(() => calculator.sqrt(-1)).toThrow('Cannot calculate square root of negative number');
@@ -314,6 +309,7 @@ it('should throw error for negative values', () => {
 ```
 
 #### 3. Test Specific Return Values
+
 ```typescript
 // Instead of generic assertions
 expect(result).toBeDefined();
@@ -390,6 +386,7 @@ export function checkMutationScore(packagePath: string): void {
 ## Best Practices Summary
 
 ### ✅ Do
+
 - Write specific assertions that verify exact behavior
 - Test boundary values and edge cases
 - Include error path testing
@@ -398,6 +395,7 @@ export function checkMutationScore(packagePath: string): void {
 - Review mutation reports and improve weak tests
 
 ### ❌ Don't
+
 - Write tests that always pass
 - Use generic assertions (toBeDefined, toBeTruthy)
 - Skip error condition testing

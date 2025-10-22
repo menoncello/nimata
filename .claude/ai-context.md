@@ -20,6 +20,7 @@
 ## Code Patterns
 
 ### Good Patterns
+
 ```typescript
 // Use explicit return types
 function processData(input: string): Promise<ProcessedData> {
@@ -34,12 +35,10 @@ try {
   console.error('Operation failed:', error);
   throw error;
 }
-
-
 ```
 
-
 ### Avoid These Patterns
+
 ```typescript
 // Avoid any types
 const data: any = fetchData();
@@ -48,7 +47,8 @@ const data: any = fetchData();
 console.log(data); // ❌
 
 // Avoid missing return types
-function process(input) { // ❌
+function process(input) {
+  // ❌
   return input.trim();
 }
 ```

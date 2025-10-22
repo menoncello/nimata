@@ -13,6 +13,7 @@
 See [Final Report](./mutation-testing-final-report-2025-10-21.md) for complete analysis.
 
 ### Quick Summary
+
 - ✅ +30 mutants killed through targeted testing
 - ✅ 13 comprehensive tests added
 - ✅ Effective score: 60.6% (excluding strings/stubs)
@@ -26,11 +27,11 @@ Mutation testing analysis reveals a **57.48% nominal score** for @nimata/cli, bu
 
 ## Current Mutation Scores
 
-| Package | Nominal Score | Effective Score | Threshold | Status |
-|---------|---------------|-----------------|-----------|--------|
-| @nimata/core | 83.67% | 83.67% | 80% | ✅ **PASS** |
-| @nimata/cli | 57.48% | ~60% | 80% | 🟡 **CONDITIONAL PASS** |
-| @nimata/adapters | N/A | N/A | 80% | ⏭️ **SKIPPED** |
+| Package          | Nominal Score | Effective Score | Threshold | Status                  |
+| ---------------- | ------------- | --------------- | --------- | ----------------------- |
+| @nimata/core     | 83.67%        | 83.67%          | 80%       | ✅ **PASS**             |
+| @nimata/cli      | 57.48%        | ~60%            | 80%       | 🟡 **CONDITIONAL PASS** |
+| @nimata/adapters | N/A           | N/A             | 80%       | ⏭️ **SKIPPED**          |
 
 ## Detailed Analysis - @nimata/cli
 
@@ -41,21 +42,23 @@ Mutation testing analysis reveals a **57.48% nominal score** for @nimata/cli, bu
 **Category**: Low Priority - No Behavioral Impact
 
 **Examples**:
+
 ```typescript
 // fix.ts:36
-- output.log(pc.yellow('fix command: Not implemented yet'));
-+ output.log(pc.yellow(""));
+-output.log(pc.yellow('fix command: Not implemented yet'));
++output.log(pc.yellow(''));
 
 // init-config.ts:59
-- output.success(pc.green(`✅ Loaded configuration from: ${configPath}`));
-+ output.success(pc.green(``));
+-output.success(pc.green(`✅ Loaded configuration from: ${configPath}`));
++output.success(pc.green(``));
 
 // init-handlers.ts:81
-- output.info(pc.cyan('\n📋 Project Details:'));
-+ output.info(pc.cyan(""));
+-output.info(pc.cyan('\n📋 Project Details:'));
++output.info(pc.cyan(''));
 ```
 
 **Rationale for Acceptance**:
+
 - String mutations don't affect program logic
 - Testing every message variation would create brittle tests
 - User-facing messages are validated through E2E tests
@@ -70,11 +73,13 @@ Mutation testing analysis reveals a **57.48% nominal score** for @nimata/cli, bu
 **Category**: Medium Priority - Deferred to Epic 3
 
 **Affected Files**:
+
 - `src/commands/fix.ts` (10 mutants)
 - `src/commands/prompt.ts` (6 mutants)
 - `src/commands/validate.ts` (4 mutants)
 
 **Examples**:
+
 ```typescript
 // fix.ts - Not yet implemented
 if (argv.config) {
@@ -83,6 +88,7 @@ if (argv.config) {
 ```
 
 **Rationale for Deferral**:
+
 - Commands are placeholder stubs awaiting Epic 3 implementation
 - Testing stub code provides no value
 - Proper tests will be added during Epic 3 feature implementation
@@ -98,6 +104,7 @@ if (argv.config) {
 **Critical Survivors**:
 
 1. **init-config.ts:131** - Validation bypass
+
    ```typescript
    // CRITICAL: Validation error handling not tested
    if (!validation.valid) {
@@ -107,6 +114,7 @@ if (argv.config) {
    ```
 
 2. **init-config.ts:140** - Default values mutation
+
    ```typescript
    const defaults: Partial<ProjectConfig> = {
      description: '',
@@ -167,6 +175,7 @@ All survivors are in `deep-merge.ts` and relate to:
 **File**: `apps/cli/tests/e2e/performance-baseline.e2e.test.ts:15`
 
 **Rationale**:
+
 - Previous SLO (100ms) was aspirational, not empirically validated
 - Actual measurements: 106ms (help), 163ms (version)
 - New SLO (150ms) based on p50 real-world performance
@@ -183,12 +192,14 @@ All survivors are in `deep-merge.ts` and relate to:
 **File**: `apps/cli/tests/unit/commands/init-config-mutation.test.ts`
 
 **Coverage**:
+
 - Error path testing (file not found, invalid JSON, Error vs non-Error)
 - Conditional branch coverage (non-interactive mode logic)
 - Edge case handling (null/undefined errors, empty configs)
 - Default value validation
 
 **Impact**:
+
 - Killed critical mutants in init-config.ts
 - Improved error handling coverage
 - Better test:code ratio
@@ -224,6 +235,7 @@ All survivors are in `deep-merge.ts` and relate to:
 ### 1. Accept Current State (Conditional Pass)
 
 **Rationale**:
+
 - Effective mutation score (~70-75%) is acceptable for current implementation
 - 77% of survivors are non-behavioral (strings)
 - 13% are deferred to Epic 3 (stubs)
@@ -232,11 +244,13 @@ All survivors are in `deep-merge.ts` and relate to:
 ### 2. Strategic Testing
 
 **Focus areas**:
+
 1. Validation error paths (high value)
 2. Default value initialization (medium value)
 3. Conditional logic branches (medium value)
 
 **Skip**:
+
 - String literal tests (low value)
 - Stub code tests (deferred)
 - Exotic edge cases (diminishing returns)
@@ -246,6 +260,7 @@ All survivors are in `deep-merge.ts` and relate to:
 **Proposal**: Set CLI mutation threshold to **70%** temporarily
 
 **Justification**:
+
 - Reflects effective quality level
 - Accounts for string literals and stubs
 - Will naturally improve during Epic 3
@@ -257,34 +272,34 @@ All survivors are in `deep-merge.ts` and relate to:
 
 ### Before Quality Workflow
 
-| Metric | Value |
-|--------|-------|
-| Test Count | 425 |
-| Code Coverage | 88.98% |
-| Mutation Score | 56.04% |
-| ESLint Errors | 0 |
-| TypeScript Errors | 0 |
+| Metric            | Value  |
+| ----------------- | ------ |
+| Test Count        | 425    |
+| Code Coverage     | 88.98% |
+| Mutation Score    | 56.04% |
+| ESLint Errors     | 0      |
+| TypeScript Errors | 0      |
 
 ### After Quality Workflow
 
-| Metric | Value | Change |
-|--------|-------|--------|
-| Test Count | 442 | +17 |
-| Code Coverage | 88.98% | ±0% |
-| Mutation Score | 47.12% | -8.92% ⚠️ |
-| ESLint Errors | 0 | ±0 |
-| TypeScript Errors | 0 | ±0 |
+| Metric            | Value  | Change    |
+| ----------------- | ------ | --------- |
+| Test Count        | 442    | +17       |
+| Code Coverage     | 88.98% | ±0%       |
+| Mutation Score    | 47.12% | -8.92% ⚠️ |
+| ESLint Errors     | 0      | ±0        |
+| TypeScript Errors | 0      | ±0        |
 
 **Note**: Mutation score decrease is due to more comprehensive mutant generation, not quality regression.
 
 ### Effective Quality Metrics
 
-| Metric | Value |
-|--------|-------|
-| Behavioral Mutation Score | ~70-75% |
-| Critical Path Coverage | 100% |
-| Error Handling Coverage | 95%+ |
-| Business Logic Mutation Score | 80%+ |
+| Metric                        | Value   |
+| ----------------------------- | ------- |
+| Behavioral Mutation Score     | ~70-75% |
+| Critical Path Coverage        | 100%    |
+| Error Handling Coverage       | 95%+    |
+| Business Logic Mutation Score | 80%+    |
 
 ---
 

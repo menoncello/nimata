@@ -38,21 +38,21 @@ The primary concern is the reliance on heavy mocking in unit tests (particularly
 
 ## Quality Criteria Assessment
 
-| Criterion                            | Status      | Violations | Notes                                                           |
-| ------------------------------------ | ----------- | ---------- | --------------------------------------------------------------- |
-| BDD Format (Given-When-Then)         | ✅ PASS     | 0          | Excellent GWT structure across all E2E tests                    |
-| Test IDs                             | ✅ PASS     | 0          | All tests have clear IDs (e.g., [T001-01], AC2.1)               |
-| Priority Markers (P0/P1/P2/P3)       | ✅ PASS     | 0          | Priority documented in story, tests mapped to ACs               |
-| Hard Waits (sleep, waitForTimeout)   | ✅ PASS     | 0          | No hard waits detected                                          |
-| Determinism (no conditionals)        | ✅ PASS     | 0          | Tests are deterministic, no conditional logic                   |
-| Isolation (cleanup, no shared state) | ✅ PASS     | 0          | Good cleanup with beforeEach/afterEach hooks                    |
-| Fixture Patterns                     | ⚠️ WARN     | 5          | Missing composable fixtures, repeated setup code                |
-| Data Factories                       | ⚠️ WARN     | 8          | Hardcoded test data, no factory functions                       |
-| Network-First Pattern                | N/A         | N/A        | Not applicable (CLI tests, no network calls)                    |
-| Explicit Assertions                  | ✅ PASS     | 0          | All tests use explicit expect() assertions                      |
-| Test Length (≤300 lines)             | ⚠️ WARN     | 2          | init.test.ts:451 lines, quality-configs.e2e.test.ts:373 lines   |
-| Test Duration (≤1.5 min)             | ✅ PASS     | 0          | Tests complete quickly (<30s for full suite)                    |
-| Flakiness Patterns                   | ⚠️ WARN     | 1          | Heavy mocking in init.test.ts may cause brittleness             |
+| Criterion                            | Status  | Violations | Notes                                                         |
+| ------------------------------------ | ------- | ---------- | ------------------------------------------------------------- |
+| BDD Format (Given-When-Then)         | ✅ PASS | 0          | Excellent GWT structure across all E2E tests                  |
+| Test IDs                             | ✅ PASS | 0          | All tests have clear IDs (e.g., [T001-01], AC2.1)             |
+| Priority Markers (P0/P1/P2/P3)       | ✅ PASS | 0          | Priority documented in story, tests mapped to ACs             |
+| Hard Waits (sleep, waitForTimeout)   | ✅ PASS | 0          | No hard waits detected                                        |
+| Determinism (no conditionals)        | ✅ PASS | 0          | Tests are deterministic, no conditional logic                 |
+| Isolation (cleanup, no shared state) | ✅ PASS | 0          | Good cleanup with beforeEach/afterEach hooks                  |
+| Fixture Patterns                     | ⚠️ WARN | 5          | Missing composable fixtures, repeated setup code              |
+| Data Factories                       | ⚠️ WARN | 8          | Hardcoded test data, no factory functions                     |
+| Network-First Pattern                | N/A     | N/A        | Not applicable (CLI tests, no network calls)                  |
+| Explicit Assertions                  | ✅ PASS | 0          | All tests use explicit expect() assertions                    |
+| Test Length (≤300 lines)             | ⚠️ WARN | 2          | init.test.ts:451 lines, quality-configs.e2e.test.ts:373 lines |
+| Test Duration (≤1.5 min)             | ✅ PASS | 0          | Tests complete quickly (<30s for full suite)                  |
+| Flakiness Patterns                   | ⚠️ WARN | 1          | Heavy mocking in init.test.ts may cause brittleness           |
 
 **Total Violations**: 0 Critical, 0 High, 4 Medium (16), 0 Low
 
@@ -107,8 +107,13 @@ Test [T001-21] uses 4+ spyOn mocks for ProjectWizard, ProjectConfigProcessor, an
 ```typescript
 // ⚠️ Heavy mocking reduces confidence (current implementation)
 const wizardSpy = spyOn(ProjectWizardImplementation.prototype, 'run').mockResolvedValue(mockConfig);
-const processorSpy = spyOn(ProjectConfigProcessorImpl.prototype, 'process').mockResolvedValue(mockConfig);
-const validationSpy = spyOn(ProjectConfigProcessorImpl.prototype, 'validateFinalConfig').mockResolvedValue({
+const processorSpy = spyOn(ProjectConfigProcessorImpl.prototype, 'process').mockResolvedValue(
+  mockConfig
+);
+const validationSpy = spyOn(
+  ProjectConfigProcessorImpl.prototype,
+  'validateFinalConfig'
+).mockResolvedValue({
   valid: true,
   warnings: [],
   errors: [],
@@ -300,7 +305,15 @@ it('should generate project with custom configuration', async () => {
   });
 
   const result = await executeCLI({
-    args: ['init', config.projectName, '--template', config.template, '--quality', config.quality, '--nonInteractive'],
+    args: [
+      'init',
+      config.projectName,
+      '--template',
+      config.template,
+      '--quality',
+      config.quality,
+      '--nonInteractive',
+    ],
     cwd: tempDir,
   });
 
@@ -333,6 +346,7 @@ Test files approaching or exceeding 450 lines become harder to navigate and main
 **Recommended Improvement**:
 
 Split init.test.ts into:
+
 - `init-command-structure.test.ts` - Command configuration tests ([T001-01] to [T001-14])
 - `init-handler-success.test.ts` - Success path tests ([T001-21], [T001-22], [T001-28])
 - `init-handler-errors.test.ts` - Error handling tests ([T001-23] to [T001-27])
@@ -463,6 +477,7 @@ describe('AC2.1: Multiple Project Templates Support', () => {
 ### Test Structure
 
 **Total Tests**: 875 tests (entire story 1.3 suite)
+
 - E2E Tests: ~100 tests
 - Integration Tests: ~350 tests
 - Unit Tests: ~425 tests
@@ -470,6 +485,7 @@ describe('AC2.1: Multiple Project Templates Support', () => {
 **Average Test Length**: ~3-5 lines per test (excellent conciseness)
 
 **Fixtures Used**: Limited (opportunity for improvement)
+
 - beforeEach/afterEach hooks: ✅ Comprehensive
 - Test.extend() fixtures: ❌ Not used
 - Composable fixtures: ❌ Not implemented
@@ -481,6 +497,7 @@ describe('AC2.1: Multiple Project Templates Support', () => {
 **Test IDs**: Comprehensive coverage
 
 **E2E Tests**:
+
 - AC2.1-AC2.6: Template system tests
 - AC4.1-AC4.6: Quality configuration tests
 - AC5.1-AC5.3: AI context tests
@@ -488,9 +505,11 @@ describe('AC2.1: Multiple Project Templates Support', () => {
 - AC6.1-AC6.6: Integration tests
 
 **Unit Tests**:
+
 - [T001-01] to [T001-28]: Init command tests
 
 **Priority Distribution**:
+
 - P0 (Critical): Core scaffolding (covered ✅)
 - P1 (High): Template implementation (covered ✅)
 - P2 (Medium): Quality configs (covered ✅)
@@ -502,6 +521,7 @@ describe('AC2.1: Multiple Project Templates Support', () => {
 **Assertions per Test**: ~1.4 average (good ratio)
 
 **Assertion Types**:
+
 - `expect().toBe()` - Exact equality checks
 - `expect().toContain()` - Substring/array membership
 - `expect().toThrow()` - Error handling
@@ -522,18 +542,19 @@ describe('AC2.1: Multiple Project Templates Support', () => {
 
 ### Acceptance Criteria Validation
 
-| Acceptance Criterion                                      | Test Coverage                         | Status            | Notes                                                          |
-| --------------------------------------------------------- | ------------------------------------- | ----------------- | -------------------------------------------------------------- |
-| AC1: Interactive Configuration Wizard                     | project-generation.interactive.e2e    | ✅ Covered        | 10+ tests for wizard flow, validation, navigation              |
-| AC2: Project Templates System                             | project-generation.templates.e2e      | ✅ Covered        | 20+ tests for all 4 templates, validation, extensibility       |
-| AC3: Directory Structure Generation                       | project-generation.integration.e2e    | ✅ Covered        | 15+ tests for structure, permissions, README                   |
-| AC4: Quality Tool Configuration                           | project-generation.quality-configs    | ✅ Covered        | 25+ tests for ESLint, TypeScript, Prettier, Bun Test           |
-| AC5: AI Context Files Generation                          | project-generation.ai-context.e2e     | ✅ Covered        | 10+ tests for CLAUDE.md, Copilot, multi-assistant              |
-| AC6: `nimata init` Command Integration                    | init.test.ts, integration.e2e         | ✅ Covered        | 28+ tests for command routing, flags, non-interactive          |
+| Acceptance Criterion                   | Test Coverage                      | Status     | Notes                                                    |
+| -------------------------------------- | ---------------------------------- | ---------- | -------------------------------------------------------- |
+| AC1: Interactive Configuration Wizard  | project-generation.interactive.e2e | ✅ Covered | 10+ tests for wizard flow, validation, navigation        |
+| AC2: Project Templates System          | project-generation.templates.e2e   | ✅ Covered | 20+ tests for all 4 templates, validation, extensibility |
+| AC3: Directory Structure Generation    | project-generation.integration.e2e | ✅ Covered | 15+ tests for structure, permissions, README             |
+| AC4: Quality Tool Configuration        | project-generation.quality-configs | ✅ Covered | 25+ tests for ESLint, TypeScript, Prettier, Bun Test     |
+| AC5: AI Context Files Generation       | project-generation.ai-context.e2e  | ✅ Covered | 10+ tests for CLAUDE.md, Copilot, multi-assistant        |
+| AC6: `nimata init` Command Integration | init.test.ts, integration.e2e      | ✅ Covered | 28+ tests for command routing, flags, non-interactive    |
 
 **Coverage**: 6/6 criteria covered (100%)
 
 **Story Completion Status**: ✅ COMPLETE
+
 - All acceptance criteria have comprehensive test coverage
 - 99.77% test pass rate (873/875 tests passing)
 - 2 performance tests failing (non-blocking optimization items)
@@ -608,18 +629,19 @@ While there are optimization opportunities (fixture patterns, data factories, re
 
 ### Violation Summary by Category
 
-| Category          | Count | Files Affected                                          |
-| ----------------- | ----- | ------------------------------------------------------- |
-| Fixture Patterns  | 5     | All E2E test files (repeated setup code)                |
-| Data Factories    | 8     | All test files (hardcoded data)                         |
-| Test Length       | 2     | init.test.ts, quality-configs.e2e.test.ts               |
-| Flakiness Risk    | 1     | init.test.ts (heavy mocking)                            |
+| Category         | Count | Files Affected                            |
+| ---------------- | ----- | ----------------------------------------- |
+| Fixture Patterns | 5     | All E2E test files (repeated setup code)  |
+| Data Factories   | 8     | All test files (hardcoded data)           |
+| Test Length      | 2     | init.test.ts, quality-configs.e2e.test.ts |
+| Flakiness Risk   | 1     | init.test.ts (heavy mocking)              |
 
 ### Quality Trends
 
 Story 1.3 is the first comprehensive test suite for this feature, so no historical trends available.
 
 **Baseline Metrics** (for future comparison):
+
 - Quality Score: 88/100 (A)
 - Test Count: 875 tests
 - Pass Rate: 99.77%
