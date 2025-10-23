@@ -89,7 +89,16 @@
     <action>For each changed file, skim for common issues appropriate to the stack: error handling, input validation, logging, dependency injection, thread-safety/async correctness, resource cleanup, performance anti-patterns.</action>
     <action>Perform security review: injection risks, authZ/authN handling, secret management, unsafe defaults, un-validated redirects, CORS misconfigured, dependency vulnerabilities (based on manifests).</action>
     <action>Check tests quality: assertions are meaningful, edge cases covered, deterministic behavior, proper fixtures, no flakiness patterns.</action>
+    <action>Verify quality gates were enforced: check for TypeScript compilation, ESLint compliance, mutation score if applicable.</action>
     <action>Capture concrete, actionable suggestions with severity (High/Med/Low) and rationale. When possible, suggest specific code-level changes (filenames + line ranges) without rewriting large sections.</action>
+
+    <substep n="5.6" goal="Quality gates verification">
+      <action>Verify TypeScript compilation was run with 0 errors</action>
+      <action>Scan for eslint-disable comments and flag as violations</action>
+      <action>Scan for @ts-ignore/@ts-expect-error and flag as violations</action>
+      <action>Verify mutation score if project uses mutation testing</action>
+      <check>If quality gates not properly enforced → flag as High Severity finding</check>
+    </substep>
   </step>
 
   <step n="6" goal="Decide review outcome and prepare notes">

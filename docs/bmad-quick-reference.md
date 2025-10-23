@@ -69,11 +69,13 @@
 /bmad:bmm:agents:tea *atdd X.X
 
 # 3. Implementation
-/bmad:bmm:agents:dev *develop X.X  # Quality gates enforced automatically
+/bmad:bmm:agents:dev *develop X.X  # Quality gates enforced automatically (TypeScript 0, ESLint 0, Tests 100%, Mutation 80%+)
 
 # 4. Quality Checks
 /bmad:bmm:agents:tea *test-review X.X
-/bmad:bmm:agents:tea *validate-test-quality  # Validate test code quality
+/bmad:bmm:agents:tea *validate-test-quality  # Validate test code quality and mutation score
+
+# Mutation testing with Stryker (80%+ threshold required)
 
 # 5. Quality Gate (P0/P1 stories)
 /bmad:bmm:agents:tea *trace X.X
@@ -140,3 +142,9 @@ node /Users/menoncello/repos/oss/bmad6/tools/cli/bmad-cli.js install
 /bmad:bmm:agents:architect
 *correct-course              # Technical perspective on changes
 ```
+
+## Tips
+
+- Quality gates are mandatory: TypeScript 0 errors, ESLint 0 errors, Tests 100%, Mutation 80%+
+- Never use eslint-disable or @ts-ignore - fix the underlying code issues
+- All tests must have meaningful assertions that validate behavior
