@@ -2,20 +2,44 @@
 /**
  * Nìmata CLI Launcher
  *
- * This script directly executes the compiled CLI from dist/index.js
+ * This script tries to execute the compiled CLI from dist/index.js,
+ * but falls back to TypeScript source if compiled version is not available
  */
 
 import { spawn } from 'bun';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { existsSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const cliPath = join(__dirname, '..', 'dist', 'index.js');
+
+// Try compiled version first, fallback to TypeScript source
+const compiledCliPath = join(__dirname, '..', 'dist', 'index.js');
+const sourceCliPath = join(__dirname, '..', 'src', 'index.ts');
+
+let cliPath;
+let useBunRun = false;
+
+if (existsSync(compiledCliPath)) {
+  cliPath = compiledCliPath;
+  useBunRun = true;
+} else if (existsSync(sourceCliPath)) {
+  cliPath = sourceCliPath;
+  useBunRun = true;
+} else {
+  console.error('❌ Error: Neither compiled nor source CLI found');
+  console.error('Expected paths:');
+  console.error(`  - Compiled: ${compiledCliPath}`);
+  console.error(`  - Source: ${sourceCliPath}`);
+  process.exit(1);
+}
 
 // Execute the CLI with the same arguments
+const cmd = useBunRun ? ['bun', cliPath, ...process.argv.slice(2)] : ['node', cliPath, ...process.argv.slice(2)];
+
 const proc = spawn({
-  cmd: ['bun', cliPath, ...process.argv.slice(2)],
+  cmd,
   stdin: 'inherit',
   stdout: 'inherit',
   stderr: 'inherit',
