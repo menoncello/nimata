@@ -548,7 +548,7 @@ test('should load user dashboard after login', async ({ page }) => {
     route.fulfill({
       status: 200,
       body: JSON.stringify({ id: 1, name: 'Test User' }),
-    }),
+    })
   );
 
   // NOW navigate

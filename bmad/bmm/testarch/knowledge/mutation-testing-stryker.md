@@ -47,6 +47,7 @@
 ### Structure Tests to Kill Mutants
 
 1. **Test Boundary Values**
+
    ```typescript
    it('should handle boundary values', () => {
      expect(calculateScore(0)).toBe(0);
@@ -56,6 +57,7 @@
    ```
 
 2. **Test Null/Undefined Cases**
+
    ```typescript
    it('should handle null input gracefully', () => {
      expect(() => processData(null)).toThrow('Invalid input');
@@ -63,6 +65,7 @@
    ```
 
 3. **Test Error Paths**
+
    ```typescript
    it('should throw when data is invalid', () => {
      const invalidData = { name: '', email: 'invalid' };
@@ -71,6 +74,7 @@
    ```
 
 4. **Avoid Meaningless Assertions**
+
    ```typescript
    // Bad - won't kill mutants
    expect(result).toBeDefined();
