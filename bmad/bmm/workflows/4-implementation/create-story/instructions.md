@@ -99,6 +99,15 @@ Will update existing story file rather than creating new one.
 
   <step n="8" goal="Validate, save, and optionally generate context">
     <invoke-task>Validate against checklist at {installed_path}/checklist.md using bmad/core/tasks/validate-workflow.xml</invoke-task>
+    <action>Validate code examples in story for quality compliance</action>
+
+    <substep n="8.5" goal="Validate code examples in story">
+      <action>Check TypeScript types in all code examples</action>
+      <action>Validate ESLint compliance in code examples</action>
+      <action>Check formatting in code examples</action>
+      <check>If code examples don't meet quality standards → fix before saving</check>
+    </substep>
+
     <action>Save document unconditionally (non-interactive default). In interactive mode, allow user confirmation.</action>
 
     <invoke-workflow path="{project-root}/bmad/bmm/workflows/helpers/sprint-status">

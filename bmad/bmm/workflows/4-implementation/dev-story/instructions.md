@@ -106,6 +106,7 @@ Story is already marked in-progress
     <critical>Quality validation is MANDATORY - ALL substeps must pass with ZERO errors</critical>
 
     <substep n="4.1" goal="TypeScript type checking">
+      <action>Determine how to run type checking for this repo (infer or use {{run_tests_command}} if provided)</action>
       <action>Run: bunx turbo run typecheck --filter=&lt;package&gt;</action>
       <check>ZERO TypeScript errors required - no exceptions</check>
       <critical>NEVER use @ts-ignore or @ts-expect-error - fix the actual type issue</critical>
@@ -117,28 +118,31 @@ Story is already marked in-progress
       <critical>NEVER add eslint-disable comments - refactor code to satisfy the rule</critical>
     </substep>
 
-    <substep n="4.3" goal="Code formatting check">
+    <substep n="4.3" goal="Code formatting validation">
       <action>Run: bunx turbo run format:check --filter=&lt;package&gt;</action>
       <check>100% Prettier compliance required</check>
     </substep>
 
-    <substep n="4.4" goal="Unit and integration tests">
+    <substep n="4.4" goal="Unit/integration tests">
+      <action>Run all existing tests to ensure no regressions</action>
+      <action>Run the new tests to verify implementation correctness</action>
       <action>Run: bunx turbo run test --filter=&lt;package&gt;</action>
       <check>100% test pass rate required</check>
-      <critical>Tests must have meaningful assertions - no tests that always pass</critical>
+      <critical>Tests must have meaningful assertions that validate behavior</critical>
     </substep>
 
-    <substep n="4.5" goal="Mutation testing">
+    <substep n="4.5" goal="Mutation testing (if applicable)">
       <action>Run: bunx turbo run test:mutation --filter=&lt;package&gt;</action>
       <check>80%+ mutation score required</check>
-      <critical>Tests must actually catch bugs - structure tests to kill mutants</critical>
+      <critical>Tests must kill mutants - improve test quality if score is low</critical>
     </substep>
 
-    <check>If ANY quality gate fails → STOP and fix before continuing</check>
-    <check>If TypeScript errors → HALT until fixed</check>
-    <check>If ESLint errors → HALT until fixed</check>
-    <check>If test failures → HALT until fixed</check>
-    <check>If mutation score &lt; 80% → HALT until improved</check>
+    <action>Validate implementation meets ALL story acceptance criteria; if ACs include quantitative thresholds (e.g., test pass rate), ensure they are met before marking complete</action>
+    <check>If regression tests fail → STOP and fix before continuing</check>
+    <check>If new tests fail → STOP and fix before continuing</check>
+    <check>If TypeScript errors → STOP and fix before continuing</check>
+    <check>If ESLint errors → STOP and fix before continuing</check>
+    <check>If mutation score &lt; 80% → STOP and improve tests before continuing</check>
   </step>
 
   <step n="5" goal="Mark task complete and update story">
