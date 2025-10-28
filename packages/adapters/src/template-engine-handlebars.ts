@@ -49,7 +49,7 @@ const TYPESCRIPT_BUN_CLI_SUBDIR = 'typescript-bun-cli';
 // Cache TTL constant (30 minutes in milliseconds)
 // eslint-disable-next-line no-magic-numbers
 const DEFAULT_CACHE_TTL = 30 * 60 * 1000;
- 
+
 const CACHE_CLEANUP_PROBABILITY = 0.01; // 1% for periodic cleanup
 
 /**

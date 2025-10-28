@@ -7,6 +7,7 @@ This document defines the mandatory testing patterns for BMAD projects using Bun
 ## Core Principles - ZERO TOLERANCE
 
 ### 1. Bun Test API Usage
+
 ```typescript
 // ✅ CORRECT: Use Bun Test API exclusively
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
@@ -17,6 +18,7 @@ import { test, expect } from '@playwright/test'; // FORBIDDEN
 ```
 
 ### 2. Test Structure Patterns
+
 ```typescript
 // ✅ CORRECT: Standard test structure
 describe('UserService', () => {
@@ -44,6 +46,7 @@ describe('UserService', () => {
 ```
 
 ### 3. Type Safety Requirements
+
 ```typescript
 // ✅ CORRECT: Proper TypeScript types
 interface User {
@@ -67,13 +70,13 @@ const result = someFunction(); // FORBIDDEN
 ```
 
 ### 4. Assertion Patterns
+
 ```typescript
 // ✅ CORRECT: Specific, meaningful assertions
 it('should validate user email format', () => {
   const invalidEmail = 'invalid-email';
 
-  expect(() => userService.validateEmail(invalidEmail))
-    .toThrow('Invalid email format');
+  expect(() => userService.validateEmail(invalidEmail)).toThrow('Invalid email format');
 });
 
 // ✅ CORRECT: Test both success and failure cases
@@ -93,6 +96,7 @@ it('should work', () => {
 ## Async Testing Patterns
 
 ### 1. Promise Handling
+
 ```typescript
 // ✅ CORRECT: Proper async/await
 it('should handle async operations correctly', async () => {
@@ -104,8 +108,7 @@ it('should handle async operations correctly', async () => {
 
 // ✅ CORRECT: Error handling in async tests
 it('should throw error for invalid data', async () => {
-  await expect(userService.createAsync(invalidData))
-    .rejects.toThrow('Invalid user data');
+  await expect(userService.createAsync(invalidData)).rejects.toThrow('Invalid user data');
 });
 
 // ❌ FORBIDDEN: Floating promises
@@ -115,6 +118,7 @@ it('should handle async operations', () => {
 ```
 
 ### 2. Mock Patterns
+
 ```typescript
 // ✅ CORRECT: Proper mocking with Bun
 import { mock } from 'bun:test';
@@ -138,6 +142,7 @@ it('should save user to database', async () => {
 ## Test Data Management
 
 ### 1. Test Factories
+
 ```typescript
 // ✅ CORRECT: Use test factories for consistent data
 const createTestUser = (overrides: Partial<User> = {}): User => ({
@@ -156,6 +161,7 @@ it('should work with custom user data', () => {
 ```
 
 ### 2. Test Organization
+
 ```typescript
 // ✅ CORRECT: Organize tests by feature/behavior
 describe('UserService - Creation', () => {
@@ -174,6 +180,7 @@ describe('UserService - Creation', () => {
 ## Mutation Testing Considerations
 
 ### 1. Write Tests That Kill Mutants
+
 ```typescript
 // ✅ CORRECT: Tests that catch specific mutations
 it('should handle boundary conditions', () => {
@@ -191,24 +198,23 @@ it('should use strict equality', () => {
 ```
 
 ### 2. Error Path Testing
+
 ```typescript
 // ✅ CORRECT: Test all error conditions
 it('should handle database connection errors', async () => {
   mockDatabase.mockRejectedValueOnce(new Error('Connection failed'));
 
-  await expect(userService.create(userData))
-    .rejects.toThrow('Database connection failed');
+  await expect(userService.create(userData)).rejects.toThrow('Database connection failed');
 });
 
 it('should validate all required fields', () => {
   const requiredFields = ['name', 'email', 'password'];
 
-  requiredFields.forEach(field => {
+  requiredFields.forEach((field) => {
     const invalidData = { ...userData };
     delete invalidData[field];
 
-    expect(() => userService.validate(invalidData))
-      .toThrow(`${field} is required`);
+    expect(() => userService.validate(invalidData)).toThrow(`${field} is required`);
   });
 });
 ```
@@ -216,18 +222,21 @@ it('should validate all required fields', () => {
 ## Quality Gate Requirements
 
 ### Mandatory Test Coverage
+
 - ✅ Every acceptance criterion must have corresponding test
 - ✅ Every public method must be tested
 - ✅ Every error condition must be tested
 - ✅ Every boundary condition must be tested
 
 ### Mutation Score Requirements
+
 - ✅ **Regular packages**: 80%+ mutation score
 - ✅ **Core packages**: 85%+ mutation score
 - ✅ **NO EXCEPTIONS** - thresholds never lowered
 - ✅ Additional tests MUST be written to meet thresholds
 
 ### Code Quality Standards
+
 - ✅ TypeScript compilation: 0 errors
 - ✅ ESLint violations: 0 (no eslint-disable allowed)
 - ✅ Test assertions must be meaningful and specific
@@ -236,6 +245,7 @@ it('should validate all required fields', () => {
 ## Examples - What to Do and What to Avoid
 
 ### ✅ Good Example
+
 ```typescript
 describe('UserService', () => {
   const userService = new UserService(mockDatabase);
@@ -245,7 +255,7 @@ describe('UserService', () => {
     const userData: CreateUserData = {
       name: 'John Doe',
       email: 'john@example.com',
-      password: 'SecurePass123!'
+      password: 'SecurePass123!',
     };
 
     // When
@@ -263,6 +273,7 @@ describe('UserService', () => {
 ```
 
 ### ❌ Bad Example (FORBIDDEN)
+
 ```typescript
 it('should create user', async () => {
   // @ts-ignore - FORBIDDEN
@@ -279,6 +290,7 @@ it('should create user', async () => {
 ## Integration with BMAD Workflows
 
 ### During Story Development
+
 1. Create tests that follow these patterns
 2. Ensure all tests pass 100%
 3. Run mutation testing to verify 80%+ score
@@ -286,6 +298,7 @@ it('should create user', async () => {
 5. Only mark story complete when all quality gates pass
 
 ### During Test Architecture
+
 1. Use these patterns when designing test strategies
 2. Ensure test plans include mutation testing considerations
 3. Verify test data factories provide proper type safety

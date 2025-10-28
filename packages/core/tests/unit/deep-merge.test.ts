@@ -435,17 +435,17 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
 
       // Verify linear time complexity (time should scale proportionally with size)
       console.log('✅ Deep Merge Complexity Evidence:');
-      testSizes.forEach((size, index) => {
+      for (const [index, size] of testSizes.entries()) {
         console.log(
           `  ${size} keys: ${times[index].toFixed(3)}ms (${((times[index] / size) * 1000).toFixed(3)}μs per key)`
         );
-      });
+      }
       console.log('  Complexity: O(n) verified - Linear time complexity');
 
       // Each test should complete in reasonable time
-      times.forEach((time, index) => {
+      for (const [index, time] of times.entries()) {
         expect(time).toBeLessThan(testSizes[index] * 0.1); // Less than 0.1ms per key
-      });
+      }
     });
 
     it('should handle realistic config cascade efficiently', () => {

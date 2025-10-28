@@ -7,6 +7,7 @@ This document defines the MANDATORY mutation testing requirements for BMAD proje
 ## ZERO TOLERANCE Requirements
 
 ### Mandatory Thresholds - NO EXCEPTIONS
+
 - ✅ **Regular packages**: 80% mutation score (minimum)
 - ✅ **Core packages**: 85% mutation score (minimum)
 - ✅ **Build will BREAK** if thresholds not met
@@ -14,6 +15,7 @@ This document defines the MANDATORY mutation testing requirements for BMAD proje
 - ✅ **Additional tests MUST be written** to meet requirements
 
 ### Quality Enforcement - MANDATORY
+
 - ✅ All mutation tests must pass before story completion
 - ✅ Stryker must be integrated into CI/CD pipeline
 - ✅ Mutation score reports must be generated and reviewed
@@ -22,6 +24,7 @@ This document defines the MANDATORY mutation testing requirements for BMAD proje
 ## Stryker Configuration Standards
 
 ### Root Configuration (stryker.config.js)
+
 ```javascript
 module.exports = {
   // BMAD MANDATORY: 80%+ mutation score REQUIRED
@@ -37,19 +40,19 @@ module.exports = {
     '!**/node_modules/**',
     '!**/dist/**',
     '!**/coverage/**',
-    '!**/stryker-tmp/**'
+    '!**/stryker-tmp/**',
   ],
 
   testRunner: 'command',
   commandRunner: {
     command: 'bun test',
-    commandType: 'bun'
+    commandType: 'bun',
   },
 
   reporters: ['progress', 'html', 'clear-text'],
 
   htmlReporter: {
-    baseDir: 'reports/mutation/html'
+    baseDir: 'reports/mutation/html',
   },
 
   coverageAnalysis: 'perTest',
@@ -57,7 +60,7 @@ module.exports = {
   thresholds: {
     high: 90,
     low: 80,
-    break: 80  // ZERO TOLERANCE: Build will break below 80%
+    break: 80, // ZERO TOLERANCE: Build will break below 80%
   },
 
   // BMAD ENFORCEMENT: Settings
@@ -69,7 +72,7 @@ module.exports = {
     '@stryker-mutator/core',
     '@stryker-mutator/bun-runner',
     '@stryker-mutator/typescript',
-    '@stryker-mutator/javascript-mutator'
+    '@stryker-mutator/javascript-mutator',
   ],
 
   tsconfigFile: 'tsconfig.json',
@@ -79,39 +82,35 @@ module.exports = {
     exclude: [
       // Logging statements have no behavioral impact
       '**/logger.ts',
-      '**/*.log.ts'
-    ]
+      '**/*.log.ts',
+    ],
   },
 
   // BMAD MANDATORY: No exclusions for convenience
   ignoreStatic: false,
-  ignoreConstant: false
+  ignoreConstant: false,
 };
 ```
 
 ### Package-Specific Configurations
 
 #### Core Package (packages/core/stryker.config.js)
+
 ```javascript
 module.exports = {
   // BMAD MANDATORY: 85%+ mutation score for core packages
-  mutate: [
-    'src/**/*.ts',
-    '!src/**/*.test.ts',
-    '!src/**/*.spec.ts',
-    '!src/**/*.d.ts'
-  ],
+  mutate: ['src/**/*.ts', '!src/**/*.test.ts', '!src/**/*.spec.ts', '!src/**/*.d.ts'],
 
   testRunner: 'command',
   commandRunner: {
     command: 'bun test --cwd packages/core',
-    commandType: 'bun'
+    commandType: 'bun',
   },
 
   reporters: ['progress', 'html', 'clear-text'],
 
   htmlReporter: {
-    baseDir: 'packages/core/reports/mutation/html'
+    baseDir: 'packages/core/reports/mutation/html',
   },
 
   coverageAnalysis: 'perTest',
@@ -120,7 +119,7 @@ module.exports = {
   thresholds: {
     high: 95,
     low: 85,
-    break: 85  // ZERO TOLERANCE: Core must exceed 85%
+    break: 85, // ZERO TOLERANCE: Core must exceed 85%
   },
 
   // Core package requires HIGHER thresholds
@@ -132,16 +131,14 @@ module.exports = {
     '@stryker-mutator/core',
     '@stryker-mutator/bun-runner',
     '@stryker-mutator/typescript',
-    '@stryker-mutator/javascript-mutator'
+    '@stryker-mutator/javascript-mutator',
   ],
 
   tsconfigFile: 'tsconfig.json',
 
   mutator: {
     plugins: ['typescript'],
-    exclude: [
-      '**/*.d.ts'
-    ]
+    exclude: ['**/*.d.ts'],
   },
 
   // NO EXCLUSIONS for core package code
@@ -151,15 +148,16 @@ module.exports = {
   mutatorOptions: {
     typescript: {
       // Core package must handle all edge cases
-      excludedMutations: []  // NO EXCLUSIONS
-    }
-  }
+      excludedMutations: [], // NO EXCLUSIONS
+    },
+  },
 };
 ```
 
 ## Test Strategies for High Mutation Scores
 
 ### 1. Boundary Value Testing
+
 ```typescript
 // ✅ CORRECT: Test exact boundaries
 describe('ScoreCalculator', () => {
@@ -174,6 +172,7 @@ describe('ScoreCalculator', () => {
 ```
 
 ### 2. Error Path Testing
+
 ```typescript
 // ✅ CORRECT: Test all error conditions
 describe('UserService', () => {
@@ -183,7 +182,7 @@ describe('UserService', () => {
       { data: { email: 'invalid' }, error: 'Invalid email format' },
       { data: { age: -1 }, error: 'Age must be positive' },
       { data: null, error: 'User data is required' },
-      { data: undefined, error: 'User data is required' }
+      { data: undefined, error: 'User data is required' },
     ];
 
     testCases.forEach(({ data, error }) => {
@@ -194,6 +193,7 @@ describe('UserService', () => {
 ```
 
 ### 3. Strict Equality Testing
+
 ```typescript
 // ✅ CORRECT: Use strict equality to catch mutations
 describe('DataProcessor', () => {
@@ -207,6 +207,7 @@ describe('DataProcessor', () => {
 ```
 
 ### 4. Conditional Logic Testing
+
 ```typescript
 // ✅ CORRECT: Test all conditional branches
 describe('AccessController', () => {
@@ -227,6 +228,7 @@ describe('AccessController', () => {
 ## Common Mutant Types and How to Kill Them
 
 ### 1. Arithmetic Operator Mutations
+
 ```typescript
 // Mutant: + changes to -, * changes to /
 function calculateTotal(price: number, tax: number): number {
@@ -241,6 +243,7 @@ it('should correctly calculate total with addition', () => {
 ```
 
 ### 2. Boolean Operator Mutations
+
 ```typescript
 // Mutant: && changes to ||
 function isValidUser(user: User): boolean {
@@ -260,6 +263,7 @@ it('should require both active and verified status', () => {
 ```
 
 ### 3. Comparison Operator Mutations
+
 ```typescript
 // Mutant: > changes to <
 function isAdult(age: number): boolean {
@@ -278,6 +282,7 @@ it('should correctly identify adult status', () => {
 ## Running Mutation Tests
 
 ### During Development
+
 ```bash
 # Run mutation tests for current package
 bunx stryker run
@@ -290,6 +295,7 @@ bunx stryker run --reporters html,clear-text,progress
 ```
 
 ### During CI/CD
+
 ```bash
 # Run mutation tests and fail if thresholds not met
 bunx stryker run --break=80
@@ -299,6 +305,7 @@ bunx stryker run --reporters html,json,clear-text
 ```
 
 ### Package-Specific Testing
+
 ```bash
 # Test core package with higher threshold
 cd packages/core && bunx stryker run --break=85
@@ -310,6 +317,7 @@ cd packages/adapters && bunx stryker run --break=80
 ## Analyzing Results
 
 ### HTML Report Analysis
+
 1. **Open HTML report**: `reports/mutation/html/index.html`
 2. **Review surviving mutants**: Click on each surviving mutant
 3. **Understand the mutation**: See what code change survived
@@ -319,6 +327,7 @@ cd packages/adapters && bunx stryker run --break=80
 ### Common Issues and Solutions
 
 #### Surviving Mutants Due to Untested Code
+
 ```typescript
 // Problem: Code path never tested
 if (process.env.NODE_ENV === 'development') {
@@ -338,6 +347,7 @@ it('should handle development environment', () => {
 ```
 
 #### Surviving Mutants Due to Weak Assertions
+
 ```typescript
 // Problem: Assertion too generic
 expect(result).toBeDefined(); // Won't kill most mutants
@@ -351,6 +361,7 @@ expect(result.data.length).toBeGreaterThan(0);
 ## Integration with BMAD Workflows
 
 ### Story Development Workflow
+
 1. **Write implementation code**
 2. **Write comprehensive tests**
 3. **Run unit tests**: `bun test`
@@ -361,6 +372,7 @@ expect(result.data.length).toBeGreaterThan(0);
 8. **Complete story**: Only when all quality gates pass
 
 ### Test Architecture Workflow
+
 1. **Design test strategy with mutation testing in mind**
 2. **Create test plans that target edge cases**
 3. **Include mutation score requirements in specifications**
@@ -370,18 +382,21 @@ expect(result.data.length).toBeGreaterThan(0);
 ## Quality Gates - ZERO TOLERANCE
 
 ### Automated Enforcement
+
 - ✅ **Build breaks** if mutation score below threshold
 - ✅ **Story progress blocked** until thresholds met
 - ✅ **PR checks fail** if mutation score regresses
 - ✅ **Release blocked** if any package below threshold
 
 ### Manual Review Requirements
+
 - ✅ Review HTML mutation reports for each package
 - ✅ Understand why each surviving mutant survived
 - ✅ Verify targeted tests address specific mutants
 - ✅ Document any legitimate surviving mutants (rare exceptions)
 
 ### Exception Process
+
 - ❌ **NO EXCEPTIONS** to mutation thresholds
 - ❌ **NO TEMPORARY WAIVERS** allowed
 - ❌ **NO MANUAL OVERRIDES** permitted

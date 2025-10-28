@@ -2,23 +2,18 @@ module.exports = {
   // Stryker Configuration for BMAD Adapters Package
   // CRITICAL: 80%+ mutation score REQUIRED - All adapters must be thoroughly tested
 
-  mutate: [
-    'src/**/*.ts',
-    '!src/**/*.test.ts',
-    '!src/**/*.spec.ts',
-    '!src/**/*.d.ts'
-  ],
+  mutate: ['src/**/*.ts', '!src/**/*.test.ts', '!src/**/*.spec.ts', '!src/**/*.d.ts'],
 
   testRunner: 'command',
   commandRunner: {
     command: 'bun test --cwd packages/adapters',
-    commandType: 'bun'
+    commandType: 'bun',
   },
 
   reporters: ['progress', 'html', 'clear-text'],
 
   htmlReporter: {
-    baseDir: 'packages/adapters/reports/mutation/html'
+    baseDir: 'packages/adapters/reports/mutation/html',
   },
 
   coverageAnalysis: 'perTest',
@@ -26,7 +21,7 @@ module.exports = {
   thresholds: {
     high: 90,
     low: 80,
-    break: 80  // ZERO TOLERANCE: Build will break below 80%
+    break: 80, // ZERO TOLERANCE: Build will break below 80%
   },
 
   // Quality enforcement settings
@@ -39,7 +34,7 @@ module.exports = {
     '@stryker-mutator/core',
     '@stryker-mutator/bun-runner',
     '@stryker-mutator/typescript',
-    '@stryker-mutator/javascript-mutator'
+    '@stryker-mutator/javascript-mutator',
   ],
 
   // TypeScript configuration
@@ -50,8 +45,8 @@ module.exports = {
     plugins: ['typescript'],
     exclude: [
       // Type definitions only
-      '**/*.d.ts'
-    ]
+      '**/*.d.ts',
+    ],
   },
 
   // Adapter mutation patterns
@@ -62,7 +57,7 @@ module.exports = {
   mutatorOptions: {
     typescript: {
       // Template patterns require comprehensive testing
-      excludedMutations: []  // NO EXCLUSIONS for adapter code
-    }
-  }
+      excludedMutations: [], // NO EXCLUSIONS for adapter code
+    },
+  },
 };
