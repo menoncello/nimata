@@ -122,6 +122,10 @@ function registerAdditionalStringHelpers(
   registerHelper('kebabcase', kebabCaseHelper);
   registerHelper('pascalcase', pascalCaseHelper);
   registerHelper('pascalCase', pascalCaseHelper);
+  registerHelper('pascal_case', pascalCaseHelper);
+  registerHelper('camel_case', camelCaseHelper);
+  registerHelper('kebab_case', kebabCaseHelper);
+  registerHelper('snake_case', snakeCaseHelper);
 }
 
 /**

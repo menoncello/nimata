@@ -1,5 +1,5 @@
 /**
- * @nimata/core - Core use cases and domain logic
+ * Nimata Core - Core use cases and domain logic
  */
 
 export const CORE_VERSION = '0.1.0';
@@ -12,6 +12,8 @@ export * from './utils/deep-merge';
 
 // Project Generation (Story 1.3)
 export * from './types/project-config';
+export * from './types/template-catalog';
+export * from './types/template-context';
 export * from './interfaces/project-wizard';
 export * from './interfaces/template-engine';
 export * from './interfaces/project-generator';

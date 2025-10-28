@@ -92,12 +92,18 @@
     <action>Verify quality gates were enforced: check for TypeScript compilation, ESLint compliance, mutation score if applicable.</action>
     <action>Capture concrete, actionable suggestions with severity (High/Med/Low) and rationale. When possible, suggest specific code-level changes (filenames + line ranges) without rewriting large sections.</action>
 
-    <substep n="5.6" goal="Quality gates verification">
-      <action>Verify TypeScript compilation was run with 0 errors</action>
-      <action>Scan for eslint-disable comments and flag as violations</action>
-      <action>Scan for @ts-ignore/@ts-expect-error and flag as violations</action>
-      <action>Verify mutation score if project uses mutation testing</action>
-      <check>If quality gates not properly enforced → flag as High Severity finding</check>
+    <substep n="5.6" goal="MANDATORY Quality Gates Verification - ZERO TOLERANCE">
+      <critical>ALL QUALITY GATES MUST BE ENFORCED - NO EXCEPTIONS</critical>
+
+      <action>MUST verify TypeScript compilation was run with 0 errors</action>
+      <action>MUST scan for eslint-disable comments - FLAG ALL AS HIGH SEVERITY VIOLATIONS</action>
+      <action>MUST scan for @ts-ignore/@ts-expect-error - FLAG ALL AS HIGH SEVERITY VIOLATIONS</action>
+      <action>MUST verify mutation score meets project thresholds (Core: 85%, Others: 80%)</action>
+      <action>MUST verify ESLint was run with ZERO violations</action>
+      <action>MUST verify Bun Test was run with ALL tests passing</action>
+
+      <check if="ANY quality gates not properly enforced">IMMEDIATELY FLAG AS HIGH SEVERITY FINDING - ZERO TOLERANCE</check>
+      <critical>PROJECT REQUIRES 80%+ MUTATION SCORE - NO LOWERING THRESHOLDS ALLOWED</critical>
     </substep>
   </step>
 

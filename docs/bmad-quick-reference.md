@@ -68,14 +68,14 @@
 # 2. Testing (ATDD - recommended for P0/P1)
 /bmad:bmm:agents:tea *atdd X.X
 
-# 3. Implementation
-/bmad:bmm:agents:dev *develop X.X  # Quality gates enforced automatically (TypeScript 0, ESLint 0, Tests 100%, Mutation 80%+)
+# 3. Implementation - ZERO TOLERANCE QUALITY GATES
+/bmad:bmm:agents:dev *develop X.X  # MANDATORY: TypeScript 0 errors, ESLint 0 violations, Tests 100%, Mutation 80%+ (85%+ core)
 
-# 4. Quality Checks
+# 4. Quality Checks - MANDATORY VALIDATION
 /bmad:bmm:agents:tea *test-review X.X
 /bmad:bmm:agents:tea *validate-test-quality  # Validate test code quality and mutation score
 
-# Mutation testing with Stryker (80%+ threshold required)
+# Mutation testing with Stryker (80%+ threshold required - NO EXCEPTIONS)
 
 # 5. Quality Gate (P0/P1 stories)
 /bmad:bmm:agents:tea *trace X.X
@@ -143,8 +143,32 @@ node /Users/menoncello/repos/oss/bmad6/tools/cli/bmad-cli.js install
 *correct-course              # Technical perspective on changes
 ```
 
-## Tips
+## MANDATORY Quality Standards - ZERO TOLERANCE
 
-- Quality gates are mandatory: TypeScript 0 errors, ESLint 0 errors, Tests 100%, Mutation 80%+
-- Never use eslint-disable or @ts-ignore - fix the underlying code issues
-- All tests must have meaningful assertions that validate behavior
+**CRITICAL REQUIREMENTS - NO EXCEPTIONS:**
+- ✅ **TypeScript**: 0 compilation errors (strict mode)
+- ✅ **ESLint**: 0 violations (NO eslint-disable comments allowed)
+- ✅ **Tests**: 100% pass rate with meaningful assertions
+- ✅ **Mutation**: 80%+ score (85%+ for core packages) using Stryker
+- ✅ **Test Runner**: Bun Test exclusively (no other frameworks)
+- ✅ **Type Safety**: NO @ts-ignore, NO non-null assertions (!)
+- ✅ **Code Quality**: All code smells must be addressed during implementation
+
+**FORBIDDEN PRACTICES:**
+- ❌ **NEVER** use `eslint-disable` comments
+- ❌ **NEVER** use `@ts-ignore` or non-null assertions
+- ❌ **NEVER** lower mutation thresholds to make tests pass
+- ❌ **NEVER** proceed with known quality issues
+- ❌ **NEVER** write meaningless tests that don't validate behavior
+
+**QUALITY GATE ENFORCEMENT:**
+- Build will BREAK if any quality gate fails
+- Story progress BLOCKED until all quality gates pass
+- Additional tests MUST be added to meet mutation thresholds
+- Code MUST be refactored to eliminate ESLint violations
+
+**TEST REQUIREMENTS:**
+- All tests use Bun Test API (`describe`, `it`, `expect`)
+- Tests must have specific, meaningful assertions
+- Each acceptance criterion must have corresponding test coverage
+- Tests must be designed to kill mutants effectively

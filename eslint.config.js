@@ -116,7 +116,7 @@ export default [
 
       // Import - Module Management
       'import/no-duplicates': 'error',
-      'import/no-unresolved': 'off', // TypeScript handles this
+      'import/no-unresolved': 'error',
       'import/order': [
         'error',
         {
@@ -132,15 +132,15 @@ export default [
       // JSDoc - Documentation Quality
       'jsdoc/check-alignment': 'error',
       'jsdoc/check-param-names': 'error',
-      'jsdoc/check-tag-names': 'off', // Allow custom tags like @nimata/adapters
+      'jsdoc/check-tag-names': 'error',
       'jsdoc/check-types': 'error',
       'jsdoc/require-description': 'error',
       'jsdoc/require-param': 'error',
       'jsdoc/require-param-description': 'error',
-      'jsdoc/require-param-type': 'off', // TypeScript provides types
+      'jsdoc/require-param-type': 'error',
       'jsdoc/require-returns': 'error',
       'jsdoc/require-returns-description': 'error',
-      'jsdoc/require-returns-type': 'off', // TypeScript provides types
+      'jsdoc/require-returns-type': 'error',
       'jsdoc/require-jsdoc': [
         'error',
         {
@@ -162,7 +162,7 @@ export default [
       'max-nested-callbacks': ['error', 3],
       'max-params': ['error', 4],
       'max-statements': ['error', 15],
-      'no-console': 'off', // CLI needs console
+      'no-console': 'error',
       'no-magic-numbers': [
         'error',
         { ignore: [0, 1, -1], ignoreArrayIndexes: true, ignoreDefaultValues: true },
@@ -184,22 +184,19 @@ export default [
   {
     files: ['**/*.test.ts', '**/*.spec.ts', '**/tests/**/*.ts'],
     rules: {
+      // Apenas desabilita as regras de tamanho que você pediu
+      'max-lines': 'off',
+      'max-lines-per-function': 'off',
+
+      // Mantém algumas relaxações úteis para testes (opcional - pode remover se quiser)
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
       'sonarjs/no-duplicate-string': 'off',
       'jsdoc/require-jsdoc': 'off',
       'jsdoc/require-description': 'off',
       'jsdoc/require-param': 'off',
       'jsdoc/require-returns': 'off',
-      'max-lines': 'off',
-      'max-lines-per-function': 'off',
-      'max-nested-callbacks': 'off',
-      'max-statements': 'off',
       'no-magic-numbers': 'off',
       'import/no-default-export': 'off',
-      'unicorn/no-array-for-each': 'off',
     },
   },
 ];

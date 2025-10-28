@@ -7,46 +7,40 @@
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "typecheck": {
-      "dependsOn": ["^build"],
       "outputs": []
     },
     "test": {
-      "dependsOn": ["build"],
       "outputs": ["coverage/**"],
-      "cache": false
+      "cache": true
     },
     "test:coverage": {
-      "dependsOn": ["build"],
       "outputs": ["coverage/**"],
-      "cache": false
+      "cache": true
     },
     "test:mutation": {
       "outputs": ["reports/mutation/**", ".stryker-tmp/**"],
-      "cache": false
+      "cache": true
     },
     "test:performance": {
-      "dependsOn": ["build"],
       "outputs": ["benchmark-results/**"],
-      "cache": false
+      "cache": true
     },
     "lint": {
-      "dependsOn": ["^build"],
       "outputs": []
     },
     "lint:fix": {
-      "dependsOn": ["^build"],
       "outputs": [],
-      "cache": false
+      "cache": true
     },
     "format": {
       "outputs": [],
-      "cache": false
+      "cache": true
     },
     "format:check": {
       "outputs": []
     },
     "dev": {
-      "cache": false,
+      "cache": true,
       "persistent": true
     },
     "clean": {

@@ -1,0 +1,127 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.5</storyId>
+    <title>Template Engine</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-23</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.5.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>CLI tool developer</asA>
+    <iWant>implement a template rendering system for generating project files from templates</iWant>
+    <soThat>users can get consistent, properly formatted project structures during scaffolding</soThat>
+    <tasks>
+      - Template Engine Core Implementation (AC: 1, 4)
+        - Set up Handlebars integration with TypeScript
+        - Create template loading service with validation
+        - Implement template caching for performance
+      - Variable Substitution System (AC: 2, 5)
+        - Define TemplateContext interface with all required variables
+        - Implement safe variable substitution with type checking
+        - Add support for complex variable types (objects, arrays)
+      - Conditional Logic Support (AC: 3)
+        - Implement if/else conditional blocks
+        - Support for nested conditionals
+        - Add boolean helper functions for complex conditions
+      - Template Catalog Management (AC: 6, 7)
+        - Create template registry system
+        - Implement template discovery and indexing
+        - Add error handling for malformed templates
+        - Design extensible architecture for new tech stacks
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. Loads templates from `templates/typescript-bun-cli/` directory
+    2. Variable substitution: {{project_name}}, {{description}}, etc.
+    3. Conditional blocks: {{#if strict}}...{{/if}}
+    4. Template validation before rendering
+    5. Generates files with correct content and formatting
+    6. Template catalog supports future tech stack additions
+    7. Error handling for missing/invalid templates
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc path="docs/tech-spec-epic-1.md" title="Technical Specification: Epic 1 - Start Right: Quality-First Scaffolding" section="7. Template Structure" snippet="Template Directory Organization with base/, partials/, and tech-stack specific templates for generating project files"></doc>
+      <doc path="docs/tech-spec-epic-1.md" title="Technical Specification: Epic 1 - Start Right: Quality-First Scaffolding" section="6.2 Template Rendering Pattern" snippet="TemplateRenderer implementation using Handlebars.js with TypeScript bindings, including caching, helper functions, and error handling"></doc>
+      <doc path="docs/tech-spec-epic-1.md" title="Technical Specification: Epic 1 - Start Right: Quality-First Scaffolding" section="4.1.3 ITemplateRenderer" snippet="Interface definition for template rendering with render(), registerPartial(), and registerHelper() methods"></doc>
+      <doc path="docs/tech-spec-epic-1.md" title="Technical Specification: Epic 1 - Start Right: Quality-First Scaffolding" section="5.1.3 TemplateContext" snippet="Type definition for template context variables including project metadata, quality settings, and conditional flags"></doc>
+      <doc path="docs/epic-stories.md" title="Nìmata - Epic Breakdown" section="Story 1.5: Template Engine" snippet="Acceptance criteria for template loading, variable substitution, conditional blocks, validation, and error handling"></doc>
+      <doc path="docs/PRD.md" title="Nìmata Product Requirements Document" section="Pillar 1: Start Right (Scaffolding)" snippet="Functional requirements for template rendering system and AI rules file generation"></doc>
+    </docs>
+    <code>
+      <artifact path="packages/core/src/interfaces/template-engine.ts" kind="interface" symbol="TemplateEngine" lines="8-54" reason="Core template engine interface defining loadTemplate, renderTemplate, validateTemplate, and processProjectTemplate methods"></artifact>
+      <artifact path="packages/adapters/src/template-engine.ts" kind="class" symbol="TemplateEngine" lines="37-288" reason="Main template engine implementation with variable substitution, conditional blocks, and helper processing"></artifact>
+      <artifact path="packages/adapters/src/template-engine/types.ts" kind="type" symbol="ProjectTemplate" lines="30-37" reason="Type definition for project template structure with variables and files arrays"></artifact>
+      <artifact path="packages/adapters/src/template-engine/template-validator.ts" kind="function" symbol="validateTemplateSyntax" lines="15-29" reason="Template validation function that checks block pairs, variable references, and helper syntax"></artifact>
+      <artifact path="packages/adapters/src/template-engine/template-validator.ts" kind="function" symbol="validateTemplateStructure" lines="102-113" reason="Template structure validation for required fields and array validation"></artifact>
+    </code>
+    <dependencies>
+      <dependency ecosystem="Node.js" packages="@inquirer/prompts @inquirer/checkbox @inquirer/confirm @inquirer/input @inquirer/select" reason="Interactive prompt libraries for template variable collection"></dependency>
+      <dependency ecosystem="Node.js" packages="picocolors" reason="Terminal color output for template processing feedback"></dependency>
+      <dependency ecosystem="Node.js" packages="typescript" reason="TypeScript compilation and type checking for template system"></dependency>
+      <dependency ecosystem="Bun" packages="bun test" reason="Testing framework for template engine validation tests"></dependency>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+  <constraint type="architecture" description="Using Handlebars.js for template rendering with TypeScript bindings"></constraint>
+  <constraint type="structure" description="Template directory structure: templates/{tech-stack}/ with base/, src/, config/ subdirectories"></constraint>
+  <constraint type="validation" description="Template validation before rendering to catch syntax errors early"></constraint>
+  <constraint type="performance" description="Caching layer for performance (templates parsed once, reused)"></constraint>
+  <constraint type="typescript" description="All code must use TypeScript strict mode with no any types allowed"></constraint>
+  <constraint type="functions" description="Functions must have explicit return types"></constraint>
+  <constraint type="eslint" description="ESLint strict rules enforced"></constraint>
+  <constraint type="testing" description="100% test coverage requirement"></constraint>
+  <constraint type="performance-loading" description="Template loading: &lt;100ms per template"></constraint>
+  <constraint type="performance-rendering" description="Rendering: &lt;10ms per template"></constraint>
+  <constraint type="performance-cache" description="Cache hit: &lt;1ms for cached templates"></constraint>
+  <constraint type="concurrency" description="Support for concurrent template rendering"></constraint>
+  <constraint type="dependency" description="Handlebars 4.x for template rendering"></constraint>
+  <constraint type="dependency" description="Integration with existing DI container"></constraint>
+  <constraint type="runtime" description="Must work with Bun runtime APIs"></constraint>
+</constraints>
+  <interfaces>
+    <interface name="IFileSystem" kind="repository" signature="interface IFileSystem { createDirectory(path: string): Promise&lt;Result&lt;void&gt;; writeFile(path: string, content: string | Buffer): Promise&lt;Result&lt;void&gt;; }" path="packages/core/src/interfaces/i-file-system.ts"></interface>
+    <interface name="TemplateContext" kind="type" signature="interface TemplateContext { projectName: string; projectDescription: string; qualityLevel: QualityLevel; isStrict: boolean; }" path="packages/core/src/types/template-context.ts"></interface>
+    <interface name="TemplateRenderer" kind="class" signature="class TemplateRenderer implements ITemplateRenderer { render(templatePath: string, context: TemplateContext): Promise&lt;Result&lt;string&gt;; }" path="packages/adapters/src/template-renderer.ts"></interface>
+  </interfaces>
+  <tests>
+    <standards>Unit tests for all template rendering scenarios, integration tests for template loading and validation, performance tests for template caching, error handling tests for invalid templates. Tests use Bun Test framework with 100% coverage requirement.</standards>
+    <locations>packages/adapters/tests/unit/ for unit tests, packages/adapters/tests/integration/ for integration tests, following the same structure as source code.</locations>
+    <ideas>
+      <test idea="Test template loading from templates/typescript-bun-cli/ directory" acceptanceCriteria="1">
+        <description>Verify templates are loaded correctly from the specified directory structure</description>
+        <type>integration</type>
+      </test>
+      <test idea="Test variable substitution for {{project_name}}, {{description}}" acceptanceCriteria="2">
+        <description>Ensure all template variables are properly replaced with context values</description>
+        <type>unit</type>
+      </test>
+      <test idea="Test conditional blocks {{#if strict}}...{{/if}}" acceptanceCriteria="3">
+        <description>Verify conditional rendering based on quality level settings</description>
+        <type>unit</type>
+      </test>
+      <test idea="Test template validation before rendering" acceptanceCriteria="4">
+        <description>Ensure invalid templates are caught before processing</description>
+        <type>unit</type>
+      </test>
+      <test idea="Test generated files have correct content and formatting" acceptanceCriteria="5">
+        <description>Verify output matches expected content structure</description>
+        <type>integration</type>
+      </test>
+      <test idea="Test template catalog supports future tech stack additions" acceptanceCriteria="6">
+        <description>Verify extensible architecture for new template types</description>
+        <type>unit</type>
+      </test>
+      <test idea="Test error handling for missing/invalid templates" acceptanceCriteria="7">
+        <description>Ensure graceful error handling for template issues</description>
+        <type>unit</type>
+      </test>
+    </ideas>
+  </tests>
+</story-context>
