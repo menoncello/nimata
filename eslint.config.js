@@ -25,8 +25,6 @@ export default [
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: 'module',
-        project: './tsconfig.json',
-        tsconfigRootDir: process.cwd(),
       },
     },
     settings: {
@@ -34,8 +32,13 @@ export default [
         typescript: {
           alwaysTryTypes: true,
           project: './tsconfig.json',
+          extensions: ['.ts', '.js'],
+        },
+        node: {
+          extensions: ['.ts', '.js'],
         },
       },
+      'import/core-modules': ['bun:test', 'bun'],
     },
     plugins: {
       '@typescript-eslint': tseslint,
@@ -190,13 +193,6 @@ export default [
       yoda: 'error',
     },
   },
-  // Logger file - Allow console statements
-  {
-    files: ['**/logger.ts'],
-    rules: {
-      'no-console': 'off',
-    },
-  },
   // Test files - Relaxed rules
   {
     files: ['**/*.test.ts', '**/*.spec.ts', '**/tests/**/*.ts'],
@@ -212,16 +208,15 @@ export default [
       'jsdoc/require-description': 'off',
       'jsdoc/require-param': 'off',
       'jsdoc/require-returns': 'off',
-      'jsdoc/require-param-type': 'off',
-      'jsdoc/require-returns-type': 'off',
       'no-magic-numbers': 'off',
       'import/no-default-export': 'off',
-      'import/no-unresolved': 'off',
       'max-nested-callbacks': 'off',
-      'no-console': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      'sonarjs/no-nested-functions': 'off',
       'max-statements': 'off',
-      'sonarjs/no-misleading-array-reverse': 'off',
-      'sonarjs/no-alphabetical-sort': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      'max-depth': 'off',
     },
   },
 ];
