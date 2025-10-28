@@ -26,6 +26,9 @@ jobs:
     - name: Install dependencies
       run: bun install --frozen-lockfile
 
+    - name: Build packages
+      run: bunx turbo build
+
     - name: Type checking
       run: bunx turbo typecheck
 
