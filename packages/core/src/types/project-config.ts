@@ -49,7 +49,7 @@ export interface WizardStep {
 }
 
 export interface ValidationRule {
-  type: 'required' | 'pattern' | 'length' | 'custom';
+  type: 'required' | 'pattern' | 'length' | 'range' | 'custom';
   message: string;
   pattern?: RegExp;
   min?: number;
@@ -60,15 +60,17 @@ export interface ValidationRule {
 export interface ValidationResult {
   valid: boolean;
   errors: string[];
+  warnings: string[];
 }
 
 export interface TemplateVariable {
   name: string;
-  type: 'string' | 'boolean' | 'select' | 'multiselect';
+  type: 'string' | 'number' | 'boolean' | 'object' | 'array' | 'select' | 'multiselect';
   description: string;
   required: boolean;
   default?: unknown;
   validation?: ValidationRule[];
+  options?: Array<{ label: string; value: unknown; description?: string }>;
 }
 
 export interface TemplateFile {

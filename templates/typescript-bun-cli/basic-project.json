@@ -1,0 +1,77 @@
+{
+  "name": "basic-project",
+  "description": "Basic TypeScript Bun CLI project template",
+  "version": "1.0.0",
+  "supportedProjectTypes": ["cli", "basic"],
+  "variables": [
+    {
+      "name": "project_name",
+      "type": "string",
+      "description": "Project name",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Project description",
+      "required": false,
+      "default": "A TypeScript CLI project"
+    },
+    {
+      "name": "author",
+      "type": "string",
+      "description": "Author name",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "quality_level",
+      "type": "select",
+      "description": "Quality level",
+      "required": true,
+      "default": "medium",
+      "options": [
+        { "label": "Light", "value": "light" },
+        { "label": "Medium", "value": "medium" },
+        { "label": "Strict", "value": "strict" },
+        { "label": "High", "value": "high" }
+      ]
+    },
+    {
+      "name": "is_strict",
+      "type": "boolean",
+      "description": "Enable strict mode",
+      "required": false,
+      "default": false
+    },
+    {
+      "name": "license",
+      "type": "string",
+      "description": "License type",
+      "required": false,
+      "default": "MIT"
+    }
+  ],
+  "files": [
+    {
+      "path": "package.json",
+      "template": "{\n  \"name\": \"{{project_name}}\",\n  \"version\": \"1.0.0\",\n  \"description\": \"{{description}}\",\n  \"author\": \"{{author}}\",\n  \"license\": \"{{license}}\",\n  \"type\": \"module\",\n  \"engines\": {\n    \"bun\": \">=1.3.0\"\n  },\n  \"scripts\": {\n    \"start\": \"bun run src/index.ts\",\n    \"dev\": \"bun --watch run src/index.ts\",\n    \"build\": \"bun build src/index.ts --outdir dist\",\n    \"test\": \"bun test\",\n    \"typecheck\": \"tsc --noEmit\"\n  },\n  \"devDependencies\": {\n    \"@types/node\": \"^24.8.0\",\n    \"typescript\": \"^5.3.3\"\n  }\n}"
+    },
+    {
+      "path": "tsconfig.json",
+      "template": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"bundler\",\n    \"allowImportingTsExtensions\": true,\n    \"allowSyntheticDefaultImports\": true,\n    \"esModuleInterop\": true,\n    \"allowJs\": true,\n    \"checkJs\": false,\n    \"strict\": {{#if is_strict}}true{{else}}false{{/if}},\n    \"noImplicitAny\": {{#if is_strict}}true{{else}}false{{/if}},\n    \"skipLibCheck\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"declaration\": true,\n    \"declarationMap\": true,\n    \"outDir\": \"./dist\",\n    \"rootDir\": \"./src\"\n  },\n  \"include\": [\"src/**/*\"],\n  \"exclude\": [\"node_modules\", \"dist\"]\n}"
+    },
+    {
+      "path": "README.md",
+      "template": "# {{capitalize project_name}}\n\n{{description}}\n\n## Installation\n\n```bash\nbun install\n```\n\n## Usage\n\n```bash\nbun start\n```\n\n{{#if author}}\n## Author\n\n{{author}}\n{{/if}}\n\n## License\n\n{{license}}"
+    },
+    {
+      "path": "src/index.ts",
+      "template": "/**\n * {{description}}\n * Generated on: {{now}}\n */\n\nconsole.log('Hello from {{project_name}}!');\n\nif ({{#if is_strict}}process.env.NODE_ENV !== 'production'{{else}}true{{/if}}) {\n  console.log('Development mode enabled');\n}"
+    },
+    {
+      "path": ".gitignore",
+      "template": "# Dependencies\nnode_modules/\n\n# Build output\ndist/\n*.tsbuildinfo\n\n# Environment variables\n.env\n.env.local\n.env.*.local\n\n# IDE\n.vscode/\n.idea/\n\n# OS\n.DS_Store\nThumbs.db\n"
+    }
+  ]
+}

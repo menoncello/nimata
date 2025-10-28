@@ -1,0 +1,8 @@
+{{!-- Test template for statistics tests --}}
+Stats test template for {{category}}.
+
+Project Types: {{#each supportedProjectTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+Tags: {{#each tags}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+
+Author: {{author}}
+Version: {{version}}
