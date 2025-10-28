@@ -14,19 +14,19 @@ module.exports = {
     '!**/node_modules/**',
     '!**/dist/**',
     '!**/coverage/**',
-    '!**/stryker-tmp/**'
+    '!**/stryker-tmp/**',
   ],
 
   testRunner: 'command',
   commandRunner: {
     command: 'bun test',
-    commandType: 'bun'
+    commandType: 'bun',
   },
 
   reporters: ['progress', 'html', 'clear-text'],
 
   htmlReporter: {
-    baseDir: 'reports/mutation/html'
+    baseDir: 'reports/mutation/html',
   },
 
   coverageAnalysis: 'perTest',
@@ -34,7 +34,7 @@ module.exports = {
   thresholds: {
     high: 90,
     low: 80,
-    break: 80  // ZERO TOLERANCE: Build will break below 80%
+    break: 80, // ZERO TOLERANCE: Build will break below 80%
   },
 
   // Quality enforcement settings
@@ -47,7 +47,7 @@ module.exports = {
     '@stryker-mutator/core',
     '@stryker-mutator/bun-runner',
     '@stryker-mutator/typescript',
-    '@stryker-mutator/javascript-mutator'
+    '@stryker-mutator/javascript-mutator',
   ],
 
   // TypeScript configuration
@@ -59,11 +59,11 @@ module.exports = {
     exclude: [
       // Logging statements have no behavioral impact
       '**/logger.ts',
-      '**/*.log.ts'
-    ]
+      '**/*.log.ts',
+    ],
   },
 
   // Mandatory mutation patterns
   ignoreStatic: false,
-  ignoreConstant: false
+  ignoreConstant: false,
 };

@@ -146,6 +146,7 @@ node /Users/menoncello/repos/oss/bmad6/tools/cli/bmad-cli.js install
 ## MANDATORY Quality Standards - ZERO TOLERANCE
 
 **CRITICAL REQUIREMENTS - NO EXCEPTIONS:**
+
 - ✅ **TypeScript**: 0 compilation errors (strict mode)
 - ✅ **ESLint**: 0 violations (NO eslint-disable comments allowed)
 - ✅ **Tests**: 100% pass rate with meaningful assertions
@@ -155,6 +156,7 @@ node /Users/menoncello/repos/oss/bmad6/tools/cli/bmad-cli.js install
 - ✅ **Code Quality**: All code smells must be addressed during implementation
 
 **FORBIDDEN PRACTICES:**
+
 - ❌ **NEVER** use `eslint-disable` comments
 - ❌ **NEVER** use `@ts-ignore` or non-null assertions
 - ❌ **NEVER** lower mutation thresholds to make tests pass
@@ -162,12 +164,14 @@ node /Users/menoncello/repos/oss/bmad6/tools/cli/bmad-cli.js install
 - ❌ **NEVER** write meaningless tests that don't validate behavior
 
 **QUALITY GATE ENFORCEMENT:**
+
 - Build will BREAK if any quality gate fails
 - Story progress BLOCKED until all quality gates pass
 - Additional tests MUST be added to meet mutation thresholds
 - Code MUST be refactored to eliminate ESLint violations
 
 **TEST REQUIREMENTS:**
+
 - All tests use Bun Test API (`describe`, `it`, `expect`)
 - Tests must have specific, meaningful assertions
 - Each acceptance criterion must have corresponding test coverage
