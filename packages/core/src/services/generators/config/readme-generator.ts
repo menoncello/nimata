@@ -32,7 +32,8 @@ export class ReadmeGenerator {
    * @returns README header content
    */
   private static generateHeader(config: ProjectConfig): string {
-    return `# ${config.name}`;
+    const description = config.description ? `\n\n${config.description}` : '';
+    return `# ${config.name}${description}`;
   }
 
   /**

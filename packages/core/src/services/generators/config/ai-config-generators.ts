@@ -22,6 +22,9 @@ export class AIConfigGenerators {
 
     return `# Claude Code Configuration for ${config.name}
 
+## AI Assistant
+This configuration is for **claude-code** AI assistant.
+
 ${projectInfo}
 
 ${guidelines}

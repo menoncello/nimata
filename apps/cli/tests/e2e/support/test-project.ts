@@ -1,5 +1,5 @@
-import { existsSync } from 'node:fs';
-import { mkdtemp, rm, writeFile, readFile, mkdir } from 'node:fs/promises';
+import { existsSync, chmodSync } from 'node:fs';
+import { mkdtemp, rm, writeFile, readFile, mkdir, chmod } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -20,6 +20,8 @@ export class TestProject {
    */
   static async create(prefix = 'nimata-test-'): Promise<TestProject> {
     const tmpDir = await mkdtemp(join(tmpdir(), prefix));
+    // Set more permissive permissions on the temp directory to avoid permission issues
+    await chmod(tmpDir, 0o755);
     return new TestProject(tmpDir);
   }
 

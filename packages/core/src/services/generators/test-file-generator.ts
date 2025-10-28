@@ -27,6 +27,97 @@ export class TestFileGenerator {
   }
 
   /**
+   * Generate test setup file content
+   * @param config - Project configuration
+   * @returns Test setup TypeScript code
+   */
+  generateTestSetup(config: ProjectConfig): string {
+    const header = this.getTestSetupHeader(config);
+    const imports = this.getTestSetupImports();
+    const consoleSetup = this.getConsoleSetup();
+    const environmentSetup = this.getEnvironmentSetup();
+    const utilities = this.getTestUtilities();
+
+    return `${header}
+
+${imports}
+
+${consoleSetup}
+
+${environmentSetup}
+
+${utilities}
+`;
+  }
+
+  /**
+   * Get test setup file header
+   * @param config - Project configuration
+   * @returns Header comment string
+   */
+  private getTestSetupHeader(config: ProjectConfig): string {
+    return `/**
+ * Test Setup File
+ *
+ * Global test configuration and setup for ${config.name}
+ */`;
+  }
+
+  /**
+   * Get test setup imports
+   * @returns Imports string
+   */
+  private getTestSetupImports(): string {
+    return `import { vi } from 'vitest';`;
+  }
+
+  /**
+   * Get console setup code
+   * @returns Console setup code string
+   */
+  private getConsoleSetup(): string {
+    return `// Global test setup
+global.console = {
+  ...console,
+  // Mock console.log in tests unless debug mode is enabled
+  log: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
+};`;
+  }
+
+  /**
+   * Get test environment setup code
+   * @returns Environment setup code string
+   */
+  private getEnvironmentSetup(): string {
+    return `// Set up test environment
+beforeEach(() => {
+  // Clear all mocks before each test
+  vi.clearAllMocks();
+});`;
+  }
+
+  /**
+   * Get global test utilities
+   * @returns Test utilities code string
+   */
+  private getTestUtilities(): string {
+    return `// Global test utilities
+export const createMockConfig = (overrides: Record<string, unknown> = {}) => ({
+  debug: false,
+  options: {},
+  ...overrides,
+});
+
+export const expectNoConsoleCalls = () => {
+  expect(console.log).not.toHaveBeenCalled();
+  expect(console.warn).not.toHaveBeenCalled();
+  expect(console.error).not.toHaveBeenCalled();
+};`;
+  }
+
+  /**
    * Generate test file content
    * @param config - Project configuration
    * @returns Test file TypeScript code

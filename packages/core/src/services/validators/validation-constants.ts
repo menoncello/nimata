@@ -32,6 +32,17 @@ export const MAX_DESCRIPTION_LENGTH = 1000;
 export const MAX_AUTHOR_LENGTH = 100;
 export const MAX_AI_ASSISTANTS = 5;
 
+/** Common numeric constants */
+export const DEFAULT_DEV_PORT = 3000;
+export const DEFAULT_TIMEOUT_MS = 5000;
+export const DEFAULT_INTERVAL_MS = 1000;
+export const NOTIFICATION_TIMEOUT_MS = 5000;
+export const BYTES_IN_KB = 1024;
+export const DIRECTORY_PERMISSIONS = 0o755;
+export const FILE_PERMISSIONS = 0o644;
+export const Z_INDEX_DROPDOWN = 1000;
+export const MAX_PATH_LENGTH = 1024;
+
 /** Validation arrays */
 export const VALID_PROJECT_TYPES = [
   BASIC,

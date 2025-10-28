@@ -6,6 +6,9 @@ describe('Structured Logger (P1-1)', () => {
   let mockLogs: Array<{ level: string; args: unknown[] }>;
 
   beforeEach(() => {
+    // Reset the singleton instance
+    (Logger as any).instance = undefined;
+
     originalConsole = global.console;
     mockLogs = [];
 
@@ -26,7 +29,7 @@ describe('Structured Logger (P1-1)', () => {
 
   describe('Basic Logging', () => {
     it('should log debug messages', () => {
-      const testLogger = new Logger('debug');
+      const testLogger = Logger.getInstance('debug');
       testLogger.debug('test-op', 'Test message', { key: 'value' });
 
       expect(mockLogs).toHaveLength(1);
@@ -38,7 +41,7 @@ describe('Structured Logger (P1-1)', () => {
     });
 
     it('should log warning messages', () => {
-      const testLogger = new Logger('debug');
+      const testLogger = Logger.getInstance('debug');
       testLogger.warn('test-op', 'Warning message', { someData: 'value' });
 
       expect(mockLogs).toHaveLength(1);
@@ -50,7 +53,7 @@ describe('Structured Logger (P1-1)', () => {
     });
 
     it('should log error messages', () => {
-      const testLogger = new Logger('debug');
+      const testLogger = Logger.getInstance('debug');
       testLogger.error('test-op', 'Error message', { error: 'Something went wrong' });
 
       expect(mockLogs).toHaveLength(1);
@@ -64,7 +67,7 @@ describe('Structured Logger (P1-1)', () => {
 
   describe('Log Level Filtering', () => {
     it('should filter debug messages when level is warn', () => {
-      const testLogger = new Logger('warn');
+      const testLogger = Logger.getInstance('warn');
       testLogger.debug('test-op', 'Debug message');
       testLogger.warn('test-op', 'Warning message');
 
@@ -73,7 +76,7 @@ describe('Structured Logger (P1-1)', () => {
     });
 
     it('should filter warning messages when level is error', () => {
-      const testLogger = new Logger('error');
+      const testLogger = Logger.getInstance('error');
       testLogger.debug('test-op', 'Debug message');
       testLogger.warn('test-op', 'Warning message');
       testLogger.error('test-op', 'Error message');
@@ -85,7 +88,7 @@ describe('Structured Logger (P1-1)', () => {
 
   describe('Sensitive Data Masking', () => {
     it('should mask password fields', () => {
-      const testLogger = new Logger('debug');
+      const testLogger = Logger.getInstance('debug');
       testLogger.debug('auth', 'Authentication attempt', {
         username: 'user1',
         // eslint-disable-next-line sonarjs/no-hardcoded-passwords
@@ -95,14 +98,14 @@ describe('Structured Logger (P1-1)', () => {
       });
 
       expect(mockLogs).toHaveLength(1);
-      const logData = mockLogs[0].args[1];
+      const logData = mockLogs[0].args[1] as Record<string, unknown>;
       expect(logData.username).toBe('user1');
       expect(logData.password).toBe('se****23');
       expect(logData.apiKey).toBe('ab****56');
     });
 
     it('should mask nested sensitive fields', () => {
-      const testLogger = new Logger('debug');
+      const testLogger = Logger.getInstance('debug');
       testLogger.debug('config', 'Configuration loaded', {
         database: {
           host: 'localhost',
@@ -116,15 +119,17 @@ describe('Structured Logger (P1-1)', () => {
       });
 
       expect(mockLogs).toHaveLength(1);
-      const logData = mockLogs[0].args[1];
-      expect(logData.database.host).toBe('localhost');
-      expect(logData.database.password).toBe('db****ss');
-      expect(logData.database.credentials.token).toBe('se****en');
+      const logData = mockLogs[0].args[1] as Record<string, unknown>;
+      expect((logData.database as Record<string, unknown>).host).toBe('localhost');
+      expect((logData.database as Record<string, unknown>).password).toBe('db****ss');
+      expect(
+        ((logData.database as Record<string, unknown>).credentials as Record<string, unknown>).token
+      ).toBe('se****en');
       expect(logData.normalField).toBe('visible');
     });
 
     it('should mask sensitive data in arrays', () => {
-      const testLogger = new Logger('debug');
+      const testLogger = Logger.getInstance('debug');
 
       const testItems = [
         { id: 1, token: 'secret1' },
@@ -137,16 +142,16 @@ describe('Structured Logger (P1-1)', () => {
       });
 
       expect(mockLogs).toHaveLength(1);
-      const logData = mockLogs[0].args[1];
-      expect(logData.items[0].token).toBe('se****t1');
-      expect(logData.items[1].name).toBe('item2');
-      expect(logData.items[2].password).toBe('se****t3');
+      const logData = mockLogs[0].args[1] as Record<string, unknown>;
+      expect((logData.items as Array<Record<string, unknown>>)[0].token).toBe('se****t1');
+      expect((logData.items as Array<Record<string, unknown>>)[1].name).toBe('item2');
+      expect((logData.items as Array<Record<string, unknown>>)[2].password).toBe('se****t3');
     });
   });
 
   describe('Edge Cases', () => {
     it('should handle empty metadata', () => {
-      const testLogger = new Logger('debug');
+      const testLogger = Logger.getInstance('debug');
       testLogger.debug('test-op', 'Test message');
 
       expect(mockLogs).toHaveLength(1);
@@ -154,7 +159,7 @@ describe('Structured Logger (P1-1)', () => {
     });
 
     it('should handle null/undefined values in metadata', () => {
-      const testLogger = new Logger('debug');
+      const testLogger = Logger.getInstance('debug');
       testLogger.debug('test-op', 'Test message', {
         nullValue: null,
         undefinedValue: undefined,
@@ -162,21 +167,21 @@ describe('Structured Logger (P1-1)', () => {
       });
 
       expect(mockLogs).toHaveLength(1);
-      const logData = mockLogs[0].args[1];
+      const logData = mockLogs[0].args[1] as Record<string, unknown>;
       expect(logData.nullValue).toBe(null);
       expect(logData.undefinedValue).toBe(undefined);
       expect(logData.stringValue).toBe('test');
     });
 
     it('should handle short sensitive values', () => {
-      const testLogger = new Logger('debug');
+      const testLogger = Logger.getInstance('debug');
       testLogger.debug('test-op', 'Test message', {
         shortSecret: 'ab',
         normalValue: 'normal',
       });
 
       expect(mockLogs).toHaveLength(1);
-      const logData = mockLogs[0].args[1];
+      const logData = mockLogs[0].args[1] as Record<string, unknown>;
       expect(logData.shortSecret).toBe('****');
       expect(logData.normalValue).toBe('normal');
     });
@@ -203,7 +208,7 @@ describe('Structured Logger (P1-1)', () => {
   describe('Integration with Configuration System', () => {
     it('should demonstrate typical config logging usage', () => {
       // This test shows how logging would be used in real config operations
-      const configLogger = new Logger('debug');
+      const configLogger = Logger.getInstance('debug');
 
       // Simulate config loading
       configLogger.debug('config-load', 'Loading configuration cascade', {
@@ -228,8 +233,9 @@ describe('Structured Logger (P1-1)', () => {
       expect(mockLogs[2].level).toBe('warn');
 
       // Verify field paths are included in warning metadata
-      expect(mockLogs[2].args[1].fieldPaths).toContain('tools.eslint.configPath');
-      expect(mockLogs[2].args[1].fieldPaths).toContain('tools.typescript.outDir');
+      const warningData = mockLogs[2].args[1] as Record<string, unknown>;
+      expect(warningData.fieldPaths as string[]).toContain('tools.eslint.configPath');
+      expect(warningData.fieldPaths as string[]).toContain('tools.typescript.outDir');
     });
   });
 });

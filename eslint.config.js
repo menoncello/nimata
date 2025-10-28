@@ -25,6 +25,16 @@ export default [
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: 'module',
+        project: './tsconfig.json',
+        tsconfigRootDir: process.cwd(),
+      },
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
+        },
       },
     },
     plugins: {
@@ -180,6 +190,13 @@ export default [
       yoda: 'error',
     },
   },
+  // Logger file - Allow console statements
+  {
+    files: ['**/logger.ts'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
   // Test files - Relaxed rules
   {
     files: ['**/*.test.ts', '**/*.spec.ts', '**/tests/**/*.ts'],
@@ -195,8 +212,16 @@ export default [
       'jsdoc/require-description': 'off',
       'jsdoc/require-param': 'off',
       'jsdoc/require-returns': 'off',
+      'jsdoc/require-param-type': 'off',
+      'jsdoc/require-returns-type': 'off',
       'no-magic-numbers': 'off',
       'import/no-default-export': 'off',
+      'import/no-unresolved': 'off',
+      'max-nested-callbacks': 'off',
+      'no-console': 'off',
+      'max-statements': 'off',
+      'sonarjs/no-misleading-array-reverse': 'off',
+      'sonarjs/no-alphabetical-sort': 'off',
     },
   },
 ];

@@ -33,6 +33,15 @@ export interface ProjectConfig {
   template?: string;
   targetDirectory?: string;
   nonInteractive?: boolean;
+  version?: string;
+  homepage?: string;
+  repository?: string;
+  bugs?: string;
+  keywords?: string[];
+  theme?: {
+    primaryColor?: string;
+    [key: string]: unknown;
+  };
 }
 
 export interface WizardStep {

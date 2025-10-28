@@ -5,15 +5,16 @@
  */
 import type { ProjectConfig } from '../../types/project-config.js';
 import { BasicStructureGenerator } from './basic/basic-structure-generator.js';
+import { CLIStructureGenerator } from './cli/cli-structure-generator.js';
+import type { DirectoryItem } from './core/core-file-operations.js';
 import { ExpressStructureGenerator } from './express/express-structure-generator.js';
+import { LibraryStructureGenerator } from './library/library-structure-generator.js';
 import { ReactStructureGenerator } from './react/react-structure-generator.js';
+import { TypeScriptStructureGenerator } from './typescript/typescript-structure-generator.js';
 import { VueStructureGenerator } from './vue/vue-structure-generator.js';
+import { WebStructureGenerator } from './web/web-structure-generator.js';
 
-export interface DirectoryItem {
-  path: string;
-  type: 'directory' | 'file';
-  content?: string;
-}
+export type { DirectoryItem };
 
 /**
  * Template Generator Factory
@@ -23,6 +24,10 @@ export class TemplateGenerator {
   private readonly vueGenerator: VueStructureGenerator;
   private readonly expressGenerator: ExpressStructureGenerator;
   private readonly basicGenerator: BasicStructureGenerator;
+  private readonly cliGenerator: CLIStructureGenerator;
+  private readonly webGenerator: WebStructureGenerator;
+  private readonly libraryGenerator: LibraryStructureGenerator;
+  private readonly typescriptGenerator: TypeScriptStructureGenerator;
 
   /**
    * Initialize template generators
@@ -32,6 +37,10 @@ export class TemplateGenerator {
     this.vueGenerator = new VueStructureGenerator();
     this.expressGenerator = new ExpressStructureGenerator();
     this.basicGenerator = new BasicStructureGenerator();
+    this.cliGenerator = new CLIStructureGenerator();
+    this.webGenerator = new WebStructureGenerator();
+    this.libraryGenerator = new LibraryStructureGenerator();
+    this.typescriptGenerator = new TypeScriptStructureGenerator();
   }
 
   /**
@@ -47,6 +56,15 @@ export class TemplateGenerator {
         return this.vueGenerator.generate(config);
       case 'bun-express':
         return this.expressGenerator.generate(config);
+      case 'cli':
+        return this.cliGenerator.generate(config);
+      case 'web':
+        return this.webGenerator.generate(config);
+      case 'library':
+        return this.libraryGenerator.generate(config);
+      case 'bun-typescript':
+        return this.typescriptGenerator.generate(config);
+      case 'basic':
       default:
         return this.basicGenerator.generate(config);
     }

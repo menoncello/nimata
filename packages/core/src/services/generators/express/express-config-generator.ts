@@ -31,7 +31,29 @@ export class ExpressConfigCodeGenerator {
    */
   private getConfigImports(): string {
     return `import { config } from 'dotenv';
-import { z } from 'zod';`;
+
+// Simple validation functions (replacing zod)
+function validateNumber(value: string | undefined, defaultValue: number, min?: number, max?: number): number {
+  const num = Number(value);
+  if (isNaN(num)) return defaultValue;
+  if (min !== undefined && num < min) return defaultValue;
+  if (max !== undefined && num > max) return defaultValue;
+  return num;
+}
+
+function validateBoolean(value: string | undefined, defaultValue: boolean): boolean {
+  if (!value) return defaultValue;
+
+  const normalizedValue = value.toLowerCase();
+  if (normalizedValue === 'true') return true;
+  if (normalizedValue === 'false') return false;
+
+  return defaultValue;
+}
+
+function validateString(value: string | undefined, defaultValue: string): string {
+  return value?.trim() || defaultValue;
+}`;
   }
 
   /**

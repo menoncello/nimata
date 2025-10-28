@@ -6,6 +6,7 @@
 
 import { ProjectGenerator, getProjectDirectory } from '@nimata/adapters';
 import type { ProjectConfig } from '@nimata/adapters/wizards/project-wizard';
+import { DirectoryStructureGenerator } from '@nimata/core';
 import pc from 'picocolors';
 import type { OutputWriter } from '../output.js';
 
@@ -128,8 +129,33 @@ export async function generateProject(
 async function executeProjectGeneration(
   finalConfig: ProjectConfig
 ): Promise<{ success: boolean; errors: string[]; warnings: string[] }> {
-  const generator = new ProjectGenerator();
-  return generator.generateProject(finalConfig);
+  try {
+    // Use the new DirectoryStructureGenerator from Story 1.4
+    const directoryGenerator = new DirectoryStructureGenerator();
+
+    // Generate the directory structure
+    const structure = directoryGenerator.generate(finalConfig);
+
+    // Get the project directory
+    const projectDir = getProjectDirectory(finalConfig);
+
+    // Create the actual directories and files on disk
+    await directoryGenerator.createStructureFromDirectoryItems(projectDir, structure);
+
+    return {
+      success: true,
+      errors: [],
+      warnings: [],
+    };
+  } catch (error) {
+    return {
+      success: false,
+      errors: [
+        `Failed to generate project: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      ],
+      warnings: [],
+    };
+  }
 }
 
 /**

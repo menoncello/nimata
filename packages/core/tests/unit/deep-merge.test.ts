@@ -11,7 +11,6 @@ const funcValue = (): void => {
 };
 
 function CreateObject(): void {
-  // @ts-expect-error - intentional for testing
   this.inherited = 'inherited';
 }
 CreateObject.prototype.prototypeProperty = 'should not merge';
@@ -775,8 +774,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
       expect(result1.test).not.toEqual({ a: 1 });
 
       // Test with arguments object (typeof === 'object' but not plain object)
-      function testArgs(): void {
-        const args = arguments; // arguments object
+      function testArgs(...args: string[]): void {
         const base2 = { test: { a: 1 } } as Record<string, unknown>;
         const override2 = { test: args } as Record<string, unknown>;
         const result2 = deepMerge(base2, override2);

@@ -1,109 +1,95 @@
-import { z } from 'zod';
-
 /**
  * Quality level determines the strictness of code quality checks
  */
-export const QualityLevel = z.enum(['light', 'medium', 'strict']);
-export type QualityLevel = z.infer<typeof QualityLevel>;
+export type QualityLevel = 'light' | 'medium' | 'strict';
 
 /**
  * Supported AI assistants for code generation and analysis
  */
-export const AIAssistant = z.enum(['claude-code', 'copilot', 'windsurf']);
-export type AIAssistant = z.infer<typeof AIAssistant>;
+export type AIAssistant = 'claude-code' | 'copilot' | 'windsurf';
 
 /**
  * ESLint configuration options
  */
-export const ESLintConfigSchema = z.object({
-  enabled: z.boolean().optional(),
-  configPath: z.string().optional(),
-});
-export type ESLintConfig = z.infer<typeof ESLintConfigSchema>;
+export interface ESLintConfig {
+  enabled?: boolean;
+  configPath?: string;
+}
 
 /**
  * TypeScript configuration options
  */
-export const TypeScriptConfigSchema = z.object({
-  enabled: z.boolean().optional(),
-  configPath: z.string().optional(),
-  strict: z.boolean().optional(),
-  target: z.string().optional(),
-});
-export type TypeScriptConfig = z.infer<typeof TypeScriptConfigSchema>;
+export interface TypeScriptConfig {
+  enabled?: boolean;
+  configPath?: string;
+  strict?: boolean;
+  target?: string;
+}
 
 /**
  * Prettier configuration options
  */
-export const PrettierConfigSchema = z.object({
-  enabled: z.boolean().optional(),
-  configPath: z.string().optional(),
-});
-export type PrettierConfig = z.infer<typeof PrettierConfigSchema>;
-
-const MIN_COVERAGE = 0;
-const MAX_COVERAGE = 100;
+export interface PrettierConfig {
+  enabled?: boolean;
+  configPath?: string;
+}
 
 /**
  * Bun Test configuration options
  */
-export const BunTestConfigSchema = z.object({
-  enabled: z.boolean().optional(),
-  coverage: z.boolean().optional(),
-  coverageThreshold: z.number().min(MIN_COVERAGE).max(MAX_COVERAGE).optional(),
-});
-export type BunTestConfig = z.infer<typeof BunTestConfigSchema>;
+export interface BunTestConfig {
+  enabled?: boolean;
+  coverage?: boolean;
+  coverageThreshold?: number;
+}
 
 /**
  * All tool configurations
  */
-export const ToolsConfigSchema = z.object({
-  eslint: ESLintConfigSchema.optional(),
-  typescript: TypeScriptConfigSchema.optional(),
-  prettier: PrettierConfigSchema.optional(),
-  bunTest: BunTestConfigSchema.optional(),
-});
-export type ToolsConfig = z.infer<typeof ToolsConfigSchema>;
+export interface ToolsConfig {
+  eslint?: ESLintConfig;
+  typescript?: TypeScriptConfig;
+  prettier?: PrettierConfig;
+  bunTest?: BunTestConfig;
+}
 
 /**
  * Scaffolding configuration options
  */
-export const ScaffoldingConfigSchema = z.object({
-  templateDirectory: z.string().optional(),
-  includeExamples: z.boolean().optional(),
-  initializeGit: z.boolean().optional(),
-  installDependencies: z.boolean().optional(),
-});
-export type ScaffoldingConfig = z.infer<typeof ScaffoldingConfigSchema>;
+export interface ScaffoldingConfig {
+  templateDirectory?: string;
+  includeExamples?: boolean;
+  initializeGit?: boolean;
+  installDependencies?: boolean;
+}
 
 /**
  * Validation configuration options
  */
-export const ValidationConfigSchema = z.object({
-  cache: z.boolean().optional(),
-  parallel: z.boolean().optional(),
-});
-export type ValidationConfig = z.infer<typeof ValidationConfigSchema>;
+export interface ValidationConfig {
+  cache?: boolean;
+  parallel?: boolean;
+}
 
 /**
  * Refactoring configuration options
  */
-export const RefactoringConfigSchema = z.object({
-  preview: z.boolean().optional(),
-});
-export type RefactoringConfig = z.infer<typeof RefactoringConfigSchema>;
+export interface RefactoringConfig {
+  preview?: boolean;
+}
 
 /**
  * Logging configuration options
  */
-export const LoggingConfigSchema = z.object({
-  level: z.enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal']).optional(),
-  destination: z.string().optional(),
-});
-export type LoggingConfig = z.infer<typeof LoggingConfigSchema>;
+export type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
+
+export interface LoggingConfig {
+  level?: LogLevel;
+  destination?: string;
+}
 
 /**
- * Complete Nìmata configuration schema
+ * Complete Nìmata configuration
  *
  * Validation rules:
  * - All config paths must be relative (no absolute paths)
@@ -111,18 +97,16 @@ export type LoggingConfig = z.infer<typeof LoggingConfigSchema>;
  * - AI assistants must be from supported list
  * - Coverage threshold must be 0-100
  */
-export const ConfigSchema = z.object({
-  version: z.number().int().positive().default(1),
-  qualityLevel: QualityLevel.default('strict'),
-  aiAssistants: z.array(AIAssistant).default(['claude-code']),
-  tools: ToolsConfigSchema.default({}),
-  scaffolding: ScaffoldingConfigSchema.default({}),
-  validation: ValidationConfigSchema.default({}),
-  refactoring: RefactoringConfigSchema.default({}),
-  logging: LoggingConfigSchema.default({}),
-});
-
-export type Config = z.infer<typeof ConfigSchema>;
+export interface Config {
+  version?: number;
+  qualityLevel?: QualityLevel;
+  aiAssistants?: AIAssistant[];
+  tools?: ToolsConfig;
+  scaffolding?: ScaffoldingConfig;
+  validation?: ValidationConfig;
+  refactoring?: RefactoringConfig;
+  logging?: LoggingConfig;
+}
 
 /**
  * Validates that config paths are relative (security requirement)

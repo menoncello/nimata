@@ -13,8 +13,8 @@
  * - Spaces, hyphens, and underscores are removed
  * - Existing camelCase is preserved and enhanced
  *
- * @param str - Input string to convert
- * @returns String in PascalCase format
+ * @param {string} str - Input string to convert
+ * @returns {string} String in PascalCase format
  *
  * @example
  * ```ts

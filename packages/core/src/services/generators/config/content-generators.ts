@@ -115,4 +115,22 @@ export class ContentGenerators {
   static generateCursorRules(config: ProjectConfig): string {
     return AIConfigGenerators.generateCursorRules(config);
   }
+
+  /**
+   * Generate package.json content
+   * @param config - Project configuration
+   * @returns Package.json content
+   */
+  static generatePackageJson(config: ProjectConfig): string {
+    return ConfigGenerators.generatePackageJson(config);
+  }
+
+  /**
+   * Generate API documentation placeholder
+   * @param config - Project configuration
+   * @returns API documentation markdown
+   */
+  static generateAPIDocumentation(config: ProjectConfig): string {
+    return ConfigGenerators.generateAPIDocumentation(config);
+  }
 }

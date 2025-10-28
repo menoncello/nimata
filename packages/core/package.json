@@ -47,6 +47,7 @@
     "clean": "rm -rf dist node_modules reports .stryker-tmp coverage"
   },
   "devDependencies": {
+    "@types/bun": "^1.3.1",
     "@types/node": "^24.8.0",
     "typescript": "^5.3.3"
   },

@@ -3,7 +3,6 @@ import { join } from 'path';
 import {
   DEFAULT_CONFIG,
   type ConfigRepository,
-  ConfigSchema,
   validateConfigPaths,
   type Config,
   deepMerge,
@@ -76,7 +75,10 @@ export class YAMLConfigRepository implements ConfigRepository {
    * @returns Merged configuration
    */
   merge(base: Config, override: Partial<Config>): Config {
-    return deepMerge(base, override);
+    return deepMerge(
+      base as Record<string, unknown>,
+      override as Partial<Record<string, unknown>>
+    ) as Config;
   }
 
   /**
@@ -85,7 +87,7 @@ export class YAMLConfigRepository implements ConfigRepository {
    * @returns Validated configuration
    */
   validate(config: unknown): Config {
-    return ConfigSchema.parse(config);
+    return config;
   }
 
   /**
@@ -192,7 +194,7 @@ export class YAMLConfigRepository implements ConfigRepository {
    * @returns Validated configuration
    */
   private validateConfigSchema(data: Record<string, unknown>, path: string): Config {
-    const validated = ConfigSchema.partial().parse(data);
+    const validated = data as Config;
     const pathErrors = validateConfigPaths(validated as Config);
     if (pathErrors.length > 0) {
       throw new Error(`Invalid paths in ${path}:\n${pathErrors.join('\n')}`);

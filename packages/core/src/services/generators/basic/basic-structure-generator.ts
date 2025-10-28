@@ -4,12 +4,7 @@
  * Generates basic project structure and files
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
-
-export interface DirectoryItem {
-  path: string;
-  type: 'directory' | 'file';
-  content?: string;
-}
+import type { DirectoryItem } from '../core/core-file-operations.js';
 
 /**
  * Generator for basic project structures
@@ -23,8 +18,8 @@ export class BasicStructureGenerator {
   generate(config: ProjectConfig): DirectoryItem[] {
     return [
       // Basic directories
-      { path: 'src/utils', type: 'directory' },
-      { path: 'src/constants', type: 'directory' },
+      { path: 'src/utils', type: 'directory', mode: 0o755 },
+      { path: 'src/constants', type: 'directory', mode: 0o755 },
 
       // Utility files
       {

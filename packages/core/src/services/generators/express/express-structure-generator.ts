@@ -4,16 +4,11 @@
  * Generates Express-specific project structure and files
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
+import type { DirectoryItem } from '../core/core-file-operations.js';
 import { ExpressConfigCodeGenerator } from './express-config-generator.js';
 import { ExpressControllerCodeGenerator } from './express-controller-generator.js';
 import { ExpressMiddlewareCodeGenerator } from './express-middleware-generator.js';
 import { ExpressServerCodeGenerator } from './express-server-generator.js';
-
-export interface DirectoryItem {
-  path: string;
-  type: 'directory' | 'file';
-  content?: string;
-}
 
 /**
  * Generator for Express project structures

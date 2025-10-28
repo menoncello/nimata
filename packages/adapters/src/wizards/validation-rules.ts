@@ -92,7 +92,12 @@ export function runValidationRules(step: WizardStep, value: unknown, errors: str
   }
 }
 
-// eslint-disable-next-line jsdoc/require-jsdoc
+/**
+ * Validate a single rule against a value
+ * @param rule - The validation rule to apply
+ * @param value - The value to validate
+ * @param errors - Array to collect validation errors
+ */
 export function validateRule(
   rule: {
     type: 'required' | 'pattern' | 'length' | 'custom';
@@ -120,7 +125,12 @@ export function validateRule(
   }
 }
 
-// eslint-disable-next-line jsdoc/require-jsdoc
+/**
+ * Validate pattern rule against a value
+ * @param rule - The pattern validation rule
+ * @param value - The value to validate
+ * @param errors - Array to collect validation errors
+ */
 export function validatePatternRule(
   rule: { pattern?: RegExp; message: string },
   value: unknown,
@@ -135,7 +145,12 @@ export function validatePatternRule(
   }
 }
 
-// eslint-disable-next-line jsdoc/require-jsdoc
+/**
+ * Validate length rule against a value
+ * @param rule - The length validation rule
+ * @param value - The value to validate
+ * @param errors - Array to collect validation errors
+ */
 export function validateLengthRule(
   rule: { min?: number; max?: number; message: string },
   value: unknown,
@@ -154,7 +169,12 @@ export function validateLengthRule(
   }
 }
 
-// eslint-disable-next-line jsdoc/require-jsdoc
+/**
+ * Validate custom rule against a value
+ * @param rule - The custom validation rule
+ * @param value - The value to validate
+ * @param errors - Array to collect validation errors
+ */
 export function validateCustomRule(
   rule: { validator?: (value: unknown) => boolean | string; message: string },
   value: unknown,

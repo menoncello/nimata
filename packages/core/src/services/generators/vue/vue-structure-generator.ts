@@ -5,16 +5,11 @@
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
 import { toPascalCase } from '../../../utils/string-utils.js';
+import type { DirectoryItem } from '../core/core-file-operations.js';
 import { VueComponentGenerators } from './vue-component-generators.js';
 import { VueComposableGenerators } from './vue-composable-generators.js';
 import { VueConfigGenerators } from './vue-config-generators.js';
 import { FILE_PATHS } from './vue-constants.js';
-
-export interface DirectoryItem {
-  path: string;
-  type: 'directory' | 'file';
-  content?: string;
-}
 
 /**
  * Generator for Vue project structures

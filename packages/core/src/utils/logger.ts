@@ -20,18 +20,25 @@ export interface LogEntry {
 /**
  * Simple structured logger with sensitive data masking
  */
+/**
+ * Logger configuration constants
+ */
+const LOGGER_CONSTANTS = {
+  MIN_MASK_LENGTH: 4,
+  MASK_PREFIX_LENGTH: 2,
+  FULL_MASK: '****',
+} as const;
+
+/**
+ * Simple structured logger with sensitive data masking
+ */
 export class Logger {
   private static instance: Logger;
   private logLevel: LogLevel;
-  // eslint-disable-next-line no-magic-numbers
-  private static readonly MIN_MASK_LENGTH = 4;
-  // eslint-disable-next-line no-magic-numbers
-  private static readonly MASK_PREFIX_LENGTH = 2;
-  private static readonly FULL_MASK = '****';
 
   /**
    * Creates a new Logger instance
-   * @param logLevel - Minimum log level to output (default: 'info')
+   * @param {LogLevel} logLevel - Minimum log level to output (default: 'info')
    */
   private constructor(logLevel: LogLevel = 'info') {
     this.logLevel = logLevel;
@@ -39,8 +46,8 @@ export class Logger {
 
   /**
    * Get singleton logger instance
-   * @param logLevel - Optional minimum log level (only used on first call)
-   * @returns Logger singleton instance
+   * @param {LogLevel} logLevel - Optional minimum log level (only used on first call)
+   * @returns {Logger} Logger singleton instance
    */
   static getInstance(logLevel?: LogLevel): Logger {
     if (!Logger.instance) {
@@ -51,9 +58,9 @@ export class Logger {
 
   /**
    * Log debug message
-   * @param operation - Operation being logged
-   * @param message - Log message
-   * @param metadata - Optional metadata object
+   * @param {string} operation - Operation being logged
+   * @param {string} message - Log message
+   * @param {Record<string, unknown>} metadata - Optional metadata object
    */
   debug(operation: string, message: string, metadata?: Record<string, unknown>): void {
     this.log('debug', operation, message, metadata);
@@ -191,12 +198,12 @@ export class Logger {
    * @returns Masked string
    */
   private maskValue(value: string): string {
-    if (value.length <= Logger.MIN_MASK_LENGTH) {
-      return Logger.FULL_MASK;
+    if (value.length <= LOGGER_CONSTANTS.MIN_MASK_LENGTH) {
+      return LOGGER_CONSTANTS.FULL_MASK;
     }
-    const prefixLength = Logger.MASK_PREFIX_LENGTH;
-    const suffixLength = Logger.MASK_PREFIX_LENGTH;
-    return `${value.substring(0, prefixLength)}${Logger.FULL_MASK}${value.substring(value.length - suffixLength)}`;
+    const prefixLength = LOGGER_CONSTANTS.MASK_PREFIX_LENGTH;
+    const suffixLength = LOGGER_CONSTANTS.MASK_PREFIX_LENGTH;
+    return `${value.substring(0, prefixLength)}${LOGGER_CONSTANTS.FULL_MASK}${value.substring(value.length - suffixLength)}`;
   }
 
   /**

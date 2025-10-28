@@ -15,8 +15,8 @@
 
 /**
  * Type guard to check if a value is a plain object (not array, null, or primitive)
- * @param value - Value to check
- * @returns True if value is a plain object
+ * @param {unknown} value - Value to check
+ * @returns {boolean} True if value is a plain object
  */
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return (
@@ -31,9 +31,9 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 /**
  * Deeply merges two objects with override priority.
  *
- * @param base - Base configuration object
- * @param override - Override configuration object (takes priority)
- * @returns Merged configuration object
+ * @param {Record<string, unknown>} base - Base configuration object
+ * @param {Record<string, unknown>} override - Override configuration object (takes priority)
+ * @returns {Record<string, unknown>} Merged configuration object
  *
  * @example
  * ```ts
@@ -53,7 +53,7 @@ export function deepMerge<T extends Record<string, unknown>>(base: T, override: 
 
 /**
  * Validates merge inputs
- * @param base - Base object
+ * @param {Record<string, unknown>} base - Base object
  */
 function validateInputs<T extends Record<string, unknown>>(base: T): void {
   if (typeof base !== 'object' || base === null || Array.isArray(base)) {
@@ -63,8 +63,8 @@ function validateInputs<T extends Record<string, unknown>>(base: T): void {
 
 /**
  * Merges override keys into result
- * @param result - Result object to mutate
- * @param override - Override values
+ * @param {Record<string, unknown>} result - Result object to mutate
+ * @param {Partial<T>} override - Override values
  */
 function mergeKeys<T extends Record<string, unknown>>(
   result: Record<string, unknown>,
@@ -84,9 +84,9 @@ function mergeKeys<T extends Record<string, unknown>>(
 
 /**
  * Merges single key
- * @param result - Result object
- * @param key - Key to merge
- * @param overrideValue - Override value
+ * @param {Record<string, unknown>} result - Result object
+ * @param {string} key - Key to merge
+ * @param {unknown} overrideValue - Override value
  */
 function mergeKey(result: Record<string, unknown>, key: string, overrideValue: unknown): void {
   if (overrideValue === undefined) {

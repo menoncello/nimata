@@ -5,16 +5,11 @@
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
 import { toPascalCase } from '../../../utils/string-utils.js';
+import type { DirectoryItem } from '../core/core-file-operations.js';
 import { ReactComponentTemplates } from './templates/react-component-templates.js';
 import { ReactConfigTemplates } from './templates/react-config-templates.js';
 import { ReactCssTemplates } from './templates/react-css-templates.js';
 import { ReactHookTemplates } from './templates/react-hook-templates.js';
-
-export interface DirectoryItem {
-  path: string;
-  type: 'directory' | 'file';
-  content?: string;
-}
 
 /**
  * Generator for React project structures

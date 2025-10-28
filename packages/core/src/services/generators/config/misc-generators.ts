@@ -13,19 +13,26 @@ export class MiscGenerators {
    * @returns Gitignore content
    */
   static generateGitignore(): string {
-    const sections = [
+    const coreSections = [
       this.getDependenciesSection(),
       this.getBuildSection(),
       this.getEnvironmentSection(),
-      this.getIDESection(),
-      this.getOSSection(),
-      this.getLogsSection(),
-      this.getCoverageSection(),
-      this.getCacheSection(),
-      this.getBunSection(),
     ];
 
-    return sections.join('\n\n');
+    const toolingSections = [
+      this.getIDESection(),
+      this.getLogsSection(),
+      this.getCoverageSection(),
+      this.getTypeScriptSection(),
+    ];
+
+    const systemSections = [this.getOSSection(), this.getCacheSection(), this.getTempSection()];
+
+    const projectSections = [this.getBunSection()];
+
+    return [...coreSections, ...toolingSections, ...systemSections, ...projectSections].join(
+      '\n\n'
+    );
   }
 
   /**
@@ -101,13 +108,37 @@ ${DIRECTORIES.COVERAGE}/`;
   }
 
   /**
+   * Get TypeScript section
+   * @returns TypeScript section content
+   */
+  private static getTypeScriptSection(): string {
+    return `# TypeScript
+*.tsbuildinfo
+*.d.ts.map`;
+  }
+
+  /**
    * Get cache section
    * @returns Cache section content
    */
   private static getCacheSection(): string {
     return `# Cache
 ${DIRECTORIES.CACHE}/
+.nimata/cache/
 temp/`;
+  }
+
+  /**
+   * Get temporary files section
+   * @returns Temporary files section content
+   */
+  private static getTempSection(): string {
+    return `# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~`;
   }
 
   /**
