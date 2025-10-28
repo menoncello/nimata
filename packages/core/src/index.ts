@@ -1,5 +1,5 @@
 /**
- * @nimata/core - Core use cases and domain logic
+ * Nimata Core - Core use cases and domain logic
  */
 
 export const CORE_VERSION = '0.1.0';
