@@ -19,7 +19,7 @@ export const ContactPage: React.FC = () => {
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
   });
 
   const [formStatus, setFormStatus] = useState<FormStatus>({ type: null, message: '' });
@@ -28,9 +28,9 @@ export const ContactPage: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -58,11 +58,11 @@ export const ContactPage: React.FC = () => {
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       setFormStatus({
         type: 'success',
-        message: 'Thank you for your message! We\'ll get back to you soon.'
+        message: "Thank you for your message! We'll get back to you soon.",
       });
       setFormData({ name: '', email: '', subject: '', message: '' });
 
@@ -72,7 +72,7 @@ export const ContactPage: React.FC = () => {
     } catch (error) {
       setFormStatus({
         type: 'error',
-        message: 'An error occurred. Please try again later.'
+        message: 'An error occurred. Please try again later.',
       });
     } finally {
       setIsSubmitting(false);
@@ -80,13 +80,15 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <Layout title=`Contact config-project`>
+    <Layout title="Contact config-project">
       <div className={styles.contactContainer}>
         <div className={styles.contactHeader}>
           <h1>Contact Us</h1>
-          <p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+          <p>
+            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          </p>
         </div>
-<div className={styles.contactContent}>
+        <div className={styles.contactContent}>
           <div className={styles.contactInfo}>
             <h2>Get in Touch</h2>
             <div className={styles.contactItem}>
@@ -95,14 +97,20 @@ export const ContactPage: React.FC = () => {
             </div>
             <div className={styles.contactItem}>
               <h3>Address</h3>
-              <p>123 Business Street<br />Suite 100<br />City, State 12345</p>
+              <p>
+                123 Business Street
+                <br />
+                Suite 100
+                <br />
+                City, State 12345
+              </p>
             </div>
             <div className={styles.contactItem}>
               <h3>Phone</h3>
               <p>(555) 123-4567</p>
             </div>
           </div>
-<form ref={formRef} onSubmit={handleSubmit} className={styles.contactForm}>
+          <form ref={formRef} onSubmit={handleSubmit} className={styles.contactForm}>
             <div className={styles.formGroup}>
               <label htmlFor="name">Name *</label>
               <input
@@ -114,7 +122,7 @@ export const ContactPage: React.FC = () => {
                 required
               />
             </div>
-<div className={styles.formGroup}>
+            <div className={styles.formGroup}>
               <label htmlFor="email">Email *</label>
               <input
                 type="email"
@@ -125,7 +133,7 @@ export const ContactPage: React.FC = () => {
                 required
               />
             </div>
-<div className={styles.formGroup}>
+            <div className={styles.formGroup}>
               <label htmlFor="subject">Subject</label>
               <input
                 type="text"
@@ -133,10 +141,9 @@ export const ContactPage: React.FC = () => {
                 name="subject"
                 value={formData.subject}
                 onChange={handleInputChange}
-                
               />
             </div>
-<div className={styles.formGroup}>
+            <div className={styles.formGroup}>
               <label htmlFor="message">Message *</label>
               <textarea
                 id="message"
@@ -147,15 +154,12 @@ export const ContactPage: React.FC = () => {
                 rows={6}
               />
             </div>
-{formStatus.type && (
+            {formStatus.type && (
               <div className={`${styles.formStatus} ${styles[`formStatus--${formStatus.type}`]}`}>
                 {formStatus.message}
               </div>
-            )}<button
-              type="submit"
-              disabled={isSubmitting}
-              className={styles.submitButton}
-            >
+            )}
+            <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
@@ -163,7 +167,6 @@ export const ContactPage: React.FC = () => {
       </div>
     </Layout>
   );
-  };
-
+};
 
 export default ContactPage;
