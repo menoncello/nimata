@@ -156,39 +156,42 @@ Expected ready-for-dev or in-progress. Continuing anyway...
     <action>Cover edge cases and error handling scenarios noted in the test plan or story notes</action>
   </step>
 
-  <step n="4" goal="MANDATORY Quality Gates - ZERO TOLERANCE">
-    <critical>ALL SUBSTEPS ARE MANDATORY - NO EXCEPTIONS - NO SHORTCUTS</critical>
-    <critical>FAILURE OF ANY SUBSTEP REQUIRES IMMEDIATE FIX BEFORE PROCEEDING</critical>
+  <step n="4" goal="Run quality gates and validations">
+    <critical>Quality validation is MANDATORY - ALL substeps must pass with ZERO errors</critical>
 
-    <!-- SUBSTEP 4.1: Test Execution -->
-    <action>MUST determine test command for this repo (use {{run_tests_command}} or infer)</action>
-    <action>MUST run `bun test` to execute complete test suite</action>
-    <action>MUST verify ALL existing tests pass (ZERO tolerance for regression failures)</action>
-    <action>MUST verify ALL new tests pass (ZERO tolerance for test failures)</action>
-    <action if="ANY test fails">IMMEDIATELY STOP and fix ALL failures before continuing</action>
+    <substep n="4.1" goal="TypeScript type checking">
+      <action>Run: bun run typecheck (or tsc --noEmit)</action>
+      <check>ZERO TypeScript errors required - no exceptions</check>
+      <critical>NEVER use @ts-ignore - fix the actual type issue</critical>
+    </substep>
 
-    <!-- SUBSTEP 4.2: Code Quality Enforcement -->
-    <action>MUST run ESLint on all modified files</action>
-    <action>MUST verify ZERO ESLint violations (NO eslint-disable comments allowed)</action>
-    <action if="ANY ESLint violations found">IMMEDIATELY STOP and refactor code to eliminate ALL violations</action>
+    <substep n="4.2" goal="ESLint validation">
+      <action>Run: bun run lint</action>
+      <check>ZERO ESLint errors required</check>
+      <critical>NEVER add eslint-disable comments - refactor code to satisfy the rule</critical>
+    </substep>
 
-    <!-- SUBSTEP 4.3: Mutation Testing Quality -->
-    <action>MUST run Stryker mutation testing on modified packages</action>
-    <action>MUST verify mutation score meets or exceeds threshold (Core: 85%, Others: 80%)</action>
-    <action if="mutation score below threshold">IMMEDIATELY ADD TESTS until threshold is met - NEVER lower threshold</action>
+    <substep n="4.3" goal="Test execution">
+      <action>Run: bun test</action>
+      <check>100% test pass rate required</check>
+      <critical>Tests must have meaningful assertions - no tests that always pass</critical>
+    </substep>
 
-    <!-- SUBSTEP 4.4: Acceptance Criteria Validation -->
-    <action>MUST validate implementation meets ALL story acceptance criteria</action>
-    <action>MUST verify quantitative thresholds are met (test coverage, performance, etc.)</action>
-    <action if="ANY acceptance criteria not met">IMMEDIATELY STOP and address gaps before proceeding</action>
+    <substep n="4.4" goal="Mutation testing">
+      <action>Run: bun run test:mutation (stryker)</action>
+      <check>80%+ mutation score required (85%+ for core packages)</check>
+      <critical>NEVER lower thresholds - write additional tests to meet requirements</critical>
+    </substep>
 
-    <!-- SUBSTEP 4.5: Code Integrity Verification -->
-    <action>MUST verify NO eslint-disable or @ts-ignore comments exist in new code</action>
-    <action>MUST verify proper error handling and edge case coverage</action>
-    <action>MUST verify TypeScript types are strict and comprehensive</action>
-    <action if="ANY code quality violations found">IMMEDIATELY STOP and fix ALL violations</action>
+    <substep n="4.5" goal="Code formatting">
+      <action>Run: bun run format:check</action>
+      <check>100% Prettier compliance required</check>
+    </substep>
 
-    <critical>QUALITY GATES ARE MANDATORY - NO PROCEEDING WITHOUT 100% COMPLIANCE</critical>
+    <action if="regression tests fail">STOP and fix before continuing, consider how current changes made broke regression</action>
+    <action if="new tests fail">STOP and fix before continuing</action>
+    <action if("ANY quality gate fails")>STOP and fix before continuing - quality gates are MANDATORY</action>
+    <action>Validate implementation meets ALL story acceptance criteria; if ACs include quantitative thresholds (e.g., test pass rate), ensure they are met before marking complete</action>
   </step>
 
   <step n="5" goal="Mark task complete, track review resolutions, and update story">
