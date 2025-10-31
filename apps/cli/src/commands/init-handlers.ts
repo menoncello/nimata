@@ -130,9 +130,9 @@ export async function generateProject(
 async function generateProjectFromTemplate(
   finalConfig: ProjectConfig
 ): Promise<{ success: boolean; errors: string[]; warnings: string[] }> {
-  // TODO: Implement template engine generation (Story 1.5)
+  // Template engine generation will be implemented in Story 1.5
   // For now, fall back to directory structure generation
-  return await generateProjectFromDirectoryStructure(finalConfig);
+  return generateProjectFromDirectoryStructure(finalConfig);
 }
 
 /**
