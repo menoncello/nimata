@@ -1,127 +1,172 @@
 /**
- * DOM Utilities
- *
- * DOM manipulation helpers for config-project
+ * DOM utility functions
  */
 
 /**
  * Wait for DOM to be ready
- * @param callback - Function to call when DOM is ready
+ * @param {string} callback - Function to execute when DOM is ready
  */
-export function domReady(callback: () => void): void {
+export const domReady = (callback: () => void): void => {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', callback);
   } else {
     callback();
   }
-}
+};
 
 /**
- * Create element with attributes and children
- * @param tagName - HTML tag name
- * @param attributes - Element attributes
- * @param children - Child elements or text
- * @returns Created element
+ * Check if element is in viewport
+ * @param {string} element - Element to check
+ * @returns {boolean} if element is in viewport
  */
-export function createElement<K extends keyof HTMLElementTagNameMap>(
-  tagName: K,
-  attributes: Record<string, string> = {},
-  ...children: Array<string | Element>
-): HTMLElementTagNameMap[K] {
-  const element = document.createElement(tagName);
-
-  // Set attributes
-  for (const [key, value] of Object.entries(attributes)) {
-    element.setAttribute(key, value);
-  }
-
-  // Add children
-  for (const child of children) {
-    if (typeof child === 'string') {
-      element.appendChild(document.createTextNode(child));
-    } else {
-      element.appendChild(child);
-    }
-  }
-
-  return element;
-}
+export const isInViewport = (element: Element): boolean => {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+};
 
 /**
- * Query selector with type safety
- * @param selector - CSS selector
- * @param parent - Parent element to search in
- * @returns Found element or null
+ * Smooth scroll to element
+ * @param {string} element - Element to scroll to
+ * @param {string} offset - Offset from top (default: 0)
  */
-export function querySelector<T extends Element>(
-  selector: string,
-  parent: Element | Document = document
-): T | null {
-  return parent.querySelector<T>(selector);
-}
+export const scrollToElement = (element: Element, offset: number = 0): void => {
+  const elementPosition = element.getBoundingClientRect().top;
+  const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: 'smooth',
+  });
+};
 
 /**
- * Query selector all with type safety
- * @param selector - CSS selector
- * @param parent - Parent element to search in
- * @returns Array of found elements
+ * Get element's computed style
+ * @param {string} element - Element to get style from
+ * @param {string} property - CSS property to get
+ * @returns {string} CSS property value
  */
-export function querySelectorAll<T extends Element>(
-  selector: string,
-  parent: Element | Document = document
-): T[] {
-  return Array.from(parent.querySelectorAll<T>(selector));
-}
+export const getComputedStyle = (element: Element, property: string): string => {
+  return window.getComputedStyle(element).getPropertyValue(property);
+};
 
 /**
  * Add event listener with automatic cleanup
- * @param element - Element to add listener to
- * @param event - Event name
- * @param handler - Event handler
- * @param options - Event listener options
- * @returns Cleanup function
+ * @param {string} element - Element to add listener to
+ * @param {string} event - Event type
+ * @param {string} handler - Event handler
+ * @param {string} options - Event listener options
+ * @returns {string} Cleanup function
  */
-export function addEventListener<K extends keyof HTMLElementEventMap>(
-  element: HTMLElement,
-  event: K,
-  handler: (this: HTMLElement, ev: HTMLElementEventMap[K]) => unknown,
+export const addEventListenerWithCleanup = <T extends EventTarget>(
+  element: T,
+  event: string,
+  handler: EventListener,
   options?: boolean | AddEventListenerOptions
-): () => void {
+): (() => void) => {
   element.addEventListener(event, handler, options);
 
   return () => {
     element.removeEventListener(event, handler, options);
   };
-}
+};
 
 /**
- * Debounce function calls
- * @param func - Function to debounce
- * @param wait - Wait time in milliseconds
- * @returns Debounced function
+ * Create portal container
+ * @param {string} id - Container ID
+ * @returns {string} Container element
  */
-export function debounce<T extends (...args: unknown[]) => unknown>(
+export const createPortalContainer = (id: string): HTMLElement => {
+  let container = document.getElementById(id);
+
+  if (!container) {
+    container = document.createElement('div');
+    container.id = id;
+    document.body.appendChild(container);
+  }
+
+  return container;
+};
+
+/**
+ * Copy text to clipboard
+ * @param {string} text - Text to copy
+ * @returns {Promise<void>} that resolves when text is copied
+ */
+export const copyToClipboard = async (text: string): Promise<void> => {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (err) {
+    // Fallback for older browsers
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+  }
+};
+
+/**
+ * Check if element has scrollbar
+ * @param {string} element - Element to check
+ * @returns {boolean} if element has scrollbar
+ */
+export const hasScrollbar = (element: Element): boolean => {
+  return element.scrollHeight > element.clientHeight;
+};
+
+/**
+ * Get scrollbar width
+ * @returns {string} Scrollbar width in pixels
+ */
+export const getScrollbarWidth = (): number => {
+  const outer = document.createElement('div');
+  outer.style.visibility = 'hidden';
+  outer.style.overflow = 'scroll';
+  document.body.appendChild(outer);
+
+  const inner = document.createElement('div');
+  outer.appendChild(inner);
+
+  const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+  outer.parentNode?.removeChild(outer);
+
+  return scrollbarWidth;
+};
+
+/**
+ * Debounce function
+ * @param {string} func - Function to debounce
+ * @param {string} delay - Delay in milliseconds
+ * @returns {string} Debounced function
+ */
+export const debounce = <T extends (...args: any[]) => any>(
   func: T,
-  wait: number
-): (...args: Parameters<T>) => void {
+  delay: number
+): ((...args: Parameters<T>) => void) => {
   let timeout: NodeJS.Timeout;
 
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
+    timeout = setTimeout(() => func(...args), delay);
   };
-}
+};
 
 /**
- * Throttle function calls
- * @param func - Function to throttle
- * @param limit - Time limit in milliseconds
- * @returns Throttled function
+ * Throttle function
+ * @param {string} func - Function to throttle
+ * @param {string} limit - Time limit in milliseconds
+ * @returns {string} Throttled function
  */
-export function throttle<T extends (...args: unknown[]) => unknown>(
+export const throttle = <T extends (...args: any[]) => any>(
   func: T,
   limit: number
-): (...args: Parameters<T>) => void {
+): ((...args: Parameters<T>) => void) => {
   let inThrottle: boolean;
 
   return (...args: Parameters<T>) => {
@@ -131,4 +176,4 @@ export function throttle<T extends (...args: unknown[]) => unknown>(
       setTimeout(() => (inThrottle = false), limit);
     }
   };
-}
+};

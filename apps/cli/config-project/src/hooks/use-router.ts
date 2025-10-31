@@ -48,7 +48,7 @@ export function useRouter(routes: Route[] = []) {
       });
       // Find matching route and extract params
       const matchedRoute = routes.find((route) => {
-        const routePattern = route.path.replace(/:[^/]+/g, '([^/]+)').replace(/\*/g, '.*');
+        const routePattern = route.path.replace(/:[^/]+/g, '([^/]+)').replace(/\*\*/g, '.*');
         const regex = new RegExp(`^${routePattern}$`);
         const match = path.match(regex);
 
