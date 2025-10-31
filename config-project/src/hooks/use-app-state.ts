@@ -41,56 +41,69 @@ const initializeTheme = (setTheme: (theme: 'light' | 'dark') => void): void => {
 
 // Helper function to filter expired notifications
 const filterExpiredNotifications = (notifications: Notification[]): Notification[] => {
-  return notifications.filter((n) => Date.now() - n.timestamp.getTime() < NOTIFICATION_DISPLAY_DURATION);
+  return notifications.filter(
+    (n) => Date.now() - n.timestamp.getTime() < NOTIFICATION_DISPLAY_DURATION
+  );
 };
 
 // Simple state updater functions
-const createUpdateUser = (setState: React.Dispatch<React.SetStateAction<AppState>>) => (user: User | null) => {
-  setState((prev) => ({ ...prev, user }));
-};
-
-const createSetLoading = (setState: React.Dispatch<React.SetStateAction<AppState>>) => (loading: boolean) => {
-  setState((prev) => ({ ...prev, loading }));
-};
-
-const createSetError = (setState: React.Dispatch<React.SetStateAction<AppState>>) => (error: string | null) => {
-  setState((prev) => ({ ...prev, error }));
-};
-
-const createAddNotification = (setState: React.Dispatch<React.SetStateAction<AppState>>) => (notification: Omit<Notification, 'id' | 'timestamp'>) => {
-  const newNotification: Notification = {
-    ...notification,
-    id: Date.now().toString(),
-    timestamp: new Date(),
+const createUpdateUser =
+  (setState: React.Dispatch<React.SetStateAction<AppState>>) => (user: User | null) => {
+    setState((prev) => ({ ...prev, user }));
   };
 
-  setState((prev) => ({
-    ...prev,
-    notifications: [...prev.notifications, newNotification],
-  }));
-};
+const createSetLoading =
+  (setState: React.Dispatch<React.SetStateAction<AppState>>) => (loading: boolean) => {
+    setState((prev) => ({ ...prev, loading }));
+  };
 
-const createRemoveNotification = (setState: React.Dispatch<React.SetStateAction<AppState>>) => (id: string) => {
-  setState((prev) => ({
-    ...prev,
-    notifications: prev.notifications.filter((n) => n.id !== id),
-  }));
-};
+const createSetError =
+  (setState: React.Dispatch<React.SetStateAction<AppState>>) => (error: string | null) => {
+    setState((prev) => ({ ...prev, error }));
+  };
 
-const createClearNotifications = (setState: React.Dispatch<React.SetStateAction<AppState>>) => () => {
-  setState((prev) => ({ ...prev, notifications: [] }));
-};
+const createAddNotification =
+  (setState: React.Dispatch<React.SetStateAction<AppState>>) =>
+  (notification: Omit<Notification, 'id' | 'timestamp'>) => {
+    const newNotification: Notification = {
+      ...notification,
+      id: Date.now().toString(),
+      timestamp: new Date(),
+    };
 
-const createSetTheme = (setState: React.Dispatch<React.SetStateAction<AppState>>) => (theme: 'light' | 'dark') => {
-  setState((prev) => ({ ...prev, theme }));
+    setState((prev) => ({
+      ...prev,
+      notifications: [...prev.notifications, newNotification],
+    }));
+  };
 
-  if (typeof document !== 'undefined') {
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-};
+const createRemoveNotification =
+  (setState: React.Dispatch<React.SetStateAction<AppState>>) => (id: string) => {
+    setState((prev) => ({
+      ...prev,
+      notifications: prev.notifications.filter((n) => n.id !== id),
+    }));
+  };
+
+const createClearNotifications =
+  (setState: React.Dispatch<React.SetStateAction<AppState>>) => () => {
+    setState((prev) => ({ ...prev, notifications: [] }));
+  };
+
+const createSetTheme =
+  (setState: React.Dispatch<React.SetStateAction<AppState>>) => (theme: 'light' | 'dark') => {
+    setState((prev) => ({ ...prev, theme }));
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  };
 
 // Helper function to set up effects
-const setupEffects = (setTheme: (theme: 'light' | 'dark') => void, setState: React.Dispatch<React.SetStateAction<AppState>>): void => {
+const setupEffects = (
+  setTheme: (theme: 'light' | 'dark') => void,
+  setState: React.Dispatch<React.SetStateAction<AppState>>
+): void => {
   useEffect(() => {
     initializeTheme(setTheme);
   }, [setTheme]);
@@ -134,7 +147,16 @@ const useAppCore = (): {
   const clearNotifications = createClearNotifications(setState);
   const setTheme = createSetTheme(setState);
 
-  return { state, updateUser, setLoading, setError, addNotification, removeNotification, clearNotifications, setTheme };
+  return {
+    state,
+    updateUser,
+    setLoading,
+    setError,
+    addNotification,
+    removeNotification,
+    clearNotifications,
+    setTheme,
+  };
 };
 
 /**
@@ -155,7 +177,16 @@ export function useAppState(): {
   clearNotifications: () => void;
   setTheme: (theme: 'light' | 'dark') => void;
 } {
-  const { state, updateUser, setLoading, setError, addNotification, removeNotification, clearNotifications, setTheme } = useAppCore();
+  const {
+    state,
+    updateUser,
+    setLoading,
+    setError,
+    addNotification,
+    removeNotification,
+    clearNotifications,
+    setTheme,
+  } = useAppCore();
   setupEffects(setTheme, setState);
 
   return {

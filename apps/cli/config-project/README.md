@@ -22,7 +22,7 @@ bun add config-project
 import { ConfigProjectCore } from 'config-project';
 
 const app = new ConfigProjectCore({
-  debug: true,
+  debug: true
 });
 
 await app.initialize();

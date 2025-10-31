@@ -7,13 +7,14 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { TestProjectCore } from '../src/index.js';
 
 describe('test-project', () => {
+
   let instance: TestProjectCore;
   let testConfig: TestProjectConfig;
 
   beforeEach(() => {
     testConfig = {
       debug: false,
-      options: {},
+      options: {}
     };
     instance = new TestProjectCore(testConfig);
   });
@@ -24,12 +25,13 @@ describe('test-project', () => {
     testConfig = null as any;
   });
 
+
   describe('constructor', () => {
     it('should create instance with default configuration', () => {
       // Given: Default configuration
       const defaultConfig = {
         debug: false,
-        options: {},
+        options: {}
       };
 
       // When: Creating instance
@@ -44,7 +46,7 @@ describe('test-project', () => {
       // Given: Debug configuration
       const debugConfig = {
         debug: true,
-        options: {},
+        options: {}
       };
 
       // When: Creating instance
@@ -56,12 +58,14 @@ describe('test-project', () => {
     });
   });
 
+
   describe('initialize', () => {
+
     it('should initialize without debug mode', () => {
       // Given: Configuration without debug
       const noDebugConfig = {
         debug: false,
-        options: {},
+        options: {}
       };
 
       // When: Initializing
@@ -71,11 +75,12 @@ describe('test-project', () => {
       expect(result).toBeDefined();
     });
 
+
     it('should initialize with debug mode', () => {
       // Given: Configuration with debug
       const debugConfig = {
         debug: true,
-        options: {},
+        options: {}
       };
 
       // When: Initializing
@@ -84,6 +89,7 @@ describe('test-project', () => {
       // Then: Should initialize successfully with debug enabled
       expect(result).toBeDefined();
     });
+
 
     it('should handle initialization errors gracefully', () => {
       // Given: Invalid configuration
@@ -94,6 +100,7 @@ describe('test-project', () => {
       expect(() => instance.initialize(invalidConfig)).not.toThrow();
     });
   });
+
 
   describe('configuration', () => {
     it('should return current configuration', () => {
@@ -109,7 +116,7 @@ describe('test-project', () => {
       // Given: Test configuration
       const validConfig = {
         debug: true,
-        options: { test: true },
+        options: { test: true }
       };
 
       // When: Setting configuration
@@ -119,6 +126,7 @@ describe('test-project', () => {
       expect(instance.getConfig()).toEqual(validConfig);
     });
   });
+
 
   describe('updateConfig', () => {
     it('should update configuration partially', () => {
@@ -156,12 +164,14 @@ describe('test-project', () => {
     });
   });
 
+
   describe('error handling', () => {
+
     it('should handle invalid configuration gracefully', () => {
       // Given: Invalid configuration
       const invalidConfig = {
         debug: 'invalid' as any,
-        options: null as any,
+        options: null as any
       };
 
       // When: Creating instance
@@ -176,6 +186,7 @@ describe('test-project', () => {
       expect(() => new TestProjectCore(undefined as any)).not.toThrow();
     });
 
+
     it('should handle invalid method arguments', () => {
       // Given: Valid instance
       // When: Calling methods with invalid arguments
@@ -183,6 +194,7 @@ describe('test-project', () => {
       expect(() => instance.initialize(null as any)).not.toThrow();
       expect(() => instance.updateConfig(null as any)).not.toThrow();
     });
+
 
     it('should provide meaningful error messages', () => {
       // Given: Test scenario that should produce an error

@@ -105,3 +105,9 @@ export interface Environment {
   APP_VERSION: string;
   NODE_ENV: 'development' | 'production' | 'test';
 }
+
+// Config project types
+export interface ConfigProjectConfig {
+  debug: boolean;
+  options: Record<string, any>;
+}
