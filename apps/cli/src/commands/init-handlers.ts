@@ -130,14 +130,9 @@ export async function generateProject(
 async function generateProjectFromTemplate(
   finalConfig: ProjectConfig
 ): Promise<{ success: boolean; errors: string[]; warnings: string[] }> {
-  const projectGenerator = new ProjectGenerator();
-  const result = await projectGenerator.generateProject(finalConfig);
-
-  return {
-    success: result.success,
-    errors: result.errors,
-    warnings: result.warnings,
-  };
+  // TODO: Implement template engine generation (Story 1.5)
+  // For now, fall back to directory structure generation
+  return await generateProjectFromDirectoryStructure(finalConfig);
 }
 
 /**
