@@ -4,10 +4,10 @@
  * This file tests the React application initialization functionality
  */
 
+import { JSDOM } from 'jsdom';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // Set up DOM environment before importing React components
-import { JSDOM } from 'jsdom';
 
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
   url: 'http://localhost',

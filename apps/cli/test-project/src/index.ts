@@ -30,6 +30,10 @@ export interface TestProjectConfig {
  */
 export class TestProjectCore {
   private config: TestProjectConfig;
+  /**
+   *
+   * @param config
+   */
   constructor(config: TestProjectConfig = {}) {
     this.config = {
       debug: false,
@@ -53,12 +57,14 @@ export class TestProjectCore {
   }
   /**
    * Set configuration (replaces entire config)
+   * @param newConfig
    */
   setConfig(newConfig: TestProjectConfig): void {
     this.config = { ...newConfig };
   }
   /**
    * Update configuration
+   * @param newConfig
    */
   updateConfig(newConfig: Partial<TestProjectConfig>): void {
     this.config = { ...this.config, ...newConfig };

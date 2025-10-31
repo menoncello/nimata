@@ -12,6 +12,7 @@ import { ViteDevServer } from 'vite';
 /**
  * Setup custom development server with proxy configuration
  * This is useful when you need custom middleware or proxy setup
+ * @param vite
  */
 export async function setupDevServer(vite: ViteDevServer) {
   const app = express();

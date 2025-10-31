@@ -4,6 +4,7 @@
 
 /**
  * Format a date as ISO string
+ * @param date
  */
 export function formatDate(date: Date = new Date()): string {
   return date.toISOString();
@@ -11,6 +12,7 @@ export function formatDate(date: Date = new Date()): string {
 
 /**
  * Delay execution for specified milliseconds
+ * @param ms
  */
 export function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -18,8 +20,9 @@ export function delay(ms: number): Promise<void> {
 
 /**
  * Generate a random string
+ * @param length
  */
-export function generateRandomString(length: number = 10): string {
+export function generateRandomString(length = 10): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   for (let i = 0; i < length; i++) {
@@ -30,6 +33,7 @@ export function generateRandomString(length: number = 10): string {
 
 /**
  * Deep clone an object
+ * @param obj
  */
 export function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
@@ -37,6 +41,7 @@ export function deepClone<T>(obj: T): T {
 
 /**
  * Check if a value is a valid object
+ * @param value
  */
 export function isObject(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -44,6 +49,8 @@ export function isObject(value: unknown): value is Record<string, unknown> {
 
 /**
  * Safely access nested object properties
+ * @param obj
+ * @param path
  */
 export function getNestedValue<T = any>(
   obj: Record<string, unknown>,

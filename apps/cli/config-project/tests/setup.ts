@@ -5,8 +5,8 @@
  * Configure global test environment, mocks, and utilities here
  */
 
-import { beforeAll, afterAll, beforeEach, afterEach, vi } from 'vitest';
 import { config } from 'dotenv';
+import { beforeAll, afterAll, beforeEach, afterEach, vi } from 'vitest';
 
 // Configure console output for tests
 const originalConsole = global.console;

@@ -23,10 +23,10 @@ export const MAX_RETRIES = 3;
  * Common colors used in generators
  */
 export const COLORS = {
-  RED: 0xff0000,
-  GREEN: 0x00ff00,
-  BLUE: 0x0000ff,
-  WHITE: 0xffffff,
+  RED: 0xFF0000,
+  GREEN: 0x00FF00,
+  BLUE: 0x0000FF,
+  WHITE: 0xFFFFFF,
   BLACK: 0x000000,
 } as const;
 
