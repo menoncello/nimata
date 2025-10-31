@@ -4,9 +4,9 @@
  * Helper functions for the init command to keep the main file focused.
  */
 
-import { ProjectGenerator, getProjectDirectory } from '@nimata/adapters';
+import { getProjectDirectory } from '@nimata/adapters';
 import type { ProjectConfig } from '@nimata/adapters/wizards/project-wizard';
-import { DirectoryStructureGenerator } from '@nimata/core';
+import { DirectoryStructureGenerator, type ProjectConfig as CoreProjectConfig } from '@nimata/core';
 import pc from 'picocolors';
 import type { OutputWriter } from '../output.js';
 
@@ -23,11 +23,11 @@ const WARNING_PREFIX = '\n⚠️  Warnings:';
 
 /**
  * Display validation errors and exit
- * @param validation - Validation result containing validity status, errors, and warnings
- * @param validation.valid - Whether the validation passed
- * @param validation.errors - Array of validation error messages
- * @param validation.warnings - Array of validation warning messages
- * @param output - Output writer instance
+ * @param {object} validation - Validation result containing validity status, errors, and warnings
+ * @param {boolean} validation.valid - Whether the validation passed
+ * @param {string[]} validation.errors - Array of validation error messages
+ * @param {string[]} validation.warnings - Array of validation warning messages
+ * @param {OutputWriter} output - Output writer instance
  */
 export function displayValidationErrors(
   validation: { valid: boolean; errors?: string[]; warnings?: string[] },
@@ -53,9 +53,9 @@ export function displayValidationErrors(
 
 /**
  * Display validation warnings if any
- * @param validation - Validation result containing warnings
- * @param validation.warnings - Array of validation warning messages
- * @param output - Output writer instance
+ * @param {object} validation - Validation result containing warnings
+ * @param {string[]} validation.warnings - Array of validation warning messages
+ * @param {OutputWriter} output - Output writer instance
  */
 export function displayValidationWarnings(
   validation: { warnings?: string[] },
@@ -71,8 +71,8 @@ export function displayValidationWarnings(
 
 /**
  * Display configuration summary to user
- * @param finalConfig - Final project configuration
- * @param output - Output writer instance
+ * @param {ProjectConfig} finalConfig - Final project configuration
+ * @param {OutputWriter} output - Output writer instance
  */
 export function displayConfigurationSummary(
   finalConfig: ProjectConfig,
@@ -102,8 +102,9 @@ export function displayConfigurationSummary(
 
 /**
  * Generate the project based on configuration
- * @param finalConfig - Final project configuration
- * @param output - Output writer instance
+ * @param {ProjectConfig} finalConfig - Final project configuration
+ * @param {OutputWriter} output - Output writer instance
+ * @returns {Promise<void>}
  */
 export async function generateProject(
   finalConfig: ProjectConfig,
@@ -122,31 +123,68 @@ export async function generateProject(
 }
 
 /**
+ * Execute project generation using template engine (Story 1.5)
+ * @param {ProjectConfig} finalConfig - Final project configuration
+ * @returns {Promise<{ success: boolean; errors: string[]; warnings: string[] }>} Generation result
+ */
+async function generateProjectFromTemplate(
+  finalConfig: ProjectConfig
+): Promise<{ success: boolean; errors: string[]; warnings: string[] }> {
+  const projectGenerator = new ProjectGenerator();
+  const result = await projectGenerator.generateProject(finalConfig);
+
+  return {
+    success: result.success,
+    errors: result.errors,
+    warnings: result.warnings,
+  };
+}
+
+/**
+ * Execute project generation using directory structure (Story 1.4)
+ * @param {ProjectConfig} finalConfig - Final project configuration
+ * @returns {Promise<{ success: boolean; errors: string[]; warnings: string[] }>} Generation result
+ */
+async function generateProjectFromDirectoryStructure(
+  finalConfig: ProjectConfig
+): Promise<{ success: boolean; errors: string[]; warnings: string[] }> {
+  const directoryGenerator = new DirectoryStructureGenerator();
+
+  // Generate the directory structure
+  const structure = directoryGenerator.generate(finalConfig as unknown as CoreProjectConfig);
+
+  // Get the project directory
+  const projectDir = getProjectDirectory(finalConfig);
+
+  // Create the actual directories and files on disk
+  await (
+    directoryGenerator as {
+      createStructureFromDirectoryItems: (dir: string, structure: unknown) => Promise<void>;
+    }
+  ).createStructureFromDirectoryItems(projectDir, structure);
+
+  return {
+    success: true,
+    errors: [],
+    warnings: [],
+  };
+}
+
+/**
  * Execute project generation
- * @param finalConfig - Final project configuration
- * @returns Generation result
+ * @param {ProjectConfig} finalConfig - Final project configuration
+ * @returns {Promise<{ success: boolean; errors: string[]; warnings: string[] }>} Generation result
  */
 async function executeProjectGeneration(
   finalConfig: ProjectConfig
 ): Promise<{ success: boolean; errors: string[]; warnings: string[] }> {
   try {
-    // Use the new DirectoryStructureGenerator from Story 1.4
-    const directoryGenerator = new DirectoryStructureGenerator();
-
-    // Generate the directory structure
-    const structure = directoryGenerator.generate(finalConfig);
-
-    // Get the project directory
-    const projectDir = getProjectDirectory(finalConfig);
-
-    // Create the actual directories and files on disk
-    await directoryGenerator.createStructureFromDirectoryItems(projectDir, structure);
-
-    return {
-      success: true,
-      errors: [],
-      warnings: [],
-    };
+    // If a template is specified, use the template engine (Story 1.5)
+    if (finalConfig.template) {
+      return await generateProjectFromTemplate(finalConfig);
+    }
+    // Otherwise, use the DirectoryStructureGenerator from Story 1.4
+    return await generateProjectFromDirectoryStructure(finalConfig);
   } catch (error) {
     return {
       success: false,
@@ -160,11 +198,11 @@ async function executeProjectGeneration(
 
 /**
  * Handle generation result (errors and warnings)
- * @param result - Generation result containing success status, errors, and warnings
- * @param result.success - Whether the generation succeeded
- * @param result.errors - Array of generation error messages
- * @param result.warnings - Array of generation warning messages
- * @param output - Output writer instance
+ * @param {object} result - Generation result containing success status, errors, and warnings
+ * @param {boolean} result.success - Whether the generation succeeded
+ * @param {string[]} result.errors - Array of generation error messages
+ * @param {string[]} result.warnings - Array of generation warning messages
+ * @param {OutputWriter} output - Output writer instance
  */
 function handleGenerationResult(
   result: { success: boolean; errors: string[]; warnings: string[] },
@@ -188,8 +226,8 @@ function handleGenerationResult(
 
 /**
  * Display success message and next steps
- * @param finalConfig - Final project configuration
- * @param output - Output writer instance
+ * @param {ProjectConfig} finalConfig - Final project configuration
+ * @param {OutputWriter} output - Output writer instance
  */
 function displaySuccessMessage(finalConfig: ProjectConfig, output: OutputWriter): void {
   output.success(pc.green('\n✅ Project generated successfully!'));
@@ -201,8 +239,9 @@ function displaySuccessMessage(finalConfig: ProjectConfig, output: OutputWriter)
 
 /**
  * Handle generation errors
- * @param genError - Generation error
- * @param output - Output writer instance
+ * @param {unknown} genError - Generation error
+ * @param {OutputWriter} output - Output writer instance
+ * @returns {never} Never returns (always exits)
  */
 function handleGenerationError(genError: unknown, output: OutputWriter): never {
   const errorMessage = genError instanceof Error ? genError.message : 'Unknown generation error';
