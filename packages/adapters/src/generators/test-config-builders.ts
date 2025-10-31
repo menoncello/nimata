@@ -18,7 +18,7 @@ export interface TestConfigOptions {
 
 /**
  * Build include patterns for test configuration
- * @returns Include patterns array as string
+ * @returns {string} Include patterns array as string
  */
 function buildIncludePatterns(): string {
   return `[
@@ -30,7 +30,7 @@ function buildIncludePatterns(): string {
 
 /**
  * Build exclude patterns for test configuration
- * @returns Exclude patterns array as string
+ * @returns {string} Exclude patterns array as string
  */
 function buildExcludePatterns(): string {
   return `[
@@ -44,8 +44,8 @@ function buildExcludePatterns(): string {
 
 /**
  * Build coverage configuration section
- * @param options - Test configuration options
- * @returns Coverage configuration string
+ * @param {TestConfigOptions} options - Test configuration options
+ * @returns {TestConfigOptions): string} Coverage configuration string
  */
 function buildCoverageConfig(options: TestConfigOptions): string {
   return `${options.uiConfig}coverage: {
@@ -66,8 +66,8 @@ function buildCoverageConfig(options: TestConfigOptions): string {
 
 /**
  * Build test configuration body
- * @param options - Test configuration options
- * @returns Test configuration body string
+ * @param {TestConfigOptions} options - Test configuration options
+ * @returns {TestConfigOptions): string} Test configuration body string
  */
 export function buildTestConfigBody(options: TestConfigOptions): string {
   const includePatterns = buildIncludePatterns();
@@ -89,7 +89,7 @@ export function buildTestConfigBody(options: TestConfigOptions): string {
 
 /**
  * Build unit test configuration for workspace
- * @returns Unit test configuration string
+ * @returns {string} Unit test configuration string
  */
 export function buildUnitTestConfig(): string {
   return `{
@@ -105,8 +105,8 @@ export function buildUnitTestConfig(): string {
 
 /**
  * Build integration test configuration for workspace
- * @param testEnvironment - Test environment to use
- * @returns Integration test configuration string
+ * @param {string} testEnvironment - Test environment to use
+ * @returns {string): string} Integration test configuration string
  */
 export function buildIntegrationTestConfig(testEnvironment: string): string {
   return `{
@@ -123,7 +123,7 @@ export function buildIntegrationTestConfig(testEnvironment: string): string {
 
 /**
  * Build browser test configuration for workspace
- * @returns Browser test configuration string or empty string if not applicable
+ * @returns {boolean} not applicable
  */
 export function buildBrowserTestConfig(): string {
   return `,

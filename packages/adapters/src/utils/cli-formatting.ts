@@ -11,8 +11,8 @@ const MS_IN_MINUTE = 60000;
 
 /**
  * Format file size in human readable format
- * @param bytes - File size in bytes
- * @returns Formatted file size string
+ * @param {number} bytes - File size in bytes
+ * @returns {number): string} Formatted file size string
  */
 export function formatFileSize(bytes: number): string {
   const units = ['B', 'KB', 'MB', 'GB'];
@@ -29,8 +29,8 @@ export function formatFileSize(bytes: number): string {
 
 /**
  * Format duration in human readable format
- * @param ms - Duration in milliseconds
- * @returns Formatted duration string
+ * @param {number} ms - Duration in milliseconds
+ * @returns {number): string} Formatted duration string
  */
 export function formatDuration(ms: number): string {
   if (ms < MS_IN_SECOND) {
@@ -45,9 +45,9 @@ export function formatDuration(ms: number): string {
 
 /**
  * Format list with bullet points
- * @param items - Array of strings to format
- * @param bullet - Bullet character to use (default: '•')
- * @returns Formatted list string
+ * @param {string[]} items - Array of strings to format
+ * @param {unknown} bullet - Bullet character to use (default: '•')
+ * @returns {string} Formatted list string
  */
 export function formatList(items: string[], bullet = '•'): string {
   return items.map((item) => `${bullet} ${item}`).join('\n');

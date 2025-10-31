@@ -24,8 +24,8 @@ import { HelpOption } from './help-system.js';
 
 /**
  * Format options for display
- * @param options - Array of help options to format
- * @returns Formatted options string
+ * @param {HelpOption[]} options - Array of help options to format
+ * @returns {HelpOption[]): string} Formatted options string
  */
 export function formatOptions(options: HelpOption[]): string {
   return options
@@ -47,9 +47,9 @@ export function formatOptions(options: HelpOption[]): string {
 
 /**
  * Format unknown command error message
- * @param commandName - Name of the unknown command
- * @param availableCommands - Array of available command names
- * @returns Formatted error message
+ * @param {unknown} commandName - Name of the unknown command
+ * @param {unknown} availableCommands - Array of available command names
+ * @returns {string} Formatted error message
  */
 export function formatUnknownCommandError(
   commandName: string,
@@ -65,9 +65,9 @@ export function formatUnknownCommandError(
 
 /**
  * Format unknown topic error message
- * @param topicName - Name of the unknown topic
- * @param availableTopics - Array of available topic names
- * @returns Formatted error message
+ * @param {string} topicName - Name of the unknown topic
+ * @param {string[]} availableTopics - Array of available topic names
+ * @returns { string} Formatted error message
  */
 export function formatUnknownTopicError(topicName: string, availableTopics: string[]): string {
   const message = UNKNOWN_TOPIC_MESSAGE.replace('{{topic}}', topicName);
@@ -77,14 +77,14 @@ export function formatUnknownTopicError(topicName: string, availableTopics: stri
 
 /**
  * Format command help output
- * @param command - Command help data
- * @param command.name - Command name
- * @param command.description - Command description
- * @param command.usage - Command usage string
- * @param command.examples - Command examples
- * @param command.options - Command options
- * @param command.subcommands - Command subcommands
- * @returns Formatted command help string
+ * @param {{ name: string; description: string; usage: string; examples: string[]; options: Array<{ name: string; description: string; type: string; required?: boolean }>; subcommands: Array<{ name: string; description: string }> }} command - Command object to format
+ * @param {string} command.name - Command name
+ * @param {string} command.description - Command description
+ * @param {string} command.usage - Command usage string
+ * @param {string[]} command.examples - Command examples
+ * @param {Array<{ name: string; description: string; type: string; required?: boolean }>} command.options - Command options
+ * @param {Array<{ name: string; description: string }>} command.subcommands - Command subcommands
+ * @returns {string} Formatted command help string
  */
 export function formatCommandHelp(command: {
   name: string;
@@ -109,14 +109,14 @@ export function formatCommandHelp(command: {
 
 /**
  * Format topic help output
- * @param topic - Topic help data
- * @param topic.name - Topic name
- * @param topic.description - Topic description
- * @param topic.usage - Topic usage string
- * @param topic.examples - Topic examples
- * @param topic.options - Topic options
- * @param topic.seeAlso - Related topics
- * @returns Formatted topic help string
+ * @param {{ name: string; description: string; usage?: string; examples?: string[]; options?: HelpOption[]; seeAlso?: string[] }} topic - Topic object to format
+ * @param {string} topic.name - Topic name
+ * @param {string} topic.description - Topic description
+ * @param {string} topic.usage - Topic usage string
+ * @param {string[]} topic.examples - Topic examples
+ * @param {HelpOption[]} topic.options - Topic options
+ * @param {string[]} topic.seeAlso - Related topics
+ * @returns {string} Formatted topic help string
  */
 export function formatTopicHelp(topic: {
   name: string;
@@ -153,8 +153,8 @@ export function formatTopicHelp(topic: {
 
 /**
  * Format topics list for display
- * @param topics - Map of topics to format
- * @returns Formatted topics list string
+ * @param {Map<string} topics - Map of topics to format
+ * @returns {Map<string,} Formatted topics list string
  */
 export function formatTopicsList(topics: Map<string, { description: string }>): string {
   const sortedTopics = Array.from(topics.entries()).sort(([a], [b]) => a.localeCompare(b));

@@ -10,8 +10,8 @@ import {
 
 /**
  * Check if project name is empty or invalid
- * @param name - Project name to validate
- * @returns Error message if invalid, null if valid
+ * @param {string} name - Project name to validate
+ * @returns {string} Error message if invalid, null if valid
  */
 export function validateProjectNameRequired(name: string): string | null {
   if (!name || name.trim().length === 0) {
@@ -22,8 +22,8 @@ export function validateProjectNameRequired(name: string): string | null {
 
 /**
  * Check for dangerous patterns in project name
- * @param name - Project name to validate
- * @returns Error message if dangerous patterns found, null if safe
+ * @param {string} name - Project name to validate
+ * @returns {string} Error message if dangerous patterns found, null if safe
  */
 export function validateProjectNameSecurity(name: string): string | null {
   for (const pattern of DANGEROUS_NAME_PATTERNS) {
@@ -36,8 +36,8 @@ export function validateProjectNameSecurity(name: string): string | null {
 
 /**
  * Validate project name length
- * @param name - Project name to validate
- * @returns Object with error and warning messages
+ * @param {string} name - Project name to validate
+ * @returns {string} Object with error and warning messages
  */
 export function validateProjectNameLength(name: string): {
   error: string | null;
@@ -56,8 +56,8 @@ export function validateProjectNameLength(name: string): {
 
 /**
  * Validate npm package name format
- * @param name - Project name to validate
- * @returns Error message if invalid format, null if valid
+ * @param {string} name - Project name to validate
+ * @returns {string} Error message if invalid format, null if valid
  */
 export function validateProjectNameFormat(name: string): string | null {
   if (!PROJECT_NAME_PATTERN.test(name)) {
@@ -68,8 +68,8 @@ export function validateProjectNameFormat(name: string): string | null {
 
 /**
  * Check if project name is reserved
- * @param name - Project name to validate
- * @returns Warning message if reserved, null if available
+ * @param {string} name - Project name to validate
+ * @returns {string} Warning message if reserved, null if available
  */
 export function validateProjectNameReserved(name: string): string | null {
   if (RESERVED_PROJECT_NAMES.includes(name.toLowerCase())) {
@@ -80,9 +80,9 @@ export function validateProjectNameReserved(name: string): string | null {
 
 /**
  * Complete project name validation
- * @param name - Project name to validate
- * @param warnings - Array to collect warnings
- * @param errors - Array to collect errors
+ * @param {string} name - Project name to validate
+ * @param {string} warnings - Array to collect warnings
+ * @param {string} errors - Array to collect errors
  */
 export function validateProjectName(name: string, warnings: string[], errors: string[]): void {
   // Check required
@@ -105,9 +105,9 @@ export function validateProjectName(name: string, warnings: string[], errors: st
 
 /**
  * Validate remaining project name aspects (length, format, reserved names)
- * @param name - Project name to validate
- * @param warnings - Array to collect warnings
- * @param errors - Array to collect errors
+ * @param {string} name - Project name to validate
+ * @param {string} warnings - Array to collect warnings
+ * @param {string} errors - Array to collect errors
  */
 function validateRemainingProjectNameAspects(
   name: string,

@@ -33,9 +33,9 @@ const SEARCH_CONSTANTS = {
 export class TemplateSearchUtils {
   /**
    * Search templates by text
-   * @param index Template index
-   * @param query Search query
-   * @param results Map to store results
+   * @param {unknown} index Template index
+   * @param {unknown} query Search query
+   * @param {Map<string} results Map to store results
    */
   static searchByText(
     index: TemplateIndex,
@@ -51,8 +51,8 @@ export class TemplateSearchUtils {
 
   /**
    * Parse search query into terms
-   * @param query Search query
-   * @returns Array of search terms
+   * @param {string} query Search query
+   * @returns {string): string[]} Array of search terms
    */
   static parseSearchTerms(query: string): string[] {
     return query
@@ -63,9 +63,9 @@ export class TemplateSearchUtils {
 
   /**
    * Process a single search term
-   * @param index Template index
-   * @param term Search term
-   * @param results Map to store results
+   * @param {unknown} index Template index
+   * @param {unknown} term Search term
+   * @param {Map<string} results Map to store results
    */
   static processSearchTerm(
     index: TemplateIndex,
@@ -82,10 +82,10 @@ export class TemplateSearchUtils {
 
   /**
    * Update template score in results
-   * @param index Template index
-   * @param templateId Template ID
-   * @param term Search term
-   * @param results Map to store results
+   * @param {unknown} index Template index
+   * @param {unknown} templateId Template ID
+   * @param {unknown} term Search term
+   * @param {Map<string} results Map to store results
    */
   static updateTemplateScore(
     index: TemplateIndex,
@@ -108,12 +108,12 @@ export class TemplateSearchUtils {
 
   /**
    * Apply filters to search results
-   * @param results Search results
-   * @param filters Filters to apply
-   * @param filters.category Filter by category
-   * @param filters.projectType Filter by project type
-   * @param filters.tags Filter by tags
-   * @param filters.author Filter by author
+   * @param {Map<string} results Search results
+   * @param {unknown} filters Filters to apply
+   * @param {unknown} filters.category Filter by category
+   * @param {unknown} filters.projectType Filter by project type
+   * @param {unknown} filters.tags Filter by tags
+   * @param {unknown} filters.author Filter by author
    */
   static applyFilters(
     results: Map<string, { template: TemplateMetadata; score: number }>,

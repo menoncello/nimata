@@ -12,8 +12,8 @@ import { type ProjectConfig } from './enhanced-init-types.js';
 export class DependencyManager {
   /**
    * Get development dependencies based on configuration
-   * @param config - Project configuration
-   * @returns Development dependencies object
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {Record<string, string>} Development dependencies object
    */
   getDevDependencies(config: ProjectConfig): Record<string, string> {
     const deps: Record<string, string> = {
@@ -37,8 +37,8 @@ export class DependencyManager {
 
   /**
    * Get runtime dependencies for project type
-   * @param projectType - Project type
-   * @returns Dependencies object
+   * @param {string} projectType - Project type
+   * @returns {Record<string, string>} Dependencies object
    */
   getDependencies(projectType: string): Record<string, string> {
     if (projectType === 'cli') {
@@ -51,8 +51,8 @@ export class DependencyManager {
 
   /**
    * Get scripts for project type
-   * @param projectType - Project type
-   * @returns Scripts object
+   * @param {string} projectType - Project type
+   * @returns {Record<string, string>} Scripts object
    */
   getScripts(projectType: string): Record<string, string> {
     const baseScripts = {
@@ -86,8 +86,8 @@ export class DependencyManager {
 
   /**
    * Get keywords for project type
-   * @param projectType - Project type
-   * @returns Keywords array
+   * @param {string} projectType - Project type
+   * @returns {string[]} Keywords array
    */
   getKeywords(projectType: string): string[] {
     const baseKeywords = ['typescript', 'node'];
@@ -106,8 +106,8 @@ export class DependencyManager {
 
   /**
    * Get main entry point for project type
-   * @param projectType - Project type
-   * @returns Main entry point path
+   * @param {string} projectType - Project type
+   * @returns {string} Main entry point path
    */
   getMainEntry(projectType: string): string {
     switch (projectType) {
@@ -122,10 +122,25 @@ export class DependencyManager {
 
   /**
    * Get types entry point for project type
-   * @param projectType - Project type
-   * @returns Types entry point path
+   * @param {string} projectType - Project type
+   * @returns {string | undefined} Types entry point path
    */
   getTypesEntry(projectType: string): string | undefined {
     return projectType === 'library' ? 'dist/index.d.ts' : undefined;
+  }
+
+  /**
+   * Get bin field for CLI projects
+   * @param {string} projectName - Project name
+   * @param {string} projectType - Project type
+   * @returns {Record<string, string> | undefined} Bin field object
+   */
+  getBinField(projectName: string, projectType: string): Record<string, string> | undefined {
+    if (projectType === 'cli') {
+      return {
+        [projectName]: `./bin/${projectName}`,
+      };
+    }
+    return undefined;
   }
 }

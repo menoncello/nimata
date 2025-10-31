@@ -13,114 +13,114 @@ import yargs, { type CommandModule, type Options } from 'yargs';
 export interface CliBuilder {
   /**
    * Create a CLI instance
-   * @param argv - Command line arguments
-   * @returns CLI builder instance
+   * @param {string[]} argv - Command line arguments
+   * @returns {CliBuilder} CLI builder instance
    */
   create: (argv: string[]) => CliBuilder;
 
   /**
    * Set script name
-   * @param name - Script name
-   * @returns CLI builder instance
+   * @param {string} name - Script name
+   * @returns {CliBuilder} CLI builder instance
    */
   scriptName: (name: string) => CliBuilder;
 
   /**
    * Set version
-   * @param version - Version string
-   * @returns CLI builder instance
+   * @param {string} version - Version string
+   * @returns {CliBuilder} CLI builder instance
    */
   version: (version: string) => CliBuilder;
 
   /**
    * Set usage text
-   * @param usage - Usage text
-   * @returns CLI builder instance
+   * @param {string} usage - Usage text
+   * @returns {CliBuilder} CLI builder instance
    */
   usage: (usage: string) => CliBuilder;
 
   /**
    * Add a command
-   * @param command - Command module
-   * @returns CLI builder instance
+   * @param {CommandModule} command - Command module
+   * @returns {CliBuilder} CLI builder instance
    */
   command: (command: CommandModule) => CliBuilder;
 
   /**
    * Add an option
-   * @param key - Option key
-   * @param config - Option configuration
-   * @returns CLI builder instance
+   * @param {string} key - Option key
+   * @param {Options} config - Option configuration
+   * @returns {CliBuilder} CLI builder instance
    */
   option: (key: string, config: Options) => CliBuilder;
 
   /**
    * Demand at least N commands
-   * @param count - Minimum number of commands
-   * @param message - Error message
-   * @returns CLI builder instance
+   * @param {number} count - Minimum number of commands
+   * @param {string} message - Error message
+   * @returns {CliBuilder} CLI builder instance
    */
   demandCommand: (count: number, message: string) => CliBuilder;
 
   /**
    * Enable help
-   * @param option - Help option
-   * @returns CLI builder instance
+   * @param {string} option - Help option
+   * @returns {CliBuilder} CLI builder instance
    */
   help: (option: string) => CliBuilder;
 
   /**
    * Add alias
-   * @param key - Key to alias
-   * @param alias - Alias name
-   * @returns CLI builder instance
+   * @param {string} key - Key to alias
+   * @param {string} alias - Alias name
+   * @returns {CliBuilder} CLI builder instance
    */
   alias: (key: string, alias: string) => CliBuilder;
 
   /**
    * Enable strict mode
-   * @returns CLI builder instance
+   * @returns {CliBuilder} CLI builder instance
    */
   strict: () => CliBuilder;
 
   /**
    * Set wrap columns
-   * @param columns - Number of columns or null for auto
-   * @returns CLI builder instance
+   * @param {number | null} columns - Number of columns or null for auto
+   * @returns {CliBuilder} CLI builder instance
    */
   wrap: (columns: number | null) => CliBuilder;
 
   /**
    * Set epilogue text
-   * @param text - Epilogue text
-   * @returns CLI builder instance
+   * @param {string} text - Epilogue text
+   * @returns {CliBuilder} CLI builder instance
    */
   epilogue: (text: string) => CliBuilder;
 
   /**
    * Control process exit
-   * @param enabled - Enable or disable process exit
-   * @returns CLI builder instance
+   * @param {boolean} enabled - Enable or disable process exit
+   * @returns {CliBuilder} CLI builder instance
    */
   exitProcess: (enabled: boolean) => CliBuilder;
 
   /**
    * Show help on fail
-   * @param enabled - Enable or disable help on fail
-   * @returns CLI builder instance
+   * @param {boolean} enabled - Enable or disable help on fail
+   * @returns {CliBuilder} CLI builder instance
    */
   showHelpOnFail: (enabled: boolean) => CliBuilder;
 
   /**
    * Set fail handler
-   * @param handler - Fail handler or false to disable
-   * @returns CLI builder instance
+   * @param {((msg: string, err: Error) => void) | boolean} handler - Fail handler or false to disable
+   * @returns {CliBuilder} CLI builder instance
    */
   fail: (handler: ((msg: string, err: Error) => void) | boolean) => CliBuilder;
 
   /**
    * Parse arguments and execute
-   * @returns Promise that resolves when parsing is complete
+   * @returns {Promise<void>} Promise that resolves when parsing is complete
    */
   parse: () => Promise<void>;
 }
@@ -134,8 +134,8 @@ export class YargsCliBuilder implements CliBuilder {
 
   /**
    * Ensures the Yargs instance is initialized
-   * @returns The Yargs instance
-   * @throws Error if create() has not been called
+   * @returns {ReturnType<typeof yargs>} The Yargs instance
+   * @throws {Error} Error if create() has not been called
    */
   private ensureInstance(): ReturnType<typeof yargs> {
     if (!this.instance) {

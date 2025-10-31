@@ -36,7 +36,7 @@ export class EnhancedInitCommand {
 
   /**
    * Get command options for help display
-   * @returns Command options array
+   * @returns {Array<{flags: string; description: string}>} Command options array
    */
   getCommandOptions(): Array<{
     flags: string;
@@ -51,7 +51,7 @@ export class EnhancedInitCommand {
 
   /**
    * Get project configuration related options
-   * @returns Project configuration options
+   * @returns {Array<{ flags: string; description: string }>} Project configuration options
    */
   private getProjectConfigurationOptions(): Array<{
     flags: string;
@@ -83,7 +83,7 @@ export class EnhancedInitCommand {
 
   /**
    * Get process control related options
-   * @returns Process control options
+   * @returns {Array<{ flags: string; description: string }>} Process control options
    */
   private getProcessControlOptions(): Array<{
     flags: string;
@@ -103,7 +103,7 @@ export class EnhancedInitCommand {
 
   /**
    * Get utility options
-   * @returns Utility options
+   * @returns {Array<{ flags: string; description: string }>} Utility options
    */
   private getUtilityOptions(): Array<{
     flags: string;
@@ -123,8 +123,8 @@ export class EnhancedInitCommand {
 
   /**
    * Execute the enhanced init command
-   * @param projectName - Name of the project to create
-   * @param options - Command options
+   * @param {string | undefined} projectName - Name of the project to create
+   * @param {EnhancedInitCommandOptions} options - Command options
    */
   async execute(
     projectName: string | undefined,
@@ -156,7 +156,7 @@ export class EnhancedInitCommand {
 
   /**
    * Initialize performance monitoring
-   * @returns Performance monitor and operation ID
+   * @returns {{ monitor: PerformanceMonitor; operationId: string }} Performance monitor and operation ID
    */
   private initializePerformanceMonitoring(): { monitor: PerformanceMonitor; operationId: string } {
     const monitor = Performance.monitor();
@@ -166,9 +166,9 @@ export class EnhancedInitCommand {
 
   /**
    * Get project configuration
-   * @param projectName - Project name
-   * @param options - Command options
-   * @returns Project configuration or null if cancelled
+   * @param {string | undefined} projectName - Project name
+   * @param {EnhancedInitCommandOptions} options - Command options
+   * @returns {Promise<ProjectConfig | null>} Project configuration or null if cancelled
    */
   private async getProjectConfiguration(
     projectName: string | undefined,
@@ -181,10 +181,10 @@ export class EnhancedInitCommand {
 
   /**
    * Execute the main project generation steps
-   * @param config - Project configuration
-   * @param options - Command options
-   * @param monitor - Performance monitor
-   * @param operationId - Operation ID
+   * @param {unknown} config - Project configuration
+   * @param {unknown} options - Command options
+   * @param {unknown} monitor - Performance monitor
+   * @param {unknown} operationId - Operation ID
    */
   private async executeProjectGeneration(
     config: ProjectConfig,
@@ -202,9 +202,9 @@ export class EnhancedInitCommand {
 
   /**
    * Handle execution errors
-   * @param error - The error that occurred
-   * @param monitor - Performance monitor
-   * @param operationId - Operation ID
+   * @param {unknown} error - The error that occurred
+   * @param {unknown} monitor - Performance monitor
+   * @param {unknown} operationId - Operation ID
    */
   private handleExecutionError(
     error: unknown,
@@ -218,7 +218,7 @@ export class EnhancedInitCommand {
 
   /**
    * Setup logger with provided options
-   * @param options - Command options
+   * @param {EnhancedInitCommandOptions} options - Command options
    */
   private setupLogger(options: EnhancedInitCommandOptions): void {
     this.logger = CLI.logger({
@@ -233,9 +233,9 @@ export class EnhancedInitCommand {
 
   /**
    * Show performance metrics if verbose mode is enabled
-   * @param verbose - Whether verbose mode is enabled
-   * @param monitor - Performance monitor instance
-   * @param operationId - Operation ID to stop
+   * @param {unknown} verbose - Whether verbose mode is enabled
+   * @param {unknown} monitor - Performance monitor instance
+   * @param {unknown} operationId - Operation ID to stop
    */
   private showPerformanceMetricsIfNeeded(
     verbose: boolean | undefined,

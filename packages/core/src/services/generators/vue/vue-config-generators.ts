@@ -13,8 +13,8 @@ import { ViteConfigGenerator } from './vite-config-generator.js';
 export class VueConfigGenerators {
   /**
    * Generate HTML template
-   * @param config - Project configuration
-   * @returns HTML template content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} HTML template content
    */
   static generateHtmlTemplate(config: ProjectConfig): string {
     return HTMLGenerator.generateHtmlTemplate(config);
@@ -22,8 +22,8 @@ export class VueConfigGenerators {
 
   /**
    * Generate Vite config for Vue
-   * @param config - Project configuration
-   * @returns Vite configuration TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Vite configuration TypeScript code
    */
   static generateViteConfig(config: ProjectConfig): string {
     return ViteConfigGenerator.generateViteConfig(config);
@@ -31,8 +31,8 @@ export class VueConfigGenerators {
 
   /**
    * Generate main CSS
-   * @param config - Project configuration
-   * @returns CSS content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CSS content
    */
   static generateMainCSS(config: ProjectConfig): string {
     return CSSGenerator.generateMainCSS(config);

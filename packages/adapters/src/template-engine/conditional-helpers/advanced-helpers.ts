@@ -14,7 +14,7 @@ type HandlebarsInstance = typeof Handlebars;
 export class AdvancedConditionalHelpers {
   /**
    * Register all advanced conditional helpers with Handlebars instance
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   static registerAll(handlebars: HandlebarsInstance): void {
     this.registerSwitchHelpers(handlebars);
@@ -23,7 +23,7 @@ export class AdvancedConditionalHelpers {
 
   /**
    * Register switch-like conditional helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerSwitchHelpers(handlebars: HandlebarsInstance): void {
     // Switch-like helper for multiple conditions
@@ -54,7 +54,7 @@ export class AdvancedConditionalHelpers {
 
   /**
    * Register range-based conditional helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerRangeHelpers(handlebars: HandlebarsInstance): void {
     // Range-based conditional

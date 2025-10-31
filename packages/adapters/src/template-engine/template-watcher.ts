@@ -3,8 +3,11 @@
  *
  * Handles file watching functionality for template changes
  */
-import type { TemplateMetadata } from '@nimata/core';
+import { logger, type TemplateMetadata } from '@nimata/core';
 import type { WatcherConfig } from './template-discovery-utils.js';
+
+/** Log context for template watching operations */
+const WATCH_TEMPLATES_LOG_CONTEXT = 'watch-templates';
 
 /**
  * Template watcher class that manages file system watchers
@@ -15,7 +18,7 @@ export class TemplateWatcher {
 
   /**
    * Create template watcher instance
-   * @param watcherConfig - Configuration for file watching
+   * @param {WatcherConfig} watcherConfig - Configuration for file watching
    */
   constructor(watcherConfig: WatcherConfig) {
     this.watcherConfig = watcherConfig;
@@ -23,9 +26,9 @@ export class TemplateWatcher {
 
   /**
    * Watch for template changes in a directory
-   * @param directory - Directory to watch
-   * @param _callback - Callback function for change events
-   * @returns Function to stop watching
+   * @param {unknown} directory - Directory to watch
+   * @param {(event} _callback - Callback function for change events
+   * @returns {void} Function to stop watching
    */
   watch(
     directory: string,
@@ -39,24 +42,26 @@ export class TemplateWatcher {
 
     // This is a simplified implementation
     // In a real scenario, you'd use chokidar or similar for file watching
-    console.log(`Watching for template changes in ${directory}`);
+    logger.info(WATCH_TEMPLATES_LOG_CONTEXT, `Watching for template changes in ${directory}`, {
+      directory,
+    });
 
     return () => {
-      console.log(`Stopped watching ${directory}`);
+      logger.info(WATCH_TEMPLATES_LOG_CONTEXT, `Stopped watching ${directory}`, { directory });
     };
   }
 
   /**
    * Watch templates from all configured sources
-   * @param sources - Template sources configuration
-   * @param callback - Callback function for changes
+   * @param {Array<{ path: string; recursive?: boolean }>} sources - Template sources configuration
+   * @param {(event: string, template: TemplateMetadata) => void} callback - Callback function for changes
    */
   async watchTemplates(
     sources: Array<{ path: string; recursive?: boolean }>,
     callback: (event: string, template: TemplateMetadata) => void
   ): Promise<void> {
     if (!this.watcherConfig.enabled) {
-      console.log('Template watching is disabled');
+      logger.info(WATCH_TEMPLATES_LOG_CONTEXT, 'Template watching is disabled');
       return;
     }
 
@@ -64,7 +69,10 @@ export class TemplateWatcher {
       try {
         await this.watchSource(source, callback);
       } catch (error) {
-        console.warn(`Failed to watch source ${source.path}:`, error);
+        logger.warn(WATCH_TEMPLATES_LOG_CONTEXT, `Failed to watch source ${source.path}`, {
+          sourcePath: source.path,
+          error,
+        });
       }
     }
   }
@@ -76,9 +84,9 @@ export class TemplateWatcher {
     for (const [path, watcher] of this.watchers.entries()) {
       try {
         watcher.close();
-        console.log(`Stopped watching ${path}`);
+        logger.info('stop-watching', `Stopped watching ${path}`, { path });
       } catch (error) {
-        console.warn(`Failed to stop watching ${path}:`, error);
+        logger.warn('stop-watching', `Failed to stop watching ${path}`, { path, error });
       }
     }
     this.watchers.clear();
@@ -86,10 +94,10 @@ export class TemplateWatcher {
 
   /**
    * Watch a single source for changes
-   * @param source - Template source configuration
-   * @param source.path - Source path
-   * @param source.recursive - Whether to watch recursively
-   * @param _callback - Callback function for changes
+   * @param {{ path: string; recursive?: boolean }} source - Source configuration
+   * @param {string} source.path - Source path
+   * @param {boolean} source.recursive - Whether to watch recursively
+   * @param {(event: string, template: TemplateMetadata) => void} _callback - Callback function for changes
    */
   private async watchSource(
     source: { path: string; recursive?: boolean },
@@ -97,7 +105,10 @@ export class TemplateWatcher {
   ): Promise<void> {
     // In a real implementation, you would use fs.watch or a library like chokidar
     // For now, this is a placeholder that shows the structure
-    console.log(`Watching for changes in ${source.path}`);
+    logger.info('watch-source', `Watching for changes in ${source.path}`, {
+      sourcePath: source.path,
+      recursive: source.recursive,
+    });
 
     // Placeholder implementation
     // In a real scenario, you would:

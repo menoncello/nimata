@@ -33,10 +33,10 @@ const VALIDATION_CONSTANTS = {
 
 /**
  * Creates a template validation error
- * @param code The error code
- * @param message The error message
- * @param filePath The file path where the error occurred
- * @returns A template validation error object
+ * @param {unknown} code The error code
+ * @param {unknown} message The error message
+ * @param {unknown} filePath The file path where the error occurred
+ * @returns {TemplateValidationError} A template validation error object
  */
 function createValidationError(
   code: string,
@@ -53,10 +53,10 @@ function createValidationError(
 
 /**
  * Creates a template validation warning
- * @param code The warning code
- * @param message The warning message
- * @param category The warning category
- * @returns A template validation warning object
+ * @param {unknown} code The warning code
+ * @param {unknown} message The warning message
+ * @param {unknown} category The warning category
+ * @returns {TemplateValidationWarning} A template validation warning object
  */
 function createValidationWarning(
   code: string,
@@ -76,9 +76,9 @@ function createValidationWarning(
 export class TemplateContentValidator {
   /**
    * Validate template content
-   * @param content The template content to validate
-   * @param extension The file extension
-   * @returns Validation result
+   * @param {string} content The template content to validate
+   * @param {string} extension The file extension
+   * @returns { TemplateValidationResult} Validation result
    */
   static validateTemplateContent(content: string, extension: string): TemplateValidationResult {
     const errors: TemplateValidationError[] = [];
@@ -98,8 +98,8 @@ export class TemplateContentValidator {
 
   /**
    * Validate file size
-   * @param content File content
-   * @param errors Array to collect errors
+   * @param {string} content File content
+   * @param {TemplateValidationError[]} errors Array to collect errors
    */
   private static validateFileSize(content: string, errors: TemplateValidationError[]): void {
     const maxFileSize = VALIDATION_CONSTANTS.MAX_FILE_SIZE_KB * VALIDATION_CONSTANTS.BYTES_PER_KB;
@@ -115,10 +115,10 @@ export class TemplateContentValidator {
 
   /**
    * Validate content based on file extension
-   * @param content File content
-   * @param extension File extension
-   * @param errors Array to collect errors
-   * @param warnings Array to collect warnings
+   * @param {unknown} content File content
+   * @param {unknown} extension File extension
+   * @param {unknown} errors Array to collect errors
+   * @param {unknown} warnings Array to collect warnings
    */
   private static validateContentByExtension(
     content: string,
@@ -143,8 +143,8 @@ export class TemplateContentValidator {
 
   /**
    * Validate JSON content
-   * @param content JSON content
-   * @param errors Array to collect errors
+   * @param {string} content JSON content
+   * @param {TemplateValidationError[]} errors Array to collect errors
    */
   private static validateJsonContent(content: string, errors: TemplateValidationError[]): void {
     try {
@@ -161,9 +161,9 @@ export class TemplateContentValidator {
 
   /**
    * Validate YAML content
-   * @param content YAML content
-   * @param errors Array to collect errors
-   * @param warnings Array to collect warnings
+   * @param {unknown} content YAML content
+   * @param {unknown} errors Array to collect errors
+   * @param {unknown} warnings Array to collect warnings
    */
   private static validateYamlContent(
     content: string,
@@ -188,9 +188,9 @@ export class TemplateContentValidator {
 
   /**
    * Validate Handlebars content
-   * @param content Handlebars content
-   * @param errors Array to collect errors
-   * @param _warnings Array to collect warnings (renamed parameter)
+   * @param {unknown} content Handlebars content
+   * @param {unknown} errors Array to collect errors
+   * @param {unknown} _warnings Array to collect warnings (renamed parameter)
    */
   private static validateHandlebarsContent(
     content: string,
@@ -203,8 +203,8 @@ export class TemplateContentValidator {
 
   /**
    * Validate Handlebars expressions
-   * @param content Handlebars content
-   * @param errors Array to collect errors
+   * @param {unknown} content Handlebars content
+   * @param {unknown} errors Array to collect errors
    */
   private static validateHandlebarsExpressions(
     content: string,
@@ -238,8 +238,8 @@ export class TemplateContentValidator {
 
   /**
    * Validate Handlebars blocks
-   * @param content Handlebars content
-   * @param errors Array to collect errors
+   * @param {unknown} content Handlebars content
+   * @param {unknown} errors Array to collect errors
    */
   private static validateHandlebarsBlocks(
     content: string,
@@ -258,8 +258,8 @@ export class TemplateContentValidator {
 
   /**
    * Find unclosed Handlebars blocks
-   * @param content Handlebars content
-   * @returns Array of unclosed block types
+   * @param {string} content Handlebars content
+   * @returns {string): string[]} Array of unclosed block types
    */
   private static findUnclosedHandlebarsBlocks(content: string): string[] {
     const openBlocks: string[] = [];
@@ -272,8 +272,8 @@ export class TemplateContentValidator {
 
   /**
    * Extract open Handlebars blocks from content
-   * @param content Handlebars content
-   * @param openBlocks Array to collect open block types
+   * @param {string} content Handlebars content
+   * @param {string[]} openBlocks Array to collect open block types
    */
   private static extractOpenBlocks(content: string, openBlocks: string[]): void {
     const matches = content.match(VALIDATION_CONSTANTS.HANDLEBARS_BLOCK_PATTERN);
@@ -292,8 +292,8 @@ export class TemplateContentValidator {
 
   /**
    * Remove closed Handlebars blocks from open blocks array
-   * @param content Handlebars content
-   * @param openBlocks Array of open block types to modify
+   * @param {string} content Handlebars content
+   * @param {string[]} openBlocks Array of open block types to modify
    */
   private static removeClosedBlocks(content: string, openBlocks: string[]): void {
     const endMatches = content.match(VALIDATION_CONSTANTS.HANDLEBARS_END_BLOCK_PATTERN);

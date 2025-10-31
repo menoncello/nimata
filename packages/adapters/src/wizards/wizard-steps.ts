@@ -39,8 +39,8 @@ const PROJECT_NAME_VALIDATION: Array<{
 
 /**
  * Get default project name from target directory or current directory
- * @param config - Configuration object
- * @returns Default project name
+ * @param {Record<string} config - Configuration object
+ * @returns {string} Default project name
  */
 function getDefaultProjectName(config: Record<string, unknown>): string {
   const targetDir = config['targetDirectory'] as string | undefined;
@@ -49,7 +49,7 @@ function getDefaultProjectName(config: Record<string, unknown>): string {
 
 /**
  * Create target directory step configuration
- * @returns Target directory wizard step
+ * @returns {WizardStep} Target directory wizard step
  */
 export function createTargetDirectoryStep(): WizardStep {
   return {
@@ -77,7 +77,7 @@ export function createTargetDirectoryStep(): WizardStep {
 
 /**
  * Create project name step configuration
- * @returns Project name wizard step
+ * @returns {WizardStep} Project name wizard step
  */
 export function createProjectNameStep(): WizardStep {
   return {
@@ -95,7 +95,7 @@ export function createProjectNameStep(): WizardStep {
 
 /**
  * Create project description step configuration
- * @returns Project description wizard step
+ * @returns {WizardStep} Project description wizard step
  */
 export function createProjectDescriptionStep(): WizardStep {
   return {
@@ -118,7 +118,7 @@ export function createProjectDescriptionStep(): WizardStep {
 
 /**
  * Create quality level step configuration
- * @returns Quality level wizard step
+ * @returns {WizardStep} Quality level wizard step
  */
 export function createQualityLevelStep(): WizardStep {
   return {
@@ -151,7 +151,7 @@ export function createQualityLevelStep(): WizardStep {
 
 /**
  * Create project type step configuration
- * @returns Project type wizard step
+ * @returns {WizardStep} Project type wizard step
  */
 export function createProjectTypeStep(): WizardStep {
   return {
@@ -168,7 +168,7 @@ export function createProjectTypeStep(): WizardStep {
 
 /**
  * Get project type options
- * @returns Array of project type options
+ * @returns {Array<{ label: string; value: ProjectTypeOption; description: string }>} Array of project type options
  */
 function getProjectTypeOptions(): Array<{
   label: string;
@@ -201,7 +201,7 @@ function getProjectTypeOptions(): Array<{
 
 /**
  * Create AI assistants step configuration
- * @returns AI assistants wizard step
+ * @returns {WizardStep} AI assistants wizard step
  */
 export function createAIAssistantsStep(): WizardStep {
   return {
@@ -229,7 +229,7 @@ export function createAIAssistantsStep(): WizardStep {
 
 /**
  * Create author step configuration
- * @returns Author wizard step
+ * @returns {WizardStep} Author wizard step
  */
 export function createAuthorStep(): WizardStep {
   return {
@@ -252,7 +252,7 @@ export function createAuthorStep(): WizardStep {
 
 /**
  * Create license step configuration
- * @returns License wizard step
+ * @returns {WizardStep} License wizard step
  */
 export function createLicenseStep(): WizardStep {
   return {
@@ -269,7 +269,7 @@ export function createLicenseStep(): WizardStep {
 
 /**
  * Create license options array
- * @returns Array of license options
+ * @returns {Array<{ label: string; value: string; description: string }>} Array of license options
  */
 function createLicenseOptions(): Array<{ label: string; value: string; description: string }> {
   const permissiveLicenses = getPermissiveLicenses();
@@ -280,7 +280,7 @@ function createLicenseOptions(): Array<{ label: string; value: string; descripti
 
 /**
  * Get permissive license options
- * @returns Array of permissive license options
+ * @returns {Array<{ label: string; value: string; description: string }>} Array of permissive license options
  */
 function getPermissiveLicenses(): Array<{ label: string; value: string; description: string }> {
   return [
@@ -309,7 +309,7 @@ function getPermissiveLicenses(): Array<{ label: string; value: string; descript
 
 /**
  * Get copyleft license options
- * @returns Array of copyleft license options
+ * @returns {Array<{ label: string; value: string; description: string }>} Array of copyleft license options
  */
 function getCopyleftLicenses(): Array<{ label: string; value: string; description: string }> {
   return [
@@ -323,7 +323,7 @@ function getCopyleftLicenses(): Array<{ label: string; value: string; descriptio
 
 /**
  * Get no license option
- * @returns No license option
+ * @returns {{ label: string; value: string; description: string }} No license option
  */
 function getNoLicenseOption(): { label: string; value: string; description: string } {
   return {

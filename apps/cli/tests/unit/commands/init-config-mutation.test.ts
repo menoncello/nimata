@@ -4,8 +4,8 @@
  * Tests targeting surviving mutants in init-config.ts
  */
 import 'reflect-metadata';
-import type { ProjectConfig } from '@nimata/adapters/wizards/project-wizard';
 import { describe, it, expect, mock, beforeEach } from 'bun:test';
+import type { ProjectConfig } from '@nimata/adapters/wizards/project-wizard';
 import {
   loadConfigurationFile,
   handleNonInteractiveMode,

@@ -17,8 +17,8 @@ interface ValidationError {
 
 /**
  * Validates basic required properties
- * @param techStack - Tech stack to validate
- * @returns Array of validation errors
+ * @param {TechStackDefinition} techStack - Tech stack to validate
+ * @returns {TechStackDefinition): ValidationError[]} Array of validation errors
  */
 export function validateBasicProperties(techStack: TechStackDefinition): ValidationError[] {
   const errors: ValidationError[] = [];
@@ -55,8 +55,8 @@ export function validateBasicProperties(techStack: TechStackDefinition): Validat
 
 /**
  * Validates recommended properties
- * @param techStack - Tech stack to validate
- * @returns Array of validation warnings
+ * @param {TechStackDefinition} techStack - Tech stack to validate
+ * @returns {TechStackDefinition): Array<} Array of validation warnings
  */
 export function validateRecommendedProperties(techStack: TechStackDefinition): Array<{
   code: string;
@@ -91,8 +91,8 @@ export function validateRecommendedProperties(techStack: TechStackDefinition): A
 
 /**
  * Validates tech stack configuration
- * @param techStack - Tech stack to validate
- * @returns Array of validation errors
+ * @param {TechStackDefinition} techStack - Tech stack to validate
+ * @returns {TechStackDefinition): ValidationError[]} Array of validation errors
  */
 export function validateConfiguration(techStack: TechStackDefinition): ValidationError[] {
   if (!validateTechStackConfig(techStack)) {
@@ -111,9 +111,9 @@ export function validateConfiguration(techStack: TechStackDefinition): Validatio
 
 /**
  * Creates validation result
- * @param errors - Validation errors
- * @param warnings - Validation warnings
- * @returns Formatted validation result
+ * @param {ValidationError[]} errors - Validation errors
+ * @param {Array<{ code: string; message: string; category: 'compatibility' | 'best-practice' | 'deprecation'; suggestion?: string }>} warnings - Validation warnings
+ * @returns {TechStackValidationResult} Formatted validation result
  */
 export function createValidationResult(
   errors: ValidationError[],

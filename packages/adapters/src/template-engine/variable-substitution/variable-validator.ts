@@ -9,10 +9,10 @@ import type { ExtendedTemplateContext, TemplateVariable, ValidationResult } from
 export class VariableValidator {
   /**
    * Validates variables against context
-   * @param context - The template context containing variable values
-   * @param variables - Array of expected template variables
-   * @param foundVariables - Array of variables found in the template
-   * @returns Validation result with errors and warnings
+   * @param {unknown} context - The template context containing variable values
+   * @param {unknown} variables - Array of expected template variables
+   * @param {unknown} foundVariables - Array of variables found in the template
+   * @returns {ValidationResult} Validation result with errors and warnings
    */
   static validateVariables(
     context: ExtendedTemplateContext,
@@ -35,10 +35,10 @@ export class VariableValidator {
 
   /**
    * Checks for missing required variables
-   * @param context - Template context
-   * @param variables - Expected variables
-   * @param foundVariables - Found variables
-   * @param errors - Array to collect errors
+   * @param {unknown} context - Template context
+   * @param {unknown} variables - Expected variables
+   * @param {unknown} foundVariables - Found variables
+   * @param {unknown} errors - Array to collect errors
    */
   private static checkMissingVariables(
     context: ExtendedTemplateContext,
@@ -55,9 +55,9 @@ export class VariableValidator {
 
   /**
    * Checks for unexpected variables
-   * @param variables - Expected variables
-   * @param foundVariables - Found variables
-   * @param warnings - Array to collect warnings
+   * @param {unknown} variables - Expected variables
+   * @param {unknown} foundVariables - Found variables
+   * @param {unknown} warnings - Array to collect warnings
    */
   private static checkUnexpectedVariables(
     variables: TemplateVariable[],
@@ -75,10 +75,10 @@ export class VariableValidator {
 
   /**
    * Checks variable types
-   * @param context - Template context
-   * @param variables - Expected variables
-   * @param errors - Array to collect errors
-   * @param _warnings - Array to collect warnings (unused)
+   * @param {unknown} context - Template context
+   * @param {unknown} variables - Expected variables
+   * @param {unknown} errors - Array to collect errors
+   * @param {unknown} _warnings - Array to collect warnings (unused)
    */
   private static checkVariableTypes(
     context: ExtendedTemplateContext,
@@ -99,9 +99,9 @@ export class VariableValidator {
 
   /**
    * Gets variable value from context
-   * @param variableName - Name of the variable
-   * @param context - Template context
-   * @returns Variable value or undefined
+   * @param {string} variableName - Name of the variable
+   * @param {ExtendedTemplateContext} context - Template context
+   * @returns { unknown} Variable value or undefined
    */
   private static getVariableValue(variableName: string, context: ExtendedTemplateContext): unknown {
     const keys = variableName.split('.');
@@ -120,9 +120,9 @@ export class VariableValidator {
 
   /**
    * Checks if value matches expected type
-   * @param value - Value to check
-   * @param expectedType - Expected type
-   * @returns True if type matches
+   * @param {unknown} value - Value to check
+   * @param {string} expectedType - Expected type
+   * @returns { boolean} True if type matches
    */
   private static isValidType(value: unknown, expectedType: string): boolean {
     switch (expectedType) {

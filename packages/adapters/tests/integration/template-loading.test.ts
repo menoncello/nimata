@@ -3,9 +3,9 @@
  *
  * Tests loading templates from the templates/typescript-bun-cli/ directory
  */
+import { describe, test, expect, beforeEach, afterEach } from 'bun:test';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { describe, test, expect, beforeEach, afterEach } from 'bun:test';
 import { HandlebarsTemplateEngine } from '../../src/template-engine-handlebars.js';
 
 describe('Template Loading Integration', () => {

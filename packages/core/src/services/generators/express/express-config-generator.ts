@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class ExpressConfigCodeGenerator {
   /**
    * Generate Express environment configuration
-   * @param _config - Project configuration
-   * @returns Environment config TypeScript code
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Environment config TypeScript code
    */
   generateEnvironmentConfig(_config: ProjectConfig): string {
     return [
@@ -27,16 +27,38 @@ export class ExpressConfigCodeGenerator {
 
   /**
    * Get configuration import statements
-   * @returns Import statements
+   * @returns {string} Import statements
    */
   private getConfigImports(): string {
     return `import { config } from 'dotenv';
-import { z } from 'zod';`;
+
+// Simple validation functions (replacing zod)
+function validateNumber(value: string | undefined, defaultValue: number, min?: number, max?: number): number {
+  const num = Number(value);
+  if (isNaN(num)) return defaultValue;
+  if (min !== undefined && num < min) return defaultValue;
+  if (max !== undefined && num > max) return defaultValue;
+  return num;
+}
+
+function validateBoolean(value: string | undefined, defaultValue: boolean): boolean {
+  if (!value) return defaultValue;
+
+  const normalizedValue = value.toLowerCase();
+  if (normalizedValue === 'true') return true;
+  if (normalizedValue === 'false') return false;
+
+  return defaultValue;
+}
+
+function validateString(value: string | undefined, defaultValue: string): string {
+  return value?.trim() || defaultValue;
+}`;
   }
 
   /**
    * Get configuration interface definition
-   * @returns Configuration interface
+   * @returns {string} Configuration interface
    */
   private getConfigInterface(): string {
     return [
@@ -52,7 +74,7 @@ import { z } from 'zod';`;
 
   /**
    * Get interface header
-   * @returns Interface header
+   * @returns {string} Interface header
    */
   private getInterfaceHeader(): string {
     return `/**
@@ -63,7 +85,7 @@ export interface AppConfig {`;
 
   /**
    * Get server configuration interface
-   * @returns Server configuration interface
+   * @returns {string} Server configuration interface
    */
   private getServerConfigInterface(): string {
     return `  // Server configuration
@@ -74,7 +96,7 @@ export interface AppConfig {`;
 
   /**
    * Get CORS configuration interface
-   * @returns CORS configuration interface
+   * @returns {string} CORS configuration interface
    */
   private getCorsConfigInterface(): string {
     return `  // CORS configuration
@@ -88,7 +110,7 @@ export interface AppConfig {`;
 
   /**
    * Get database configuration interface
-   * @returns Database configuration interface
+   * @returns {string} Database configuration interface
    */
   private getDatabaseConfigInterface(): string {
     return `  // Database configuration
@@ -105,7 +127,7 @@ export interface AppConfig {`;
 
   /**
    * Get security configuration interface
-   * @returns Security configuration interface
+   * @returns {string} Security configuration interface
    */
   private getSecurityConfigInterface(): string {
     return `  // Security configuration
@@ -118,7 +140,7 @@ export interface AppConfig {`;
 
   /**
    * Get logging configuration interface
-   * @returns Logging configuration interface
+   * @returns {string} Logging configuration interface
    */
   private getLoggingConfigInterface(): string {
     return `  // Logging configuration
@@ -130,7 +152,7 @@ export interface AppConfig {`;
 
   /**
    * Get interface footer
-   * @returns Interface footer
+   * @returns {string} Interface footer
    */
   private getInterfaceFooter(): string {
     return `}`;
@@ -138,7 +160,7 @@ export interface AppConfig {`;
 
   /**
    * Get configuration validation schema
-   * @returns Configuration validation schema
+   * @returns {string} Configuration validation schema
    */
   private getConfigValidation(): string {
     return `/**
@@ -174,7 +196,7 @@ const configSchema = z.object({
 
   /**
    * Get configuration implementation
-   * @returns Configuration implementation
+   * @returns {string} Configuration implementation
    */
   private getConfigImplementation(): string {
     return [
@@ -192,7 +214,7 @@ const configSchema = z.object({
 
   /**
    * Get configuration header
-   * @returns Configuration header
+   * @returns {string} Configuration header
    */
   private getConfigHeader(): string {
     return `// Load environment variables
@@ -201,7 +223,7 @@ config();`;
 
   /**
    * Get app config export
-   * @returns App config export
+   * @returns {string} App config export
    */
   private getAppConfigExport(): string {
     return `/**
@@ -212,7 +234,7 @@ export const appConfig = configSchema.parse(process.env);`;
 
   /**
    * Get config export header
-   * @returns Config export header
+   * @returns {string} Config export header
    */
   private getConfigExportHeader(): string {
     return `/**
@@ -223,7 +245,7 @@ export const config: AppConfig = {`;
 
   /**
    * Get server configuration export
-   * @returns Server configuration export
+   * @returns {string} Server configuration export
    */
   private getServerConfigExport(): string {
     return `  // Server configuration
@@ -234,7 +256,7 @@ export const config: AppConfig = {`;
 
   /**
    * Get CORS configuration export
-   * @returns CORS configuration export
+   * @returns {string} CORS configuration export
    */
   private getCorsConfigExport(): string {
     return `  // CORS configuration
@@ -248,7 +270,7 @@ export const config: AppConfig = {`;
 
   /**
    * Get database configuration export
-   * @returns Database configuration export
+   * @returns {string} Database configuration export
    */
   private getDatabaseConfigExport(): string {
     return `  // Database configuration
@@ -265,7 +287,7 @@ export const config: AppConfig = {`;
 
   /**
    * Get security configuration export
-   * @returns Security configuration export
+   * @returns {string} Security configuration export
    */
   private getSecurityConfigExport(): string {
     return `  // Security configuration
@@ -278,7 +300,7 @@ export const config: AppConfig = {`;
 
   /**
    * Get logging configuration export
-   * @returns Logging configuration export
+   * @returns {string} Logging configuration export
    */
   private getLoggingConfigExport(): string {
     return `  // Logging configuration
@@ -290,7 +312,7 @@ export const config: AppConfig = {`;
 
   /**
    * Get config export footer
-   * @returns Config export footer
+   * @returns {string} Config export footer
    */
   private getConfigExportFooter(): string {
     return `};`;
@@ -298,12 +320,12 @@ export const config: AppConfig = {`;
 
   /**
    * Get CORS configuration helper
-   * @returns CORS configuration helper
+   * @returns {string} CORS configuration helper
    */
   private getCorsConfig(): string {
     return `/**
  * Get CORS options for Express
- * @returns CORS configuration object
+   * @returns {object}
  */
 export function getCorsOptions(): {
   origin: string | string[];
@@ -322,12 +344,12 @@ export function getCorsOptions(): {
 
   /**
    * Get database configuration helper
-   * @returns Database configuration helper
+   * @returns {string} Database configuration helper
    */
   private getDatabaseConfig(): string {
     return `/**
  * Get database connection configuration
- * @returns Database connection object
+   * @returns {object}
  */
 export function getDatabaseConfig(): {
   host: string;

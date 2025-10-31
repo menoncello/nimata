@@ -6,7 +6,7 @@
 
 /**
  * Build setup file header
- * @returns Setup file header
+ * @returns {string} Setup file header
  */
 export function buildSetupHeader(): string {
   return `/**
@@ -22,7 +22,7 @@ import { expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
 
 /**
  * Build custom matchers section
- * @returns Custom matchers code
+ * @returns {string} Custom matchers code
  */
 export function buildCustomMatchers(): string {
   return `// Global test utilities
@@ -50,7 +50,7 @@ expect.extend({
 
 /**
  * Build global hooks section
- * @returns Global hooks code
+ * @returns {string} Global hooks code
  */
 export function buildGlobalHooks(): string {
   return `// Global setup for all tests
@@ -76,7 +76,7 @@ afterEach(() => {
 
 /**
  * Build web-specific setup content
- * @returns Web setup content
+ * @returns {string} Web setup content
  */
 export function buildWebSetupContent(): string {
   return `
@@ -95,7 +95,7 @@ if (typeof window === 'undefined') {
 
 /**
  * Build strict quality setup content
- * @returns Strict quality setup content
+ * @returns {string} Strict quality setup content
  */
 export function buildStrictSetupContent(): string {
   return `

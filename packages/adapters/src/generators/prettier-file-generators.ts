@@ -8,8 +8,8 @@ import type { PrettierConfigOptions, GeneratedPrettierConfig } from './prettier-
 
 /**
  * Generate main Prettier configuration
- * @param _options - Configuration options (unused but kept for consistency)
- * @returns Generated configuration file
+ * @param {PrettierConfigOptions} _options - Configuration options (unused but kept for consistency)
+ * @returns {PrettierConfigOptions): GeneratedPrettierConfig} Generated configuration file
  */
 export function generateMainConfig(_options: PrettierConfigOptions): GeneratedPrettierConfig {
   const filename = '.prettierrc.json';
@@ -24,7 +24,7 @@ export function generateMainConfig(_options: PrettierConfigOptions): GeneratedPr
 
 /**
  * Generate Prettier ignore file
- * @returns Generated ignore file
+ * @returns {GeneratedPrettierConfig} Generated ignore file
  */
 export function generateIgnoreFile(): GeneratedPrettierConfig {
   const filename = '.prettierignore';
@@ -55,7 +55,7 @@ export function generateIgnoreFile(): GeneratedPrettierConfig {
 
 /**
  * Get dependency ignore patterns
- * @returns Dependency patterns string
+ * @returns {string} Dependency patterns string
  */
 function getDependencyPatterns(): string {
   return `# Dependencies
@@ -64,7 +64,7 @@ node_modules/`;
 
 /**
  * Get build output ignore patterns
- * @returns Build patterns string
+ * @returns {string} Build patterns string
  */
 function getBuildPatterns(): string {
   return `# Build outputs
@@ -75,7 +75,7 @@ build/
 
 /**
  * Get coverage report ignore patterns
- * @returns Coverage patterns string
+ * @returns {string} Coverage patterns string
  */
 function getCoveragePatterns(): string {
   return `# Coverage reports
@@ -85,7 +85,7 @@ coverage/
 
 /**
  * Get log file ignore patterns
- * @returns Log patterns string
+ * @returns {string} Log patterns string
  */
 function getLogPatterns(): string {
   return `# Logs
@@ -97,7 +97,7 @@ yarn-error.log*`;
 
 /**
  * Get environment file ignore patterns
- * @returns Environment patterns string
+ * @returns {string} Environment patterns string
  */
 function getEnvironmentPatterns(): string {
   return `# Environment files
@@ -107,7 +107,7 @@ function getEnvironmentPatterns(): string {
 
 /**
  * Get IDE ignore patterns
- * @returns IDE patterns string
+ * @returns {string} IDE patterns string
  */
 function getIdePatterns(): string {
   return `# IDE
@@ -119,7 +119,7 @@ function getIdePatterns(): string {
 
 /**
  * Get OS ignore patterns
- * @returns OS patterns string
+ * @returns {string} OS patterns string
  */
 function getOsPatterns(): string {
   return `# OS
@@ -129,7 +129,7 @@ Thumbs.db`;
 
 /**
  * Get temporary file ignore patterns
- * @returns Temp patterns string
+ * @returns {string} Temp patterns string
  */
 function getTempPatterns(): string {
   return `# Temporary files
@@ -139,7 +139,7 @@ function getTempPatterns(): string {
 
 /**
  * Get runtime ignore patterns
- * @returns Runtime patterns string
+ * @returns {string} Runtime patterns string
  */
 function getRuntimePatterns(): string {
   return `# Runtime
@@ -149,7 +149,7 @@ function getRuntimePatterns(): string {
 
 /**
  * Get documentation ignore patterns
- * @returns Documentation patterns string
+ * @returns {string} Documentation patterns string
  */
 function getDocumentationPatterns(): string {
   return `# Documentation
@@ -159,7 +159,7 @@ site/public/`;
 
 /**
  * Get configuration file ignore patterns
- * @returns Config patterns string
+ * @returns {string} Config patterns string
  */
 function getConfigPatterns(): string {
   return `# Configuration files that shouldn't be reformatted
@@ -170,7 +170,7 @@ function getConfigPatterns(): string {
 
 /**
  * Get package file ignore patterns
- * @returns Package patterns string
+ * @returns {string} Package patterns string
  */
 function getPackagePatterns(): string {
   return `# Package files
@@ -180,7 +180,7 @@ yarn.lock`;
 
 /**
  * Get generated file ignore patterns
- * @returns Generated patterns string
+ * @returns {string} Generated patterns string
  */
 function getGeneratedPatterns(): string {
   return `# Generated files
@@ -191,7 +191,7 @@ generated/
 
 /**
  * Get changelog ignore patterns
- * @returns Changelog patterns string
+ * @returns {string} Changelog patterns string
  */
 function getChangelogPatterns(): string {
   return `# Changelogs
@@ -200,7 +200,7 @@ CHANGELOG.md`;
 
 /**
  * Get markdown ignore patterns
- * @returns Markdown patterns string
+ * @returns {string} Markdown patterns string
  */
 function getMarkdownPatterns(): string {
   return `# Markdown files with specific formatting
@@ -210,8 +210,8 @@ function getMarkdownPatterns(): string {
 
 /**
  * Generate Editor configuration
- * @param options - Configuration options
- * @returns Generated editor configuration file
+ * @param {PrettierConfigOptions} options - Configuration options
+ * @returns {PrettierConfigOptions): GeneratedPrettierConfig} Generated editor configuration file
  */
 export function generateEditorConfig(options: PrettierConfigOptions): GeneratedPrettierConfig {
   const filename = '.editorconfig';
@@ -235,7 +235,7 @@ export function generateEditorConfig(options: PrettierConfigOptions): GeneratedP
 
 /**
  * Get EditorConfig header
- * @returns Header section string
+ * @returns {string} Header section string
  */
 function getEditorConfigHeader(): string {
   return `# EditorConfig is awesome: https://EditorConfig.org
@@ -246,7 +246,7 @@ root = true`;
 
 /**
  * Get global EditorConfig settings
- * @returns Global config section string
+ * @returns {string} Global config section string
  */
 function getGlobalConfig(): string {
   return `# Unix-style newlines with a newline ending every file
@@ -259,8 +259,8 @@ charset = utf-8`;
 
 /**
  * Get TypeScript and JavaScript configuration
- * @param options - Configuration options
- * @returns TypeScript config section string
+ * @param {PrettierConfigOptions} options - Configuration options
+ * @returns {PrettierConfigOptions): string} TypeScript config section string
  */
 function getTypeScriptConfig(options: PrettierConfigOptions): string {
   return `# TypeScript and JavaScript files
@@ -273,7 +273,7 @@ ${options.singleQuote ? '' : '# '}quote_type = ${options.singleQuote ? 'single' 
 
 /**
  * Get JSON configuration
- * @returns JSON config section string
+ * @returns {string} JSON config section string
  */
 function getJsonConfig(): string {
   return `# JSON files
@@ -284,7 +284,7 @@ indent_size = ${FORMATTING.TAB_WIDTH}`;
 
 /**
  * Get YAML configuration
- * @returns YAML config section string
+ * @returns {string} YAML config section string
  */
 function getYamlConfig(): string {
   return `# YAML files
@@ -295,7 +295,7 @@ indent_size = ${FORMATTING.TAB_WIDTH}`;
 
 /**
  * Get Markdown configuration
- * @returns Markdown config section string
+ * @returns {string} Markdown config section string
  */
 function getMarkdownConfig(): string {
   return `# Markdown files
@@ -305,7 +305,7 @@ trim_trailing_whitespace = false`;
 
 /**
  * Get package.json configuration
- * @returns Package config section string
+ * @returns {string} Package config section string
  */
 function getPackageConfig(): string {
   return `# Package files
@@ -316,7 +316,7 @@ indent_size = ${FORMATTING.TAB_WIDTH}`;
 
 /**
  * Get additional configuration files
- * @returns Additional config section string
+ * @returns {string} Additional config section string
  */
 function getAdditionalConfig(): string {
   return `# Configuration files

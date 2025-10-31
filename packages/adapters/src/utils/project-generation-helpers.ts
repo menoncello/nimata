@@ -7,6 +7,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { TemplateEngineImpl } from '../template-engine/types.js';
+import { SAFE_FILE_PERMISSIONS } from './constants.js';
 import {
   validateProjectNameConfig,
   validateQualityLevelConfig,
@@ -19,6 +20,56 @@ import {
 
 // Use TemplateEngineImpl as our TemplateEngine interface
 export type TemplateEngine = TemplateEngineImpl;
+
+// Permission bit constants
+const WORLD_WRITABLE_BIT = 0o002;
+const SETUID_SETGID_BITS = 0o6000;
+
+/**
+ * Validates that file permissions are safe and don't expose unnecessary access
+ * @param {number} mode - File permission mode (numeric)
+ * @returns {boolean} True if permissions are safe, false otherwise
+ */
+function validateFilePermissions(mode: number): boolean {
+  // Allow standard file permissions:
+  // - Owner: read/write/execute (7)
+  // - Group: read/write/execute (7)
+  // - Others: read/execute (5)
+  // Also allow common variations like 644, 755, etc.
+
+  // Disallow world-writable permissions (security risk)
+  if ((mode & WORLD_WRITABLE_BIT) !== 0) {
+    return false;
+  }
+
+  // Disallow setuid/setgid bits (security risk)
+  if ((mode & SETUID_SETGID_BITS) !== 0) {
+    return false;
+  }
+
+  // Allow common safe permissions: 644, 755, 750, 640, 600, 700
+  const safePermissions = SAFE_FILE_PERMISSIONS;
+  return safePermissions.includes(mode);
+}
+
+/**
+ * Sets file permissions after validation
+ * @param {string} filePath - Path to the file
+ * @param {string} permissions - Permission string (e.g., '644')
+ * @throws {Error} If permissions are invalid or unsafe
+ */
+async function setFilePermissions(filePath: string, permissions: string): Promise<void> {
+  const mode = Number.parseInt(permissions, 8);
+
+  // Validate file permissions are safe
+  if (!validateFilePermissions(mode)) {
+    throw new Error(
+      `Unsafe file permissions: ${permissions}. Only allow read/write for owner and group, and read for others.`
+    );
+  }
+
+  await fs.chmod(filePath, mode);
+}
 
 export interface ProjectConfig {
   name: string;
@@ -88,8 +139,8 @@ export interface GenerationResult {
 
 /**
  * Validate required project configuration fields
- * @param config - Project configuration
- * @returns Validation result for required fields
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ValidationResult} Validation result for required fields
  */
 export function validateRequiredConfigFields(config: ProjectConfig): ValidationResult {
   const errors: string[] = [];
@@ -108,8 +159,8 @@ export function validateRequiredConfigFields(config: ProjectConfig): ValidationR
 
 /**
  * Validate optional project configuration fields
- * @param config - Project configuration
- * @returns Validation result for optional fields
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ValidationResult} Validation result for optional fields
  */
 export function validateOptionalConfigFields(config: ProjectConfig): ValidationResult {
   const errors: string[] = [];
@@ -124,9 +175,9 @@ export function validateOptionalConfigFields(config: ProjectConfig): ValidationR
 
 /**
  * Check if project directory already exists
- * @param projectDir - Project directory path
- * @param allowExisting - If true, don't throw error if directory exists (default: true)
- * @returns Promise that resolves if directory doesn't exist (or allowExisting is true), rejects otherwise
+ * @param {string} projectDir - Project directory path
+ * @param {boolean} allowExisting - If true, don't throw error if directory exists (default: true)
+ * @returns {Promise<void>} Promise that resolves if directory doesn't exist (or allowExisting is true), rejects otherwise
  */
 export async function checkDirectoryExists(
   projectDir: string,
@@ -149,10 +200,10 @@ export async function checkDirectoryExists(
 
 /**
  * Load and validate template
- * @param templateEngine - Template engine instance
- * @param templateName - Template name
- * @param projectType - Project type
- * @returns Loaded template
+ * @param {TemplateEngine} templateEngine - Template engine instance
+ * @param {string} templateName - Template name
+ * @param {string} projectType - Project type
+ * @returns {Promise<ProjectTemplate>} Loaded template
  */
 export async function loadAndValidateTemplate(
   templateEngine: TemplateEngine,
@@ -179,9 +230,9 @@ export async function loadAndValidateTemplate(
 
 /**
  * Write generated files to disk
- * @param files - Generated files
- * @param projectDir - Project directory
- * @returns Array of write errors
+ * @param {Array<{ path: string; content: string; permissions?: string }>} files - Generated files
+ * @param {string} projectDir - Project directory
+ * @returns {Promise<string[]>} Array of write errors
  */
 export async function writeFilesToDisk(
   files: Array<{ path: string; content: string; permissions?: string }>,
@@ -202,8 +253,7 @@ export async function writeFilesToDisk(
 
       // Set permissions if specified
       if (file.permissions) {
-        const mode = Number.parseInt(file.permissions, 8);
-        await fs.chmod(filePath, mode);
+        await setFilePermissions(filePath, file.permissions);
       }
     } catch (error) {
       writeErrors.push(
@@ -217,8 +267,8 @@ export async function writeFilesToDisk(
 
 /**
  * Validate required files exist in project
- * @param projectPath - Project path
- * @returns Array of missing files errors
+ * @param {string} projectPath - Project path
+ * @returns {Promise<string[]>} Array of missing files errors
  */
 export async function validateRequiredFiles(projectPath: string): Promise<string[]> {
   const errors: string[] = [];
@@ -238,8 +288,8 @@ export async function validateRequiredFiles(projectPath: string): Promise<string
 
 /**
  * Validate src directory structure
- * @param projectPath - Project path
- * @returns Array of src directory errors
+ * @param {string} projectPath - Project path
+ * @returns {Promise<string[]>} Array of src directory errors
  */
 export async function validateSrcDirectory(projectPath: string): Promise<string[]> {
   const errors: string[] = [];
@@ -264,8 +314,8 @@ export async function validateSrcDirectory(projectPath: string): Promise<string[
 
 /**
  * Validate package.json basic fields
- * @param packageJson - Parsed package.json object
- * @param errors - Array to collect validation errors
+ * @param {Record<string} packageJson - Parsed package.json object
+ * @param {string[]} errors - Array to collect validation errors
  */
 function validateBasicPackageFields(packageJson: Record<string, unknown>, errors: string[]): void {
   if (!packageJson['name']) {
@@ -278,8 +328,8 @@ function validateBasicPackageFields(packageJson: Record<string, unknown>, errors
 
 /**
  * Validate package.json scripts
- * @param packageJson - Parsed package.json object
- * @param errors - Array to collect validation errors
+ * @param {Record<string} packageJson - Parsed package.json object
+ * @param {string[]} errors - Array to collect validation errors
  */
 function validatePackageScripts(packageJson: Record<string, unknown>, errors: string[]): void {
   if (packageJson['scripts']) {
@@ -296,8 +346,8 @@ function validatePackageScripts(packageJson: Record<string, unknown>, errors: st
 
 /**
  * Validate package.json structure
- * @param projectPath - Project path
- * @returns Array of package.json validation errors
+ * @param {string} projectPath - Project path
+ * @returns {Promise<string[]>} Array of package.json validation errors
  */
 export async function validatePackageJson(projectPath: string): Promise<string[]> {
   const errors: string[] = [];

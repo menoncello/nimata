@@ -10,7 +10,7 @@ import { NODE_VERSIONS } from './constants.js';
 export class CIGenerators {
   /**
    * Generate CI configuration
-   * @returns GitHub Actions workflow
+   * @returns {string} GitHub Actions workflow
    */
   static generateCIConfig(): string {
     const workflowHeader = this.getWorkflowHeader();
@@ -23,7 +23,7 @@ ${jobs}`;
 
   /**
    * Get workflow header
-   * @returns Workflow header content
+   * @returns {string} Workflow header content
    */
   private static getWorkflowHeader(): string {
     return `name: CI
@@ -37,7 +37,7 @@ on:
 
   /**
    * Get jobs configuration
-   * @returns Jobs configuration content
+   * @returns {string} Jobs configuration content
    */
   private static getJobs(): string {
     const matrix = this.getNodeVersionMatrix();
@@ -57,7 +57,7 @@ ${steps}`;
 
   /**
    * Get Node.js version matrix
-   * @returns Node.js versions as string
+   * @returns {string} Node.js versions as string
    */
   private static getNodeVersionMatrix(): string {
     return NODE_VERSIONS.map((version) => `'${version}'`).join(', ');
@@ -65,7 +65,7 @@ ${steps}`;
 
   /**
    * Get job steps
-   * @returns Job steps content
+   * @returns {string} Job steps content
    */
   private static getJobSteps(): string {
     const steps = [
@@ -84,7 +84,7 @@ ${steps}`;
 
   /**
    * Get checkout step
-   * @returns Checkout step content
+   * @returns {string} Checkout step content
    */
   private static getCheckoutStep(): string {
     return '    - uses: actions/checkout@v4';
@@ -92,7 +92,7 @@ ${steps}`;
 
   /**
    * Get Bun setup step
-   * @returns Bun setup step content
+   * @returns {string} Bun setup step content
    */
   private static getBunSetupStep(): string {
     return `    - name: Use Bun
@@ -103,7 +103,7 @@ ${steps}`;
 
   /**
    * Get install step
-   * @returns Install step content
+   * @returns {string} Install step content
    */
   private static getInstallStep(): string {
     return '    - name: Install dependencies\n      run: bun install';
@@ -111,7 +111,7 @@ ${steps}`;
 
   /**
    * Get type check step
-   * @returns Type check step content
+   * @returns {string} Type check step content
    */
   private static getTypeCheckStep(): string {
     return '    - name: Type check\n      run: bun run typecheck';
@@ -119,7 +119,7 @@ ${steps}`;
 
   /**
    * Get lint step
-   * @returns Lint step content
+   * @returns {string} Lint step content
    */
   private static getLintStep(): string {
     return '    - name: Lint\n      run: bun run lint';
@@ -127,7 +127,7 @@ ${steps}`;
 
   /**
    * Get test step
-   * @returns Test step content
+   * @returns {string} Test step content
    */
   private static getTestStep(): string {
     return '    - name: Test\n      run: bun test --coverage';
@@ -135,7 +135,7 @@ ${steps}`;
 
   /**
    * Get mutation test step
-   * @returns Mutation test step content
+   * @returns {string} Mutation test step content
    */
   private static getMutationTestStep(): string {
     return '    - name: Mutation test\n      run: bun run test:mutate';
@@ -143,7 +143,7 @@ ${steps}`;
 
   /**
    * Get build step
-   * @returns Build step content
+   * @returns {string} Build step content
    */
   private static getBuildStep(): string {
     return '    - name: Build\n      run: bun run build';

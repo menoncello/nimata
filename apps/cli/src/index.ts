@@ -24,7 +24,7 @@ if (import.meta.main) {
   // Resolve and run CLI app
   const app = container.resolve(CliApp);
   app.run().catch((error: unknown) => {
-    console.error('Fatal error:', error);
+    process.stderr.write(`Fatal error: ${error}\n`);
     process.exit(EXIT_CODES.CONFIG_ERROR);
   });
 }

@@ -7,7 +7,7 @@ import {
   ProjectWizardImplementation,
   type ProjectConfig,
 } from '@nimata/adapters/wizards/project-wizard';
-import { ProjectConfigProcessorImpl } from '@nimata/core';
+import { ProjectConfigProcessorImpl, type ProjectConfigProcessor } from '@nimata/core';
 import { container } from 'tsyringe';
 import type { CommandModule, Argv } from 'yargs';
 import type { OutputWriter } from '../output.js';
@@ -58,12 +58,12 @@ export const initCommand: CommandModule<Record<string, never>, InitCommandArgs> 
 
 /**
  * Initialize dependencies for the command
- * @returns Object containing required dependencies
+ * @returns {{ output: OutputWriter; wizard: ProjectWizardImplementation; processor: ProjectConfigProcessorImpl }} Object containing required dependencies
  */
 function initializeDependencies(): {
   output: OutputWriter;
   wizard: ProjectWizardImplementation;
-  processor: ProjectConfigProcessorImpl;
+  processor: ProjectConfigProcessor;
 } {
   return {
     output: container.resolve<OutputWriter>('OutputWriter'),
@@ -74,9 +74,9 @@ function initializeDependencies(): {
 
 /**
  * Build configuration from arguments and files
- * @param argv - Command line arguments
- * @param deps - Dependencies object
- * @returns Complete project configuration
+ * @param {InitCommandArgs} argv - Command line arguments
+ * @param {ReturnType<typeof initializeDependencies>} deps - Dependencies object
+ * @returns {Promise<ProjectConfig>} Complete project configuration
  */
 async function buildConfiguration(
   argv: InitCommandArgs,
@@ -95,8 +95,8 @@ async function buildConfiguration(
 
 /**
  * Build command options for yargs
- * @param yargs - yargs instance
- * @returns Configured yargs instance
+ * @param {Argv<Record<string, never>>} yargs - yargs instance
+ * @returns {Argv<InitCommandArgs>} Configured yargs instance
  */
 function buildCommandOptions(yargs: Argv<Record<string, never>>): Argv<InitCommandArgs> {
   return addBasicOptions(addPositionalArgument(yargs));
@@ -104,8 +104,8 @@ function buildCommandOptions(yargs: Argv<Record<string, never>>): Argv<InitComma
 
 /**
  * Add positional argument for project name
- * @param yargs - yargs instance
- * @returns yargs instance with positional argument
+ * @param {Argv<Record<string, never>>} yargs - yargs instance
+ * @returns {Argv<InitCommandArgs>} yargs instance with positional argument
  */
 function addPositionalArgument(yargs: Argv<Record<string, never>>): Argv<InitCommandArgs> {
   return yargs['positional']('project-name', {
@@ -116,8 +116,8 @@ function addPositionalArgument(yargs: Argv<Record<string, never>>): Argv<InitCom
 
 /**
  * Add project configuration options
- * @param yargs - yargs instance
- * @returns yargs instance with project options
+ * @param {Argv<InitCommandArgs>} yargs - yargs instance
+ * @returns {Argv<InitCommandArgs>} yargs instance with project options
  */
 function addProjectOptions(yargs: Argv<InitCommandArgs>): Argv<InitCommandArgs> {
   return yargs
@@ -144,8 +144,8 @@ function addProjectOptions(yargs: Argv<InitCommandArgs>): Argv<InitCommandArgs> 
 
 /**
  * Add metadata and control options
- * @param yargs - yargs instance
- * @returns yargs instance with metadata options
+ * @param {Argv<InitCommandArgs>} yargs - yargs instance
+ * @returns {Argv<InitCommandArgs>} yargs instance with metadata options
  */
 function addMetadataOptions(yargs: Argv<InitCommandArgs>): Argv<InitCommandArgs> {
   return yargs
@@ -172,8 +172,8 @@ function addMetadataOptions(yargs: Argv<InitCommandArgs>): Argv<InitCommandArgs>
 
 /**
  * Add basic command options
- * @param yargs - yargs instance
- * @returns yargs instance with options
+ * @param {Argv<InitCommandArgs>} yargs - yargs instance
+ * @returns {Argv<InitCommandArgs>} yargs instance with options
  */
 function addBasicOptions(yargs: Argv<InitCommandArgs>): Argv<InitCommandArgs> {
   const withProjectOptions = addProjectOptions(yargs);

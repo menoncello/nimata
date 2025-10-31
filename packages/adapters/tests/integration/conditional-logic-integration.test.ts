@@ -3,18 +3,18 @@
  *
  * Tests conditional logic with real templates and contexts
  */
+import { describe, test, expect, beforeEach, afterEach } from 'bun:test';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { ProjectConfig, ExtendedTemplateContext } from '@nimata/core';
-import { describe, test, expect, beforeEach, afterEach } from 'bun:test';
 import { ConditionalUtils } from '../../src/template-engine/conditional-helpers.js';
 import { TemplateContextFactoryImpl } from '../../src/template-engine/template-context-factory.js';
 import { HandlebarsTemplateEngine } from '../../src/template-engine-handlebars.js';
 
 /**
  * Helper function to get category for test data
- * @param index - The index to get category for
- * @returns Category string
+ * @param {number} index - The index to get category for
+ * @returns {string} Category string
  */
 function getCategory(index: number): string {
   const mod = index % 3;
@@ -25,7 +25,7 @@ function getCategory(index: number): string {
 
 /**
  * Creates a test project configuration for conditional file generation
- * @returns Project configuration
+ * @returns {ProjectConfig} Project configuration
  */
 function createConditionalTestConfig(): ProjectConfig {
   return {
@@ -39,8 +39,9 @@ function createConditionalTestConfig(): ProjectConfig {
 
 /**
  * Creates extended context for conditional testing
- * @param projectConfig - Base project configuration
- * @returns Extended context with features
+ * @param {ProjectConfig} projectConfig - Base project configuration
+ * @param {TemplateContextFactoryImpl} contextFactory - Template context factory instance
+ * @returns {ExtendedTemplateContext} Extended context with features
  */
 function createConditionalTestContext(
   projectConfig: ProjectConfig,
@@ -69,8 +70,9 @@ function createConditionalTestContext(
 
 /**
  * Tests config file generation
- * @param templateEngine - Template engine instance
- * @param context - Template context
+ * @param {HandlebarsTemplateEngine} templateEngine - Template engine instance
+ * @param {ExtendedTemplateContext} context - Template context
+ * @returns {Promise<void>}
  */
 async function testConfigFileGeneration(
   templateEngine: HandlebarsTemplateEngine,
@@ -115,8 +117,9 @@ export const config = {};
 
 /**
  * Tests setup file generation
- * @param templateEngine - Template engine instance
- * @param context - Template context
+ * @param {HandlebarsTemplateEngine} templateEngine - Template engine instance
+ * @param {ExtendedTemplateContext} context - Template context
+ * @returns {Promise<void>}
  */
 async function testSetupFileGeneration(
   templateEngine: HandlebarsTemplateEngine,
@@ -152,8 +155,9 @@ export const setupTests = async () => {
 
 /**
  * Tests documentation file generation
- * @param templateEngine - Template engine instance
- * @param context - Template context
+ * @param {HandlebarsTemplateEngine} templateEngine - Template engine instance
+ * @param {ExtendedTemplateContext} context - Template context
+ * @returns {Promise<void>}
  */
 async function testDocumentationFileGeneration(
   templateEngine: HandlebarsTemplateEngine,

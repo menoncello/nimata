@@ -9,8 +9,8 @@ import { getRequiredScripts, getQualityDependencies } from './project-structure-
 
 /**
  * Validate package.json content and structure
- * @param options - Validator options containing project path and config
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project path and config
+ * @param {unknown} result - Validation result to populate with findings
  */
 export async function validatePackageJson(
   options: ProjectValidatorOptions,
@@ -55,9 +55,9 @@ interface PackageJson {
 
 /**
  * Validate required fields in package.json
- * @param packageJson - Parsed package.json content
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} packageJson - Parsed package.json content
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 function validateRequiredFields(
   packageJson: PackageJson,
@@ -81,9 +81,9 @@ function validateRequiredFields(
 
 /**
  * Validate scripts in package.json
- * @param packageJson - Parsed package.json content
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} packageJson - Parsed package.json content
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 function validateScripts(
   packageJson: PackageJson,
@@ -100,9 +100,9 @@ function validateScripts(
 
 /**
  * Validate quality dependencies
- * @param packageJson - Parsed package.json content
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} packageJson - Parsed package.json content
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 function validateQualityDependencies(
   packageJson: PackageJson,

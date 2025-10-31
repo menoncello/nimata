@@ -25,10 +25,10 @@ export interface VariableSubstitutionResult {
 export class VariableSubstitutionEngine {
   /**
    * Substitutes variables in template content
-   * @param content - Template content with variable placeholders
-   * @param context - Template context
-   * @param variables - Variable definitions for validation
-   * @returns Substitution result with validation
+   * @param {unknown} content - Template content with variable placeholders
+   * @param {unknown} context - Template context
+   * @param {unknown} variables - Variable definitions for validation
+   * @returns {VariableSubstitutionResult} Substitution result with validation
    */
   substitute(
     content: string,
@@ -62,10 +62,10 @@ export class VariableSubstitutionEngine {
 
   /**
    * Performs validation of variables against context
-   * @param context - Template context
-   * @param variables - Variable definitions for validation
-   * @param foundVariables - Variables found in content
-   * @returns Validation result with errors and warnings
+   * @param {unknown} context - Template context
+   * @param {unknown} variables - Variable definitions for validation
+   * @param {unknown} foundVariables - Variables found in content
+   * @returns {ValidationResult} Validation result with errors and warnings
    */
   private performValidation(
     context: ExtendedTemplateContext,
@@ -90,10 +90,10 @@ export class VariableSubstitutionEngine {
 
   /**
    * Validates variables against context
-   * @param context - The template context containing variable values
-   * @param variables - Array of expected template variables
-   * @param foundVariables - Array of variables found in the template
-   * @returns Validation result with errors and warnings
+   * @param {unknown} context - The template context containing variable values
+   * @param {unknown} variables - Array of expected template variables
+   * @param {unknown} foundVariables - Array of variables found in the template
+   * @returns {ValidationResult} Validation result with errors and warnings
    */
   private validateVariables(
     context: ExtendedTemplateContext,
@@ -116,9 +116,9 @@ export class VariableSubstitutionEngine {
 
   /**
    * Validate that required variables are present in the template
-   * @param variables - Expected template variables
-   * @param foundVariables - Variables found in template
-   * @param warnings - Array to collect warnings
+   * @param {unknown} variables - Expected template variables
+   * @param {unknown} foundVariables - Variables found in template
+   * @param {unknown} warnings - Array to collect warnings
    */
   private validateRequiredVariables(
     variables: TemplateVariable[],
@@ -134,10 +134,10 @@ export class VariableSubstitutionEngine {
 
   /**
    * Validate variable types against expected types
-   * @param variables - Expected template variables
-   * @param foundVariables - Variables found in template
-   * @param context - Template context
-   * @param warnings - Array to collect warnings
+   * @param {unknown} variables - Expected template variables
+   * @param {unknown} foundVariables - Variables found in template
+   * @param {unknown} context - Template context
+   * @param {unknown} warnings - Array to collect warnings
    */
   private validateVariableTypes(
     variables: TemplateVariable[],
@@ -164,9 +164,9 @@ export class VariableSubstitutionEngine {
 
   /**
    * Check the type of a variable against its expected type
-   * @param variable - Variable definition with expected type
-   * @param value - Actual value to check
-   * @returns Type mismatch warning message or null if no mismatch
+   * @param {TemplateVariable} variable - Variable definition with expected type
+   * @param {unknown} value - Actual value to check
+   * @returns {string | null} Type mismatch warning message or null if no mismatch
    */
   private checkVariableType(variable: TemplateVariable, value: unknown): string | null {
     const actualType = typeof value;
@@ -189,9 +189,9 @@ export class VariableSubstitutionEngine {
 
   /**
    * Check if there's an array type mismatch
-   * @param expectedType - Expected type
-   * @param value - Actual value
-   * @returns True if array type mismatch
+   * @param {string} expectedType - Expected type
+   * @param {unknown} value - Actual value
+   * @returns {boolean} True if array type mismatch
    */
   private isArrayTypeMismatch(expectedType: string, value: unknown): boolean {
     return expectedType === 'array' && !Array.isArray(value);
@@ -199,10 +199,10 @@ export class VariableSubstitutionEngine {
 
   /**
    * Check if there's an object type mismatch
-   * @param expectedType - Expected type
-   * @param value - Actual value
-   * @param actualType - Actual type of value
-   * @returns True if object type mismatch
+   * @param {string} expectedType - Expected type
+   * @param {unknown} value - Actual value
+   * @param {string} actualType - Actual type of value
+   * @returns { boolean} True if object type mismatch
    */
   private isObjectTypeMismatch(expectedType: string, value: unknown, actualType: string): boolean {
     return expectedType === 'object' && (actualType !== 'object' || Array.isArray(value));
@@ -210,10 +210,10 @@ export class VariableSubstitutionEngine {
 
   /**
    * Check if there's a primitive type mismatch
-   * @param expectedType - Expected type
-   * @param value - Actual value
-   * @param actualType - Actual type of value
-   * @returns True if primitive type mismatch
+   * @param {unknown} expectedType - Expected type
+   * @param {unknown} value - Actual value
+   * @param {unknown} actualType - Actual type of value
+   * @returns {boolean} True if primitive type mismatch
    */
   private isPrimitiveTypeMismatch(
     expectedType: string,
@@ -225,9 +225,9 @@ export class VariableSubstitutionEngine {
 
   /**
    * Validate that all variables found in template are defined in context
-   * @param foundVariables - Variables found in template
-   * @param context - Template context
-   * @param warnings - Array to collect warnings
+   * @param {unknown} foundVariables - Variables found in template
+   * @param {unknown} context - Template context
+   * @param {unknown} warnings - Array to collect warnings
    */
   private validateVariableDefinitions(
     foundVariables: string[],
@@ -244,10 +244,10 @@ export class VariableSubstitutionEngine {
 
   /**
    * Validates variable type and format against expected type
-   * @param value - The value to validate
-   * @param expectedType - The expected type for the variable
-   * @param variableName - The name of the variable being validated
-   * @returns Validation result with any type mismatch errors
+   * @param {unknown} value - The value to validate
+   * @param {unknown} expectedType - The expected type for the variable
+   * @param {unknown} variableName - The name of the variable being validated
+   * @returns {ValidationResult} Validation result with any type mismatch errors
    */
   static validateVariableValue(
     value: unknown,
@@ -259,10 +259,10 @@ export class VariableSubstitutionEngine {
 
   /**
    * Processes complex variable types by adding metadata and validation
-   * @param value - The value to process
-   * @param variableName - The name of the variable being processed
-   * @param expectedType - The expected type for the variable
-   * @returns Object containing the processed value and validation result
+   * @param {unknown} value - The value to process
+   * @param {string} variableName - The name of the variable being processed
+   * @param {string} expectedType - The expected type for the variable
+   * @returns {{ value: unknown; isComplex: boolean; validation: ValidationResult }} Object containing the processed value and validation result
    */
   static processComplexType(
     value: unknown,
@@ -274,8 +274,8 @@ export class VariableSubstitutionEngine {
 
   /**
    * Extracts all variable placeholders from template content
-   * @param content - The template content to extract variables from
-   * @returns Array of variable names found in the content
+   * @param {string} content - The template content to extract variables from
+   * @returns {string): string[]} Array of variable names found in the content
    */
   static extractVariables(content: string): string[] {
     return VariableSubstitutionStatic.extractVariables(content);
@@ -283,8 +283,8 @@ export class VariableSubstitutionEngine {
 
   /**
    * Validates the syntax of all variable placeholders in template content
-   * @param content - The template content to validate variable syntax for
-   * @returns Validation result with syntax errors and warnings
+   * @param {string} content - The template content to validate variable syntax for
+   * @returns {string): ValidationResult} Validation result with syntax errors and warnings
    */
   static validateVariableSyntax(content: string): ValidationResult {
     return VariableSubstitutionStatic.validateVariableSyntax(content);
@@ -292,9 +292,9 @@ export class VariableSubstitutionEngine {
 
   /**
    * Gets variable value from context with support for complex paths
-   * @param path - The variable path (e.g., "project.name" or "custom_variables.theme")
-   * @param context - The template context containing variable values
-   * @returns The variable value or undefined if not found
+   * @param {string} path - The variable path (e.g., "project.name" or "custom_variables.theme")
+   * @param {ExtendedTemplateContext} context - The template context containing variable values
+   * @returns { unknown} The variable value or undefined if not found
    */
   protected getVariableValue(path: string, context: ExtendedTemplateContext): unknown {
     return VariableGetterEnhanced.getVariableValue(path, context);

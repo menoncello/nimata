@@ -7,8 +7,8 @@ import { ProjectConfig } from '../../../../types/project-config.js';
 export class ReactCssTemplates {
   /**
    * Generate main CSS template
-   * @param config - Project configuration
-   * @returns Main CSS template
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Main CSS template
    */
   getMainCSSTemplate(config: ProjectConfig): string {
     const cssVariables = this.getCSSVariables();
@@ -32,7 +32,7 @@ ${responsiveStyles}`;
 
   /**
    * Generate CSS custom properties (variables) for theming
-   * @returns CSS variables definition string
+   * @returns {string} CSS variables definition string
    */
   private getCSSVariables(): string {
     const themeColor = '#61dafb';
@@ -50,7 +50,7 @@ ${responsiveStyles}`;
 
   /**
    * Generate base CSS styles for global elements
-   * @returns Base CSS styles string
+   * @returns {string} Base CSS styles string
    */
   private getBaseCSSStyles(): string {
     return `* {
@@ -73,7 +73,7 @@ body {
 
   /**
    * Generate CSS styles for the main app layout
-   * @returns App layout CSS styles string
+   * @returns {string} App layout CSS styles string
    */
   private getAppCSSStyles(): string {
     return `${this.getAppLayoutStyles()}
@@ -84,7 +84,7 @@ ${this.getAppFooterStyles()}`;
 
   /**
    * Generate app layout CSS styles
-   * @returns App layout CSS string
+   * @returns {string} App layout CSS string
    */
   private getAppLayoutStyles(): string {
     return `.app {
@@ -96,7 +96,7 @@ ${this.getAppFooterStyles()}`;
 
   /**
    * Generate app header CSS styles
-   * @returns App header CSS string
+   * @returns {string} App header CSS string
    */
   private getAppHeaderStyles(): string {
     return `.app-header {
@@ -119,7 +119,7 @@ ${this.getAppFooterStyles()}`;
 
   /**
    * Generate app main content CSS styles
-   * @returns App main CSS string
+   * @returns {string} App main CSS string
    */
   private getAppMainStyles(): string {
     return `.app-main {
@@ -133,7 +133,7 @@ ${this.getAppFooterStyles()}`;
 
   /**
    * Generate app footer CSS styles
-   * @returns App footer CSS string
+   * @returns {string} App footer CSS string
    */
   private getAppFooterStyles(): string {
     return `.app-footer {
@@ -146,7 +146,7 @@ ${this.getAppFooterStyles()}`;
 
   /**
    * Generate CSS styles for React components
-   * @returns Component-specific CSS styles string
+   * @returns {boolean}ic CSS styles string
    */
   private getComponentCSSStyles(): string {
     return `.component-loading,
@@ -182,7 +182,7 @@ ${this.getAppFooterStyles()}`;
 
   /**
    * Generate responsive CSS styles for mobile devices
-   * @returns Responsive CSS styles string
+   * @returns {string} Responsive CSS styles string
    */
   private getResponsiveCSSStyles(): string {
     return `/* Responsive design */

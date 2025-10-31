@@ -20,8 +20,8 @@ import {
 
 /**
  * Validate project type
- * @param projectType - Project type to validate
- * @returns Warning message if invalid, null if valid
+ * @param {string} projectType - Project type to validate
+ * @returns {string} Warning message if invalid, null if valid
  */
 export function validateProjectType(projectType?: string): string | null {
   if (projectType && !VALID_PROJECT_TYPES.includes(projectType as ValidProjectType)) {
@@ -32,8 +32,8 @@ export function validateProjectType(projectType?: string): string | null {
 
 /**
  * Validate quality level
- * @param qualityLevel - Quality level to validate
- * @returns Warning message if invalid, null if valid
+ * @param {string} qualityLevel - Quality level to validate
+ * @returns {string} Warning message if invalid, null if valid
  */
 export function validateQualityLevel(qualityLevel?: string): string | null {
   if (qualityLevel && !VALID_QUALITY_LEVELS.includes(qualityLevel as ValidQualityLevel)) {
@@ -44,8 +44,8 @@ export function validateQualityLevel(qualityLevel?: string): string | null {
 
 /**
  * Validate AI assistants
- * @param aiAssistants - Array of AI assistants to validate
- * @returns Array of warning messages for invalid assistants
+ * @param {string} aiAssistants - Array of AI assistants to validate
+ * @returns {string} Array of warning messages for invalid assistants
  */
 export function validateAIAssistants(aiAssistants?: string[]): string[] {
   const warnings: string[] = [];
@@ -65,8 +65,8 @@ export function validateAIAssistants(aiAssistants?: string[]): string[] {
 
 /**
  * Validate license
- * @param license - License to validate
- * @returns Warning message if uncommon license, null if common
+ * @param {string} license - License to validate
+ * @returns {string} Warning message if uncommon license, null if common
  */
 export function validateLicense(license?: string): string | null {
   if (license && !COMMON_LICENSES.includes(license as CommonLicense)) {
@@ -77,8 +77,8 @@ export function validateLicense(license?: string): string | null {
 
 /**
  * Validate target directory security
- * @param targetDirectory - Target directory path
- * @returns Object with errors and warnings
+ * @param {string} targetDirectory - Target directory path
+ * @returns {string} Object with errors and warnings
  */
 export function validateTargetDirectorySecurity(targetDirectory: string): {
   errors: string[];
@@ -105,9 +105,9 @@ export function validateTargetDirectorySecurity(targetDirectory: string): {
 
 /**
  * Validate target directory
- * @param config - Project configuration
- * @param warnings - Array to collect warnings
- * @param errors - Array to collect errors
+ * @param {string} config - Project configuration
+ * @param {string} warnings - Array to collect warnings
+ * @param {string} errors - Array to collect errors
  */
 export function validateTargetDirectory(
   config: ProjectConfig,
@@ -123,8 +123,8 @@ export function validateTargetDirectory(
 
 /**
  * Run all validations on project configuration
- * @param config - Project configuration to validate
- * @returns Object with validation results
+ * @param {string} config - Project configuration to validate
+ * @returns {string} Object with validation results
  */
 export function runAllValidations(config: ProjectConfig): {
   valid: boolean;
@@ -146,9 +146,9 @@ export function runAllValidations(config: ProjectConfig): {
 
 /**
  * Validate basic project fields (name, type, quality, AI assistants, license)
- * @param config - Project configuration to validate
- * @param warnings - Array to collect warnings
- * @param errors - Array to collect errors
+ * @param {string} config - Project configuration to validate
+ * @param {string} warnings - Array to collect warnings
+ * @param {string} errors - Array to collect errors
  */
 function validateBasicProjectFields(
   config: ProjectConfig,
@@ -183,9 +183,9 @@ function validateBasicProjectFields(
 
 /**
  * Validate advanced project fields (template, target directory, security)
- * @param config - Project configuration to validate
- * @param warnings - Array to collect warnings
- * @param errors - Array to collect errors
+ * @param {string} config - Project configuration to validate
+ * @param {string} warnings - Array to collect warnings
+ * @param {string} errors - Array to collect errors
  */
 function validateAdvancedProjectFields(
   config: ProjectConfig,

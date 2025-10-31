@@ -15,8 +15,8 @@ import type { ProjectConfig, ClaudeMdConfigOptions, QualityLevel } from './claud
 
 /**
  * Build header section
- * @param config - Project configuration
- * @returns Header section string
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Header section string
  */
 export function buildHeader(config: ProjectConfig): string {
   const projectTypeNames = {
@@ -34,7 +34,7 @@ export function buildHeader(config: ProjectConfig): string {
 
 ${descriptionSection}
 
-## Project Overview
+## Project Information
 
 - **Name**: ${config.name}
 - **Project Type**: ${projectTypeNames[config.projectType as keyof typeof projectTypeNames] || config.projectType}
@@ -45,9 +45,9 @@ ${descriptionSection}
 
 /**
  * Build testing section
- * @param options - Configuration options
- * @param getCoverageThreshold - Function to get coverage threshold
- * @returns Testing section string
+ * @param {unknown} options - Configuration options
+ * @param {(qualityLevel} getCoverageThreshold - Function to get coverage threshold
+ * @returns {void} Testing section string
  */
 export function buildTestingSection(
   options: ClaudeMdConfigOptions,
@@ -78,8 +78,8 @@ ${
 
 /**
  * Get coverage threshold based on quality level
- * @param qualityLevel - Quality level
- * @returns Coverage threshold number
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel): number} Coverage threshold number
  */
 export function getCoverageThreshold(qualityLevel: QualityLevel): number {
   switch (qualityLevel) {
@@ -96,8 +96,8 @@ export function getCoverageThreshold(qualityLevel: QualityLevel): number {
 
 /**
  * Build key dependencies section
- * @param config - Project configuration
- * @returns Key dependencies section string
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Key dependencies section string
  */
 export function buildKeyDependenciesSection(config: ProjectConfig): string {
   const basicDependencies = ['typescript', 'eslint', 'prettier', 'vitest'];
@@ -118,8 +118,8 @@ This project is optimized for Claude Code with:
 
 /**
  * Build generation timestamp section
- * @param date - Date string
- * @returns Generation timestamp section string
+ * @param {string} date - Date string
+ * @returns {string): string} Generation timestamp section string
  */
 export function buildGenerationTimestamp(date: string): string {
   return `**Generated**: ${date}`;
@@ -127,7 +127,7 @@ export function buildGenerationTimestamp(date: string): string {
 
 /**
  * Build footer section
- * @returns Footer section string
+ * @returns {string} Footer section string
  */
 export function buildFooter(): string {
   return `---
@@ -138,7 +138,7 @@ export function buildFooter(): string {
 
 /**
  * Build language requirements section
- * @returns Language requirements section string
+ * @returns {string} Language requirements section string
  */
 export function buildLanguageRequirementsSection(): string {
   return `## Language Requirements
@@ -154,8 +154,8 @@ All code, code comments, and technical documentation MUST be written in **Englis
 
 /**
  * Build code style configuration
- * @param qualityLevel - Quality level
- * @returns Code style configuration
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel):} Code style configuration
  */
 export function buildCodeStyleConfiguration(qualityLevel: QualityLevel): {
   indentSize: number;
@@ -181,8 +181,8 @@ export function buildCodeStyleConfiguration(qualityLevel: QualityLevel): {
 
 /**
  * Get print width based on quality level
- * @param qualityLevel - Quality level
- * @returns Print width number
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel): number} Print width number
  */
 function getPrintWidth(qualityLevel: QualityLevel): number {
   switch (qualityLevel) {
@@ -199,8 +199,8 @@ function getPrintWidth(qualityLevel: QualityLevel): number {
 
 /**
  * Build ESLint rules section
- * @param options - Configuration options
- * @returns ESLint rules section string
+ * @param {ClaudeMdConfigOptions} options - Configuration options
+ * @returns {ClaudeMdConfigOptions): string} ESLint rules section string
  */
 export function buildEslintRulesSection(options: ClaudeMdConfigOptions): string {
   const codeStyleConfig = buildCodeStyleConfiguration(options.qualityLevel);

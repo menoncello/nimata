@@ -11,7 +11,7 @@ const DEFAULT_PRINT_WIDTH = 100;
 
 /**
  * Get base code style configuration
- * @returns Base style configuration
+ * @returns {void} Base style configuration
  */
 export function getBaseCodeStyle(): Record<string, unknown> {
   return {
@@ -24,8 +24,8 @@ export function getBaseCodeStyle(): Record<string, unknown> {
 
 /**
  * Get quality-specific style overrides
- * @param qualityLevel - Quality level string
- * @returns Style overrides
+ * @param {string} qualityLevel - Quality level string
+ * @returns {void} Style overrides
  */
 export function getQualityStyleOverrides(qualityLevel: string): Record<string, unknown> {
   switch (qualityLevel) {
@@ -54,8 +54,8 @@ export function getQualityStyleOverrides(qualityLevel: string): Record<string, u
 
 /**
  * Get formatting rules based on code style
- * @param codeStyle - Code style configuration
- * @returns Formatted rules string
+ * @param {Record<string} codeStyle - Code style configuration
+ * @returns {string} Formatted rules string
  */
 export function getFormattingRules(codeStyle: Record<string, unknown>): string {
   const indentSize = (codeStyle['indentSize'] as number) || FORMATTING.JSON_INDENT_SIZE;
@@ -73,8 +73,8 @@ export function getFormattingRules(codeStyle: Record<string, unknown>): string {
 
 /**
  * Get quality standards based on level
- * @param qualityLevel - Quality level string
- * @returns Quality standards description
+ * @param {string} qualityLevel - Quality level string
+ * @returns {string): string} Quality standards description
  */
 export function getQualityStandards(qualityLevel: string): string {
   switch (qualityLevel) {
@@ -110,8 +110,8 @@ export function getQualityStandards(qualityLevel: string): string {
 
 /**
  * Get documentation requirements
- * @param qualityLevel - Quality level string
- * @returns Documentation requirements string
+ * @param {string} qualityLevel - Quality level string
+ * @returns {string): string} Documentation requirements string
  */
 export function getDocumentationRequirements(qualityLevel: string): string {
   const baseRules = `- Write clear, concise commit messages in English
@@ -133,8 +133,8 @@ export function getDocumentationRequirements(qualityLevel: string): string {
 
 /**
  * Get avoidance rules
- * @param qualityLevel - Quality level string
- * @returns Avoidance rules string
+ * @param {string} qualityLevel - Quality level string
+ * @returns {string): string} Avoidance rules string
  */
 export function getAvoidanceRules(qualityLevel: string): string {
   const baseRules = `- **NEVER** disable ESLint rules with inline comments

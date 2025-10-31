@@ -8,8 +8,8 @@ import { fileExists, readFile } from './file-utils.js';
 
 /**
  * Validate project-specific requirements
- * @param options - Validator options
- * @param result - Validation result
+ * @param {unknown} options - Validator options
+ * @param {unknown} result - Validation result
  */
 export async function validateProjectSpecificRequirements(
   options: ProjectValidatorOptions,
@@ -32,8 +32,8 @@ export async function validateProjectSpecificRequirements(
 
 /**
  * Validate CLI project requirements
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateCLIRequirements(
   options: ProjectValidatorOptions,
@@ -45,8 +45,8 @@ async function validateCLIRequirements(
 
 /**
  * Validate CLI main file
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateCLIMainFile(
   options: ProjectValidatorOptions,
@@ -70,8 +70,8 @@ async function validateCLIMainFile(
 
 /**
  * Validate CLI bin configuration
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateCLIBinConfig(
   options: ProjectValidatorOptions,
@@ -95,8 +95,8 @@ async function validateCLIBinConfig(
 
 /**
  * Validate web project requirements
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateWebRequirements(
   options: ProjectValidatorOptions,
@@ -108,8 +108,8 @@ async function validateWebRequirements(
 
 /**
  * Validate web server file
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateWebServerFile(
   options: ProjectValidatorOptions,
@@ -133,8 +133,8 @@ async function validateWebServerFile(
 
 /**
  * Validate public directory
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validatePublicDirectory(
   options: ProjectValidatorOptions,
@@ -150,8 +150,8 @@ async function validatePublicDirectory(
 
 /**
  * Validate library project requirements
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateLibraryRequirements(
   options: ProjectValidatorOptions,
@@ -164,8 +164,8 @@ async function validateLibraryRequirements(
 
 /**
  * Validate library main file
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateLibraryMainFile(
   options: ProjectValidatorOptions,
@@ -189,8 +189,8 @@ async function validateLibraryMainFile(
 
 /**
  * Validate library types directory
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateLibraryTypesDirectory(
   options: ProjectValidatorOptions,
@@ -206,8 +206,8 @@ async function validateLibraryTypesDirectory(
 
 /**
  * Validate library package.json configuration
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateLibraryPackageJsonConfig(
   options: ProjectValidatorOptions,

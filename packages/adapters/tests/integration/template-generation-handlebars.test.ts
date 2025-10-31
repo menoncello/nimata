@@ -5,10 +5,10 @@
  * from loading templates to generating final files.
  */
 
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdtemp, rm, writeFile, mkdir } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import type { TemplateContext } from '../../../core/src/interfaces/template-engine.js';
 import type { ProjectTemplate } from '../../../core/src/types/project-config.js';
 import { HandlebarsTemplateEngine } from '../../src/template-engine-handlebars.js';
@@ -100,7 +100,7 @@ describe('Template Generation Integration - Story 1.5', () => {
  * {{description}}
  */
 
-console.log('{{welcome_message}}');
+// {{welcome_message}} - replaced console.log for test standards
 
 {{#if enableLogger}}
 import { Logger } from './utils/logger';
@@ -455,10 +455,10 @@ export class Module${i} {
 
       // THEN: All templates should be processed correctly
       expect(results).toHaveLength(10);
-      results.forEach((result, i) => {
+      for (const [i, result] of results.entries()) {
         expect(result[0].content).toContain(`concurrent-project-${i}`);
         expect(result[0].content).toContain(`"id": "${i}"`);
-      });
+      }
     });
   });
 });

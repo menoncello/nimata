@@ -30,8 +30,8 @@ export class PrettierGenerator {
   /**
    * Generate Prettier configuration for a project
    *
-   * @param config - Project configuration
-   * @returns Generated Prettier configuration files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): GeneratedPrettierConfig[]} Generated Prettier configuration files
    */
   generate(config: ProjectConfig): GeneratedPrettierConfig[] {
     const options: PrettierConfigOptions = {
@@ -62,8 +62,8 @@ export class PrettierGenerator {
 
   /**
    * Generate main Prettier configuration
-   * @param options - Configuration options
-   * @returns Generated configuration file
+   * @param {PrettierConfigOptions} options - Configuration options
+   * @returns {PrettierConfigOptions): GeneratedPrettierConfig} Generated configuration file
    */
   private generateMainConfig(options: PrettierConfigOptions): GeneratedPrettierConfig {
     const filename = '.prettierrc.json';
@@ -79,7 +79,7 @@ export class PrettierGenerator {
 
 /**
  * Create a Prettier generator instance
- * @returns New PrettierGenerator instance
+ * @returns {PrettierGenerator} New PrettierGenerator instance
  */
 export function createPrettierGenerator(): PrettierGenerator {
   return new PrettierGenerator();

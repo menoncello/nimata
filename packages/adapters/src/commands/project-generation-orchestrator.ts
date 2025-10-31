@@ -27,7 +27,7 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Initialize the project generation orchestrator
-   * @param logger - CLI logger instance for progress reporting
+   * @param {CLILogger} logger - CLI logger instance for progress reporting
    */
   constructor(logger: CLILogger) {
     this.logger = logger;
@@ -37,7 +37,7 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Validate project name and exit if invalid
-   * @param projectName - Project name to validate
+   * @param {string | undefined} projectName - Project name to validate
    */
   validateProjectNameOrExit(projectName: string | undefined): void {
     this.configValidator.validateProjectNameOrExit(projectName);
@@ -45,9 +45,9 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Generate the entire project with progress tracking
-   * @param config - Project configuration
-   * @param options - Command options
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} options - Command options
+   * @param {unknown} progress - Progress indicator
    */
   async generateProject(
     config: ProjectConfig,
@@ -74,9 +74,9 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Get project configuration with validation
-   * @param projectName - Project name
-   * @param options - Command options
-   * @returns Project configuration or null if cancelled
+   * @param {unknown} projectName - Project name
+   * @param {unknown} options - Command options
+   * @returns {void} Project configuration or null if cancelled
    */
   async getProjectConfiguration(
     projectName: string,
@@ -101,9 +101,9 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Execute core project generation steps
-   * @param config - Project configuration
-   * @param options - Command options
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} options - Command options
+   * @param {unknown} progress - Progress indicator
    */
   private async executeCoreGenerationSteps(
     config: ProjectConfig,
@@ -130,9 +130,9 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Create directory structure
-   * @param config - Project configuration
-   * @param options - Command options
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} options - Command options
+   * @param {unknown} progress - Progress indicator
    */
   private async createDirectoryStructure(
     config: ProjectConfig,
@@ -145,8 +145,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Generate package.json
-   * @param config - Project configuration
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} progress - Progress indicator
    */
   private async generatePackageJson(
     config: ProjectConfig,
@@ -158,8 +158,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Setup TypeScript
-   * @param config - Project configuration
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} progress - Progress indicator
    */
   private async setupTypeScript(
     config: ProjectConfig,
@@ -174,8 +174,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Configure ESLint
-   * @param config - Project configuration
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} progress - Progress indicator
    */
   private async configureESLint(
     config: ProjectConfig,
@@ -187,8 +187,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Add Prettier
-   * @param config - Project configuration
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} progress - Progress indicator
    */
   private async addPrettier(
     config: ProjectConfig,
@@ -200,8 +200,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Setup tests
-   * @param config - Project configuration
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} progress - Progress indicator
    */
   private async setupTests(
     config: ProjectConfig,
@@ -213,8 +213,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Configure AI assistants
-   * @param config - Project configuration
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} progress - Progress indicator
    */
   private async configureAIAssistants(
     config: ProjectConfig,
@@ -229,8 +229,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Create source files
-   * @param config - Project configuration
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} progress - Progress indicator
    */
   private async createSourceFiles(
     config: ProjectConfig,
@@ -245,8 +245,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Validate generated project
-   * @param config - Project configuration
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} progress - Progress indicator
    */
   private async validateGeneratedProjectStep(
     config: ProjectConfig,
@@ -258,9 +258,9 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Execute optional project generation steps
-   * @param config - Project configuration
-   * @param options - Command options
-   * @param progress - Progress indicator
+   * @param {unknown} config - Project configuration
+   * @param {unknown} options - Command options
+   * @param {unknown} progress - Progress indicator
    */
   private async executeOptionalSteps(
     config: ProjectConfig,
@@ -284,7 +284,7 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Validate the generated project
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   private async validateGeneratedProject(config: ProjectConfig): Promise<void> {
     const { existsSync } = await import('node:fs');
@@ -314,8 +314,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Install npm dependencies
-   * @param config - Project configuration
-   * @param targetDir - Target directory
+   * @param {ProjectConfig} config - Project configuration
+   * @param {unknown} targetDir - Target directory
    */
   private async installDependencies(config: ProjectConfig, targetDir?: string): Promise<void> {
     const projectDir = targetDir || config.name;
@@ -324,8 +324,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Initialize git repository
-   * @param config - Project configuration
-   * @param targetDir - Target directory
+   * @param {ProjectConfig} config - Project configuration
+   * @param {unknown} targetDir - Target directory
    */
   private async initializeGitRepository(config: ProjectConfig, targetDir?: string): Promise<void> {
     const projectDir = targetDir || config.name;
@@ -334,7 +334,7 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Show configuration summary to user
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   showConfigurationSummary(config: ProjectConfig): void {
     this.logger.info('Project Configuration:');
@@ -347,8 +347,8 @@ export class ProjectGenerationOrchestrator {
 
   /**
    * Show completion message to user
-   * @param config - Project configuration
-   * @param options - Command options
+   * @param {ProjectConfig} config - Project configuration
+   * @param {EnhancedInitCommandOptions} options - Command options
    */
   showCompletionMessage(config: ProjectConfig, options: EnhancedInitCommandOptions): void {
     this.logger.success('\n🎉 Project created successfully!');

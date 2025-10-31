@@ -58,8 +58,8 @@ export const TECH_STACK_PRIORITY = {
 
 /**
  * Validates tech stack configuration
- * @param config - The tech stack configuration to validate
- * @returns True if valid, false otherwise
+ * @param {TechStackConfig} config - The tech stack configuration to validate
+ * @returns {TechStackConfig): boolean} True if valid, false otherwise
  */
 export function validateTechStackConfig(config: TechStackConfig): boolean {
   // Check required fields
@@ -96,8 +96,8 @@ export function validateTechStackConfig(config: TechStackConfig): boolean {
 
 /**
  * Normalizes tech stack dependency
- * @param dependency - The dependency to normalize
- * @returns Normalized dependency
+ * @param {unknown} dependency - The dependency to normalize
+ * @returns {TechStackDependency} Normalized dependency
  */
 export function normalizeTechStackDependency(
   dependency: Partial<TechStackDependency>
@@ -116,8 +116,8 @@ export function normalizeTechStackDependency(
 
 /**
  * Sorts tech stacks by priority
- * @param stacks - Array of tech stacks to sort
- * @returns Sorted array
+ * @param {T[]} stacks - Array of tech stacks to sort
+ * @returns {T[]): T[]} Sorted array
  */
 export function sortTechStacksByPriority<T extends { priority?: number }>(stacks: T[]): T[] {
   return stacks.sort(
@@ -129,9 +129,9 @@ export function sortTechStacksByPriority<T extends { priority?: number }>(stacks
 
 /**
  * Filters tech stacks by category
- * @param stacks - Array of tech stacks to filter
- * @param category - Category to filter by
- * @returns Filtered array
+ * @param {unknown} stacks - Array of tech stacks to filter
+ * @param {unknown} category - Category to filter by
+ * @returns {T[]} Filtered array
  */
 export function filterTechStacksByCategory<T extends { category?: string }>(
   stacks: T[],
@@ -142,8 +142,8 @@ export function filterTechStacksByCategory<T extends { category?: string }>(
 
 /**
  * Creates a safe tech stack ID
- * @param name - The tech stack name
- * @returns Safe ID string
+ * @param {string} name - The tech stack name
+ * @returns {string): string} Safe ID string
  */
 export function createSafeTechStackId(name: string): string {
   return name

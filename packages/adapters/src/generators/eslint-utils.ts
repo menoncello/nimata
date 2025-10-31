@@ -15,8 +15,8 @@ export interface ESLintConfigOptions {
 
 /**
  * Get target environment based on project type
- * @param projectType - The project type ('basic', 'web', 'cli', 'library')
- * @returns Target environment for ESLint configuration
+ * @param {string} projectType - The project type ('basic', 'web', 'cli', 'library')
+ * @returns {string): 'node' | 'browser' | 'both'} Target environment for ESLint configuration
  */
 export function getTargetEnvironment(projectType: string): 'node' | 'browser' | 'both' {
   switch (projectType) {
@@ -33,8 +33,8 @@ export function getTargetEnvironment(projectType: string): 'node' | 'browser' | 
 
 /**
  * Get parser options based on project type
- * @param projectType - The project type ('basic', 'web', 'cli', 'library')
- * @returns Parser options for ESLint configuration
+ * @param {string} projectType - The project type ('basic', 'web', 'cli', 'library')
+ * @returns {void} Parser options for ESLint configuration
  */
 export function getParserOptions(projectType: string): Record<string, unknown> {
   const baseOptions = {
@@ -56,8 +56,8 @@ export function getParserOptions(projectType: string): Record<string, unknown> {
 
 /**
  * Get global variables based on target environment
- * @param targetEnvironment - The target environment ('node', 'browser', 'both')
- * @returns Global variables for ESLint configuration
+ * @param {string} targetEnvironment - The target environment ('node', 'browser', 'both')
+ * @returns {void} Global variables for ESLint configuration
  */
 export function getGlobalVariables(targetEnvironment: string): Record<string, string> {
   const globals: Record<string, string> = {};
@@ -92,7 +92,7 @@ export function getGlobalVariables(targetEnvironment: string): Record<string, st
 
 /**
  * Get global variables for testing environment
- * @returns Array of testing global variables
+ * @returns {string[]} Array of testing global variables
  */
 export function getTestingGlobals(): string[] {
   return ['describe', 'it', 'test', 'expect', 'beforeEach', 'afterEach', 'beforeAll', 'afterAll'];
@@ -100,8 +100,8 @@ export function getTestingGlobals(): string[] {
 
 /**
  * Get testing rules based on quality level
- * @param _qualityLevel - The quality level (unused parameter for future extensibility)
- * @returns Testing rules for ESLint configuration
+ * @param {string} _qualityLevel - The quality level (unused parameter for future extensibility)
+ * @returns {void} Testing rules for ESLint configuration
  */
 export function getTestingRules(_qualityLevel: string): Record<string, unknown> {
   return {

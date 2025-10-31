@@ -16,10 +16,10 @@ interface CommonCommands {
 
 /**
  * Get key commands based on project type
- * @param projectType - Type of project being generated
- * @param getProjectSpecificCommandsForKeys - Function to get project-specific commands
- * @param commands - Common commands configuration
- * @returns Formatted markdown string with key commands
+ * @param {string} projectType - Type of project being generated
+ * @param {(projectType} getProjectSpecificCommandsForKeys - Function to get project-specific commands
+ * @param {unknown} commands - Common commands configuration
+ * @returns {void} Formatted markdown string with key commands
  */
 export function getKeyCommands(
   projectType: string,
@@ -38,10 +38,10 @@ export function getKeyCommands(
 
 /**
  * Get project-specific commands
- * @param projectType - Type of project being generated
- * @param devCommandPattern - Development command pattern
- * @param buildCommandPattern - Build command pattern
- * @returns Formatted markdown string with project-specific commands
+ * @param {unknown} projectType - Type of project being generated
+ * @param {unknown} devCommandPattern - Development command pattern
+ * @param {unknown} buildCommandPattern - Build command pattern
+ * @returns {string} Formatted markdown string with project-specific commands
  */
 export function getProjectSpecificCommands(
   projectType: string,
@@ -72,10 +72,10 @@ export function getProjectSpecificCommands(
 
 /**
  * Get project-specific commands for key commands section
- * @param projectType - Type of project being generated
- * @param devCommandPattern - Development command pattern
- * @param buildCommandPattern - Build command pattern
- * @returns Formatted markdown string with project-specific commands
+ * @param {unknown} projectType - Type of project being generated
+ * @param {unknown} devCommandPattern - Development command pattern
+ * @param {unknown} buildCommandPattern - Build command pattern
+ * @returns {string} Formatted markdown string with project-specific commands
  */
 export function getProjectSpecificCommandsForKeys(
   projectType: string,
@@ -96,9 +96,9 @@ export function getProjectSpecificCommandsForKeys(
 
 /**
  * Get dev command based on project type
- * @param projectType - Type of project being generated
- * @param devCommandPattern - Development command pattern
- * @returns Development command string for the project type
+ * @param {string} projectType - Type of project being generated
+ * @param {string} devCommandPattern - Development command pattern
+ * @returns { string} Development command string for the project type
  */
 export function getDevCommand(projectType: string, devCommandPattern: string): string {
   switch (projectType) {

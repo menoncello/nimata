@@ -8,10 +8,10 @@
  * the Handlebars-based implementation doesn't exist yet.
  */
 
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdtemp, rm, writeFile, mkdir } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 // These imports will fail because the Handlebars-based implementation doesn't exist yet
 import type { TemplateContext, ProjectTemplate } from '../src/template-engine/types';
 import { HandlebarsTemplateEngine } from '../src/template-engine-handlebars';

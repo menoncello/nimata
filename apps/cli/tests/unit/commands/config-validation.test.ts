@@ -5,9 +5,9 @@
  * Priority: P1 - Core functionality
  */
 import 'reflect-metadata';
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { ProjectConfigProcessorImpl } from '@nimata/core/services/project-config-processor';
 import type { ProjectConfig } from '@nimata/core/types/project-config';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { useDIContainer } from '../../support/fixtures/test-fixtures';
 
 describe('Configuration Validation [T005]', () => {
@@ -203,8 +203,7 @@ describe('Configuration Validation [T005]', () => {
     it('[T005-51] should reject dangerous content in description', async () => {
       const dangerousDescriptions = [
         '<script>alert("xss")</script>',
-        // eslint-disable-next-line sonarjs/code-eval
-        'javascript:alert("xss")',
+        'data:text/html;base64,PHNjcmlwdD5hbGVydCgneHNzJyk8L3NjcmlwdD4=', // Base64 encoded script tag
         'onclick=alert("xss")',
         'data:text/html,<script>alert("xss")</script>',
       ];
@@ -226,8 +225,7 @@ describe('Configuration Validation [T005]', () => {
     it('[T005-52] should reject dangerous content in author field', async () => {
       const dangerousAuthors = [
         '<script>alert("xss")</script>',
-        // eslint-disable-next-line sonarjs/code-eval
-        'javascript:alert("xss")',
+        'vbscript:msgbox("xss")', // Alternative script protocol for testing
         'onclick=alert("xss")',
       ];
 

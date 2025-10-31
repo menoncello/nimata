@@ -12,8 +12,8 @@ const SIGINT_EXIT_CODE = 130;
 
 /**
  * Handle SIGINT gracefully for prompts
- * @param promptFunction - The prompt function to wrap
- * @returns Wrapped prompt function with SIGINT handling
+ * @param {...any} promptFunction - The prompt function to wrap
+ * @returns {Function} Wrapped prompt function with SIGINT handling
  */
 function withSigIntHandling<T extends unknown[], R>(
   promptFunction: (...args: T) => Promise<R>
@@ -38,9 +38,9 @@ function withSigIntHandling<T extends unknown[], R>(
 
 /**
  * Prompt user for text input
- * @param message - The prompt message to display
- * @param defaultValue - Default value if user provides empty input
- * @returns User input text
+ * @param {string} message - The prompt message to display
+ * @param {string} defaultValue - Default value if user provides empty input
+ * @returns {Promise<string>} User input text
  */
 export const promptText = withSigIntHandling(
   async (message: string, defaultValue?: string): Promise<string> => {
@@ -53,10 +53,10 @@ export const promptText = withSigIntHandling(
 
 /**
  * Prompt user to select from a list of options
- * @param message - The prompt message to display
- * @param options - Array of options with labels and values
- * @param defaultValue - Default selected option
- * @returns Selected option value
+ * @param {string} message - The prompt message to display
+ * @param {Array<{label: string}>} options - Array of options with labels and values
+ * @param {unknown} defaultValue - Default selected option
+ * @returns {Promise<unknown>} Selected option value
  */
 export const promptList = withSigIntHandling(
   async (
@@ -78,10 +78,10 @@ export const promptList = withSigIntHandling(
 
 /**
  * Prompt user to select multiple options from a list
- * @param message - The prompt message to display
- * @param options - Array of options with labels and values
- * @param defaultValues - Default selected values
- * @returns Array of selected option values
+ * @param {string} message - The prompt message to display
+ * @param {Array<{label: string}>} options - Array of options with labels and values
+ * @param {string[]} defaultValues - Default selected values
+ * @returns {Promise<unknown[]>} Array of selected option values
  */
 export const promptCheckbox = withSigIntHandling(
   async (
@@ -103,9 +103,9 @@ export const promptCheckbox = withSigIntHandling(
 
 /**
  * Prompt user for yes/no confirmation
- * @param message - The confirmation prompt message
- * @param defaultValue - Default value if user provides empty input
- * @returns True if user confirms, false otherwise
+ * @param {string} message - The confirmation prompt message
+ * @param {boolean} defaultValue - Default value if user provides empty input
+ * @returns {Promise<boolean>} True if user confirms, false otherwise
  */
 export const promptConfirm = withSigIntHandling(
   async (message: string, defaultValue = true): Promise<boolean> => {

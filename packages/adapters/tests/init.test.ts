@@ -49,19 +49,12 @@ describe('InitCommand', () => {
 
     it('should return medium for invalid quality levels', () => {
       const command = initCommand as any;
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation((...args) => {
-        // Capture console warnings for testing
-        consoleSpy?.warnings?.push(args.join(' '));
-      });
-      // Initialize warnings array
-      (consoleSpy as any).warnings = [];
-      // Initialize warnings array
-      (consoleSpy as any).warnings = [];
+      const stderrSpy = vi.spyOn(process.stderr, 'write');
 
       expect(command.parseQualityLevel('invalid')).toBe('medium');
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid quality level'));
+      expect(stderrSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid quality level'));
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
   });
 
@@ -83,34 +76,24 @@ describe('InitCommand', () => {
 
     it('should filter invalid assistants', () => {
       const command = initCommand as any;
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation((...args) => {
-        // Capture console warnings for testing
-        consoleSpy?.warnings?.push(args.join(' '));
-      });
-      // Initialize warnings array
-      (consoleSpy as any).warnings = [];
+      const stderrSpy = vi.spyOn(process.stderr, 'write');
 
       expect(command.parseAIAssistants('invalid,claude-code')).toEqual(['claude-code']);
-      expect(consoleSpy).toHaveBeenCalledWith(
+      expect(stderrSpy).toHaveBeenCalledWith(
         expect.stringContaining('Invalid AI assistants ignored')
       );
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
 
     it('should return claude-code for empty or invalid input', () => {
       const command = initCommand as any;
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation((...args) => {
-        // Capture console warnings for testing
-        consoleSpy?.warnings?.push(args.join(' '));
-      });
-      // Initialize warnings array
-      (consoleSpy as any).warnings = [];
+      const stderrSpy = vi.spyOn(process.stderr, 'write');
 
       expect(command.parseAIAssistants('')).toEqual(['claude-code']);
       expect(command.parseAIAssistants('invalid1,invalid2')).toEqual(['claude-code']);
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
   });
 
@@ -135,17 +118,12 @@ describe('InitCommand', () => {
 
     it('should return basic for invalid template names', () => {
       const command = initCommand as any;
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation((...args) => {
-        // Capture console warnings for testing
-        consoleSpy?.warnings?.push(args.join(' '));
-      });
-      // Initialize warnings array
-      (consoleSpy as any).warnings = [];
+      const stderrSpy = vi.spyOn(process.stderr, 'write');
 
       expect(command.parseProjectType('invalid')).toBe('basic');
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Unknown template'));
+      expect(stderrSpy).toHaveBeenCalledWith(expect.stringContaining('Unknown template'));
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
   });
 
@@ -188,47 +166,40 @@ describe('InitCommand', () => {
   describe('execute', () => {
     it('should handle missing project name', async () => {
       const command = initCommand as any;
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation((...args) => {
-        // Capture console logs for testing
-        consoleSpy?.logs?.push(args.join(' '));
-      });
-      // Initialize logs array
-      (consoleSpy as any).logs = [];
+      const stdoutSpy = vi.spyOn(process.stdout, 'write');
 
       await command.execute(undefined, {});
 
-      expect(consoleSpy).toHaveBeenCalledWith('❌ Project initialization cancelled');
+      expect(stdoutSpy).toHaveBeenCalledWith(
+        expect.stringContaining('❌ Project initialization cancelled')
+      );
 
-      consoleSpy.mockRestore();
+      stdoutSpy.mockRestore();
     });
 
     it('should show configuration summary for valid project', async () => {
       const command = initCommand as any;
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation((...args) => {
-        // Capture console logs for testing
-        consoleSpy?.logs?.push(args.join(' '));
-      });
-      // Initialize logs array
-      (consoleSpy as any).logs = [];
+      const stdoutSpy = vi.spyOn(process.stdout, 'write');
 
       await command.execute('test-project', { quality: 'strict' });
 
-      expect(consoleSpy).toHaveBeenCalledWith('🚀 Nìmata CLI - TypeScript Project Generator');
-      expect(consoleSpy).toHaveBeenCalledWith('📋 Project Configuration:');
-      expect(consoleSpy).toHaveBeenCalledWith('✅ Project configuration validated');
-      expect(consoleSpy).toHaveBeenCalledWith('🎉 Project Ready! Next Steps:');
+      expect(stdoutSpy).toHaveBeenCalledWith(
+        expect.stringContaining('🚀 Nìmata CLI - TypeScript Project Generator')
+      );
+      expect(stdoutSpy).toHaveBeenCalledWith(expect.stringContaining('📋 Project Configuration:'));
+      expect(stdoutSpy).toHaveBeenCalledWith(
+        expect.stringContaining('✅ Project configuration validated')
+      );
+      expect(stdoutSpy).toHaveBeenCalledWith(
+        expect.stringContaining('🎉 Project Ready! Next Steps:')
+      );
 
-      consoleSpy.mockRestore();
+      stdoutSpy.mockRestore();
     });
 
     it('should handle errors gracefully', async () => {
       const command = initCommand as any;
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation((...args) => {
-        // Capture console errors for testing
-        consoleSpy?.errors?.push(args.join(' '));
-      });
-      // Initialize errors array
-      (consoleSpy as any).errors = [];
+      const stderrSpy = vi.spyOn(process.stderr, 'write');
       const processSpy = vi.spyOn(process, 'exit').mockImplementation(() => {
         // Mock implementation for process.exit
       });
@@ -240,10 +211,12 @@ describe('InitCommand', () => {
 
       await command.execute('test-project', { verbose: false });
 
-      expect(consoleSpy).toHaveBeenCalledWith('❌ Error creating project:', 'Test error');
+      // Check that the error was logged properly
+      expect(stderrSpy).toHaveBeenCalledWith(expect.stringContaining('❌ Error creating project:'));
+      expect(stderrSpy).toHaveBeenCalledWith(expect.stringContaining('Test error'));
       expect(processSpy).toHaveBeenCalledWith(1);
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
       processSpy.mockRestore();
     });
   });

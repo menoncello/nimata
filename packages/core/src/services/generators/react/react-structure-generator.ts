@@ -5,16 +5,11 @@
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
 import { toPascalCase } from '../../../utils/string-utils.js';
+import type { DirectoryItem } from '../core/core-file-operations.js';
 import { ReactComponentTemplates } from './templates/react-component-templates.js';
 import { ReactConfigTemplates } from './templates/react-config-templates.js';
 import { ReactCssTemplates } from './templates/react-css-templates.js';
 import { ReactHookTemplates } from './templates/react-hook-templates.js';
-
-export interface DirectoryItem {
-  path: string;
-  type: 'directory' | 'file';
-  content?: string;
-}
 
 /**
  * Generator for React project structures
@@ -37,8 +32,8 @@ export class ReactStructureGenerator {
 
   /**
    * Generate React project structure
-   * @param config - Project configuration
-   * @returns React-specific directory structure
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean}ic directory structure
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const componentName = toPascalCase(config.name);
@@ -48,7 +43,7 @@ export class ReactStructureGenerator {
 
   /**
    * Get React-specific directories
-   * @returns Array of React directory items
+   * @returns {string} Array of React directory items
    */
   private getReactDirectories(): DirectoryItem[] {
     return [
@@ -61,9 +56,9 @@ export class ReactStructureGenerator {
 
   /**
    * Get React-specific files
-   * @param config - Project configuration
-   * @param componentName - Component name
-   * @returns Array of React file items
+   * @param {ProjectConfig} config - Project configuration
+   * @param {string} componentName - Component name
+   * @returns {DirectoryItem} Directory items
    */
   private getReactFiles(config: ProjectConfig, componentName: string): DirectoryItem[] {
     return [
@@ -78,8 +73,8 @@ export class ReactStructureGenerator {
 
   /**
    * Create the main App.tsx file
-   * @param config - Project configuration
-   * @returns Directory item for App.tsx file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Directory item for App.tsx file
    */
   private createAppFile(config: ProjectConfig): DirectoryItem {
     const componentName = toPascalCase(config.name);
@@ -94,9 +89,9 @@ export class ReactStructureGenerator {
 
   /**
    * Create the main component file
-   * @param componentName - Component name
-   * @param config - Project configuration
-   * @returns Directory item for component file
+   * @param {string} componentName - Component name
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Directory item for component file
    */
   private createComponentFile(componentName: string, config: ProjectConfig): DirectoryItem {
     const content = this.componentTemplates.getComponentTemplate(componentName, config);
@@ -110,8 +105,8 @@ export class ReactStructureGenerator {
 
   /**
    * Create the useApp hook file
-   * @param _config - Project configuration
-   * @returns Directory item for hook file
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Directory item for hook file
    */
   private createHookFile(_config: ProjectConfig): DirectoryItem {
     const content = this.hookTemplates.getUseAppHookTemplate();
@@ -125,8 +120,8 @@ export class ReactStructureGenerator {
 
   /**
    * Create the HTML template file
-   * @param config - Project configuration
-   * @returns Directory item for HTML file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Directory item for HTML file
    */
   private createHtmlFile(config: ProjectConfig): DirectoryItem {
     const content = this.configTemplates.getHtmlTemplate(config);
@@ -140,8 +135,8 @@ export class ReactStructureGenerator {
 
   /**
    * Create the Vite configuration file
-   * @param _config - Project configuration
-   * @returns Directory item for Vite config file
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Directory item for Vite config file
    */
   private createViteConfigFile(_config: ProjectConfig): DirectoryItem {
     const content = this.configTemplates.getViteConfigTemplate();
@@ -155,8 +150,8 @@ export class ReactStructureGenerator {
 
   /**
    * Create the main CSS file
-   * @param config - Project configuration
-   * @returns Directory item for CSS file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Directory item for CSS file
    */
   private createCssFile(config: ProjectConfig): DirectoryItem {
     const content = this.cssTemplates.getMainCSSTemplate(config);

@@ -6,7 +6,7 @@
 
 /**
  * Gets architecture description for basic project type
- * @returns Architecture description string
+ * @returns {string} Architecture description string
  */
 function getBasicArchitectureDescription(): string {
   return `- **src/**: Main source code
@@ -17,7 +17,7 @@ function getBasicArchitectureDescription(): string {
 
 /**
  * Gets architecture description for CLI project type
- * @returns Architecture description string
+ * @returns {string} Architecture description string
  */
 function getCliArchitectureDescription(): string {
   return `- **src/commands/**: CLI command implementations
@@ -29,7 +29,7 @@ function getCliArchitectureDescription(): string {
 
 /**
  * Gets architecture description for web project type
- * @returns Architecture description string
+ * @returns {string} Architecture description string
  */
 function getWebArchitectureDescription(): string {
   return `- **src/components/**: Reusable UI components
@@ -43,7 +43,7 @@ function getWebArchitectureDescription(): string {
 
 /**
  * Gets architecture description for library project type
- * @returns Architecture description string
+ * @returns {string} Architecture description string
  */
 function getLibraryArchitectureDescription(): string {
   return `- **src/**: Library source code
@@ -56,8 +56,8 @@ function getLibraryArchitectureDescription(): string {
 
 /**
  * Gets architecture section content based on project type
- * @param projectType - Project type identifier
- * @returns Architecture section content
+ * @param {string} projectType - Project type identifier
+ * @returns {string): string} Architecture section content
  */
 export function getArchitectureSection(projectType: string): string {
   switch (projectType) {

@@ -5,16 +5,11 @@
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
 import { toPascalCase } from '../../../utils/string-utils.js';
+import type { DirectoryItem } from '../core/core-file-operations.js';
 import { VueComponentGenerators } from './vue-component-generators.js';
 import { VueComposableGenerators } from './vue-composable-generators.js';
 import { VueConfigGenerators } from './vue-config-generators.js';
 import { FILE_PATHS } from './vue-constants.js';
-
-export interface DirectoryItem {
-  path: string;
-  type: 'directory' | 'file';
-  content?: string;
-}
 
 /**
  * Generator for Vue project structures
@@ -22,8 +17,8 @@ export interface DirectoryItem {
 export class VueStructureGenerator {
   /**
    * Generate Vue project structure
-   * @param config - Project configuration
-   * @returns Vue-specific directory structure
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean}ic directory structure
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const directories = this.createDirectories();
@@ -35,7 +30,7 @@ export class VueStructureGenerator {
 
   /**
    * Create directory structure
-   * @returns Directory items
+   * @returns {string} Directory items
    */
   private createDirectories(): DirectoryItem[] {
     return [
@@ -48,8 +43,8 @@ export class VueStructureGenerator {
 
   /**
    * Create component files
-   * @param config - Project configuration
-   * @returns Component file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Directory items
    */
   private createComponentFiles(config: ProjectConfig): DirectoryItem[] {
     const componentName = toPascalCase(config.name);
@@ -75,8 +70,8 @@ export class VueStructureGenerator {
 
   /**
    * Create configuration files
-   * @param config - Project configuration
-   * @returns Configuration file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Directory items
    */
   private createConfigFiles(config: ProjectConfig): DirectoryItem[] {
     return [

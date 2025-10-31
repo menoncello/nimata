@@ -144,9 +144,9 @@ export async function waitFor(
 }
 
 /**
- * Capture console output during test execution
+ * Capture process output during test execution
  */
-export function captureConsole<T>(fn: () => T): {
+export function captureProcessOutput<T>(fn: () => T): {
   result: T;
   stdout: string[];
   stderr: string[];
@@ -154,22 +154,36 @@ export function captureConsole<T>(fn: () => T): {
   const stdout: string[] = [];
   const stderr: string[] = [];
 
-  const originalLog = console.log;
-  const originalError = console.error;
+  const originalWrite = process.stdout.write;
+  const originalErrorWrite = process.stderr.write;
 
-  console.log = (...args: unknown[]) => {
-    stdout.push(args.map(String).join(' '));
+  process.stdout.write = (
+    string: string | Uint8Array,
+    _encoding?: BufferEncoding | ((err?: Error) => void),
+    _cb?: (err?: Error) => void
+  ): boolean => {
+    if (typeof string === 'string') {
+      stdout.push(string);
+    }
+    return true;
   };
 
-  console.error = (...args: unknown[]) => {
-    stderr.push(args.map(String).join(' '));
+  process.stderr.write = (
+    string: string | Uint8Array,
+    _encoding?: BufferEncoding | ((err?: Error) => void),
+    _cb?: (err?: Error) => void
+  ): boolean => {
+    if (typeof string === 'string') {
+      stderr.push(string);
+    }
+    return true;
   };
 
   try {
     const result = fn();
     return { result, stdout, stderr };
   } finally {
-    console.log = originalLog;
-    console.error = originalError;
+    process.stdout.write = originalWrite;
+    process.stderr.write = originalErrorWrite;
   }
 }

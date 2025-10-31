@@ -77,7 +77,7 @@ describe('Project Generation - AI Context Files (RED PHASE)', () => {
       expect(result.exitCode).toBe(0); // Will fail initially
 
       const claudeContent = await Bun.file(`${tempDir}/claude-structure-test/CLAUDE.md`).text();
-      expect(claudeContent).toContain('## Project Overview');
+      expect(claudeContent).toContain('## Project Information');
       expect(claudeContent).toContain('src/');
       expect(claudeContent).toContain('## Architecture');
       expect(claudeContent).toContain('src/components/');

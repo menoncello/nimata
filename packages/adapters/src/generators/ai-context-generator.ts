@@ -102,8 +102,8 @@ export class AIContextGenerator {
   /**
    * Generate AI context files for multiple AI assistants
    *
-   * @param config - Project configuration
-   * @returns Generated AI context configuration files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): GeneratedAIContextConfig[]} Generated AI context configuration files
    */
   generate(config: ProjectConfig): GeneratedAIContextConfig[] {
     const options: AIContextConfigOptions = {
@@ -140,8 +140,8 @@ export class AIContextGenerator {
 
   /**
    * Generate unified AI context file
-   * @param options - AI context configuration options
-   * @returns Generated unified context configuration
+   * @param {AIContextConfigOptions} options - AI context configuration options
+   * @returns {AIContextConfigOptions): GeneratedAIContextConfig} Generated unified context configuration
    */
   private generateUnifiedContext(options: AIContextConfigOptions): GeneratedAIContextConfig {
     const filename = '.ai/context.md';
@@ -156,8 +156,8 @@ export class AIContextGenerator {
 
   /**
    * Generate Claude-specific AI context file
-   * @param options - AI context configuration options
-   * @returns Generated Claude context configuration
+   * @param {AIContextConfigOptions} options - AI context configuration options
+   * @returns {AIContextConfigOptions): GeneratedAIContextConfig} Generated Claude context configuration
    */
   private generateClaudeContext(options: AIContextConfigOptions): GeneratedAIContextConfig {
     const content = this.buildClaudeContextContent(options);
@@ -171,8 +171,8 @@ export class AIContextGenerator {
 
   /**
    * Generate Copilot-specific AI context file
-   * @param options - AI context configuration options
-   * @returns Generated Copilot context configuration
+   * @param {AIContextConfigOptions} options - AI context configuration options
+   * @returns {AIContextConfigOptions): GeneratedAIContextConfig} Generated Copilot context configuration
    */
   private generateCopilotContext(options: AIContextConfigOptions): GeneratedAIContextConfig {
     const content = this.buildCopilotContextContent(options);
@@ -186,8 +186,8 @@ export class AIContextGenerator {
 
   /**
    * Generate AI configuration manifest file
-   * @param options - AI context configuration options
-   * @returns Generated AI manifest configuration
+   * @param {AIContextConfigOptions} options - AI context configuration options
+   * @returns {AIContextConfigOptions): GeneratedAIContextConfig} Generated AI manifest configuration
    */
   private generateAIManifest(options: AIContextConfigOptions): GeneratedAIContextConfig {
     const content = this.buildAIManifestContent(options);
@@ -201,8 +201,8 @@ export class AIContextGenerator {
 
   /**
    * Build unified AI context content
-   * @param options - Configuration options for AI context generation
-   * @returns Generated unified AI context content as markdown string
+   * @param {AIContextConfigOptions} options - Configuration options for AI context generation
+   * @returns {AIContextConfigOptions): string} Generated unified AI context content as markdown string
    */
   private buildUnifiedContextContent(options: AIContextConfigOptions): string {
     const timestamp = new Date().toISOString().split('T')[0];
@@ -237,8 +237,8 @@ ${buildAvoidanceSection(options, getAvoidanceRules)}
 
   /**
    * Build Claude-specific context content
-   * @param options - Configuration options for AI context generation
-   * @returns Generated Claude-specific AI context content as markdown string
+   * @param {AIContextConfigOptions} options - Configuration options for AI context generation
+   * @returns {AIContextConfigOptions): string} Generated Claude-specific AI context content as markdown string
    */
   private buildClaudeContextContent(options: AIContextConfigOptions): string {
     return `# Claude Code Context for ${options.projectName}
@@ -254,8 +254,8 @@ ${buildClaudeInteractionPatternsSection()}`;
 
   /**
    * Build Copilot-specific context content
-   * @param options - Configuration options for AI context generation
-   * @returns Generated Copilot-specific AI context content as markdown string
+   * @param {AIContextConfigOptions} options - Configuration options for AI context generation
+   * @returns {AIContextConfigOptions): string} Generated Copilot-specific AI context content as markdown string
    */
   private buildCopilotContextContent(options: AIContextConfigOptions): string {
     return `# GitHub Copilot Context for ${options.projectName}
@@ -273,8 +273,8 @@ ${buildCopilotDocumentationSection()}`;
 
   /**
    * Build AI manifest content
-   * @param options - Configuration options for AI context generation
-   * @returns Generated AI manifest content as JSON string
+   * @param {AIContextConfigOptions} options - Configuration options for AI context generation
+   * @returns {AIContextConfigOptions): string} Generated AI manifest content as JSON string
    */
   private buildAIManifestContent(options: AIContextConfigOptions): string {
     return buildAIManifestContent(options, (ql) => this.getCoverageThreshold(ql));
@@ -282,8 +282,8 @@ ${buildCopilotDocumentationSection()}`;
 
   /**
    * Get coverage threshold based on quality level
-   * @param qualityLevel - Quality level of the project ('light', 'medium', 'strict')
-   * @returns Coverage threshold percentage
+   * @param {string} qualityLevel - Quality level of the project ('light', 'medium', 'strict')
+   * @returns {string): number} Coverage threshold percentage
    */
   private getCoverageThreshold(qualityLevel: string): number {
     switch (qualityLevel) {
@@ -301,7 +301,7 @@ ${buildCopilotDocumentationSection()}`;
 
 /**
  * Create an AI Context generator instance
- * @returns New instance of AIContextGenerator
+ * @returns {AIContextGenerator} New instance of AIContextGenerator
  */
 export function createAIContextGenerator(): AIContextGenerator {
   return new AIContextGenerator();

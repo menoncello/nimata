@@ -14,7 +14,7 @@ type HandlebarsInstance = typeof Handlebars;
 export class ObjectConditionalHelpers {
   /**
    * Register all object-based conditional helpers with Handlebars instance
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   static registerAll(handlebars: HandlebarsInstance): void {
     this.registerObjectSizeHelpers(handlebars);
@@ -23,7 +23,7 @@ export class ObjectConditionalHelpers {
 
   /**
    * Register object size-based conditional helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerObjectSizeHelpers(handlebars: HandlebarsInstance): void {
     this.registerObjectSizeHelper(handlebars);
@@ -32,7 +32,7 @@ export class ObjectConditionalHelpers {
 
   /**
    * Register object size helper
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerObjectSizeHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(
@@ -54,7 +54,7 @@ export class ObjectConditionalHelpers {
 
   /**
    * Register object minimum size helper
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerObjectMinSizeHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(
@@ -76,7 +76,7 @@ export class ObjectConditionalHelpers {
 
   /**
    * Register object property-based conditional helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerObjectPropertyHelpers(handlebars: HandlebarsInstance): void {
     this.registerAllPropertiesMatchHelper(handlebars);
@@ -85,7 +85,7 @@ export class ObjectConditionalHelpers {
 
   /**
    * Register all properties match helper
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerAllPropertiesMatchHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(
@@ -106,7 +106,7 @@ export class ObjectConditionalHelpers {
 
   /**
    * Register any property matches helper
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerAnyPropertyMatchesHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(

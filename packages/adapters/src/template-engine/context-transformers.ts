@@ -34,8 +34,8 @@ const _TEMPLATE_CONTEXT_CONSTANTS = {
 export class ContextTransformersImpl implements ContextTransformers {
   /**
    * Transforms ProjectConfig to BaseTemplateContext
-   * @param config - The project configuration to transform
-   * @returns The base template context
+   * @param {ProjectConfig} config - The project configuration to transform
+   * @returns {ProjectConfig): BaseTemplateContext} The base template context
    */
   fromProjectConfig(config: ProjectConfig): BaseTemplateContext {
     const now = new Date();
@@ -55,8 +55,8 @@ export class ContextTransformersImpl implements ContextTransformers {
   /**
    * Gets core project information from the project configuration.
    * Extracts basic project details like name, description, author, license and version.
-   * @param config - The project configuration containing project metadata
-   * @returns An object containing project information properties
+   * @param {ProjectConfig} config - The project configuration containing project metadata
+   * @returns {ProjectConfig):} An object containing project information properties
    */
   private getProjectInfo(config: ProjectConfig): {
     project_name: string;
@@ -77,8 +77,8 @@ export class ContextTransformersImpl implements ContextTransformers {
   /**
    * Gets project metadata and quality level properties from the project configuration.
    * Extracts quality level information and project type settings.
-   * @param config - The project configuration containing quality and type settings
-   * @returns An object containing project metadata properties including quality flags
+   * @param {ProjectConfig} config - The project configuration containing quality and type settings
+   * @returns {ProjectConfig):} An object containing project metadata properties including quality flags
    */
   private getProjectMetadata(config: ProjectConfig): {
     quality_level: import('@nimata/core').ProjectQualityLevel;
@@ -99,8 +99,8 @@ export class ContextTransformersImpl implements ContextTransformers {
   /**
    * Gets AI assistant configuration from the provided list.
    * Creates configuration flags for different AI assistant types.
-   * @param aiAssistants - List of AI assistants configured for the project
-   * @returns An object containing AI assistant configuration properties and feature flags
+   * @param {unknown} aiAssistants - List of AI assistants configured for the project
+   * @returns {{ ai_assistants: Array<import('@nimata/core').ProjectAIAssistant>; has_claude_code: boolean; has_copilot: boolean; has_ai_context: boolean }} An object containing AI assistant configuration properties and feature flags
    */
   private getAIAssistantConfig(aiAssistants?: Array<import('@nimata/core').ProjectAIAssistant>): {
     ai_assistants: Array<import('@nimata/core').ProjectAIAssistant>;
@@ -119,8 +119,8 @@ export class ContextTransformersImpl implements ContextTransformers {
   /**
    * Gets filesystem path configuration from the project settings.
    * Creates standardized paths for different project directories.
-   * @param config - The project configuration containing target directory settings
-   * @returns An object containing filesystem path properties for project structure
+   * @param {ProjectConfig} config - The project configuration containing target directory settings
+   * @returns {ProjectConfig):} An object containing filesystem path properties for project structure
    */
   private getFilesystemPaths(config: ProjectConfig): {
     target_directory?: string;
@@ -141,8 +141,8 @@ export class ContextTransformersImpl implements ContextTransformers {
   /**
    * Gets date and timestamp information from the provided date.
    * Extracts current date, time, and formatted timestamp components.
-   * @param now - The current date object to extract time information from
-   * @returns An object containing date and timestamp properties for template generation
+   * @param {Date} now - The current date object to extract time information from
+   * @returns {Date):} An object containing date and timestamp properties for template generation
    */
   private getDateInfo(now: Date): {
     now: string;
@@ -165,7 +165,7 @@ export class ContextTransformersImpl implements ContextTransformers {
   /**
    * Gets default feature flags for template generation.
    * Returns standard feature enablement flags for project tools and capabilities.
-   * @returns An object containing feature flag properties for project configuration
+   * @returns {{ enable_eslint: boolean; enable_prettier: boolean; enable_typescript: boolean; enable_tests: boolean; enable_git: boolean }} An object containing feature flag properties for project configuration
    */
   private getFeatureFlags(): {
     enable_eslint: boolean;
@@ -186,7 +186,7 @@ export class ContextTransformersImpl implements ContextTransformers {
   /**
    * Gets package configuration settings for the project.
    * Returns package manager and runtime version information.
-   * @returns An object containing package configuration properties
+   * @returns {{ package_manager: 'bun'; node_version: string; bun_version: string }} An object containing package configuration properties
    */
   private getPackageConfig(): {
     package_manager: 'bun';
@@ -203,7 +203,7 @@ export class ContextTransformersImpl implements ContextTransformers {
   /**
    * Gets repository information settings for the project.
    * Returns CI/CD and repository integration flags.
-   * @returns An object containing repository information properties
+   * @returns {{ has_ci: boolean; has_github_actions: boolean }} An object containing repository information properties
    */
   private getRepositoryInfo(): {
     has_ci: boolean;
@@ -217,8 +217,8 @@ export class ContextTransformersImpl implements ContextTransformers {
 
   /**
    * Extends BaseTemplateContext with computed properties
-   * @param base - The base template context to extend
-   * @returns The extended template context with computed properties
+   * @param {BaseTemplateContext} base - The base template context to extend
+   * @returns {BaseTemplateContext): ExtendedTemplateContext} The extended template context with computed properties
    */
   extend(base: BaseTemplateContext): ExtendedTemplateContext {
     const projectNameVariants = this.getProjectNameVariants(base);
@@ -241,8 +241,8 @@ export class ContextTransformersImpl implements ContextTransformers {
 
   /**
    * Gets project name variations in different formats
-   * @param base - The base template context
-   * @returns Object containing project name variants
+   * @param {BaseTemplateContext} base - The base template context
+   * @returns {Record<string, string>} Object containing project name variants
    */
   private getProjectNameVariants(base: BaseTemplateContext): Record<string, string> {
     return {
@@ -257,8 +257,8 @@ export class ContextTransformersImpl implements ContextTransformers {
 
   /**
    * Gets license information
-   * @param base - The base template context
-   * @returns Object containing license information
+   * @param {BaseTemplateContext} base - The base template context
+   * @returns {{ license_short: string }} Object containing license information
    */
   private getLicenseInfo(base: BaseTemplateContext): { license_short: string } {
     return {
@@ -268,8 +268,8 @@ export class ContextTransformersImpl implements ContextTransformers {
 
   /**
    * Gets quality-based configuration presets
-   * @param base - The base template context
-   * @returns Object containing quality configuration strings
+   * @param {BaseTemplateContext} base - The base template context
+   * @returns {Record<string, string>} Object containing quality configuration strings
    */
   private getQualityConfigs(base: BaseTemplateContext): Record<string, string> {
     return {
@@ -283,7 +283,7 @@ export class ContextTransformersImpl implements ContextTransformers {
 
   /**
    * Gets basic template context
-   * @returns Object containing template context properties
+   * @returns {{ template_data: Record<string, unknown>; custom_variables: Record<string, unknown> }} Object containing template context properties
    */
   private getTemplateContext(): {
     template_data: Record<string, unknown>;
@@ -297,8 +297,8 @@ export class ContextTransformersImpl implements ContextTransformers {
 
   /**
    * Gets advanced feature flags based on quality level
-   * @param base - The base template context
-   * @returns Object containing advanced feature flags
+   * @param {BaseTemplateContext} base - The base template context
+   * @returns {{ enable_documentation: boolean; enable_examples: boolean; enable_changelog: boolean; enable_contributing: boolean }} Object containing advanced feature flags
    */
   private getAdvancedFeatures(base: BaseTemplateContext): {
     enable_documentation: boolean;
@@ -317,7 +317,7 @@ export class ContextTransformersImpl implements ContextTransformers {
 
   /**
    * Gets development-related settings
-   * @returns Object containing development configuration
+   * @returns {{ build_output: string; source_maps: boolean; minification: boolean; dev_server_port: number; hot_reload: boolean; auto_restart: boolean }} Object containing development configuration
    */
   private getDevelopmentSettings(): {
     build_output: string;
@@ -339,9 +339,9 @@ export class ContextTransformersImpl implements ContextTransformers {
 
   /**
    * Applies custom variables to extended template context
-   * @param context - The extended template context
-   * @param variables - Custom variables to apply
-   * @returns Extended template context with custom variables applied
+   * @param {unknown} context - The extended template context
+   * @param {unknown} variables - Custom variables to apply
+   * @returns {ExtendedTemplateContext} Extended template context with custom variables applied
    */
   applyCustomVariables(
     context: ExtendedTemplateContext,
@@ -358,9 +358,9 @@ export class ContextTransformersImpl implements ContextTransformers {
 
   /**
    * Validates template context
-   * @param context - The context to validate
-   * @param schema - Validation schema
-   * @returns Validation result
+   * @param {BaseTemplateContext} context - The context to validate
+   * @param {Record<string} schema - Validation schema
+   * @returns {{ isValid: boolean; errors: string[] }} Validation result
    */
   validateContext(
     context: BaseTemplateContext,

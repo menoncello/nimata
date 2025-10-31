@@ -26,8 +26,7 @@ export class ConfigValidator {
 
   /**
    * Creates a new ConfigValidator instance
-   * @param logger - Logger instance for outputting validation messages
-   * @returns {void}
+   * @param {CLILogger} logger - Logger instance for outputting validation messages
    */
   constructor(logger: CLILogger) {
     this.logger = logger;
@@ -35,8 +34,7 @@ export class ConfigValidator {
 
   /**
    * Validate project name and exit if invalid
-   * @param projectName - Project name to validate
-   * @returns {void} - exits process if invalid
+   * @param {string | undefined} projectName - Project name to validate
    */
   validateProjectNameOrExit(projectName: string | undefined): void {
     if (!projectName) {
@@ -60,8 +58,8 @@ export class ConfigValidator {
 
   /**
    * Check if a project name is valid
-   * @param name - Project name to validate
-   * @returns True if valid
+   * @param {string} name - Project name to validate
+   * @returns {boolean} True if valid
    */
   isValidProjectName(name: string): boolean {
     if (
@@ -86,8 +84,8 @@ export class ConfigValidator {
 
   /**
    * Suggest a valid project name based on invalid input
-   * @param name - Invalid project name
-   * @returns Suggested valid project name
+   * @param {string} name - Invalid project name
+   * @returns {string} Suggested valid project name
    */
   suggestProjectName(name: string): string {
     let suggestion = name
@@ -119,8 +117,8 @@ export class ConfigValidator {
 
   /**
    * Parse quality level from string
-   * @param quality - Quality level string
-   * @returns Quality level enum value
+   * @param {string | undefined} quality - Quality level string
+   * @returns {QualityLevel} Quality level enum value
    */
   parseQualityLevel(quality?: string): QualityLevel {
     if (!quality) {
@@ -151,8 +149,8 @@ export class ConfigValidator {
 
   /**
    * Parse project type from string
-   * @param projectType - Project type string
-   * @returns Project type enum value
+   * @param {string | undefined} projectType - Project type string
+   * @returns {ProjectType} Project type enum value
    */
   parseProjectType(projectType?: string): ProjectType {
     if (!projectType) {
@@ -185,8 +183,8 @@ export class ConfigValidator {
 
   /**
    * Parse AI assistants from comma-separated string
-   * @param aiString - AI assistants string
-   * @returns Array of AI assistant enum values
+   * @param {string | undefined} aiString - AI assistants string
+   * @returns {AIAssistant[]} Array of AI assistant enum values
    */
   parseAIAssistants(aiString?: string): AIAssistant[] {
     if (!aiString) {
@@ -210,9 +208,9 @@ export class ConfigValidator {
 
   /**
    * Create project configuration from command options
-   * @param projectName - Project name
-   * @param options - Command options
-   * @returns Project configuration
+   * @param {string} projectName - Project name
+   * @param {EnhancedInitCommandOptions} options - Command options
+   * @returns {ProjectConfig} Project configuration
    */
   createConfigFromOptions(projectName: string, options: EnhancedInitCommandOptions): ProjectConfig {
     return {
@@ -226,8 +224,9 @@ export class ConfigValidator {
 
   /**
    * Validate project configuration
-   * @param config - Configuration to validate
-   * @throws Error if validation fails
+   * @param {ProjectConfig} config - Configuration to validate
+   * @returns {Promise<void>}
+   * @throws {Error} if validation fails
    */
   async validateConfiguration(config: ProjectConfig): Promise<void> {
     const errors: string[] = [];

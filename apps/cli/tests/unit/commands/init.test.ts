@@ -6,11 +6,11 @@
  * Priority: P1 - Core command functionality
  */
 import 'reflect-metadata';
+import { describe, it, expect, beforeEach, afterEach, spyOn } from 'bun:test';
 import * as fs from 'node:fs';
 import { ProjectGenerator } from '@nimata/adapters/project-generator';
 import { ProjectWizardImplementation } from '@nimata/adapters/wizards/project-wizard';
 import { ProjectConfigProcessorImpl } from '@nimata/core/services/project-config-processor';
-import { describe, it, expect, beforeEach, afterEach, spyOn } from 'bun:test';
 import { initCommand } from '../../../src/commands/init.js';
 import { useDIContainer, useOutputWriter } from '../../support/fixtures/test-fixtures';
 
@@ -26,11 +26,11 @@ describe('InitCommand [T001]', () => {
   afterEach(() => {
     cleanupDI();
     // Clean up any active mocks
-    activeMocks.forEach((mock) => {
+    for (const mock of activeMocks) {
       if (mock && typeof mock.mockRestore === 'function') {
         mock.mockRestore();
       }
-    });
+    }
     activeMocks.length = 0;
 
     // Force restore prototypes that may have been spied on
@@ -41,9 +41,9 @@ describe('InitCommand [T001]', () => {
       fs,
     ];
 
-    prototypesToRestore.forEach((proto) => {
-      if (!proto) return;
-      Object.getOwnPropertyNames(proto).forEach((key) => {
+    for (const proto of prototypesToRestore) {
+      if (!proto) continue;
+      for (const key of Object.getOwnPropertyNames(proto)) {
         const descriptor = Object.getOwnPropertyDescriptor(proto, key);
         if (
           descriptor &&
@@ -52,8 +52,8 @@ describe('InitCommand [T001]', () => {
         ) {
           (descriptor.value as any).mockRestore();
         }
-      });
-    });
+      }
+    }
   });
 
   it('[T001-01] should have correct command name', () => {
@@ -243,7 +243,7 @@ describe('InitCommand [T001]', () => {
       try {
         await initCommand.handler(mockArgs);
       } catch (error) {
-        console.error('Test failed with error:', error);
+        process.stderr.write(`Test failed with error: ${error}\n`);
         throw error;
       } finally {
         wizardSpy.mockRestore();
@@ -291,12 +291,7 @@ describe('InitCommand [T001]', () => {
         warnings: [],
       });
 
-      try {
-        await initCommand.handler(mockArgs);
-      } catch (error) {
-        console.error('Test failed with error:', error);
-        throw error;
-      }
+      await expect(initCommand.handler(mockArgs)).resolves.toBeUndefined();
 
       expect(mockExistsSync).toHaveBeenCalledWith(expect.any(String));
       expect(mockReadFileSync).toHaveBeenCalledWith(expect.any(String), 'utf-8');
@@ -440,7 +435,7 @@ describe('InitCommand [T001]', () => {
       try {
         await initCommand.handler(mockArgs);
       } catch (error) {
-        console.error('Test failed with error:', error);
+        process.stderr.write(`Test failed with error: ${error}\n`);
         throw error;
       }
 

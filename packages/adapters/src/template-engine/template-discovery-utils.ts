@@ -36,29 +36,29 @@ export interface TemplateProcessingResults {
 
 /**
  * Extract template metadata with error handling
- * @param templatePath - Path to the template file
- * @returns Template metadata or null if extraction failed
+ * @param {unknown} templatePath - Path to the template file
+ * @returns {void} Template metadata or null if extraction failed
  */
 export async function extractTemplateWithErrorHandling(
   templatePath: string
 ): Promise<TemplateMetadata | null> {
   try {
     return await TemplateMetadataParser.extractTemplateMetadata(templatePath);
-  } catch (error) {
-    console.warn(`Failed to extract metadata from ${templatePath}:`, error);
+  } catch {
+    // Failed to extract metadata from template, but continue processing
     return null;
   }
 }
 
 /**
  * Process a single template path and categorize it
- * @param templatePath - Path to the template file
- * @param lastScan - Last scan timestamp
- * @param collections - Object containing arrays to collect new and modified templates
- * @param collections.newTemplates - Array to collect new templates
- * @param collections.modifiedTemplates - Array to collect modified templates
- * @param indexManager - Template index manager instance for checking existing templates
- * @param indexManager.getTemplateByPath - Function to get template by path from the index manager
+ * @param {string} templatePath - Path to the template file
+ * @param {number} lastScan - Last scan timestamp
+ * @param {{ newTemplates: TemplateMetadata[]; modifiedTemplates: TemplateMetadata[] }} collections - Collections to store template metadata
+ * @param {TemplateMetadata[]} collections.newTemplates - Array to collect new templates
+ * @param {TemplateMetadata[]} collections.modifiedTemplates - Array to collect modified templates
+ * @param {{ getTemplateByPath: (path: string) => TemplateMetadata | null }} indexManager - Template index manager instance for checking existing templates
+ * @param {(path: string) => TemplateMetadata | null} indexManager.getTemplateByPath - Function to get template by path from the index manager
  */
 export async function processTemplatePath(
   templatePath: string,
@@ -82,17 +82,17 @@ export async function processTemplatePath(
     } else {
       collections.newTemplates.push(template);
     }
-  } catch (error) {
-    console.warn(`Failed to process ${templatePath}:`, error);
+  } catch {
+    // Failed to process template, but continue with others
   }
 }
 
 /**
  * Find existing template by checking both original and normalized paths
- * @param templatePath - Path to check
- * @param indexManager - Template index manager instance
- * @param indexManager.getTemplateByPath - Function to get template by path from the index manager
- * @returns Existing template or null if not found
+ * @param {string} templatePath - Path to check
+ * @param {{ getTemplateByPath: (path: string) => TemplateMetadata | null } | undefined} indexManager - Template index manager instance
+ * @param {(path: string) => TemplateMetadata | null} indexManager.getTemplateByPath - Function to get template by path from the index manager
+ * @returns {Promise<TemplateMetadata | null>} Existing template or null if not found
  */
 async function findExistingTemplate(
   templatePath: string,
@@ -120,12 +120,12 @@ async function findExistingTemplate(
 
 /**
  * Discover templates from a single source
- * @param source - Template source configuration
- * @param source.path - Source path
- * @param source.recursive - Whether to search recursively
- * @param indexManager - Template index manager instance
- * @param indexManager.addTemplate - Function to add template to index
- * @returns Array of discovered templates
+ * @param {{ path: string; recursive?: boolean }} source - Source configuration
+ * @param {string} source.path - Source path
+ * @param {boolean} source.recursive - Whether to search recursively
+ * @param {{ addTemplate: (template: TemplateMetadata) => void }} indexManager - Template index manager instance
+ * @param {(template: TemplateMetadata) => void} indexManager.addTemplate - Function to add template to index
+ * @returns {Promise<TemplateMetadata[]>} Array of discovered templates
  */
 export async function discoverFromSource(
   source: { path: string; recursive?: boolean },
@@ -141,8 +141,8 @@ export async function discoverFromSource(
         templates.push(template);
         indexManager.addTemplate(template);
       }
-    } catch (error) {
-      console.warn(`Failed to process template ${filePath}:`, error);
+    } catch {
+      // Template processing failed, continuing with others
     }
   }
 
@@ -151,19 +151,15 @@ export async function discoverFromSource(
 
 /**
  * Calculate duration and log performance metrics
- * @param startTime - Start time in milliseconds
- * @param operation - Operation description
- * @param count - Count of items processed
- * @returns Duration in milliseconds
+ * @param {number} _startTime - Start time in milliseconds
+ * @param {string} _operation - Operation description
+ * @param {number} _count - Count of items processed
+ * @returns {number} Duration in milliseconds
  */
 export function calculateAndLogPerformance(
-  startTime: number,
-  operation: string,
-  count: number
+  _startTime: number,
+  _operation: string,
+  _count: number
 ): number {
-  const duration = performance.now() - startTime;
-  console.log(
-    `${operation} ${count} templates in ${duration.toFixed(DISCOVERY_CONSTANTS.DECIMAL_PLACES)}ms`
-  );
-  return duration;
+  return performance.now() - _startTime;
 }

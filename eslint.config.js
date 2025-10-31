@@ -27,6 +27,19 @@ export default [
         sourceType: 'module',
       },
     },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
+          extensions: ['.ts', '.js'],
+        },
+        node: {
+          extensions: ['.ts', '.js'],
+        },
+      },
+      'import/core-modules': ['bun:test', 'bun'],
+    },
     plugins: {
       '@typescript-eslint': tseslint,
       sonarjs: sonarjs,
@@ -180,6 +193,21 @@ export default [
       yoda: 'error',
     },
   },
+  // Utility files that need console output for CLI functionality
+  {
+    files: ['**/utils/**/*.ts'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+  // Complex template engine files - Relaxed length rules due to complexity
+  {
+    files: ['**/template-engine-handlebars.ts', '**/builtin-stacks.ts'],
+    rules: {
+      'max-lines': ['error', { max: 600, skipBlankLines: true, skipComments: true }],
+      'max-lines-per-function': ['error', { max: 50, skipBlankLines: true, skipComments: true }],
+    },
+  },
   // Test files - Relaxed rules
   {
     files: ['**/*.test.ts', '**/*.spec.ts', '**/tests/**/*.ts'],
@@ -197,6 +225,13 @@ export default [
       'jsdoc/require-returns': 'off',
       'no-magic-numbers': 'off',
       'import/no-default-export': 'off',
+      'max-nested-callbacks': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      'sonarjs/no-nested-functions': 'off',
+      'max-statements': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      'max-depth': 'off',
     },
   },
 ];

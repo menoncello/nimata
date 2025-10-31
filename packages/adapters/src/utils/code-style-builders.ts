@@ -9,8 +9,8 @@ import { FORMATTING } from './constants.js';
 
 /**
  * Get code style based on quality level
- * @param qualityLevel - Quality level of the project ('light', 'medium', 'strict')
- * @returns Code style configuration object
+ * @param {string} qualityLevel - Quality level of the project ('light', 'medium', 'strict')
+ * @returns {string): CodeStyleConfig} Code style configuration object
  */
 export function getCodeStyle(qualityLevel: string): CodeStyleConfig {
   switch (qualityLevel) {
@@ -27,7 +27,7 @@ export function getCodeStyle(qualityLevel: string): CodeStyleConfig {
 
 /**
  * Build light quality code style configuration
- * @returns Code style configuration for light quality level
+ * @returns {CodeStyleConfig} Code style configuration for light quality level
  */
 function buildLightCodeStyle(): CodeStyleConfig {
   return {
@@ -42,7 +42,7 @@ function buildLightCodeStyle(): CodeStyleConfig {
 
 /**
  * Build medium quality code style configuration
- * @returns Code style configuration for medium quality level
+ * @returns {CodeStyleConfig} Code style configuration for medium quality level
  */
 function buildMediumCodeStyle(): CodeStyleConfig {
   return {
@@ -57,7 +57,7 @@ function buildMediumCodeStyle(): CodeStyleConfig {
 
 /**
  * Build strict quality code style configuration
- * @returns Code style configuration for strict quality level
+ * @returns {CodeStyleConfig} Code style configuration for strict quality level
  */
 function buildStrictCodeStyle(): CodeStyleConfig {
   return {

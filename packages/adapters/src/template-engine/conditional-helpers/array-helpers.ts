@@ -14,7 +14,7 @@ type HandlebarsInstance = typeof Handlebars;
 export class ArrayConditionalHelpers {
   /**
    * Register all array-based conditional helpers with Handlebars instance
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   static registerAll(handlebars: HandlebarsInstance): void {
     this.registerArrayLengthHelpers(handlebars);
@@ -23,7 +23,7 @@ export class ArrayConditionalHelpers {
 
   /**
    * Register array length-based conditional helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerArrayLengthHelpers(handlebars: HandlebarsInstance): void {
     this.registerArrayLengthHelper(handlebars);
@@ -33,7 +33,7 @@ export class ArrayConditionalHelpers {
 
   /**
    * Register helper to check if array has specific length
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerArrayLengthHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(
@@ -53,7 +53,7 @@ export class ArrayConditionalHelpers {
 
   /**
    * Register helper to check if array has minimum length
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerArrayMinLengthHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(
@@ -73,7 +73,7 @@ export class ArrayConditionalHelpers {
 
   /**
    * Register helper to check if array has maximum length
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerArrayMaxLengthHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(
@@ -93,7 +93,7 @@ export class ArrayConditionalHelpers {
 
   /**
    * Register array property-based conditional helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerArrayPropertyHelpers(handlebars: HandlebarsInstance): void {
     // Check if array is sorted
@@ -126,8 +126,8 @@ export class ArrayConditionalHelpers {
 
   /**
    * Checks if array is sorted in ascending order
-   * @param array - Array to check
-   * @returns True if array is sorted
+   * @param {unknown[]} array - Array to check
+   * @returns {unknown[]): boolean} True if array is sorted
    */
   public static isArraySorted(array: unknown[]): boolean {
     if (!Array.isArray(array)) return false;
@@ -142,9 +142,9 @@ export class ArrayConditionalHelpers {
 
   /**
    * Creates a match condition function for array items
-   * @param property - Property to check (for objects)
-   * @param value - Value to match
-   * @returns Function that checks if an item matches the condition
+   * @param {string} property - Property to check (for objects)
+   * @param {unknown} value - Value to match
+   * @returns {void} Function that checks if an item matches the condition
    */
   public static createMatchCondition(property: string, value: unknown): (item: unknown) => boolean {
     return (item: unknown): boolean => {
@@ -157,10 +157,10 @@ export class ArrayConditionalHelpers {
 
   /**
    * Checks if all array items match a condition
-   * @param array - Array to check
-   * @param property - Property to check (for objects)
-   * @param value - Value to match
-   * @returns True if all items match
+   * @param {unknown[]} array - Array to check
+   * @param {string} property - Property to check (for objects)
+   * @param {unknown} value - Value to match
+   * @returns { boolean} True if all items match
    */
   public static doAllArrayItemsMatch(array: unknown[], property: string, value: unknown): boolean {
     if (!Array.isArray(array)) return false;
@@ -171,9 +171,9 @@ export class ArrayConditionalHelpers {
 
   /**
    * Checks if all array items match a condition function
-   * @param array - Array to check
-   * @param matchCondition - Function that checks if an item matches
-   * @returns True if all items match
+   * @param {unknown} array - Array to check
+   * @param {(item} matchCondition - Function that checks if an item matches
+   * @returns {boolean} True if all items match
    */
   public static doAllArrayItemsMatchCondition(
     array: unknown[],
@@ -186,13 +186,13 @@ export class ArrayConditionalHelpers {
 
   /**
    * Handlebars helper implementation for checking if all array items match
-   * @param context - Handlebars context (this)
-   * @param array - Array to check
-   * @param matchParams - Object containing property and value to match
-   * @param matchParams.property - Property to check (for objects)
-   * @param matchParams.value - Value to match
-   * @param options - Handlebars helper options
-   * @returns Rendered template content
+   * @param {Record<string} context - Handlebars context (this)
+   * @param {unknown[]} array - Array to check
+   * @param {{property: string}} matchParams - Object containing property and value to match
+   * @param {string} matchParams.property - Property to check (for objects)
+   * @param {unknown} matchParams.value - Value to match
+   * @param {Handlebars.HelperOptions} options - Handlebars helper options
+   * @returns {string} Rendered template content
    */
   public static checkIfAllMatch(
     context: Record<string, unknown>,

@@ -8,10 +8,10 @@ import { AIContextConfigOptions } from '../types/config-types.js';
 
 /**
  * Build project header section
- * @param options - Configuration options for AI context generation
- * @param projectTypeName - Human-readable project type name
- * @param timestamp - ISO date string for the generation time
- * @returns Formatted markdown string with project header information
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {unknown} projectTypeName - Human-readable project type name
+ * @param {unknown} timestamp - ISO date string for the generation time
+ * @returns {string} Formatted markdown string with project header information
  */
 export function buildProjectHeader(
   options: AIContextConfigOptions,
@@ -30,17 +30,17 @@ export function buildProjectHeader(
 
 /**
  * Build project overview section
- * @param options - Configuration options for AI context generation
- * @param projectTypeName - Human-readable project type name
- * @param getCoverageThreshold - Function to get coverage threshold
- * @returns Formatted markdown string with project overview information
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {unknown} projectTypeName - Human-readable project type name
+ * @param {(qualityLevel} getCoverageThreshold - Function to get coverage threshold
+ * @returns {void} Formatted markdown string with project overview information
  */
 export function buildProjectOverviewSection(
   options: AIContextConfigOptions,
   projectTypeName: string,
   getCoverageThreshold: (qualityLevel: string) => number
 ): string {
-  return `## Project Overview
+  return `## Project Information
 
 This is a ${options.qualityLevel} quality ${projectTypeName.toLowerCase()} targeting ${getEnvironmentName(options.targetEnvironment).toLowerCase()}.
 
@@ -57,9 +57,9 @@ ${getCoreTechnologies(options.frameworks)}
 
 /**
  * Build architecture section
- * @param options - Configuration options for AI context generation
- * @param getArchitectureSection - Function to get architecture section
- * @returns Formatted markdown string with architecture information
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(projectType} getArchitectureSection - Function to get architecture section
+ * @returns {void} Formatted markdown string with architecture information
  */
 export function buildArchitectureSection(
   options: AIContextConfigOptions,
@@ -72,10 +72,10 @@ ${getArchitectureSection(options.projectType)}`;
 
 /**
  * Build development workflow section
- * @param options - Configuration options for AI context generation
- * @param getDevCommand - Function to get development command
- * @param getKeyCommands - Function to get key commands
- * @returns Formatted markdown string with development workflow information
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(projectType} getDevCommand - Function to get development command
+ * @param {unknown} getKeyCommands - Function to get key commands
+ * @returns {void} Formatted markdown string with development workflow information
  */
 export function buildDevelopmentWorkflowSection(
   options: AIContextConfigOptions,
@@ -102,9 +102,9 @@ ${getKeyCommands(options.projectType)}
 
 /**
  * Build code conventions section
- * @param options - Configuration options for AI context generation
- * @param getStyleGuidelines - Function to get style guidelines
- * @returns Formatted markdown string with code conventions information
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(codeStyle} getStyleGuidelines - Function to get style guidelines
+ * @returns {void} Formatted markdown string with code conventions information
  */
 export function buildCodeConventionsSection(
   options: AIContextConfigOptions,
@@ -131,10 +131,10 @@ ${getStyleGuidelines(options.codeStyle as Record<string, string | number | boole
 
 /**
  * Build quality requirements section
- * @param options - Configuration options for AI context generation
- * @param getQualityStandards - Function to get quality standards
- * @param getTestingRequirements - Function to get testing requirements
- * @returns Formatted markdown string with quality requirements information
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(qualityLevel} getQualityStandards - Function to get quality standards
+ * @param {unknown} getTestingRequirements - Function to get testing requirements
+ * @returns {void} Formatted markdown string with quality requirements information
  */
 export function buildQualityRequirementsSection(
   options: AIContextConfigOptions,
@@ -158,9 +158,9 @@ ${getTestingRequirements(options.qualityLevel, options.projectType)}
 
 /**
  * Build AI integration section
- * @param options - Configuration options for AI context generation
- * @param getAIAssistantIntegration - Function to get AI assistant integration
- * @returns Formatted markdown string with AI assistant integration information
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(aiAssistants} getAIAssistantIntegration - Function to get AI assistant integration
+ * @returns {void} Formatted markdown string with AI assistant integration information
  */
 export function buildAIIntegrationSection(
   options: AIContextConfigOptions,
@@ -175,9 +175,9 @@ ${getAIAssistantIntegration(options.aiAssistants)}`;
 
 /**
  * Build common tasks section
- * @param options - Configuration options for AI context generation
- * @param getCommonAIGuidelines - Function to get common AI guidelines
- * @returns Formatted markdown string with common tasks information
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(qualityLevel} getCommonAIGuidelines - Function to get common AI guidelines
+ * @returns {void} Formatted markdown string with common tasks information
  */
 export function buildCommonTasksSection(
   options: AIContextConfigOptions,
@@ -192,9 +192,9 @@ ${getCommonAIGuidelines(options.qualityLevel)}`;
 
 /**
  * Build avoidance section
- * @param options - Configuration options for AI context generation
- * @param getAvoidanceRules - Function to get avoidance rules
- * @returns Formatted markdown string with rules to avoid
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(qualityLevel} getAvoidanceRules - Function to get avoidance rules
+ * @returns {void} Formatted markdown string with rules to avoid
  */
 export function buildAvoidanceSection(
   options: AIContextConfigOptions,
@@ -208,8 +208,8 @@ ${getAvoidanceRules(options.qualityLevel)}`;
 // Helper functions
 /**
  * Get human-readable environment name
- * @param targetEnvironment - Target environment identifier
- * @returns Human-readable environment name
+ * @param {string} targetEnvironment - Target environment identifier
+ * @returns {string): string} Human-readable environment name
  */
 function getEnvironmentName(targetEnvironment: string): string {
   const names = {
@@ -222,8 +222,8 @@ function getEnvironmentName(targetEnvironment: string): string {
 
 /**
  * Get formatted core technologies description
- * @param frameworks - Array of framework names
- * @returns Formatted markdown string with core technologies
+ * @param {string[]} frameworks - Array of framework names
+ * @returns {string[]): string} Formatted markdown string with core technologies
  */
 function getCoreTechnologies(frameworks: string[]): string {
   return frameworks

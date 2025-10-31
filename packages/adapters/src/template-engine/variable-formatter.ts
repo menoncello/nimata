@@ -11,9 +11,9 @@
 export class VariableFormatter {
   /**
    * Formats variable value for substitution
-   * @param value - The variable value to format
-   * @param variableName - The name of the variable being formatted
-   * @returns The formatted string value
+   * @param {unknown} value - The variable value to format
+   * @param {string} variableName - The name of the variable being formatted
+   * @returns {string} The formatted string value
    */
   static formatVariableValue(value: unknown, variableName: string): string {
     // Handle null and undefined
@@ -52,8 +52,8 @@ export class VariableFormatter {
 
   /**
    * Checks if value is a primitive type (excluding null/undefined)
-   * @param value - Value to check
-   * @returns True if value is a primitive type
+   * @param {unknown} value - Value to check
+   * @returns {boolean} True if value is a primitive type
    */
   private static isPrimitiveType(value: unknown): boolean {
     return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
@@ -61,8 +61,8 @@ export class VariableFormatter {
 
   /**
    * Formats primitive type values
-   * @param value - Primitive value to format
-   * @returns Formatted string representation
+   * @param {unknown} value - Primitive value to format
+   * @returns {string} Formatted string representation
    */
   private static formatPrimitiveType(value: unknown): string {
     if (typeof value === 'string') {
@@ -73,9 +73,9 @@ export class VariableFormatter {
 
   /**
    * Formats array values by recursively formatting items
-   * @param value - Array value to format
-   * @param variableName - Name of the variable for recursion
-   * @returns Formatted string representation of array
+   * @param {unknown[]} value - Array value to format
+   * @param {string} variableName - Name of the variable for recursion
+   * @returns {string} Formatted string representation of array
    */
   private static formatArrayValue(value: unknown[], variableName: string): string {
     return value.map((item) => this.formatVariableValue(item, variableName)).join(', ');
@@ -83,8 +83,8 @@ export class VariableFormatter {
 
   /**
    * Formats object values as JSON
-   * @param value - Object value to format
-   * @returns Formatted string representation of object
+   * @param {unknown} value - Object value to format
+   * @returns {string} Formatted string representation of object
    */
   private static formatObjectValue(value: unknown): string {
     const JSON_SPACING = 2;

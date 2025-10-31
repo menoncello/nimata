@@ -86,8 +86,8 @@
       "permissions": "644"
     },
     {
-      "path": "prettier.config.mjs",
-      "template": "// Prettier configuration for {{name}}\n\nexport default {\n  semi: true,\n  trailingComma: 'es5',\n  singleQuote: true,\n  printWidth: 100,\n  tabWidth: 2,\n  useTabs: false,\n  quoteProps: 'as-needed',\n  bracketSpacing: true,\n  arrowParens: 'avoid',\n  endOfLine: 'lf',\n  plugins: [],\n  overrides: [\n    {\n      files: '*.json',\n      options: {\n        printWidth: 80,\n        tabWidth: 2,\n      },\n    },\n  ],\n};",
+      "path": ".prettierrc.json",
+      "template": "{\n  \"semi\": true,\n  \"trailingComma\": \"es5\",\n  \"singleQuote\": true,\n  \"printWidth\": 100,\n  \"tabWidth\": 2,\n  \"useTabs\": false,\n  \"quoteProps\": \"as-needed\",\n  \"bracketSpacing\": true,\n  \"arrowParens\": \"avoid\",\n  \"endOfLine\": \"lf\"\n}",
       "permissions": "644"
     },
     {
@@ -98,6 +98,16 @@
     {
       "path": "tests/index.test.ts",
       "template": "/**\n * Unit tests for {{name}}\n */\n\nimport { describe, it, expect, beforeEach } from 'bun:test';\nimport { hello, VERSION } from '../src/index';\n\ndescribe('{{name}}', () => {\n  describe('hello function', () => {\n    it('should return greeting with default name', () => {\n      expect(hello()).toBe('Hello, world!');\n    });\n\n    it('should return greeting with custom name', () => {\n      expect(hello('TypeScript')).toBe('Hello, TypeScript!');\n    });\n  });\n\n  describe('VERSION', () => {\n    it('should have correct version', () => {\n      expect(VERSION).toBe('1.0.0');\n    });\n  });\n});",
+      "permissions": "644"
+    },
+    {
+      "path": "docs/.gitkeep",
+      "template": " ",
+      "permissions": "644"
+    },
+    {
+      "path": ".nimata/.gitkeep",
+      "template": " ",
       "permissions": "644"
     }
   ]

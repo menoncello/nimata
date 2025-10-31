@@ -119,9 +119,9 @@ export interface ExtendedTemplateContext extends BaseTemplateContext {
 export interface TemplateContextValidator {
   /**
    * Validates template context against variable definitions
-   * @param context - Context to validate
-   * @param variables - Variable definitions
-   * @returns Validation result
+   * @param {string} context - Context to validate
+   * @param {string} variables - Variable definitions
+   * @returns {string} Validation result
    */
   validate: (context: BaseTemplateContext, variables: TemplateVariable[]) => ValidationResult;
 }
@@ -155,26 +155,26 @@ export interface ContextTransformers {
 export interface VariableGetter<T = unknown> {
   /**
    * Gets a variable from context with type safety
-   * @param key - Variable key
-   * @param context - Template context
-   * @returns Typed variable value or undefined
+   * @param {string} key - Variable key
+   * @param {string} context - Template context
+   * @returns {string} Typed variable value or undefined
    */
   get: <K extends keyof T>(key: K, context: T) => T[K];
 
   /**
    * Gets a nested variable with type safety
-   * @param path - Dot notation path
-   * @param context - Template context
-   * @returns Variable value or undefined
+   * @param {string} path - Dot notation path
+   * @param {string} context - Template context
+   * @returns {string} Variable value or undefined
    */
   getNested: (path: string, context: T) => unknown;
 
   /**
    * Gets a variable with fallback
-   * @param key - Variable key
-   * @param context - Template context
-   * @param fallback - Fallback value
-   * @returns Variable value or fallback
+   * @param {string} key - Variable key
+   * @param {string} context - Template context
+   * @param {string} fallback - Fallback value
+   * @returns {string} Variable value or fallback
    */
   getWithFallback: <K extends keyof T>(key: K, context: T, fallback: T[K]) => T[K];
 }

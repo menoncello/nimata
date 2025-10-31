@@ -7,7 +7,7 @@ import { ErrorCategory, ErrorSeverity, type TemplateError } from './types.js';
 
 /**
  * Creates a syntax validation rule for JSON
- * @returns Function that validates JSON syntax
+ * @returns {void} Function that validates JSON syntax
  */
 export function createJsonSyntaxRule() {
   return (content: string): TemplateError[] => {
@@ -43,8 +43,8 @@ export function createJsonSyntaxRule() {
 
 /**
  * Validates Handlebars brace balance
- * @param content - Template content to check
- * @returns Array of brace-related errors
+ * @param {string} content - Template content to check
+ * @returns {string): TemplateError[]} Array of brace-related errors
  */
 function validateHandlebarsBraces(content: string): TemplateError[] {
   const errors: TemplateError[] = [];
@@ -71,8 +71,8 @@ function validateHandlebarsBraces(content: string): TemplateError[] {
 
 /**
  * Validates Handlebars helper syntax
- * @param content - Template content to check
- * @returns Array of helper-related errors
+ * @param {string} content - Template content to check
+ * @returns {string): TemplateError[]} Array of helper-related errors
  */
 function validateHandlebarsHelpers(content: string): TemplateError[] {
   const invalidHelpers = findInvalidHelperLines(content);
@@ -81,8 +81,8 @@ function validateHandlebarsHelpers(content: string): TemplateError[] {
 
 /**
  * Finds lines with invalid Handlebars helper syntax
- * @param content - Template content to check
- * @returns Array of invalid helper lines
+ * @param {string} content - Template content to check
+ * @returns {string): string[]} Array of invalid helper lines
  */
 function findInvalidHelperLines(content: string): string[] {
   const lines = content.split('\n');
@@ -105,8 +105,8 @@ function findInvalidHelperLines(content: string): string[] {
 
 /**
  * Creates error objects for invalid helper lines
- * @param invalidHelpers - Array of invalid helper lines
- * @returns Array of template error objects
+ * @param {string[]} invalidHelpers - Array of invalid helper lines
+ * @returns {string[]): TemplateError[]} Array of template error objects
  */
 function createIncompleteHelperErrors(invalidHelpers: string[]): TemplateError[] {
   const errors: TemplateError[] = [];
@@ -133,7 +133,7 @@ function createIncompleteHelperErrors(invalidHelpers: string[]): TemplateError[]
 
 /**
  * Creates a syntax validation rule for Handlebars
- * @returns Function that validates Handlebars syntax
+ * @returns {void} Function that validates Handlebars syntax
  */
 export function createHandlebarsSyntaxRule() {
   return (content: string): TemplateError[] => {
@@ -148,8 +148,8 @@ export function createHandlebarsSyntaxRule() {
 
 /**
  * Validates template name in metadata
- * @param metadata - Template metadata to validate
- * @returns Array of name-related errors
+ * @param {unknown} metadata - Template metadata to validate
+ * @returns {TemplateMetadata): TemplateError[]} Array of name-related errors
  */
 function validateTemplateName(metadata?: TemplateMetadata): TemplateError[] {
   const errors: TemplateError[] = [];
@@ -170,8 +170,8 @@ function validateTemplateName(metadata?: TemplateMetadata): TemplateError[] {
 
 /**
  * validates project types in metadata
- * @param metadata - Template metadata to validate
- * @returns Array of project type-related errors
+ * @param {unknown} metadata - Template metadata to validate
+ * @returns {TemplateMetadata): TemplateError[]} Array of project type-related errors
  */
 function validateProjectTypes(metadata?: TemplateMetadata): TemplateError[] {
   const errors: TemplateError[] = [];
@@ -195,7 +195,7 @@ function validateProjectTypes(metadata?: TemplateMetadata): TemplateError[] {
 
 /**
  * Creates a structure validation rule
- * @returns Function that validates template structure
+ * @returns {void} Function that validates template structure
  */
 export function createStructureRule() {
   return (content: string, metadata?: TemplateMetadata): TemplateError[] => {
@@ -210,7 +210,7 @@ export function createStructureRule() {
 
 /**
  * Creates a content validation rule
- * @returns Function that validates template content
+ * @returns {void} Function that validates template content
  */
 export function createContentRule() {
   return (content: string): TemplateError[] => {
@@ -246,7 +246,7 @@ export function createContentRule() {
 
 /**
  * Creates a dependency validation rule
- * @returns Function that validates template dependencies
+ * @returns {void} Function that validates template dependencies
  */
 export function createDependencyRule() {
   return (content: string, metadata?: TemplateMetadata): TemplateError[] => {
@@ -275,8 +275,8 @@ export function createDependencyRule() {
 
 /**
  * Validates template size
- * @param content - Template content to validate
- * @returns Array of size-related errors
+ * @param {string} content - Template content to validate
+ * @returns {string): TemplateError[]} Array of size-related errors
  */
 function validateTemplateSize(content: string): TemplateError[] {
   const errors: TemplateError[] = [];
@@ -304,8 +304,8 @@ function validateTemplateSize(content: string): TemplateError[] {
 
 /**
  * Validates template nesting depth
- * @param content - Template content to validate
- * @returns Array of nesting-related errors
+ * @param {string} content - Template content to validate
+ * @returns {string): TemplateError[]} Array of nesting-related errors
  */
 function validateTemplateNesting(content: string): TemplateError[] {
   const errors: TemplateError[] = [];
@@ -332,7 +332,7 @@ function validateTemplateNesting(content: string): TemplateError[] {
 
 /**
  * Creates a performance validation rule
- * @returns Function that validates template performance
+ * @returns {void} Function that validates template performance
  */
 export function createPerformanceRule() {
   return (content: string): TemplateError[] => {
@@ -347,7 +347,7 @@ export function createPerformanceRule() {
 
 /**
  * Creates a security validation rule
- * @returns Function that validates template security
+ * @returns {void} Function that validates template security
  */
 export function createSecurityRule() {
   return (content: string): TemplateError[] => {
@@ -384,7 +384,7 @@ export function createSecurityRule() {
 
 /**
  * Creates a compatibility validation rule
- * @returns Function that validates template compatibility
+ * @returns {void} Function that validates template compatibility
  */
 export function createCompatibilityRule() {
   return (content: string): TemplateError[] => {

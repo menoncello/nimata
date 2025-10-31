@@ -332,11 +332,11 @@ describe('TypeScriptGenerator', () => {
 
       const results = generator.generate(config);
 
-      results.forEach((result) => {
+      for (const result of results) {
         if (result.filename.endsWith('.json')) {
           validateJsonContent(result.content);
         }
-      });
+      }
     });
 
     it('should include required TypeScript fields', () => {

@@ -18,8 +18,8 @@ const BROWSER_LIBRARIES = [DOM_LIBRARY, DOM_ITERABLE_LIBRARY, 'ES2020'];
 
 /**
  * Get base compiler options
- * @param options - TypeScript configuration options
- * @returns Base compiler options
+ * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+ * @returns {TypeScriptConfigOptions): CompilerOptions} Base compiler options
  */
 export function getBaseCompilerOptions(options: TypeScriptConfigOptions): CompilerOptions {
   return {
@@ -45,7 +45,7 @@ export function getBaseCompilerOptions(options: TypeScriptConfigOptions): Compil
 
 /**
  * Get web project compiler options
- * @returns Web project compiler options
+ * @returns {CompilerOptions} Web project compiler options
  */
 export function getWebProjectOptions(): CompilerOptions {
   return {
@@ -57,7 +57,7 @@ export function getWebProjectOptions(): CompilerOptions {
 
 /**
  * Get library project compiler options
- * @returns Library project compiler options
+ * @returns {CompilerOptions} Library project compiler options
  */
 export function getLibraryProjectOptions(): CompilerOptions {
   return {
@@ -76,7 +76,7 @@ export function getLibraryProjectOptions(): CompilerOptions {
 
 /**
  * Get CLI project compiler options
- * @returns CLI project compiler options
+ * @returns {CompilerOptions} CLI project compiler options
  */
 export function getCliProjectOptions(): CompilerOptions {
   return {
@@ -90,8 +90,8 @@ export function getCliProjectOptions(): CompilerOptions {
 
 /**
  * Get custom path options
- * @param options - TypeScript configuration options
- * @returns Custom path options
+ * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+ * @returns {TypeScriptConfigOptions): CompilerOptions} Custom path options
  */
 export function getCustomPathOptions(options: TypeScriptConfigOptions): CompilerOptions {
   const result: CompilerOptions = {};
@@ -109,8 +109,8 @@ export function getCustomPathOptions(options: TypeScriptConfigOptions): Compiler
 
 /**
  * Get project-specific compiler options
- * @param options - TypeScript configuration options
- * @returns Project-specific compiler options
+ * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+ * @returns {TypeScriptConfigOptions): CompilerOptions} Project-specific compiler options
  */
 export function getProjectSpecificOptions(options: TypeScriptConfigOptions): CompilerOptions {
   switch (options.projectType) {
@@ -128,7 +128,7 @@ export function getProjectSpecificOptions(options: TypeScriptConfigOptions): Com
 
 /**
  * Get light quality compiler options
- * @returns Light quality compiler options
+ * @returns {CompilerOptions} Light quality compiler options
  */
 export function getLightQualityOptions(): CompilerOptions {
   return {
@@ -144,7 +144,7 @@ export function getLightQualityOptions(): CompilerOptions {
 
 /**
  * Get medium quality compiler options
- * @returns Medium quality compiler options
+ * @returns {CompilerOptions} Medium quality compiler options
  */
 export function getMediumQualityOptions(): CompilerOptions {
   return {
@@ -160,7 +160,7 @@ export function getMediumQualityOptions(): CompilerOptions {
 
 /**
  * Get strict quality compiler options
- * @returns Strict quality compiler options
+ * @returns {CompilerOptions} Strict quality compiler options
  */
 export function getStrictQualityOptions(): CompilerOptions {
   return {
@@ -178,8 +178,8 @@ export function getStrictQualityOptions(): CompilerOptions {
 
 /**
  * Get quality-specific compiler options
- * @param qualityLevel - Quality level
- * @returns Quality-specific compiler options
+ * @param {string} qualityLevel - Quality level
+ * @returns {string): CompilerOptions} Quality-specific compiler options
  */
 export function getQualitySpecificOptions(qualityLevel: string): CompilerOptions {
   switch (qualityLevel) {
@@ -196,8 +196,8 @@ export function getQualitySpecificOptions(qualityLevel: string): CompilerOptions
 
 /**
  * Get advanced compiler options
- * @param options - TypeScript configuration options
- * @returns Advanced compiler options
+ * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+ * @returns {TypeScriptConfigOptions): CompilerOptions} Advanced compiler options
  */
 export function getAdvancedOptions(options: TypeScriptConfigOptions): CompilerOptions {
   const advancedOptions: CompilerOptions = {};
@@ -216,8 +216,8 @@ export function getAdvancedOptions(options: TypeScriptConfigOptions): CompilerOp
 
 /**
  * Get complete compiler options
- * @param options - TypeScript configuration options
- * @returns Complete compiler options
+ * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+ * @returns {TypeScriptConfigOptions): CompilerOptions} Complete compiler options
  */
 export function getCompilerOptions(options: TypeScriptConfigOptions): CompilerOptions {
   const baseOptions = getBaseCompilerOptions(options);
@@ -237,8 +237,8 @@ export function getCompilerOptions(options: TypeScriptConfigOptions): CompilerOp
 
 /**
  * Get language target based on target environment
- * @param targetEnvironment - Target environment
- * @returns Language target string
+ * @param {string} targetEnvironment - Target environment
+ * @returns {string): string} Language target string
  */
 function getLanguageTarget(targetEnvironment: string): string {
   switch (targetEnvironment) {
@@ -255,8 +255,8 @@ function getLanguageTarget(targetEnvironment: string): string {
 
 /**
  * Get library includes based on target environment
- * @param targetEnvironment - Target environment
- * @returns Library includes array
+ * @param {string} targetEnvironment - Target environment
+ * @returns {string): string[]} Library includes array
  */
 function _getLibraryIncludes(targetEnvironment: string): string[] {
   switch (targetEnvironment) {
@@ -273,8 +273,8 @@ function _getLibraryIncludes(targetEnvironment: string): string[] {
 
 /**
  * Get module type based on target environment
- * @param _targetEnvironment - Target environment (parameter not used but kept for interface consistency)
- * @returns Module type string
+ * @param {string} _targetEnvironment - Target environment (parameter not used but kept for interface consistency)
+ * @returns {string): string} Module type string
  */
 function getModuleType(_targetEnvironment: string): string {
   return 'ESNext';

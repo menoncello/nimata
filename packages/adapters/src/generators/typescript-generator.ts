@@ -64,8 +64,8 @@ export class TypeScriptGenerator {
   /**
    * Generate TypeScript configuration for a project
    *
-   * @param config - Project configuration
-   * @returns Generated TypeScript configuration files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): GeneratedTypeScriptConfig[]} Generated TypeScript configuration files
    */
   generate(config: ProjectConfig): GeneratedTypeScriptConfig[] {
     const options: TypeScriptConfigOptions = {
@@ -108,8 +108,8 @@ export class TypeScriptGenerator {
 
   /**
    * Generate main TypeScript configuration
-   * @param options - TypeScript configuration options
-   * @returns Generated TypeScript configuration
+   * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+   * @returns {TypeScriptConfigOptions): GeneratedTypeScriptConfig} Generated TypeScript configuration
    */
   private generateMainConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
     const filename = 'tsconfig.json';
@@ -129,8 +129,8 @@ export class TypeScriptGenerator {
 
   /**
    * Generate TypeScript compiler configuration
-   * @param options - TypeScript configuration options
-   * @returns Generated TypeScript compiler configuration
+   * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+   * @returns {TypeScriptConfigOptions): GeneratedTypeScriptConfig} Generated TypeScript compiler configuration
    */
   private generateTscConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
     const filename = 'tsconfig.build.json';
@@ -150,8 +150,8 @@ export class TypeScriptGenerator {
 
   /**
    * Generate TypeScript types configuration
-   * @param options - TypeScript configuration options
-   * @returns Generated TypeScript types configuration
+   * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+   * @returns {TypeScriptConfigOptions): GeneratedTypeScriptConfig} Generated TypeScript types configuration
    */
   private generateTscTypesConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
     const filename = 'tsconfig.types.json';
@@ -166,8 +166,8 @@ export class TypeScriptGenerator {
 
   /**
    * Generate ESBuild configuration
-   * @param options - TypeScript configuration options
-   * @returns Generated ESBuild configuration
+   * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+   * @returns {TypeScriptConfigOptions): GeneratedTypeScriptConfig} Generated ESBuild configuration
    */
   private generateEsbuildConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
     const filename = 'esbuild.config.mjs';
@@ -187,8 +187,8 @@ export class TypeScriptGenerator {
 
   /**
    * Generate testing TypeScript configuration
-   * @param options - TypeScript configuration options
-   * @returns Generated testing TypeScript configuration
+   * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+   * @returns {TypeScriptConfigOptions): GeneratedTypeScriptConfig} Generated testing TypeScript configuration
    */
   private generateTestingConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
     const filename = 'tsconfig.test.json';
@@ -203,8 +203,8 @@ export class TypeScriptGenerator {
 
   /**
    * Generate base TypeScript configuration
-   * @param options - TypeScript configuration options
-   * @returns Generated base TypeScript configuration
+   * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+   * @returns {TypeScriptConfigOptions): GeneratedTypeScriptConfig} Generated base TypeScript configuration
    */
   private generateBaseConfig(options: TypeScriptConfigOptions): GeneratedTypeScriptConfig {
     const filename = 'tsconfig.base.json';
@@ -219,8 +219,8 @@ export class TypeScriptGenerator {
 
   /**
    * Get default path mappings for project type
-   * @param projectType - Project type
-   * @returns Default path mappings
+   * @param {string} projectType - Project type
+   * @returns {void} Default path mappings
    */
   private getDefaultPaths(projectType: string): Record<string, string> {
     // Common path mappings
@@ -260,8 +260,8 @@ export class TypeScriptGenerator {
 
 /**
  * Factory function to create TypeScript generator instance
- * @param _config - Project configuration (parameter not used but kept for interface consistency)
- * @returns TypeScript generator instance
+ * @param {unknown} _config - Project configuration (parameter not used but kept for interface consistency)
+ * @returns {TypeScriptGenerator} TypeScript generator instance
  */
 export function createTypeScriptGenerator(_config?: Record<string, unknown>): TypeScriptGenerator {
   return new TypeScriptGenerator();

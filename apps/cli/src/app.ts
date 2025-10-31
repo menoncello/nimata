@@ -14,7 +14,12 @@ import type { OutputWriter } from './output.js';
 
 /**
  * Lazy load all CLI commands for better cold start performance
- * @returns Array of command instances
+ * @returns {Promise<{
+ *   initCommand: CommandModule;
+ *   validateCommand: CommandModule;
+ *   promptCommand: CommandModule;
+ *   fixCommand: CommandModule;
+ * }>} Array of command instances
  */
 async function loadCommands(): Promise<{
   initCommand: CommandModule;
@@ -33,9 +38,9 @@ async function loadCommands(): Promise<{
 
 /**
  * Configure CLI with common options and settings
- * @param cli - CLI builder instance
- * @param version - Application version
- * @returns Configured CLI builder
+ * @param {CliBuilder} cli - CLI builder instance
+ * @param {string} version - Application version
+ * @returns {CliBuilder} Configured CLI builder
  */
 function configureCli(cli: CliBuilder, version: string): CliBuilder {
   return cli
@@ -59,8 +64,8 @@ function configureCli(cli: CliBuilder, version: string): CliBuilder {
 
 /**
  * Configure CLI for test mode (suppress output, disable exit)
- * @param cli - CLI builder instance
- * @returns CLI builder configured for testing
+ * @param {CliBuilder} cli - CLI builder instance
+ * @returns {CliBuilder} CLI builder configured for testing
  */
 function configureForTestMode(cli: CliBuilder): CliBuilder {
   return cli.exitProcess(false).showHelpOnFail(false).fail(false);
@@ -74,8 +79,8 @@ function configureForTestMode(cli: CliBuilder): CliBuilder {
 export class CliApp {
   /**
    * Creates a new CLI application instance
-   * @param output - Output writer for console operations
-   * @param cliBuilder - CLI builder for creating Yargs instances
+   * @param {OutputWriter} output - Output writer for console operations
+   * @param {CliBuilder} cliBuilder - CLI builder for creating Yargs instances
    */
   constructor(
     @inject('OutputWriter') private output: OutputWriter,
@@ -84,7 +89,7 @@ export class CliApp {
 
   /**
    * Get CLI version from package.json
-   * @returns The version string from package.json or '0.0.0' if not found
+   * @returns {string} The version string from package.json or '0.0.0' if not found
    */
   async getVersion(): Promise<string> {
     try {
@@ -99,7 +104,7 @@ export class CliApp {
 
   /**
    * Handle Ctrl+C interruption gracefully
-   * @returns void
+   * @returns {void}
    */
   setupInterruptHandler(): void {
     process.on('SIGINT', () => {
@@ -110,10 +115,10 @@ export class CliApp {
 
   /**
    * Create and configure the CLI instance
-   * @param version - The CLI version string
-   * @param argv - Command line arguments array
-   * @param suppressOutput - Suppress console output (for testing)
-   * @returns Promise that resolves to configured CLI builder instance
+   * @param {string} version - The CLI version string
+   * @param {string[]} argv - Command line arguments array
+   * @param {boolean} suppressOutput - Suppress console output (for testing)
+   * @returns {Promise<CliBuilder>} Promise that resolves to configured CLI builder instance
    */
   async createCli(version: string, argv: string[], suppressOutput = false): Promise<CliBuilder> {
     const commands = await loadCommands();
@@ -137,8 +142,8 @@ export class CliApp {
 
   /**
    * Run the CLI application
-   * @param argv - Command line arguments (defaults to process.argv)
-   * @returns Promise that resolves when CLI execution completes
+   * @param {string[]} argv - Command line arguments (defaults to process.argv)
+   * @returns {Promise<void>} Promise that resolves when CLI execution completes
    */
   async run(argv: string[] = hideBin(process.argv)): Promise<void> {
     try {

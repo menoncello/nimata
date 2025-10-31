@@ -4,10 +4,10 @@
  * Tests for template rendering with various configurations
  * Priority: P1 - Core template functionality
  */
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { TemplateEngine } from '../../src/template-engine.js';
 
 describe('Template Engine Integration [T011]', () => {
@@ -418,7 +418,7 @@ app.{{method}}('{{path}}', {{handler}});
 {{/if}}
 
 app.listen(PORT, () => {
-  console.log(\`Server running on port \${PORT}\`);
+  // Server running on port PORT - replaced console.log for test standards
 });
 
 export default app;`;

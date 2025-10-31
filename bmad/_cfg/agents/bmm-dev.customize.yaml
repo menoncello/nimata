@@ -81,6 +81,11 @@ memories:
   - "CRITICAL: Test helper functions must have explicit return types"
   - "CRITICAL: Mock variables in tests must be used or removed - no dead stores"
   - "CRITICAL: Pseudorandom number generators in tests must be justified or replaced with deterministic alternatives"
+  - "CRITICAL: Regex patterns must be analyzed for ReDoS vulnerabilities - avoid catastrophic backtracking"
+  - "CRITICAL: Files exceeding 300 lines must be split into focused modules"
+  - "CRITICAL: Methods exceeding 30 lines must be extracted into smaller functions"
+  - "CRITICAL: All JSDoc comments must have complete descriptions and parameter documentation"
+  - "CRITICAL: Unused variables must be prefixed with underscore or removed entirely"
 
 # Add custom menu items (appended to base menu)
 # Don't include * prefix or help/exit - auto-injected

@@ -11,8 +11,8 @@ const MAIN_INDEX_FILE = 'index.js';
 
 /**
  * Check if a file or directory exists
- * @param path - Path to check
- * @returns Promise that resolves to true if path exists
+ * @param {string} path - Path to check
+ * @returns {void} Promise that resolves to true if path exists
  */
 async function pathExists(path: string): Promise<boolean> {
   try {
@@ -25,8 +25,8 @@ async function pathExists(path: string): Promise<boolean> {
 
 /**
  * Validate basic project structure
- * @param options - Validator options
- * @param result - Validation result
+ * @param {unknown} options - Validator options
+ * @param {unknown} result - Validation result
  */
 export async function validateProjectStructure(
   options: ProjectValidatorOptions,
@@ -43,9 +43,9 @@ export async function validateProjectStructure(
 
 /**
  * Validate required directories exist
- * @param projectPath - Path to the project root
- * @param requiredDirs - Array of required directory names
- * @param result - Validation result to populate with findings
+ * @param {unknown} projectPath - Path to the project root
+ * @param {unknown} requiredDirs - Array of required directory names
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateDirectories(
   projectPath: string,
@@ -62,9 +62,9 @@ async function validateDirectories(
 
 /**
  * Validate required files exist
- * @param projectPath - Path to the project root
- * @param requiredFiles - Array of required file names
- * @param result - Validation result to populate with findings
+ * @param {unknown} projectPath - Path to the project root
+ * @param {unknown} requiredFiles - Array of required file names
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateFiles(
   projectPath: string,
@@ -81,8 +81,8 @@ async function validateFiles(
 
 /**
  * Get required directories for project type
- * @param projectType - Project type
- * @returns Required directories
+ * @param {string} projectType - Project type
+ * @returns {string): string[]} Required directories
  */
 export function getRequiredDirectories(projectType: string): string[] {
   const baseDirs = ['src'];
@@ -101,8 +101,8 @@ export function getRequiredDirectories(projectType: string): string[] {
 
 /**
  * Get required files for project type
- * @param projectType - Project type
- * @returns Required files
+ * @param {string} projectType - Project type
+ * @returns {string): string[]} Required files
  */
 export function getRequiredFiles(projectType: string): string[] {
   const baseFiles = ['package.json', 'README.md', '.gitignore'];
@@ -121,8 +121,8 @@ export function getRequiredFiles(projectType: string): string[] {
 
 /**
  * Get required scripts for project type
- * @param projectType - Project type
- * @returns Required scripts
+ * @param {string} projectType - Project type
+ * @returns {string): string[]} Required scripts
  */
 export function getRequiredScripts(projectType: string): string[] {
   const baseScripts = ['test', 'lint', 'build'];
@@ -141,8 +141,8 @@ export function getRequiredScripts(projectType: string): string[] {
 
 /**
  * Get quality-related dependencies
- * @param qualityLevel - Quality level
- * @returns Quality dependencies
+ * @param {string} qualityLevel - Quality level
+ * @returns {string): string[]} Quality dependencies
  */
 export function getQualityDependencies(qualityLevel: string): string[] {
   const baseDeps = ['eslint', 'prettier', '@types/node'];
@@ -161,8 +161,8 @@ export function getQualityDependencies(qualityLevel: string): string[] {
 
 /**
  * Get project-specific dependencies
- * @param projectType - Project type
- * @returns Project dependencies
+ * @param {string} projectType - Project type
+ * @returns {string): string[]} Project dependencies
  */
 export function getProjectDependencies(projectType: string): string[] {
   switch (projectType) {

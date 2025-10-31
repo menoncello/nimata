@@ -11,9 +11,9 @@
  * Story 1.1 relies on Yargs default error messages
  * Epic 2 will add custom error formatting and user-friendly guidance
  */
-import { join } from 'node:path';
 import { spawn } from 'bun';
 import { describe, it, expect } from 'bun:test';
+import { join } from 'node:path';
 
 const CLI_PATH = join(__dirname, '../bin/nimata');
 

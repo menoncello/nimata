@@ -4,16 +4,11 @@
  * Generates Express-specific project structure and files
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
+import type { DirectoryItem } from '../core/core-file-operations.js';
 import { ExpressConfigCodeGenerator } from './express-config-generator.js';
 import { ExpressControllerCodeGenerator } from './express-controller-generator.js';
 import { ExpressMiddlewareCodeGenerator } from './express-middleware-generator.js';
 import { ExpressServerCodeGenerator } from './express-server-generator.js';
-
-export interface DirectoryItem {
-  path: string;
-  type: 'directory' | 'file';
-  content?: string;
-}
 
 /**
  * Generator for Express project structures
@@ -36,8 +31,8 @@ export class ExpressStructureGenerator {
 
   /**
    * Generate Express project structure
-   * @param config - Project configuration
-   * @returns Express-specific directory structure
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean}ic directory structure
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const directories = this.getExpressDirectories();
@@ -48,7 +43,7 @@ export class ExpressStructureGenerator {
 
   /**
    * Get Express-specific directory structure
-   * @returns Array of directory items
+   * @returns {DirectoryItem[]} Array of directory items items
    */
   private getExpressDirectories(): DirectoryItem[] {
     return [
@@ -63,8 +58,8 @@ export class ExpressStructureGenerator {
 
   /**
    * Get Express-specific files
-   * @param config - Project configuration
-   * @returns Array of file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of directory items items
    */
   private getExpressFiles(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -98,8 +93,8 @@ export class ExpressStructureGenerator {
 
   /**
    * Generate main Express route
-   * @param _config - Project configuration
-   * @returns Main route TypeScript code
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Main route TypeScript code
    */
   private generateMainRoute(_config: ProjectConfig): string {
     return `import { Router } from 'express';

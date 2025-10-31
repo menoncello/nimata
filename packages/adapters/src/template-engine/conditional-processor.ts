@@ -14,9 +14,9 @@ const BRACE_LENGTH = 2;
 
 /**
  * Find conditional block boundaries
- * @param template - Template string
- * @param startPos - Starting position to search from
- * @returns Object with block positions or null if not found
+ * @param {unknown} template - Template string
+ * @param {unknown} startPos - Starting position to search from
+ * @returns {{ ifStart: number; ifEnd: number; condition: string; elseStart: number; endIfStart: number } | null} Object with block positions or null if not found
  */
 function findConditionalBlock(
   template: string,
@@ -45,11 +45,11 @@ function findConditionalBlock(
 
 /**
  * Extract conditional content
- * @param template - Template string
- * @param ifEnd - End position of if block start
- * @param elseStart - Position of else block (optional)
- * @param endIfStart - Position of endif block
- * @returns Object with if and else content
+ * @param {unknown} template - Template string
+ * @param {unknown} ifEnd - End position of if block start
+ * @param {unknown} elseStart - Position of else block (optional)
+ * @param {unknown} endIfStart - Position of endif block
+ * @returns {void} Object with if and else content
  */
 function extractConditionalContent(
   template: string,
@@ -70,10 +70,10 @@ function extractConditionalContent(
 
 /**
  * Process single conditional block
- * @param template - Template string
- * @param context - Context object
- * @param currentPos - Current processing position
- * @returns Object with processed content and new position
+ * @param {unknown} template - Template string
+ * @param {unknown} context - Context object
+ * @param {unknown} currentPos - Current processing position
+ * @returns {Promise<} Object with processed content and new position
  */
 async function processSingleConditional(
   template: string,
@@ -113,9 +113,9 @@ async function processSingleConditional(
 
 /**
  * Evaluates a condition expression
- * @param condition - Condition string to evaluate
- * @param context - Context object containing variable values
- * @returns Boolean result of condition evaluation
+ * @param {string} condition - Condition string to evaluate
+ * @param {TemplateContext} context - Context object containing variable values
+ * @returns { boolean} Boolean result of condition evaluation
  */
 function evaluateCondition(condition: string, context: TemplateContext): boolean {
   // Remove quotes and trim
@@ -153,9 +153,9 @@ function evaluateCondition(condition: string, context: TemplateContext): boolean
 
 /**
  * Process all conditionals at current position
- * @param currentTemplate - Current template state
- * @param context - Template context
- * @returns Tuple of [hasChanges, newTemplate]
+ * @param {unknown} currentTemplate - Current template state
+ * @param {unknown} context - Template context
+ * @returns {void} Tuple of [hasChanges, newTemplate]
  */
 async function processConditionalPass(
   currentTemplate: string,
@@ -186,9 +186,9 @@ async function processConditionalPass(
 
 /**
  * Process conditional blocks in template
- * @param template - Template string to process
- * @param context - Context object containing variable values
- * @returns Template string with processed conditionals
+ * @param {unknown} template - Template string to process
+ * @param {unknown} context - Context object containing variable values
+ * @returns {void} Template string with processed conditionals
  */
 export async function processConditionals(
   template: string,

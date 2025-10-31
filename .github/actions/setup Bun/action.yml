@@ -1,0 +1,44 @@
+name: 'Setup Bun Environment'
+description: 'Checkout code, setup Bun, install dependencies'
+inputs:
+  bun-version:
+    description: 'Bun version to install'
+    required: false
+    default: '1.3.1'
+  need-build:
+    description: 'Whether build artifacts are needed'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: ${{ inputs.bun-version }}
+
+    - name: Install dependencies
+      run: bun install --frozen-lockfile
+      shell: bash
+
+    - name: Download build artifacts
+      if: inputs.need-build == 'false'
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+
+    - name: Upload build artifacts
+      if: inputs.need-build == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          apps/*/dist/
+          packages/*/dist/
+          plugins/*/dist/
+          infrastructure/*/dist/
+        retention-days: 1

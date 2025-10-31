@@ -7,8 +7,8 @@ import { fileExists } from './file-utils.js';
 
 /**
  * Validate AI assistant configurations and files
- * @param options - Validator options containing project path and config
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project path and config
+ * @param {unknown} result - Validation result to populate with findings
  */
 export async function validateAIConfigurations(
   options: ProjectValidatorOptions,
@@ -20,8 +20,8 @@ export async function validateAIConfigurations(
 
 /**
  * Validate Claude Code configuration
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateClaudeCodeConfig(
   options: ProjectValidatorOptions,
@@ -46,8 +46,8 @@ async function validateClaudeCodeConfig(
 
 /**
  * Validate GitHub Copilot configuration
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateGitHubCopilotConfig(
   options: ProjectValidatorOptions,

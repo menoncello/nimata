@@ -10,8 +10,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class ViteConfigGenerator {
   /**
    * Generate Vite config for Vue
-   * @param _config - Project configuration (unused)
-   * @returns Vite configuration TypeScript code
+   * @param {ProjectConfig} _config - Project configuration (unused)
+   * @returns {string} Vite configuration TypeScript code
    */
   static generateViteConfig(_config: ProjectConfig): string {
     const imports = this.getViteImports();
@@ -34,7 +34,7 @@ export default defineConfig({
 
   /**
    * Get Vite imports
-   * @returns Import statements
+   * @returns {string} Import statements
    */
   private static getViteImports(): string {
     return `import { defineConfig } from 'vite'
@@ -44,7 +44,7 @@ import { resolve } from 'path'`;
 
   /**
    * Get plugins configuration
-   * @returns Plugins configuration
+   * @returns {string} Plugins configuration
    */
   private static getPluginsConfig(): string {
     return `plugins: [vue()]`;
@@ -52,7 +52,7 @@ import { resolve } from 'path'`;
 
   /**
    * Get resolve configuration
-   * @returns Resolve configuration
+   * @returns {string} Resolve configuration
    */
   private static getResolveConfig(): string {
     return `resolve: {
@@ -64,7 +64,7 @@ import { resolve } from 'path'`;
 
   /**
    * Get server configuration
-   * @returns Server configuration
+   * @returns {string} Server configuration
    */
   private static getServerConfig(): string {
     return `server: {
@@ -75,7 +75,7 @@ import { resolve } from 'path'`;
 
   /**
    * Get build configuration
-   * @returns Build configuration
+   * @returns {string} Build configuration
    */
   private static getBuildConfig(): string {
     return `build: {
@@ -93,7 +93,7 @@ import { resolve } from 'path'`;
 
   /**
    * Get test configuration
-   * @returns Test configuration
+   * @returns {string} Test configuration
    */
   private static getTestConfig(): string {
     return `test: {

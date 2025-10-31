@@ -10,9 +10,9 @@ export const DOUBLE_BRACE_LENGTH = 2;
 
 /**
  * Evaluates a condition expression
- * @param condition - Condition string to evaluate
- * @param context - Context object containing variable values
- * @returns Boolean result of condition evaluation
+ * @param {string} condition - Condition string to evaluate
+ * @param {TemplateContext} context - Context object containing variable values
+ * @returns {boolean} Boolean result of condition evaluation
  */
 export function evaluateCondition(condition: string, context: TemplateContext): boolean {
   // Remove quotes and trim
@@ -34,9 +34,9 @@ export function evaluateCondition(condition: string, context: TemplateContext): 
 
 /**
  * Gets a nested value from an object using dot notation
- * @param obj - Object to get value from
- * @param path - Path to the value
- * @returns The value or undefined if not found
+ * @param {TemplateContext} obj - Object to get value from
+ * @param {string} path - Path to the value
+ * @returns {unknown} The value or undefined if not found
  */
 export function getNestedValue(obj: TemplateContext, path: string): unknown {
   return path.split('.').reduce((current: unknown, key: string) => {
@@ -48,8 +48,8 @@ export function getNestedValue(obj: TemplateContext, path: string): unknown {
 
 /**
  * Check if a value represents null or undefined
- * @param value - String value to check
- * @returns True if value represents null/undefined
+ * @param {string} value - String value to check
+ * @returns {boolean} True if value represents null/undefined
  */
 function isNullOrUndefined(value: string): boolean {
   return value === 'null' || value === 'undefined';
@@ -57,8 +57,8 @@ function isNullOrUndefined(value: string): boolean {
 
 /**
  * Check if a value represents a boolean
- * @param value - String value to check
- * @returns True if value represents a boolean
+ * @param {string} value - String value to check
+ * @returns {boolean} True if value represents a boolean
  */
 function isBoolean(value: string): boolean {
   return value === 'true' || value === 'false';
@@ -66,8 +66,8 @@ function isBoolean(value: string): boolean {
 
 /**
  * Parse boolean value
- * @param value - String value to parse
- * @returns Parsed boolean value
+ * @param {string} value - String value to parse
+ * @returns {boolean} Parsed boolean value
  */
 function parseBoolean(value: string): boolean {
   return value === 'true';
@@ -75,8 +75,8 @@ function parseBoolean(value: string): boolean {
 
 /**
  * Check if value is a valid number
- * @param value - String value to check
- * @returns True if value is a valid number
+ * @param {string} value - String value to check
+ * @returns {boolean} True if value is a valid number
  */
 function isValidNumber(value: string): boolean {
   const num = Number(value);
@@ -85,8 +85,8 @@ function isValidNumber(value: string): boolean {
 
 /**
  * Check if value is a JSON structure
- * @param value - String value to check
- * @returns True if value is a JSON structure
+ * @param {string} value - String value to check
+ * @returns {boolean} True if value is a JSON structure
  */
 function isJsonStructure(value: string): boolean {
   return (
@@ -96,8 +96,8 @@ function isJsonStructure(value: string): boolean {
 
 /**
  * Parses a value and converts it to the appropriate type
- * @param value - String value to parse
- * @returns Parsed value
+ * @param {string} value - String value to parse
+ * @returns {unknown} Parsed value
  */
 export function parseValue(value: string): unknown {
   // Handle null and undefined

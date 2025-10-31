@@ -36,7 +36,7 @@ export function configureContainer(): void {
 
 /**
  * Get the configured DI container instance
- * @returns The TSyringe DI container
+ * @returns {typeof container} The TSyringe DI container
  */
 export function getContainer(): typeof container {
   return container;

@@ -40,7 +40,7 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Creates a new TemplateEngine instance
-   * @param templatesDir - Optional directory path containing templates
+   * @param {unknown} templatesDir - Optional directory path containing templates
    */
   constructor(templatesDir?: string) {
     if (templatesDir) {
@@ -56,8 +56,8 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Loads a template from the templates directory
-   * @param templateName - Name of the template to load
-   * @returns The loaded project template
+   * @param {string} templateName - Name of the template to load
+   * @returns {void} The loaded project template
    * @throws Error if template is not found or invalid
    */
   async loadTemplate(templateName: string): Promise<ProjectTemplate> {
@@ -84,9 +84,9 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Process pipe syntax variables like {{variable|helper}}
-   * @param trimmedPath - Trimmed variable path
-   * @param context - Template context
-   * @returns Processed string value
+   * @param {string} trimmedPath - Trimmed variable path
+   * @param {TemplateContext} context - Template context
+   * @returns { string} Processed string value
    */
   private processPipeVariable(trimmedPath: string, context: TemplateContext): string {
     const pipeMatch = trimmedPath.match(/^([^|]+)\|(\w+)$/);
@@ -113,9 +113,9 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Process simple variable substitution
-   * @param result - Template string to process
-   * @param context - Template context
-   * @returns Template string with processed variables
+   * @param {string} result - Template string to process
+   * @param {TemplateContext} context - Template context
+   * @returns { string} Template string with processed variables
    */
   private processSimpleVariables(result: string, context: TemplateContext): string {
     return result.replace(REGEX_PATTERNS.SIMPLE_VAR, (match, variablePath) => {
@@ -139,9 +139,9 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Renders a template string with the provided context
-   * @param template - Template string to render
-   * @param context - Context object containing variable values
-   * @returns The rendered template string
+   * @param {string} template - Template string to render
+   * @param {TemplateContext} context - Context object containing variable values
+   * @returns {void} The rendered template string
    */
   async renderTemplate(template: string, context: TemplateContext): Promise<string> {
     let result = template;
@@ -174,9 +174,9 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Final cleanup - ensure all variables are processed
-   * @param result - Processed template string
-   * @param context - Context object containing variable values
-   * @returns Final processed template
+   * @param {string} result - Processed template string
+   * @param {TemplateContext} context - Context object containing variable values
+   * @returns { string} Final processed template
    */
   private finalCleanup(result: string, context: TemplateContext): string {
     // Additional pass to ensure no variables are left unprocessed
@@ -202,8 +202,8 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Validates template syntax and structure
-   * @param template - Template string to validate
-   * @returns Validation result with any errors found
+   * @param {string} template - Template string to validate
+   * @returns {string): ValidationResult} Validation result with any errors found
    */
   validateTemplate(template: string): ValidationResult {
     return validateTemplateSyntax(template, this.helpers);
@@ -211,9 +211,9 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Processes a project template and generates all files
-   * @param projectTemplate - Project template to process
-   * @param context - Context object containing variable values
-   * @returns Array of generated files
+   * @param {unknown} projectTemplate - Project template to process
+   * @param {unknown} context - Context object containing variable values
+   * @returns {void} Array of generated files
    */
   async processProjectTemplate(
     projectTemplate: ProjectTemplate,
@@ -253,8 +253,8 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Registers a custom helper function
-   * @param name - Name of the helper function
-   * @param helper - Helper function implementation
+   * @param {string} name - Name of the helper function
+   * @param {(...args} helper - Helper function implementation
    */
   registerHelper(name: string, helper: (...args: unknown[]) => unknown): void {
     this.helpers.set(name, helper);
@@ -262,7 +262,7 @@ export class TemplateEngine implements TemplateEngineImpl {
 
   /**
    * Gets a list of all available templates
-   * @returns Array of template names
+   * @returns {void} Array of template names
    */
   async getAvailableTemplates(): Promise<string[]> {
     try {

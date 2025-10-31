@@ -17,8 +17,8 @@ export class ContextConfigProviders {
   /**
    * Gets ESLint configuration based on the specified quality level.
    * Generates appropriate ESLint rules and extends configurations.
-   * @param qualityLevel - The quality level determining ESLint rule strictness
-   * @returns ESLint configuration object with rules and extends settings
+   * @param {string} qualityLevel - The quality level determining ESLint rule strictness
+   * @returns {void} ESLint configuration object with rules and extends settings
    */
   static getESLintConfig(qualityLevel: string): Record<string, unknown> {
     return {
@@ -46,8 +46,8 @@ export class ContextConfigProviders {
   /**
    * Gets Prettier configuration based on the specified quality level.
    * Generates appropriate Prettier formatting settings.
-   * @param qualityLevel - The quality level determining Prettier formatting strictness
-   * @returns Prettier configuration object with formatting rules
+   * @param {string} qualityLevel - The quality level determining Prettier formatting strictness
+   * @returns {void} Prettier configuration object with formatting rules
    */
   static getPrettierConfig(qualityLevel: string): Record<string, unknown> {
     return {
@@ -65,8 +65,8 @@ export class ContextConfigProviders {
   /**
    * Gets TypeScript configuration based on the specified quality level.
    * Generates appropriate TypeScript compiler options.
-   * @param qualityLevel - The quality level determining TypeScript compiler strictness
-   * @returns TypeScript configuration object with compiler options
+   * @param {string} qualityLevel - The quality level determining TypeScript compiler strictness
+   * @returns {void} TypeScript configuration object with compiler options
    */
   static getTypeScriptConfig(qualityLevel: string): Record<string, unknown> {
     return {

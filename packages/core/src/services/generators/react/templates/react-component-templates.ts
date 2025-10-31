@@ -7,9 +7,9 @@ import { ProjectConfig } from '../../../../types/project-config.js';
 export class ReactComponentTemplates {
   /**
    * Generate App component template
-   * @param componentName - Component name
-   * @param config - Project configuration
-   * @returns App component template
+   * @param {string} componentName - Component name
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} App component template
    */
   getAppComponentTemplate(componentName: string, config: ProjectConfig): string {
     return `import React from 'react';
@@ -49,9 +49,9 @@ export default App;`;
 
   /**
    * Generate main component template
-   * @param componentName - Component name
-   * @param config - Project configuration
-   * @returns Main component template
+   * @param {string} componentName - Component name
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Main component template
    */
   getComponentTemplate(componentName: string, config: ProjectConfig): string {
     const imports = this.getComponentImports();
@@ -67,7 +67,7 @@ ${component}`;
 
   /**
    * Get React component imports
-   * @returns Import statements string
+   * @returns {string} Import statements string
    */
   private getComponentImports(): string {
     return `import React, { useState, useEffect } from 'react';`;
@@ -75,8 +75,8 @@ ${component}`;
 
   /**
    * Generate React component interfaces
-   * @param componentName - Component name
-   * @returns Interface definitions string
+   * @param {string} componentName - Component name
+   * @returns {string} Interface definitions string
    */
   private getComponentInterfaces(componentName: string): string {
     return `interface ${componentName}Props {
@@ -114,9 +114,9 @@ interface ${componentName}State {
 
   /**
    * Generate React component implementation
-   * @param componentName - Component name
-   * @param config - Project configuration
-   * @returns Component implementation string
+   * @param {string} componentName - Component name
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Component implementation string
    */
   private getComponentImplementation(componentName: string, config: ProjectConfig): string {
     const componentBody = this.getComponentBody(componentName, config);
@@ -137,9 +137,9 @@ ${exportStatement}`;
 
   /**
    * Generate the complete component body including state, effects, and render logic
-   * @param componentName - Component name
-   * @param config - Project configuration
-   * @returns Complete component body implementation string
+   * @param {string} componentName - Component name
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Complete component body implementation string
    */
   private getComponentBody(componentName: string, config: ProjectConfig): string {
     const stateInit = this.getStateInitialization(componentName);
@@ -155,8 +155,8 @@ ${exportStatement}`;
 
   /**
    * Generate React state initialization code
-   * @param componentName - Component name for typing the state
-   * @returns State initialization code string
+   * @param {string} componentName - Component name for typing the state
+   * @returns {string} State initialization code string
    */
   private getStateInitialization(componentName: string): string {
     return `const [state, setState] = useState<${componentName}State>({
@@ -168,9 +168,9 @@ ${exportStatement}`;
 
   /**
    * Generate React useEffect hook for component initialization
-   * @param componentName - Component name for logging
-   * @param config - Project configuration for initialization data
-   * @returns useEffect hook implementation string
+   * @param {string} componentName - Component name for logging
+   * @param {ProjectConfig} config - Project configuration for initialization data
+   * @returns {string} useEffect hook implementation string
    */
   private getEffectHook(componentName: string, config: ProjectConfig): string {
     return `useEffect(() => {
@@ -188,9 +188,9 @@ ${exportStatement}`;
 
   /**
    * Generate component initialization logic
-   * @param componentName - Component name for logging
-   * @param config - Project configuration
-   * @returns Initialization logic string
+   * @param {string} componentName - Component name for logging
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Initialization logic string
    */
   private getInitializationLogic(componentName: string, config: ProjectConfig): string {
     return `if (debug) {
@@ -215,7 +215,7 @@ ${exportStatement}`;
 
   /**
    * Generate error handling logic
-   * @returns Error handling logic string
+   * @returns {string} Error handling logic string
    */
   private getErrorHandlingLogic(): string {
     return `const errorState = {
@@ -230,8 +230,8 @@ ${exportStatement}`;
 
   /**
    * Generate React render logic with conditional rendering
-   * @param componentName - Component name for display and CSS classes
-   * @returns Render logic JSX implementation string
+   * @param {string} componentName - Component name for display and CSS classes
+   * @returns {string} Render logic JSX implementation string
    */
   private getRenderLogic(componentName: string): string {
     return `if (state.error) {
@@ -247,7 +247,7 @@ ${exportStatement}`;
 
   /**
    * Generate error render JSX
-   * @returns Error JSX string
+   * @returns {string} Error JSX string
    */
   private getErrorRender(): string {
     return `(
@@ -260,8 +260,8 @@ ${exportStatement}`;
 
   /**
    * Generate loading render JSX
-   * @param componentName - Component name for loading message
-   * @returns Loading JSX string
+   * @param {string} componentName - Component name for loading message
+   * @returns {string} Loading JSX string
    */
   private getLoadingRender(componentName: string): string {
     return `(
@@ -273,8 +273,8 @@ ${exportStatement}`;
 
   /**
    * Generate success render JSX
-   * @param componentName - Component name for display
-   * @returns Success JSX string
+   * @param {string} componentName - Component name for display
+   * @returns {string} Success JSX string
    */
   private getSuccessRender(componentName: string): string {
     return `(

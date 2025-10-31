@@ -8,7 +8,7 @@
 export class CSSLayoutGenerator {
   /**
    * Get base styles
-   * @returns Base CSS styles
+   * @returns {string} Base CSS styles
    */
   static getBaseStyles(): string {
     const reset = this.getResetStyles();
@@ -34,7 +34,7 @@ ${focus}`;
 
   /**
    * Get component styles
-   * @returns Component CSS
+   * @returns {string} Component CSS
    */
   static getComponentStyles(): string {
     const appLayout = this.getAppLayoutStyles();
@@ -48,7 +48,7 @@ ${componentSpecific}`;
 
   /**
    * Get reset styles
-   * @returns Reset CSS
+   * @returns {string} Reset CSS
    */
   private static getResetStyles(): string {
     return `*,
@@ -62,7 +62,7 @@ ${componentSpecific}`;
 
   /**
    * Get HTML styles
-   * @returns HTML CSS
+   * @returns {string} HTML CSS
    */
   private static getHtmlStyles(): string {
     return `html {
@@ -77,7 +77,7 @@ ${componentSpecific}`;
 
   /**
    * Get body styles
-   * @returns Body CSS
+   * @returns {string} Body CSS
    */
   private static getBodyStyles(): string {
     return `body {
@@ -95,7 +95,7 @@ ${componentSpecific}`;
 
   /**
    * Get typography styles
-   * @returns Typography CSS
+   * @returns {string} Typography CSS
    */
   private static getTypographyStyles(): string {
     return `/* Typography */
@@ -130,7 +130,7 @@ a:hover {
 
   /**
    * Get form styles
-   * @returns Form CSS
+   * @returns {string} Form CSS
    */
   private static getFormStyles(): string {
     return `/* Form elements */
@@ -153,7 +153,7 @@ button {
 
   /**
    * Get focus styles
-   * @returns Focus CSS
+   * @returns {string} Focus CSS
    */
   private static getFocusStyles(): string {
     return `/* Focus styles */
@@ -165,7 +165,7 @@ button {
 
   /**
    * Get app layout styles
-   * @returns App layout CSS
+   * @returns {string} App layout CSS
    */
   private static getAppLayoutStyles(): string {
     const appStyles = this.getAppStyles();
@@ -184,7 +184,7 @@ ${footerStyles}`;
 
   /**
    * Get app styles
-   * @returns App CSS
+   * @returns {string} App CSS
    */
   private static getAppStyles(): string {
     return `.app {
@@ -196,7 +196,7 @@ ${footerStyles}`;
 
   /**
    * Get header styles
-   * @returns Header CSS
+   * @returns {string} Header CSS
    */
   private static getHeaderStyles(): string {
     return `.app-header {
@@ -219,7 +219,7 @@ ${footerStyles}`;
 
   /**
    * Get main styles
-   * @returns Main CSS
+   * @returns {string} Main CSS
    */
   private static getMainStyles(): string {
     return `.app-main {
@@ -233,7 +233,7 @@ ${footerStyles}`;
 
   /**
    * Get footer styles
-   * @returns Footer CSS
+   * @returns {string} Footer CSS
    */
   private static getFooterStyles(): string {
     return `.app-footer {
@@ -247,7 +247,7 @@ ${footerStyles}`;
 
   /**
    * Get component-specific styles
-   * @returns Component CSS
+   * @returns {string} Component CSS
    */
   private static getComponentSpecificStyles(): string {
     const errorStyles = this.getErrorStyles();
@@ -266,7 +266,7 @@ ${debugStyles}`;
 
   /**
    * Get error styles
-   * @returns Error CSS
+   * @returns {string} Error CSS
    */
   private static getErrorStyles(): string {
     return `.component-error {
@@ -281,7 +281,7 @@ ${debugStyles}`;
 
   /**
    * Get loading styles
-   * @returns Loading CSS
+   * @returns {string} Loading CSS
    */
   private static getLoadingStyles(): string {
     return `.component-loading {
@@ -293,7 +293,7 @@ ${debugStyles}`;
 
   /**
    * Get user data styles
-   * @returns User data CSS
+   * @returns {string} User data CSS
    */
   private static getUserDataStyles(): string {
     return `.user-data {
@@ -307,7 +307,7 @@ ${debugStyles}`;
 
   /**
    * Get debug styles
-   * @returns Debug CSS
+   * @returns {string} Debug CSS
    */
   private static getDebugStyles(): string {
     return `.debug-info {

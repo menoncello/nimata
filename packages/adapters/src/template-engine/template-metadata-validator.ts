@@ -31,8 +31,8 @@ const VALIDATION_CONSTANTS = {
 export class TemplateMetadataValidator {
   /**
    * Validate a template
-   * @param template - The template to validate
-   * @returns Validation result with any errors or warnings
+   * @param {TemplateMetadata} template - The template to validate
+   * @returns {Promise<TemplateValidationResult>} Validation result with any errors or warnings
    */
   static async validateTemplate(template: TemplateMetadata): Promise<TemplateValidationResult> {
     const errors = this.initializeValidationErrors();
@@ -54,7 +54,7 @@ export class TemplateMetadataValidator {
 
   /**
    * Initialize validation errors array
-   * @returns Empty validation errors array
+   * @returns {Array<{ code: string; message: string; severity: ValidationErrorSeverity; context?: Record<string, unknown> }>} Empty validation errors array
    */
   private static initializeValidationErrors(): Array<{
     code: string;
@@ -72,7 +72,7 @@ export class TemplateMetadataValidator {
 
   /**
    * Initialize validation warnings array
-   * @returns Empty validation warnings array
+   * @returns {Array<{ code: string; message: string; category: ValidationWarningCategory; suggestion?: string }>} Empty validation warnings array
    */
   private static initializeValidationWarnings(): Array<{
     code: string;
@@ -90,8 +90,8 @@ export class TemplateMetadataValidator {
 
   /**
    * Validate required template fields
-   * @param template - Template to validate
-   * @param errors - Errors array to populate
+   * @param {TemplateMetadata} template - Template to validate
+   * @param {Array<{ code: string; message: string; severity: string }>} errors - Errors array to populate
    */
   private static validateRequiredFields(
     template: TemplateMetadata,
@@ -119,8 +119,8 @@ export class TemplateMetadataValidator {
 
   /**
    * Validate template file exists and is readable
-   * @param template - Template to validate
-   * @param errors - Errors array to populate
+   * @param {TemplateMetadata} template - Template to validate
+   * @param {Array<{ code: string; message: string; severity: string; context?: Record<string, unknown> }>} errors - Errors array to populate
    */
   private static async validateTemplateFile(
     template: TemplateMetadata,
@@ -147,8 +147,8 @@ export class TemplateMetadataValidator {
 
   /**
    * Validate supported project types
-   * @param template - Template to validate
-   * @param warnings - Warnings array to populate
+   * @param {TemplateMetadata} template - Template to validate
+   * @param {Array<{ code: string; message: string; category: string; suggestion?: string }>} warnings - Warnings array to populate
    */
   private static validateProjectTypes(
     template: TemplateMetadata,
@@ -166,8 +166,8 @@ export class TemplateMetadataValidator {
 
   /**
    * Validate template tags
-   * @param template - Template to validate
-   * @param warnings - Warnings array to populate
+   * @param {TemplateMetadata} template - Template to validate
+   * @param {Array<{ code: string; message: string; category: string; suggestion?: string }>} warnings - Warnings array to populate
    */
   private static validateTags(
     template: TemplateMetadata,
@@ -185,8 +185,8 @@ export class TemplateMetadataValidator {
 
   /**
    * Validate version format follows semantic versioning
-   * @param template - Template to validate
-   * @param warnings - Warnings array to populate
+   * @param {TemplateMetadata} template - Template to validate
+   * @param {Array<{ code: string; message: string; category: string; suggestion?: string }>} warnings - Warnings array to populate
    */
   private static validateVersionFormat(
     template: TemplateMetadata,
@@ -207,8 +207,8 @@ export class TemplateMetadataValidator {
 
   /**
    * Validate template features
-   * @param template - Template to validate
-   * @param errors - Errors array to populate
+   * @param {TemplateMetadata} template - Template to validate
+   * @param {Array<{ code: string; message: string; severity: string }>} errors - Errors array to populate
    */
   private static validateFeatures(
     template: TemplateMetadata,
@@ -223,11 +223,11 @@ export class TemplateMetadataValidator {
 
   /**
    * Validate individual template feature
-   * @param feature - Feature to validate
-   * @param feature.id - Feature ID
-   * @param feature.name - Feature name
-   * @param index - Feature index
-   * @param errors - Errors array to populate
+   * @param {{ id?: string; name?: string }} feature - Feature to validate
+   * @param {string} feature.id - Feature ID
+   * @param {string} feature.name - Feature name
+   * @param {number} index - Feature index
+   * @param {Array<{ code: string; message: string; severity: string }>} errors - Errors array to populate
    */
   private static validateFeature(
     feature: { id?: string; name?: string },
@@ -253,10 +253,10 @@ export class TemplateMetadataValidator {
 
   /**
    * Add validation error if condition is met
-   * @param condition - Whether to add the error
-   * @param code - Error code
-   * @param message - Error message
-   * @param errors - Errors array to populate
+   * @param {boolean} condition - Whether to add the error
+   * @param {string} code - Error code
+   * @param {string} message - Error message
+   * @param {Array<{ code: string; message: string; severity: string }>} errors - Errors array to populate
    */
   private static addValidationError(
     condition: boolean,
@@ -275,8 +275,8 @@ export class TemplateMetadataValidator {
 
   /**
    * Handle validation exceptions
-   * @param error - Error that occurred
-   * @param errors - Errors array to populate
+   * @param {unknown} error - Error that occurred
+   * @param {Array<{ code: string; message: string; severity: string }>} errors - Errors array to populate
    */
   private static handleValidationError(
     error: unknown,
@@ -291,9 +291,9 @@ export class TemplateMetadataValidator {
 
   /**
    * Create validation result from errors and warnings
-   * @param errors - Validation errors
-   * @param warnings - Validation warnings
-   * @returns Complete validation result
+   * @param {Array<{ code: string; message: string; severity: string; context?: Record<string, unknown> }>} errors - Validation errors
+   * @param {Array<{ code: string; message: string; category: string; suggestion?: string }>} warnings - Validation warnings
+   * @returns {TemplateValidationResult} Complete validation result
    */
   private static createValidationResult(
     errors: Array<{

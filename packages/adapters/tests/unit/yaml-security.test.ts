@@ -1,7 +1,7 @@
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdtemp, rm, writeFile } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { YAMLConfigRepository } from '../../src/repositories/yaml-config-repository';
 
 describe('YAML Security Validation (P0-1)', () => {

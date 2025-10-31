@@ -39,7 +39,7 @@ export class ESLintGenerator {
 
   /**
    * Create ESLint generator
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   constructor(config: ProjectConfig) {
     this.config = config;
@@ -47,7 +47,7 @@ export class ESLintGenerator {
 
   /**
    * Generate ESLint configuration for a project
-   * @returns Generated ESLint configuration files
+   * @returns {GeneratedESLintConfig[]} Generated ESLint configuration files
    */
   generate(): GeneratedESLintConfig[] {
     const options: ESLintConfigOptions = {
@@ -70,8 +70,8 @@ export class ESLintGenerator {
 
   /**
    * Generate main ESLint configuration
-   * @param options - ESLint configuration options
-   * @returns Main ESLint configuration
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {GeneratedESLintConfig} Main ESLint configuration
    */
   private generateMainConfig(options: ESLintConfigOptions): GeneratedESLintConfig {
     return {
@@ -83,8 +83,8 @@ export class ESLintGenerator {
 
   /**
    * Generate TypeScript ESLint configuration
-   * @param options - ESLint configuration options
-   * @returns TypeScript ESLint configuration
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {GeneratedESLintConfig} TypeScript ESLint configuration
    */
   private generateTypeScriptConfig(options: ESLintConfigOptions): GeneratedESLintConfig {
     return {
@@ -96,8 +96,8 @@ export class ESLintGenerator {
 
   /**
    * Generate testing ESLint configuration
-   * @param options - ESLint configuration options
-   * @returns Testing ESLint configuration
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {GeneratedESLintConfig} Testing ESLint configuration
    */
   private generateTestingConfig(options: ESLintConfigOptions): GeneratedESLintConfig {
     return {
@@ -109,7 +109,7 @@ export class ESLintGenerator {
 
   /**
    * Generate .eslintignore file
-   * @returns ESLint ignore configuration
+   * @returns {GeneratedESLintConfig} ESLint ignore configuration
    */
   private generateIgnoreFile(): GeneratedESLintConfig {
     const ignorePatterns = [
@@ -131,8 +131,8 @@ export class ESLintGenerator {
 
   /**
    * Build main ESLint configuration content
-   * @param options - ESLint configuration options
-   * @returns Configuration content
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {string} Configuration content
    */
   private buildMainConfigContent(options: ESLintConfigOptions): string {
     let targetEnvironmentText;
@@ -170,8 +170,8 @@ export default [
 
   /**
    * Build environment configuration
-   * @param targetEnvironment - Target environment
-   * @returns Environment configuration
+   * @param {string} targetEnvironment - Target environment
+   * @returns {Record<string, unknown>} Environment configuration
    */
   private buildEnvironmentConfig(targetEnvironment: string): Record<string, unknown> {
     return {
@@ -182,8 +182,8 @@ export default [
 
   /**
    * Build extends configuration
-   * @param options - ESLint configuration options
-   * @returns Extends configuration
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {string[]} Extends configuration
    */
   private buildExtendsConfig(options: ESLintConfigOptions): string[] {
     return [
@@ -195,8 +195,8 @@ export default [
 
   /**
    * Get parser based on TypeScript support
-   * @param enableTypeScript - Whether TypeScript is enabled
-   * @returns Parser string
+   * @param {boolean} enableTypeScript - Whether TypeScript is enabled
+   * @returns {string} Parser string
    */
   private getParser(enableTypeScript: boolean): string {
     return enableTypeScript ? '@typescript-eslint/parser' : 'espree';
@@ -204,8 +204,8 @@ export default [
 
   /**
    * Build plugins configuration
-   * @param options - ESLint configuration options
-   * @returns Plugins configuration
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {string[]} Plugins configuration
    */
   private buildPluginsConfig(options: ESLintConfigOptions): string[] {
     return [
@@ -216,8 +216,8 @@ export default [
 
   /**
    * Build rules configuration
-   * @param options - ESLint configuration options
-   * @returns Rules configuration
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {Record<string, unknown>} Rules configuration
    */
   private buildRulesConfig(options: ESLintConfigOptions): Record<string, unknown> {
     return {
@@ -230,7 +230,7 @@ export default [
 
   /**
    * Get ignore patterns
-   * @returns Ignore patterns array
+   * @returns {string[]} Ignore patterns array
    */
   private getIgnorePatterns(): string[] {
     return ['node_modules/', 'dist/', 'build/', 'coverage/'];
@@ -238,8 +238,8 @@ export default [
 
   /**
    * Build TypeScript ESLint configuration content
-   * @param options - ESLint configuration options
-   * @returns Configuration content
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {string} Configuration content
    */
   private buildTypeScriptConfigContent(options: ESLintConfigOptions): string {
     const projectTypeText = this.getProjectTypeText(options.projectType);
@@ -277,8 +277,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Get project type text for configuration
-   * @param projectType - Project type
-   * @returns Project type description
+   * @param {string} projectType - Project type
+   * @returns {string} Project type description
    */
   private getProjectTypeText(projectType: string): string {
     if (projectType === 'web') {
@@ -295,8 +295,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Get library-specific rules
-   * @param projectType - Project type
-   * @returns Library rules string
+   * @param {string} projectType - Project type
+   * @returns {string} Library rules string
    */
   private getLibraryRules(projectType: string): string {
     if (projectType === 'library') {
@@ -307,8 +307,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Build TypeScript rules configuration
-   * @param options - ESLint configuration options
-   * @returns TypeScript rules string
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {string} TypeScript rules string
    */
   private buildTypeScriptRules(options: ESLintConfigOptions): string {
     const rules: string[] = [];
@@ -325,8 +325,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Add unused variables rule
-   * @param rules - Rules array to modify
-   * @param qualityLevel - Quality level
+   * @param {string[]} rules - Rules array to modify
+   * @param {string} qualityLevel - Quality level
    */
   private addUnusedVarsRule(rules: string[], qualityLevel: string): void {
     const unusedVarsLevel = qualityLevel === 'light' ? 'warn' : 'error';
@@ -335,8 +335,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Add explicit any rule
-   * @param rules - Rules array to modify
-   * @param qualityLevel - Quality level
+   * @param {string[]} rules - Rules array to modify
+   * @param {string} qualityLevel - Quality level
    */
   private addExplicitAnyRule(rules: string[], qualityLevel: string): void {
     let anyLevel;
@@ -352,8 +352,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Add return type rules
-   * @param rules - Rules array to modify
-   * @param qualityLevel - Quality level
+   * @param {string[]} rules - Rules array to modify
+   * @param {string} qualityLevel - Quality level
    */
   private addReturnTypeRules(rules: string[], qualityLevel: string): void {
     if (qualityLevel === 'strict') {
@@ -367,8 +367,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Add strict rules
-   * @param rules - Rules array to modify
-   * @param qualityLevel - Quality level
+   * @param {string[]} rules - Rules array to modify
+   * @param {string} qualityLevel - Quality level
    */
   private addStrictRules(rules: string[], qualityLevel: string): void {
     const nonNullLevel = qualityLevel === 'strict' ? 'error' : 'off';
@@ -377,8 +377,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Add optional chaining rules
-   * @param rules - Rules array to modify
-   * @param qualityLevel - Quality level
+   * @param {string[]} rules - Rules array to modify
+   * @param {string} qualityLevel - Quality level
    */
   private addOptionalChainRules(rules: string[], qualityLevel: string): void {
     if (qualityLevel === 'medium' || qualityLevel === 'strict') {
@@ -389,8 +389,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Add floating promises rule
-   * @param rules - Rules array to modify
-   * @param qualityLevel - Quality level
+   * @param {string[]} rules - Rules array to modify
+   * @param {string} qualityLevel - Quality level
    */
   private addFloatingPromisesRule(rules: string[], qualityLevel: string): void {
     const floatingPromisesLevel = qualityLevel === 'strict' ? 'error' : 'off';
@@ -399,8 +399,8 @@ ${typeScriptRules}${libraryRules}
 
   /**
    * Build testing ESLint configuration content
-   * @param options - ESLint configuration options
-   * @returns Configuration content
+   * @param {ESLintConfigOptions} options - ESLint configuration options
+   * @returns {string} Configuration content
    */
   private buildTestingConfigContent(options: ESLintConfigOptions): string {
     const testingGlobals = this.getTestingGlobals();
@@ -431,7 +431,7 @@ module.exports = {
 
   /**
    * Get testing file patterns
-   * @returns Testing file patterns array
+   * @returns {string[]} Testing file patterns array
    */
   private getTestingFiles(): string[] {
     return ['**/*.test.ts', '**/*.spec.ts', '**/*.test.js', '**/*.spec.js'];
@@ -439,7 +439,7 @@ module.exports = {
 
   /**
    * Get testing globals configuration
-   * @returns Testing globals object
+   * @returns {Record<string, string>} Testing globals object
    */
   private getTestingGlobals(): Record<string, string> {
     return {
@@ -457,8 +457,8 @@ module.exports = {
 
 /**
  * Factory function to create ESLint generator instance
- * @param config - Project configuration
- * @returns ESLint generator instance
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ESLintGenerator} ESLint generator instance
  */
 export function createESLintGenerator(config?: ProjectConfig): ESLintGenerator {
   const defaultConfig: ProjectConfig = {

@@ -41,7 +41,7 @@ const INDEX_CONSTANTS = {
 export class TemplateIndexUtils {
   /**
    * Create empty template index
-   * @returns Empty template index
+   * @returns {TemplateIndex} Empty template index
    */
   static createEmptyIndex(): TemplateIndex {
     return {
@@ -57,8 +57,8 @@ export class TemplateIndexUtils {
 
   /**
    * Add template to category index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static addToCategoryIndex(index: TemplateIndex, template: TemplateMetadata): void {
     const category = template.category || 'other';
@@ -72,8 +72,8 @@ export class TemplateIndexUtils {
 
   /**
    * Add template to project type index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static addToProjectTypeIndex(index: TemplateIndex, template: TemplateMetadata): void {
     for (const projectType of template.supportedProjectTypes) {
@@ -88,8 +88,8 @@ export class TemplateIndexUtils {
 
   /**
    * Add template to tag index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static addToTagIndex(index: TemplateIndex, template: TemplateMetadata): void {
     for (const tag of template.tags) {
@@ -104,8 +104,8 @@ export class TemplateIndexUtils {
 
   /**
    * Add template to author index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static addToAuthorIndex(index: TemplateIndex, template: TemplateMetadata): void {
     if (template.author) {
@@ -120,8 +120,8 @@ export class TemplateIndexUtils {
 
   /**
    * Add template to full-text index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static addToFullTextIndex(index: TemplateIndex, template: TemplateMetadata): void {
     const text = [
@@ -148,8 +148,8 @@ export class TemplateIndexUtils {
 
   /**
    * Remove template from category index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static removeFromCategoryIndex(index: TemplateIndex, template: TemplateMetadata): void {
     const category = template.category || 'other';
@@ -164,8 +164,8 @@ export class TemplateIndexUtils {
 
   /**
    * Remove template from project type index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static removeFromProjectTypeIndex(index: TemplateIndex, template: TemplateMetadata): void {
     for (const projectType of template.supportedProjectTypes) {
@@ -181,8 +181,8 @@ export class TemplateIndexUtils {
 
   /**
    * Remove template from tag index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static removeFromTagIndex(index: TemplateIndex, template: TemplateMetadata): void {
     for (const tag of template.tags) {
@@ -198,8 +198,8 @@ export class TemplateIndexUtils {
 
   /**
    * Remove template from author index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static removeFromAuthorIndex(index: TemplateIndex, template: TemplateMetadata): void {
     if (template.author) {
@@ -215,8 +215,8 @@ export class TemplateIndexUtils {
 
   /**
    * Remove template from full-text index
-   * @param index Template index
-   * @param template Template metadata
+   * @param {TemplateIndex} index Template index
+   * @param {TemplateMetadata} template Template metadata
    */
   static removeFromFullTextIndex(index: TemplateIndex, template: TemplateMetadata): void {
     for (const [word, templateIds] of index.fullTextIndex.entries()) {

@@ -21,8 +21,8 @@ export { MemoryCache, FileSystemCache, PerformanceMonitor, AsyncQueue };
 export const Performance = {
   /**
    * Create a memory cache
-   * @param options - Cache configuration options
-   * @returns New memory cache instance
+   * @param {unknown} options - Cache configuration options
+   * @returns {void} New memory cache instance
    */
   memoryCache: <T = unknown>(options?: CacheOptions): MemoryCache<T> => {
     return new MemoryCache<T>(options);
@@ -30,8 +30,8 @@ export const Performance = {
 
   /**
    * Create a file system cache
-   * @param options - Cache configuration options
-   * @returns New file system cache instance
+   * @param {unknown} options - Cache configuration options
+   * @returns {void} New file system cache instance
    */
   fileSystemCache: (options?: CacheOptions): FileSystemCache => {
     return new FileSystemCache(options);
@@ -39,7 +39,7 @@ export const Performance = {
 
   /**
    * Create a performance monitor
-   * @returns New performance monitor instance
+   * @returns {void} New performance monitor instance
    */
   monitor: (): PerformanceMonitor => {
     return new PerformanceMonitor();
@@ -47,8 +47,8 @@ export const Performance = {
 
   /**
    * Create an async queue
-   * @param concurrency - Maximum concurrent operations
-   * @returns New async queue instance
+   * @param {unknown} concurrency - Maximum concurrent operations
+   * @returns {void} New async queue instance
    */
   queue: (concurrency?: number): AsyncQueue => {
     return new AsyncQueue(concurrency);
@@ -56,32 +56,32 @@ export const Performance = {
 
   /**
    * Debounce function calls
-   * @param func - Function to debounce
-   * @param wait - Wait time in milliseconds
-   * @returns Debounced function
+   * @param {unknown} func - Function to debounce
+   * @param {unknown} wait - Wait time in milliseconds
+   * @returns {void} Debounced function
    */
   debounce: PerformanceUtils.debounce,
 
   /**
    * Throttle function calls
-   * @param func - Function to throttle
-   * @param limit - Time limit in milliseconds
-   * @returns Throttled function
+   * @param {unknown} func - Function to throttle
+   * @param {unknown} limit - Time limit in milliseconds
+   * @returns {void} Throttled function
    */
   throttle: PerformanceUtils.throttle,
 
   /**
    * Create a memoized function
-   * @param func - Function to memoize
-   * @param cache - Optional cache instance
-   * @returns Memoized function
+   * @param {unknown} func - Function to memoize
+   * @param {unknown} cache - Optional cache instance
+   * @returns {void} Memoized function
    */
   memoize: createMemoizedFunction,
 
   /**
    * Format duration in milliseconds to human readable string
-   * @param durationMs - Duration in milliseconds
-   * @returns Formatted duration string
+   * @param {unknown} durationMs - Duration in milliseconds
+   * @returns {void} Formatted duration string
    */
   formatDuration: PerformanceUtils.formatDuration,
 };

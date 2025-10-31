@@ -43,8 +43,8 @@ import type {
 export class ClaudeMdGenerator {
   /**
    * Generate CLAUDE.md configuration for a project
-   * @param config - Project configuration
-   * @returns Generated CLAUDE.md configuration files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): GeneratedClaudeMdConfig[]} Generated CLAUDE.md configuration files
    */
   generate(config: ProjectConfig): GeneratedClaudeMdConfig[] {
     const options: ClaudeMdConfigOptions = {
@@ -79,8 +79,8 @@ export class ClaudeMdGenerator {
 
   /**
    * Get default code style configuration
-   * @param qualityLevel - Quality level
-   * @returns Default code style configuration
+   * @param {QualityLevel} qualityLevel - Quality level
+   * @returns {QualityLevel): CodeStyleConfig} Default code style configuration
    */
   private getDefaultCodeStyle(qualityLevel: QualityLevel): CodeStyleConfig {
     return {
@@ -95,8 +95,8 @@ export class ClaudeMdGenerator {
 
   /**
    * Get print width based on quality level
-   * @param qualityLevel - Quality level
-   * @returns Print width number
+   * @param {QualityLevel} qualityLevel - Quality level
+   * @returns {QualityLevel): number} Print width number
    */
   private getPrintWidth(qualityLevel: QualityLevel): number {
     switch (qualityLevel) {
@@ -113,9 +113,9 @@ export class ClaudeMdGenerator {
 
   /**
    * Build complete CLAUDE.md content
-   * @param config - Project configuration
-   * @param options - Configuration options
-   * @returns Complete CLAUDE.md content string
+   * @param {ProjectConfig} config - Project configuration
+   * @param {ClaudeMdConfigOptions} options - Configuration options
+   * @returns { string} Complete CLAUDE.md content string
    */
   private buildClaudeMdContent(config: ProjectConfig, options: ClaudeMdConfigOptions): string {
     const today: string = new Date().toISOString().split('T')[0] || '2025-01-01';
@@ -138,9 +138,9 @@ export class ClaudeMdGenerator {
 
   /**
    * Build AI context content for Claude Code
-   * @param config - Project configuration
-   * @param options - Configuration options
-   * @returns AI context content string
+   * @param {ProjectConfig} config - Project configuration
+   * @param {ClaudeMdConfigOptions} options - Configuration options
+   * @returns { string} AI context content string
    */
   private buildAIContextContent(config: ProjectConfig, options: ClaudeMdConfigOptions): string {
     const sections = [
@@ -159,7 +159,7 @@ export class ClaudeMdGenerator {
 
 /**
  * Create a CLAUDE.md generator instance
- * @returns New ClaudeMdGenerator instance
+ * @returns {ClaudeMdGenerator} New ClaudeMdGenerator instance
  */
 export function createClaudeMdGenerator(): ClaudeMdGenerator {
   return new ClaudeMdGenerator();

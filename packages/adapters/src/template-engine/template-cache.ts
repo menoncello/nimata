@@ -22,8 +22,8 @@ export class TemplateCache implements ITemplateCache {
 
   /**
    * Get template from cache
-   * @param key The cache key
-   * @returns The cached template or null if not found
+   * @param {string} key The cache key
+   * @returns {void} The cached template or null if not found
    */
   async get(key: string): Promise<TemplateMetadata | null> {
     const cached = this.cache.get(key);
@@ -42,9 +42,9 @@ export class TemplateCache implements ITemplateCache {
 
   /**
    * Set template in cache
-   * @param key The cache key
-   * @param template The template to cache
-   * @param ttl Time to live in seconds
+   * @param {unknown} key The cache key
+   * @param {unknown} template The template to cache
+   * @param {unknown} ttl Time to live in seconds
    */
   async set(
     key: string,
@@ -57,7 +57,7 @@ export class TemplateCache implements ITemplateCache {
 
   /**
    * Delete template from cache
-   * @param key The cache key to delete
+   * @param {string} key The cache key to delete
    */
   async delete(key: string): Promise<void> {
     this.cache.delete(key);
@@ -73,7 +73,7 @@ export class TemplateCache implements ITemplateCache {
 
   /**
    * Get cache statistics
-   * @returns Cache hit/miss statistics
+   * @returns {Promise<} Cache hit/miss statistics
    */
   async getStats(): Promise<{
     size: number;

@@ -9,9 +9,9 @@ import { JSON_SERIALIZATION } from './constants.js';
 
 /**
  * Build AI manifest content
- * @param options - Configuration options for AI context generation
- * @param getCoverageThreshold - Function to get coverage threshold
- * @returns Generated AI manifest content as JSON string
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(qualityLevel} getCoverageThreshold - Function to get coverage threshold
+ * @returns {void} Generated AI manifest content as JSON string
  */
 export function buildAIManifestContent(
   options: AIContextConfigOptions,
@@ -23,9 +23,9 @@ export function buildAIManifestContent(
 
 /**
  * Create the manifest object for AI configuration
- * @param options - Configuration options for AI context generation
- * @param getCoverageThreshold - Function to get coverage threshold
- * @returns Complete manifest object
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(qualityLevel} getCoverageThreshold - Function to get coverage threshold
+ * @returns {void} Complete manifest object
  */
 function createManifestObject(
   options: AIContextConfigOptions,
@@ -43,8 +43,8 @@ function createManifestObject(
 
 /**
  * Build the project section of the manifest
- * @param options - Configuration options for AI context generation
- * @returns Project section object
+ * @param {AIContextConfigOptions} options - Configuration options for AI context generation
+ * @returns {void} Project section object
  */
 function buildManifestProjectSection(options: AIContextConfigOptions): Record<string, unknown> {
   return {
@@ -58,8 +58,8 @@ function buildManifestProjectSection(options: AIContextConfigOptions): Record<st
 
 /**
  * Build the contexts section of the manifest
- * @param options - Configuration options for AI context generation
- * @returns Contexts section object
+ * @param {unknown} options - Configuration options for AI context generation
+ * @returns {void} Contexts section object
  */
 function buildManifestContextsSection(
   options: AIContextConfigOptions
@@ -78,9 +78,9 @@ function buildManifestContextsSection(
 
 /**
  * Build the configuration section of the manifest
- * @param options - Configuration options for AI context generation
- * @param getCoverageThreshold - Function to get coverage threshold
- * @returns Configuration section object
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(qualityLevel} getCoverageThreshold - Function to get coverage threshold
+ * @returns {void} Configuration section object
  */
 function buildManifestConfigurationSection(
   options: AIContextConfigOptions,
@@ -96,9 +96,9 @@ function buildManifestConfigurationSection(
 
 /**
  * Build the testing configuration
- * @param options - Configuration options for AI context generation
- * @param getCoverageThreshold - Function to get coverage threshold
- * @returns Testing configuration object
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(qualityLevel} getCoverageThreshold - Function to get coverage threshold
+ * @returns {void} Testing configuration object
  */
 function buildTestingConfiguration(
   options: AIContextConfigOptions,
@@ -113,8 +113,8 @@ function buildTestingConfiguration(
 
 /**
  * Build the quality configuration
- * @param options - Configuration options for AI context generation
- * @returns Quality configuration object
+ * @param {AIContextConfigOptions} options - Configuration options for AI context generation
+ * @returns {void} Quality configuration object
  */
 function buildQualityConfiguration(options: AIContextConfigOptions): Record<string, unknown> {
   return {

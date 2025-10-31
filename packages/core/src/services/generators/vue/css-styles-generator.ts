@@ -11,7 +11,7 @@ import { CSSUtilitiesGenerator } from './css-utilities-generator.js';
 export class CSSStylesGenerator {
   /**
    * Get base styles
-   * @returns Base CSS styles
+   * @returns {string} Base CSS styles
    */
   static getBaseStyles(): string {
     return CSSLayoutGenerator.getBaseStyles();
@@ -19,7 +19,7 @@ export class CSSStylesGenerator {
 
   /**
    * Get component styles
-   * @returns Component CSS
+   * @returns {string} Component CSS
    */
   static getComponentStyles(): string {
     return CSSLayoutGenerator.getComponentStyles();
@@ -27,7 +27,7 @@ export class CSSStylesGenerator {
 
   /**
    * Get utility classes
-   * @returns Utility CSS classes
+   * @returns {string} Utility CSS classes
    */
   static getUtilityClasses(): string {
     return CSSUtilitiesGenerator.getUtilityClasses();

@@ -22,7 +22,7 @@ export class ProjectSetup {
 
   /**
    * Initialize ProjectSetup with required dependencies
-   * @param logger - CLI logger instance for logging operations
+   * @param {CLILogger} logger - CLI logger instance for logging operations
    */
   constructor(logger: CLILogger) {
     this.logger = logger;
@@ -31,40 +31,96 @@ export class ProjectSetup {
   }
 
   /**
-   * Create the basic directory structure for the project
-   * @param config - Project configuration
-   * @param targetDir - Target directory (optional)
+   * Get base directories for all project types
+   * @returns {string[]} Array of base directory paths
    */
-  async createDirectoryStructure(config: ProjectConfig, targetDir?: string): Promise<void> {
-    const projectDir = targetDir || config.name;
-
-    const directories = [
+  private getBaseDirectories(): string[] {
+    return [
       'src',
-      'src/tests',
+      'tests',
+      'tests/unit',
+      'tests/integration',
+      'tests/e2e',
+      'tests/fixtures',
+      'tests/factories',
       'docs',
+      'docs/api',
+      'docs/examples',
       '.github',
       '.github/workflows',
       '.github/ISSUE_TEMPLATE',
+      '.nimata',
+      '.nimata/cache',
+      '.nimata/config',
+      '.claude',
     ];
+  }
 
-    // Add project-specific directories
-    switch (config.projectType) {
-      case 'web':
-        directories.push('public', 'src/styles', 'src/assets');
-        break;
-      case 'cli':
-        directories.push('bin', 'src/commands');
-        break;
-      case 'library':
-        directories.push('src/types', 'examples');
-        break;
-    }
+  /**
+   * Project-specific directory configurations
+   */
+  private readonly PROJECT_DIRECTORIES = {
+    basic: [] as string[], // Basic projects only need base directories
+    web: [
+      'public',
+      'src/components',
+      'src/styles',
+      'src/assets',
+      'src/utils',
+      'src/types',
+      'src/pages',
+      'src/hooks',
+      'src/styles/components',
+      'tests/unit/components',
+      'tests/integration/components',
+    ] as string[],
+    cli: [
+      'bin',
+      'src/cli', // Changed from src/commands to match test expectations
+      'tests/unit/cli',
+      'tests/e2e', // Ensure e2e directory exists for CLI projects
+      'tests/integration', // Also create integration test directory
+      'tests/fixtures', // Also create fixtures test directory
+    ] as string[],
+    library: ['src/types', 'dist', 'examples', 'tests/unit/library'] as string[],
+  } as const;
 
-    // Create directories
+  /**
+   * Get project-specific directories based on test expectations
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string[]} Array of project-specific directory paths
+   */
+  private getProjectSpecificDirectories(config: ProjectConfig): string[] {
+    return this.PROJECT_DIRECTORIES[config.projectType] || [];
+  }
+
+  /**
+   * Create directories from array
+   * @param {string} projectDir - Project directory path
+   * @param {string[]} directories - Array of directory paths to create
+   */
+  private async createDirectories(projectDir: string, directories: string[]): Promise<void> {
     for (const dir of directories) {
       const dirPath = path.join(projectDir, dir);
       await fs.mkdir(dirPath, { recursive: true });
     }
+  }
+
+  /**
+   * Create the basic directory structure for the project
+   * @param {ProjectConfig} config - Project configuration
+   * @param {unknown} targetDir - Target directory (optional)
+   */
+  async createDirectoryStructure(config: ProjectConfig, targetDir?: string): Promise<void> {
+    const projectDir = targetDir || config.name;
+
+    // Get all directories
+    const baseDirectories = this.getBaseDirectories();
+    const projectSpecificDirectories = this.getProjectSpecificDirectories(config);
+    const allDirectories = [...baseDirectories, ...projectSpecificDirectories];
+
+    // Create directories
+    await this.createDirectories(projectDir, allDirectories);
 
     // Create initial files
     await this.createInitialFiles(config, projectDir);
@@ -72,7 +128,7 @@ export class ProjectSetup {
 
   /**
    * Generate package.json file
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   async generatePackageJson(config: ProjectConfig): Promise<void> {
     const packageJson = this.configGenerators.generatePackageJson(config);
@@ -86,7 +142,7 @@ export class ProjectSetup {
 
   /**
    * Setup TypeScript configuration
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   async setupTypeScript(config: ProjectConfig): Promise<void> {
     const tsConfig = this.configGenerators.generateTsConfig(config);
@@ -100,7 +156,7 @@ export class ProjectSetup {
 
   /**
    * Setup ESLint configuration
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   async setupESLint(config: ProjectConfig): Promise<void> {
     const eslintConfig = this.configGenerators.generateEslintConfig(config);
@@ -119,7 +175,7 @@ export class ProjectSetup {
 
   /**
    * Setup Prettier configuration
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   async setupPrettier(config: ProjectConfig): Promise<void> {
     const prettierConfig = this.configGenerators.generatePrettierConfig();
@@ -138,7 +194,7 @@ export class ProjectSetup {
 
   /**
    * Setup testing configuration
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   async setupTests(config: ProjectConfig): Promise<void> {
     // Update package.json with test scripts
@@ -172,7 +228,7 @@ export class ProjectSetup {
 
   /**
    * Setup AI assistant configurations
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   async setupAIAssistants(config: ProjectConfig): Promise<void> {
     for (const assistant of config.aiAssistants) {
@@ -189,7 +245,7 @@ export class ProjectSetup {
 
   /**
    * Setup basic source files
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   async setupSourceFiles(config: ProjectConfig): Promise<void> {
     const mainContent = this.templates.getMainFileContent(config.projectType, config.name);
@@ -206,12 +262,106 @@ export class ProjectSetup {
       const indexPath = path.join(config.name, 'src', 'index.ts');
       await fs.writeFile(indexPath, indexContent, 'utf-8');
     }
+
+    // Create project-specific files
+    await this.createProjectSpecificFiles(config);
+  }
+
+  /**
+   * Create project-specific files like vite.config.ts, CLI executables, etc.
+   * @param {ProjectConfig} config - Project configuration
+   */
+  private async createProjectSpecificFiles(config: ProjectConfig): Promise<void> {
+    switch (config.projectType) {
+      case 'web':
+        await this.createWebSpecificFiles(config);
+        break;
+      case 'cli':
+        await this.createCliSpecificFiles(config);
+        break;
+      case 'library':
+        await this.createLibrarySpecificFiles(config);
+        break;
+      case 'basic':
+        await this.createBasicSpecificFiles();
+        break;
+    }
+  }
+
+  /**
+   * Create web-specific files
+   * @param {ProjectConfig} config - Project configuration
+   */
+  private async createWebSpecificFiles(config: ProjectConfig): Promise<void> {
+    // Create vite.config.ts
+    const viteConfig = this.configGenerators.generateViteConfig(config);
+    const viteConfigPath = path.join(config.name, 'vite.config.ts');
+    await fs.writeFile(viteConfigPath, viteConfig, 'utf-8');
+
+    // Create index.html
+    const indexHtml = this.configGenerators.generateIndexHtml(config);
+    const indexHtmlPath = path.join(config.name, 'index.html');
+    await fs.writeFile(indexHtmlPath, indexHtml, 'utf-8');
+
+    // Create App.tsx
+    const appContent = this.configGenerators.generateAppTsx(config);
+    const appPath = path.join(config.name, 'src', 'App.tsx');
+    await fs.writeFile(appPath, appContent, 'utf-8');
+
+    // Create main.css
+    const mainCss = this.configGenerators.generateMainCss(config);
+    const mainCssPath = path.join(config.name, 'src', 'styles', 'main.css');
+    await fs.writeFile(mainCssPath, mainCss, 'utf-8');
+
+    // Create public/styles.css
+    const publicCss = this.configGenerators.generatePublicCss(config);
+    const publicCssPath = path.join(config.name, 'public', 'styles.css');
+    await fs.writeFile(publicCssPath, publicCss, 'utf-8');
+  }
+
+  /**
+   * Create CLI-specific files
+   * @param {ProjectConfig} config - Project configuration
+   */
+  private async createCliSpecificFiles(config: ProjectConfig): Promise<void> {
+    // Ensure bin directory exists
+    const binDir = path.join(config.name, 'bin');
+    await fs.mkdir(binDir, { recursive: true, mode: 0o755 });
+
+    // Create CLI executable in bin directory
+    const cliExecutable = this.configGenerators.generateCliExecutable(config);
+    const cliPath = path.join(config.name, 'bin', config.name);
+    await fs.writeFile(cliPath, cliExecutable, { mode: 0o755 });
+
+    // Create CLI entry point in src/cli
+    const cliEntryContent = this.configGenerators.generateCliEntryContent(config);
+    const cliEntryPath = path.join(config.name, 'src', 'cli', 'index.ts');
+    await fs.writeFile(cliEntryPath, cliEntryContent, 'utf-8');
+  }
+
+  /**
+   * Create library-specific files
+   * @param {ProjectConfig} config - Project configuration
+   */
+  private async createLibrarySpecificFiles(config: ProjectConfig): Promise<void> {
+    // Create API documentation
+    const apiDoc = this.configGenerators.generateApiDocumentation(config);
+    const apiDocPath = path.join(config.name, 'docs', 'api.md');
+    await fs.writeFile(apiDocPath, apiDoc, 'utf-8');
+  }
+
+  /**
+   * Create basic-specific files
+   */
+  private async createBasicSpecificFiles(): Promise<void> {
+    // Basic projects might not need additional files beyond the main source file
+    // This is a placeholder for future basic-specific file generation
   }
 
   /**
    * Create initial project files
-   * @param config - Project configuration
-   * @param projectDir - Project directory
+   * @param {ProjectConfig} config - Project configuration
+   * @param {string} projectDir - Project directory
    */
   private async createInitialFiles(config: ProjectConfig, projectDir: string): Promise<void> {
     // Create README.md
@@ -252,7 +402,7 @@ SOFTWARE.`;
 
   /**
    * Setup Claude Code configuration
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   private async setupClaudeCode(config: ProjectConfig): Promise<void> {
     const claudeConfig = this.configGenerators.generateClaudeConfig(config);
@@ -266,7 +416,7 @@ SOFTWARE.`;
 
   /**
    * Setup GitHub Copilot configuration
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   private async setupCopilot(config: ProjectConfig): Promise<void> {
     const copilotConfig = this.configGenerators.generateCopilotConfig(config);

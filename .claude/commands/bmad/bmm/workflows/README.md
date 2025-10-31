@@ -2,25 +2,10 @@
 
 ## Available Workflows in bmm
 
-**brainstorm-game**
-
-- Path: `bmad/bmm/workflows/1-analysis/brainstorm-game/workflow.yaml`
-- Facilitate game brainstorming sessions by orchestrating the CIS brainstorming workflow with game-specific context, guidance, and additional game design techniques.
-
 **brainstorm-project**
 
 - Path: `bmad/bmm/workflows/1-analysis/brainstorm-project/workflow.yaml`
 - Facilitate project brainstorming sessions by orchestrating the CIS brainstorming workflow with project-specific context and guidance.
-
-**document-project**
-
-- Path: `bmad/bmm/workflows/1-analysis/document-project/workflow.yaml`
-- Analyzes and documents brownfield projects by scanning codebase, architecture, and patterns to create comprehensive reference documentation for AI-assisted development
-
-**game-brief**
-
-- Path: `bmad/bmm/workflows/1-analysis/game-brief/workflow.yaml`
-- Interactive game brief creation workflow that guides users through defining their game vision with multiple input sources and conversational collaboration
 
 **product-brief**
 
@@ -36,11 +21,6 @@
 
 - Path: `bmad/bmm/workflows/2-plan-workflows/create-ux-design/workflow.yaml`
 - Collaborative UX design facilitation workflow that creates exceptional user experiences through visual exploration and informed decision-making. Unlike template-driven approaches, this workflow facilitates discovery, generates visual options, and collaboratively designs the UX with the user at every step.
-
-**gdd**
-
-- Path: `bmad/bmm/workflows/2-plan-workflows/gdd/workflow.yaml`
-- Game Design Document workflow for all game project levels - from small prototypes to full AAA games. Generates comprehensive GDD with game mechanics, systems, progression, and implementation guidance.
 
 **narrative**
 
@@ -117,6 +97,11 @@
 - Path: `bmad/bmm/workflows/4-implementation/story-ready/workflow.yaml`
 - Marks a drafted story as ready for development and moves it from TODO → IN PROGRESS in the status file. Simple status-update workflow with no searching required.
 
+**document-project**
+
+- Path: `bmad/bmm/workflows/document-project/workflow.yaml`
+- Analyzes and documents brownfield projects by scanning codebase, architecture, and patterns to create comprehensive reference documentation for AI-assisted development
+
 **workflow-init**
 
 - Path: `bmad/bmm/workflows/workflow-status/init/workflow.yaml`
@@ -125,7 +110,7 @@
 **workflow-status**
 
 - Path: `bmad/bmm/workflows/workflow-status/workflow.yaml`
-- Lightweight status checker - answers "what should I do now?" for any agent. Reads simple key-value status file for instant parsing. Use workflow-init for new projects.
+- Lightweight status checker - answers "what should I do now?" for any agent. Reads YAML status file for workflow tracking. Use workflow-init for new projects.
 
 ## Execution
 

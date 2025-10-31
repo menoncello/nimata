@@ -11,7 +11,6 @@ const funcValue = (): void => {
 };
 
 function CreateObject(): void {
-  // @ts-expect-error - intentional for testing
   this.inherited = 'inherited';
 }
 CreateObject.prototype.prototypeProperty = 'should not merge';
@@ -434,13 +433,13 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
       }
 
       // Verify linear time complexity (time should scale proportionally with size)
-      console.log('✅ Deep Merge Complexity Evidence:');
+      process.stdout.write('✅ Deep Merge Complexity Evidence:\n');
       for (const [index, size] of testSizes.entries()) {
-        console.log(
-          `  ${size} keys: ${times[index].toFixed(3)}ms (${((times[index] / size) * 1000).toFixed(3)}μs per key)`
+        process.stdout.write(
+          `  ${size} keys: ${times[index].toFixed(3)}ms (${((times[index] / size) * 1000).toFixed(3)}μs per key)\n`
         );
       }
-      console.log('  Complexity: O(n) verified - Linear time complexity');
+      process.stdout.write('  Complexity: O(n) verified - Linear time complexity\n');
 
       // Each test should complete in reasonable time
       for (const [index, time] of times.entries()) {
@@ -476,7 +475,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
       const result = deepMerge(deepMerge(defaults, global), project);
       const endTime = performance.now();
 
-      console.log(`✅ Realistic cascade merge: ${(endTime - startTime).toFixed(2)}ms`);
+      process.stdout.write(`✅ Realistic cascade merge: ${(endTime - startTime).toFixed(2)}ms\n`);
 
       expect(result).toEqual({
         qualityLevel: 'strict',
@@ -775,8 +774,7 @@ describe('Story 1.2 - AC3: Configuration System Deep Merge', () => {
       expect(result1.test).not.toEqual({ a: 1 });
 
       // Test with arguments object (typeof === 'object' but not plain object)
-      function testArgs(): void {
-        const args = arguments; // arguments object
+      function testArgs(...args: string[]): void {
         const base2 = { test: { a: 1 } } as Record<string, unknown>;
         const override2 = { test: args } as Record<string, unknown>;
         const result2 = deepMerge(base2, override2);

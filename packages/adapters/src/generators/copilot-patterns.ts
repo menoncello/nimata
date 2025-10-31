@@ -6,7 +6,7 @@
 
 /**
  * Get TypeScript function pattern
- * @returns Function pattern code block
+ * @returns {string} Function pattern code block
  */
 function getFunctionPattern(): string {
   return `### TypeScript Function Pattern
@@ -14,8 +14,8 @@ function getFunctionPattern(): string {
 // Example function with proper typing and documentation
 /**
  * Process input data and return result
- * @param input - The input data to process
- * @returns Promise that resolves to processed data
+ * @param {string} input - The input data to process
+ * @returns {void} Promise that resolves to processed data
  */
 async function processData(input: string): Promise<ProcessedData> {
   try {
@@ -31,7 +31,7 @@ async function processData(input: string): Promise<ProcessedData> {
 
 /**
  * Get class pattern
- * @returns Class pattern code block
+ * @returns {string} Class pattern code block
  */
 function getClassPattern(): string {
   return `### Class Pattern
@@ -57,7 +57,7 @@ export class DataService {
 
 /**
  * Get error handling pattern
- * @returns Error handling pattern code block
+ * @returns {string} Error handling pattern code block
  */
 function getErrorHandlingPattern(): string {
   return `### Error Handling Pattern
@@ -85,7 +85,7 @@ export async function withErrorHandling<T>(
 
 /**
  * Get testing pattern
- * @returns Testing pattern code block
+ * @returns {string} Testing pattern code block
  */
 function getTestingPattern(): string {
   return `### Testing Pattern
@@ -123,7 +123,7 @@ describe('DataService', () => {
 
 /**
  * Get project-specific guidelines
- * @returns Guidelines text
+ * @returns {string} Guidelines text
  */
 function getProjectGuidelines(): string {
   return `## Project-Specific Guidelines
@@ -140,7 +140,7 @@ function getProjectGuidelines(): string {
 
 /**
  * Get code patterns and examples content
- * @returns Code patterns content string
+ * @returns {string} Code patterns content string
  */
 export function getCodePatternsContent(): string {
   const patterns = [
@@ -163,8 +163,8 @@ export function getCodePatternsContent(): string {
 
 /**
  * Wrap code in markdown code block
- * @param code - Code to wrap
- * @returns Wrapped code
+ * @param {string} code - Code to wrap
+ * @returns {string): string} Wrapped code
  */
 export function wrapInCodeBlock(code: string): string {
   return `\`\`\`typescript
@@ -174,8 +174,8 @@ ${code}
 
 /**
  * Get project-specific pattern
- * @param projectType - Type of project
- * @returns Pattern code
+ * @param {string} projectType - Type of project
+ * @returns {string): string} Pattern code
  */
 export function getProjectPattern(projectType: string): string {
   const patterns = {
@@ -189,7 +189,7 @@ export function getProjectPattern(projectType: string): string {
 
 /**
  * Get CLI pattern
- * @returns CLI pattern code
+ * @returns {string} CLI pattern code
  */
 function getCliPattern(): string {
   return `// Command pattern example
@@ -208,7 +208,7 @@ export class MyCommand {
 
 /**
  * Get web pattern
- * @returns Web pattern code
+ * @returns {string} Web pattern code
  */
 function getWebPattern(): string {
   return `// Express route example
@@ -226,7 +226,7 @@ export const getUserHandler = async (req: Request, res: Response): Promise<void>
 
 /**
  * Get basic pattern
- * @returns Basic pattern code
+ * @returns {string} Basic pattern code
  */
 function getBasicPattern(): string {
   return `// Basic function pattern
@@ -240,7 +240,7 @@ export const exampleFunction = (param: string): string => {
 
 /**
  * Get testing patterns
- * @returns Testing patterns string
+ * @returns {string} Testing patterns string
  */
 export function getTestingPatterns(): string {
   return `import { describe, it, expect, beforeEach, vi } from 'vitest';
@@ -273,7 +273,7 @@ describe('Example functionality', () => {
 
 /**
  * Get error handling patterns
- * @returns Error handling patterns string
+ * @returns {string} Error handling patterns string
  */
 export function getErrorHandlingPatterns(): string {
   return `// Error handling pattern
@@ -305,8 +305,8 @@ export const safeExecute = async <T>(
 
 /**
  * Get API patterns
- * @param projectType - Type of project
- * @returns API patterns string
+ * @param {string} projectType - Type of project
+ * @returns {string): string} API patterns string
  */
 export function getAPIPatterns(projectType: string): string {
   if (projectType === 'web') {
@@ -334,7 +334,7 @@ export const createErrorResponse = (message: string): ApiResponse<null> => ({
 
 /**
  * Get configuration patterns
- * @returns Configuration patterns string
+ * @returns {string} Configuration patterns string
  */
 export function getConfigurationPatterns(): string {
   return `// Configuration pattern

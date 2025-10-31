@@ -8,31 +8,31 @@ import type { ProjectTemplate, ValidationResult, GeneratedFile } from '../types/
 export interface TemplateEngine {
   /**
    * Load template from file system
-   * @param templateName - Name of the template to load
-   * @returns Loaded template
+   * @param {string} templateName - Name of the template to load
+   * @returns {string} Loaded template
    */
   loadTemplate: (templateName: string) => Promise<ProjectTemplate>;
 
   /**
    * Render template with context
-   * @param template - Template to render
-   * @param context - Variables for template substitution
-   * @returns Rendered content
+   * @param {string} template - Template to render
+   * @param {string} context - Variables for template substitution
+   * @returns {string} Rendered content
    */
   renderTemplate: (template: string, context: TemplateContext) => Promise<string>;
 
   /**
    * Validate template syntax
-   * @param template - Template to validate
-   * @returns Validation result
+   * @param {string} template - Template to validate
+   * @returns {string} Validation result
    */
   validateTemplate: (template: string) => ValidationResult;
 
   /**
    * Process complete project template
-   * @param projectTemplate - Project template definition
-   * @param context - Template context
-   * @returns Generated files
+   * @param {string} projectTemplate - Project template definition
+   * @param {string} context - Template context
+   * @returns {string} Generated files
    */
   processProjectTemplate: (
     projectTemplate: ProjectTemplate,
@@ -41,14 +41,14 @@ export interface TemplateEngine {
 
   /**
    * Register a custom helper function
-   * @param name - Helper name
-   * @param helper - Helper function
+   * @param {string} name - Helper name
+   * @param {string} helper - Helper function
    */
   registerHelper: (name: string, helper: (...args: unknown[]) => unknown) => void;
 
   /**
    * Get available templates
-   * @returns List of available template names
+   * @returns {string} List of available template names
    */
   getAvailableTemplates: () => Promise<string[]>;
 }

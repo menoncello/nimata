@@ -4,12 +4,7 @@
  * Generates basic project structure and files
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
-
-export interface DirectoryItem {
-  path: string;
-  type: 'directory' | 'file';
-  content?: string;
-}
+import type { DirectoryItem } from '../core/core-file-operations.js';
 
 /**
  * Generator for basic project structures
@@ -17,14 +12,14 @@ export interface DirectoryItem {
 export class BasicStructureGenerator {
   /**
    * Generate basic project structure
-   * @param config - Project configuration
-   * @returns Basic directory structure
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Basic directory structure
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     return [
       // Basic directories
-      { path: 'src/utils', type: 'directory' },
-      { path: 'src/constants', type: 'directory' },
+      { path: 'src/utils', type: 'directory', mode: 0o755 },
+      { path: 'src/constants', type: 'directory', mode: 0o755 },
 
       // Utility files
       {
@@ -43,8 +38,8 @@ export class BasicStructureGenerator {
 
   /**
    * Generate helper functions
-   * @param _config - Project configuration
-   * @returns Helper functions TypeScript code
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Helper functions TypeScript code
    */
   private generateHelpers(_config: ProjectConfig): string {
     return [
@@ -60,7 +55,7 @@ export class BasicStructureGenerator {
 
   /**
    * Get helpers header
-   * @returns Helpers header
+   * @returns {string} Helpers header
    */
   private getHelpersHeader(): string {
     return `/**
@@ -70,7 +65,7 @@ export class BasicStructureGenerator {
 
   /**
    * Get formatDate function
-   * @returns formatDate function
+   * @returns {string} formatDate function
    */
   private getFormatDateFunction(): string {
     return `/**
@@ -83,7 +78,7 @@ export function formatDate(date: Date = new Date()): string {
 
   /**
    * Get delay function
-   * @returns delay function
+   * @returns {string} delay function
    */
   private getDelayFunction(): string {
     return `/**
@@ -96,7 +91,7 @@ export function delay(ms: number): Promise<void> {
 
   /**
    * Get generateRandomString function
-   * @returns generateRandomString function
+   * @returns {string} generateRandomString function
    */
   private getRandomStringFunction(): string {
     return `/**
@@ -114,7 +109,7 @@ export function generateRandomString(length: number = 10): string {
 
   /**
    * Get deepClone function
-   * @returns deepClone function
+   * @returns {string} deepClone function
    */
   private getDeepCloneFunction(): string {
     return `/**
@@ -127,7 +122,7 @@ export function deepClone<T>(obj: T): T {
 
   /**
    * Get isObject function
-   * @returns isObject function
+   * @returns {object} function
    */
   private getIsObjectFunction(): string {
     return `/**
@@ -140,7 +135,7 @@ export function isObject(value: unknown): value is Record<string, unknown> {
 
   /**
    * Get getNestedValue function
-   * @returns getNestedValue function
+   * @returns {string} getNestedValue function
    */
   private getNestedValueFunction(): string {
     return `/**
@@ -158,8 +153,8 @@ export function getNestedValue<T = any>(
 
   /**
    * Generate constants file
-   * @param config - Project configuration
-   * @returns Constants TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Constants TypeScript code
    */
   private generateConstants(config: ProjectConfig): string {
     return `/**

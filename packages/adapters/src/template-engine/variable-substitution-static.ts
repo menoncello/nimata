@@ -12,10 +12,10 @@ import type { ValidationResult } from '@nimata/core';
 export class VariableSubstitutionStatic {
   /**
    * Validates variable type and format against expected type
-   * @param value - The value to validate
-   * @param expectedType - The expected type for the variable
-   * @param variableName - The name of the variable being validated
-   * @returns Validation result with any type mismatch errors
+   * @param {unknown} value - The value to validate
+   * @param {unknown} expectedType - The expected type for the variable
+   * @param {unknown} variableName - The name of the variable being validated
+   * @returns {ValidationResult} Validation result with any type mismatch errors
    */
   static validateVariableValue(
     value: unknown,
@@ -46,10 +46,10 @@ export class VariableSubstitutionStatic {
 
   /**
    * Processes complex variable types by adding metadata and validation
-   * @param value - The value to process
-   * @param variableName - The name of the variable being processed
-   * @param expectedType - The expected type for the variable
-   * @returns Object containing the processed value and validation result
+   * @param {unknown} value - The value to process
+   * @param {string} variableName - The name of the variable being processed
+   * @param {string} expectedType - The expected type for the variable
+   * @returns {{ value: unknown; isValid: boolean; errors: string[] }} Object containing the processed value and validation result
    */
   static processComplexType(
     value: unknown,
@@ -64,9 +64,9 @@ export class VariableSubstitutionStatic {
 
   /**
    * Applies type-specific processing to complex values
-   * @param value - The value to process
-   * @param expectedType - The expected type for processing
-   * @returns Processed value with added metadata
+   * @param {unknown} value - The value to process
+   * @param {string} expectedType - The expected type for processing
+   * @returns { unknown} Processed value with added metadata
    */
   private static applyComplexTypeProcessing(value: unknown, expectedType: string): unknown {
     if (expectedType === 'array' && Array.isArray(value)) {
@@ -82,8 +82,8 @@ export class VariableSubstitutionStatic {
 
   /**
    * Processes array values by adding metadata to each item
-   * @param value - Array value to process
-   * @returns Array with metadata added to each item
+   * @param {unknown[]} value - Array value to process
+   * @returns {unknown[]): unknown[]} Array with metadata added to each item
    */
   private static processArrayWithMetadata(value: unknown[]): unknown[] {
     return value.map((item, index) => {
@@ -107,8 +107,8 @@ export class VariableSubstitutionStatic {
 
   /**
    * Processes object values by adding metadata
-   * @param value - Object value to process
-   * @returns Object with added metadata
+   * @param {unknown} value - Object value to process
+   * @returns {unknown): unknown} Object with added metadata
    */
   private static processObjectWithMetadata(value: unknown): unknown {
     if (typeof value !== 'object' || value === null || Array.isArray(value)) {
@@ -126,8 +126,8 @@ export class VariableSubstitutionStatic {
 
   /**
    * Checks if value is a plain object (not array, not null)
-   * @param value - Value to check
-   * @returns True if value is a plain object
+   * @param {unknown} value - Value to check
+   * @returns {unknown): boolean} True if value is a plain object
    */
   private static isPlainObject(value: unknown): boolean {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -135,8 +135,8 @@ export class VariableSubstitutionStatic {
 
   /**
    * Extracts all variable placeholders from template content
-   * @param content - The template content to extract variables from
-   * @returns Array of variable names found in the content
+   * @param {string} content - The template content to extract variables from
+   * @returns {string): string[]} Array of variable names found in the content
    */
   static extractVariables(content: string): string[] {
     const variablePattern = /{{([^{}]+?)}}/g;
@@ -155,8 +155,8 @@ export class VariableSubstitutionStatic {
 
   /**
    * Validates the syntax of all variable placeholders in template content
-   * @param content - The template content to validate variable syntax for
-   * @returns Validation result with syntax errors and warnings
+   * @param {string} content - The template content to validate variable syntax for
+   * @returns {string): ValidationResult} Validation result with syntax errors and warnings
    */
   static validateVariableSyntax(content: string): ValidationResult {
     const errors: string[] = [];

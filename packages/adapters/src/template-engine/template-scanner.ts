@@ -5,7 +5,7 @@
  */
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
-import type { TemplateMetadata } from '@nimata/core';
+import { logger, type TemplateMetadata } from '@nimata/core';
 import {
   extractTemplateWithErrorHandling,
   processTemplatePath,
@@ -24,7 +24,7 @@ export class TemplateScanner {
 
   /**
    * Create template scanner instance
-   * @param indexManager - Template index manager instance
+   * @param {TemplateIndexManager} indexManager - Template index manager instance
    */
   constructor(indexManager: TemplateIndexManager) {
     this.indexManager = indexManager;
@@ -32,8 +32,8 @@ export class TemplateScanner {
 
   /**
    * Discover templates from file system
-   * @param directory - Directory path to scan for templates
-   * @returns Array of discovered template metadata
+   * @param {string} directory - Directory path to scan for templates
+   * @returns {void} Array of discovered template metadata
    */
   async discover(directory: string): Promise<TemplateMetadata[]> {
     const startTime = performance.now();
@@ -66,8 +66,8 @@ export class TemplateScanner {
 
   /**
    * Scan for new or modified templates
-   * @param directory - Directory to scan
-   * @returns Scan results with new, modified, and deleted templates
+   * @param {string} directory - Directory to scan
+   * @returns {void} Scan results with new, modified, and deleted templates
    */
   async scan(directory: string): Promise<TemplateProcessingResults> {
     const startTime = performance.now();
@@ -93,9 +93,9 @@ export class TemplateScanner {
 
   /**
    * Process template changes to find new, modified, and deleted templates
-   * @param templatePaths - All template paths found in directory
-   * @param lastScan - Timestamp of last scan
-   * @returns Scan results with new, modified, and deleted templates
+   * @param {unknown} templatePaths - All template paths found in directory
+   * @param {unknown} lastScan - Timestamp of last scan
+   * @returns {void} Scan results with new, modified, and deleted templates
    */
   private async processTemplateChanges(
     templatePaths: string[],
@@ -120,8 +120,8 @@ export class TemplateScanner {
 
   /**
    * Find templates that were deleted since last scan
-   * @param templatePaths - Current template paths found in directory
-   * @returns Array of deleted template IDs
+   * @param {string[]} templatePaths - Current template paths found in directory
+   * @returns {string[]): string[]} Array of deleted template IDs
    */
   private findDeletedTemplates(templatePaths: string[]): string[] {
     const deletedTemplates: string[] = [];
@@ -151,7 +151,7 @@ export class TemplateScanner {
 
   /**
    * Index templates for fast search
-   * @param templates - Array of templates to index
+   * @param {TemplateMetadata[]} templates - Array of templates to index
    */
   async index(templates: TemplateMetadata[]): Promise<void> {
     await this.indexManager.indexTemplates(templates);
@@ -159,11 +159,11 @@ export class TemplateScanner {
 
   /**
    * Refresh template index
-   * @param templatesDirectory - Directory containing templates
-   * @returns Refreshed array of templates
+   * @param {string} templatesDirectory - Directory containing templates
+   * @returns {void} Refreshed array of templates
    */
   async refreshIndex(templatesDirectory: string): Promise<TemplateMetadata[]> {
-    console.log('Refreshing template index...');
+    logger.info('refresh-index', 'Refreshing template index...');
 
     this.indexManager.clearIndex();
     const templates = await this.discover(templatesDirectory);
@@ -172,13 +172,15 @@ export class TemplateScanner {
       this.indexManager.addTemplate(template);
     }
 
-    console.log(`Index refreshed with ${templates.length} templates`);
+    logger.info('refresh-index', `Index refreshed with ${templates.length} templates`, {
+      templateCount: templates.length,
+    });
     return templates;
   }
 
   /**
    * Get discovery statistics
-   * @returns Statistics about the discovery process
+   * @returns {Promise<} Statistics about the discovery process
    */
   async getStatistics(): Promise<{
     totalTemplates: number;

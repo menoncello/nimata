@@ -9,8 +9,8 @@ import type { PrettierConfigOptions } from './prettier-types.js';
 
 /**
  * Build main Prettier configuration content
- * @param options - Configuration options
- * @returns Generated configuration string
+ * @param {PrettierConfigOptions} options - Configuration options
+ * @returns {PrettierConfigOptions): string} Generated configuration string
  */
 export function buildMainConfigContent(options: PrettierConfigOptions): string {
   const config = {
@@ -47,8 +47,8 @@ export function buildMainConfigContent(options: PrettierConfigOptions): string {
 
 /**
  * Get plugins based on project type
- * @param options - Configuration options
- * @returns Array of plugin names
+ * @param {PrettierConfigOptions} options - Configuration options
+ * @returns {PrettierConfigOptions): string[]} Array of plugin names
  */
 export function getPlugins(options: PrettierConfigOptions): string[] {
   const plugins: string[] = [];
@@ -70,8 +70,8 @@ export function getPlugins(options: PrettierConfigOptions): string[] {
 
 /**
  * Get file-specific overrides
- * @param options - Configuration options
- * @returns Array of override configurations
+ * @param {PrettierConfigOptions} options - Configuration options
+ * @returns {void} Array of override configurations
  */
 export function getOverrides(options: PrettierConfigOptions): Array<Record<string, unknown>> {
   const overrides: Array<Record<string, unknown>> = [
@@ -84,7 +84,7 @@ export function getOverrides(options: PrettierConfigOptions): Array<Record<strin
 
 /**
  * Get basic file type overrides
- * @returns Array of basic override configurations
+ * @returns {void} Array of basic override configurations
  */
 function getBasicOverrides(): Array<Record<string, unknown>> {
   return [getJsonOverride(), getMarkdownOverride(), getYamlOverride(), getConfigOverride()];
@@ -92,7 +92,7 @@ function getBasicOverrides(): Array<Record<string, unknown>> {
 
 /**
  * Get JSON file override configuration
- * @returns JSON override configuration
+ * @returns {void} JSON override configuration
  */
 function getJsonOverride(): Record<string, unknown> {
   return {
@@ -107,7 +107,7 @@ function getJsonOverride(): Record<string, unknown> {
 
 /**
  * Get Markdown file override configuration
- * @returns Markdown override configuration
+ * @returns {void} Markdown override configuration
  */
 function getMarkdownOverride(): Record<string, unknown> {
   return {
@@ -122,7 +122,7 @@ function getMarkdownOverride(): Record<string, unknown> {
 
 /**
  * Get YAML file override configuration
- * @returns YAML override configuration
+ * @returns {void} YAML override configuration
  */
 function getYamlOverride(): Record<string, unknown> {
   return {
@@ -137,7 +137,7 @@ function getYamlOverride(): Record<string, unknown> {
 
 /**
  * Get configuration file override
- * @returns Configuration file override
+ * @returns {void} Configuration file override
  */
 function getConfigOverride(): Record<string, unknown> {
   return {
@@ -151,8 +151,8 @@ function getConfigOverride(): Record<string, unknown> {
 
 /**
  * Get web project specific overrides
- * @param projectType - Project type
- * @returns Array of web-specific override configurations
+ * @param {string} projectType - Project type
+ * @returns {void} Array of web-specific override configurations
  */
 function getWebSpecificOverrides(projectType: string): Array<Record<string, unknown>> {
   if (projectType !== 'web') {
@@ -182,8 +182,8 @@ function getWebSpecificOverrides(projectType: string): Array<Record<string, unkn
 
 /**
  * Get trailing comma style based on quality level
- * @param qualityLevel - Quality level string
- * @returns Trailing comma style
+ * @param {string} qualityLevel - Quality level string
+ * @returns {string): 'none' | 'es5' | 'all'} Trailing comma style
  */
 export function getTrailingCommaStyle(qualityLevel: string): 'none' | 'es5' | 'all' {
   switch (qualityLevel) {
@@ -200,8 +200,8 @@ export function getTrailingCommaStyle(qualityLevel: string): 'none' | 'es5' | 'a
 
 /**
  * Get print width based on quality level
- * @param qualityLevel - Quality level string
- * @returns Print width number
+ * @param {string} qualityLevel - Quality level string
+ * @returns {string): number} Print width number
  */
 export function getPrintWidth(qualityLevel: string): number {
   switch (qualityLevel) {
@@ -218,8 +218,8 @@ export function getPrintWidth(qualityLevel: string): number {
 
 /**
  * Get target environment based on project type
- * @param projectType - Project type string
- * @returns Target environment
+ * @param {string} projectType - Project type string
+ * @returns {string): 'node' | 'browser' | 'both'} Target environment
  */
 export function getTargetEnvironment(projectType: string): 'node' | 'browser' | 'both' {
   switch (projectType) {

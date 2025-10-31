@@ -12,22 +12,22 @@ import { runAllValidations } from './validators/validation-helpers.js';
 export interface ProjectConfigProcessor {
   /**
    * Process collected configuration and add defaults
-   * @param config - Partial configuration to process
-   * @returns Processed complete configuration
+   * @param {string} config - Partial configuration to process
+   * @returns {string} Processed complete configuration
    */
   process: (config: Partial<ProjectConfig>) => Promise<ProjectConfig>;
 
   /**
    * Generate package.json content
-   * @param config - Project configuration
-   * @returns Generated package.json content
+   * @param {string} config - Project configuration
+   * @returns {string} Generated package.json content
    */
   generatePackageJson: (config: ProjectConfig) => Promise<object>;
 
   /**
    * Generate initial directory structure
-   * @param config - Project configuration
-   * @returns Generated directory structure
+   * @param {string} config - Project configuration
+   * @returns {string} Generated directory structure
    */
   generateDirectoryStructure: (config: ProjectConfig) => Promise<
     Array<{
@@ -39,8 +39,8 @@ export interface ProjectConfigProcessor {
 
   /**
    * Validate final configuration
-   * @param config - Project configuration to validate
-   * @returns Validation result with validity flag and warnings
+   * @param {string} config - Project configuration to validate
+   * @returns {string} Validation result with validity flag and warnings
    */
   validateFinalConfig: (config: ProjectConfig) => Promise<{
     valid: boolean;
@@ -66,8 +66,8 @@ export class ProjectConfigProcessorImpl implements ProjectConfigProcessor {
 
   /**
    * Process collected configuration and add defaults
-   * @param config - Partial configuration to process
-   * @returns Processed complete configuration
+   * @param {string} config - Partial configuration to process
+   * @returns {string} Processed complete configuration
    */
   async process(config: Partial<ProjectConfig>): Promise<ProjectConfig> {
     const processedConfig = this.applyDefaults(config);
@@ -84,8 +84,8 @@ export class ProjectConfigProcessorImpl implements ProjectConfigProcessor {
 
   /**
    * Generate package.json content
-   * @param config - Project configuration
-   * @returns Generated package.json content
+   * @param {string} config - Project configuration
+   * @returns {string} Generated package.json content
    */
   async generatePackageJson(config: ProjectConfig): Promise<object> {
     return this.packageJsonGenerator.generate(config);
@@ -93,8 +93,8 @@ export class ProjectConfigProcessorImpl implements ProjectConfigProcessor {
 
   /**
    * Generate initial directory structure
-   * @param config - Project configuration
-   * @returns Generated directory structure
+   * @param {string} config - Project configuration
+   * @returns {string} Generated directory structure
    */
   async generateDirectoryStructure(config: ProjectConfig): Promise<
     Array<{
@@ -108,8 +108,8 @@ export class ProjectConfigProcessorImpl implements ProjectConfigProcessor {
 
   /**
    * Validate final configuration
-   * @param config - Project configuration to validate
-   * @returns Validation result with validity flag and warnings
+   * @param {string} config - Project configuration to validate
+   * @returns {string} Validation result with validity flag and warnings
    */
   async validateFinalConfig(config: ProjectConfig): Promise<{
     valid: boolean;
@@ -121,8 +121,8 @@ export class ProjectConfigProcessorImpl implements ProjectConfigProcessor {
 
   /**
    * Apply default values to configuration
-   * @param config - Partial configuration
-   * @returns Configuration with defaults applied
+   * @param {string} config - Partial configuration
+   * @returns {string} Configuration with defaults applied
    */
   private applyDefaults(config: Partial<ProjectConfig>): ProjectConfig {
     const name = config.name || 'my-project';

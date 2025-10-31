@@ -28,6 +28,43 @@ import {
   ValidationResult,
 } from './wizard-validators.js';
 
+/**
+ * Simple output writer to avoid console statements
+ */
+class OutputWriter {
+  /**
+   * Write message to stdout
+   * @param {string} message - Message to write
+   */
+  static write(message: string): void {
+    process.stdout.write(message);
+  }
+
+  /**
+   * Write error message to stderr
+   * @param {string} message - Error message to write
+   */
+  static writeError(message: string): void {
+    process.stderr.write(message);
+  }
+
+  /**
+   * Write message with newline
+   * @param {string} message - Message to write
+   */
+  static writeln(message = ''): void {
+    process.stdout.write(`${message}\n`);
+  }
+
+  /**
+   * Write error message with newline
+   * @param {string} message - Error message to write
+   */
+  static writelnError(message: string): void {
+    process.stderr.write(`${message}\n`);
+  }
+}
+
 // Re-export types for external use
 export type { ProjectConfig, ValidationResult } from './wizard-validators.js';
 
@@ -56,14 +93,14 @@ export class ProjectWizardImplementation implements ProjectWizard {
 
   /**
    * Run the wizard and collect project configuration
-   * @param config - Optional initial configuration to start with
-   * @returns Complete project configuration after user interaction
+   * @param {unknown} config - Optional initial configuration to start with
+   * @returns {void} Complete project configuration after user interaction
    */
   async run(config?: Partial<ProjectConfig>): Promise<ProjectConfig> {
     this.currentConfig = { ...config };
 
-    console.log('\n🚀 Nìmata Project Generator\n');
-    console.log("Let's create your new TypeScript project!\n");
+    OutputWriter.writeln('\n🚀 Nìmata Project Generator\n');
+    OutputWriter.writeln("Let's create your new TypeScript project!\n");
 
     // Run through each step
     for (const step of this.steps) {
@@ -85,7 +122,7 @@ export class ProjectWizardImplementation implements ProjectWizard {
 
   /**
    * Add a wizard step to the configuration flow
-   * @param step - The wizard step configuration to add to the flow
+   * @param {WizardStep} step - The wizard step configuration to add to the flow
    */
   addStep(step: WizardStep): void {
     this.steps.push(step);
@@ -93,8 +130,8 @@ export class ProjectWizardImplementation implements ProjectWizard {
 
   /**
    * Validate the complete project configuration
-   * @param config - Partial project configuration to validate
-   * @returns Validation result with any errors
+   * @param {Partial<ProjectConfig>} config - Partial project configuration to validate
+   * @returns {ValidationResult} Validation result with any errors
    */
   validate(config: Partial<ProjectConfig>): ValidationResult {
     const requiredValidation = validateRequiredFields(config);
@@ -110,7 +147,7 @@ export class ProjectWizardImplementation implements ProjectWizard {
 
   /**
    * Get all wizard steps
-   * @returns Array of all configured wizard steps
+   * @returns {WizardStep[]} Array of all configured wizard steps
    */
   getSteps(): WizardStep[] {
     return [...this.steps];
@@ -118,8 +155,8 @@ export class ProjectWizardImplementation implements ProjectWizard {
 
   /**
    * Get a specific wizard step by ID
-   * @param stepId - The unique identifier of the step to retrieve
-   * @returns The wizard step configuration or undefined if not found
+   * @param {string} stepId - The unique identifier of the step to retrieve
+   * @returns {string): WizardStep | undefined} The wizard step configuration or undefined if not found
    */
   getStep(stepId: string): WizardStep | undefined {
     return this.steps.find((step) => step.id === stepId);
@@ -148,7 +185,7 @@ export class ProjectWizardImplementation implements ProjectWizard {
 
   /**
    * Execute a wizard step and collect user input
-   * @param step - The wizard step to execute
+   * @param {WizardStep} step - The wizard step to execute
    */
   private async executeStep(step: WizardStep): Promise<void> {
     while (true) {
@@ -178,50 +215,50 @@ export class ProjectWizardImplementation implements ProjectWizard {
 
   /**
    * Display validation errors to user
-   * @param errors - Array of validation errors
+   * @param {string[]} errors - Array of validation errors
    */
   private displayValidationErrors(errors: string[]): void {
-    console.log(pc.red(`\n❌ ${errors.join(', ')}`));
-    console.log(pc.gray('Please try again.\n'));
+    OutputWriter.writeln(pc.red(`\n❌ ${errors.join(', ')}`));
+    OutputWriter.writeln(pc.gray('Please try again.\n'));
   }
 
   /**
    * Display execution error to user
-   * @param error - Error that occurred
+   * @param {unknown} error - Error that occurred
    */
   private displayExecutionError(error: unknown): void {
-    console.log(pc.red(`\n❌ Error: ${createErrorMessage(error)}`));
-    console.log(pc.gray('Please try again.\n'));
+    OutputWriter.writeln(pc.red(`\n❌ Error: ${createErrorMessage(error)}`));
+    OutputWriter.writeln(pc.gray('Please try again.\n'));
   }
 
   /**
    * Display project configuration summary
-   * @param config - The complete project configuration to display
+   * @param {ProjectConfig} config - The complete project configuration to display
    */
   private displaySummary(config: ProjectConfig): void {
-    console.log(pc.cyan('\n✅ Project Configuration Summary:'));
-    console.log(pc.gray('─'.repeat(DISPLAY.BORDER_LENGTH)));
-    console.log(pc.white(`Name:        ${config.name}`));
+    OutputWriter.writeln(pc.cyan('\n✅ Project Configuration Summary:'));
+    OutputWriter.writeln(pc.gray('─'.repeat(DISPLAY.BORDER_LENGTH)));
+    OutputWriter.writeln(pc.white(`Name:        ${config.name}`));
     if (config.description) {
-      console.log(pc.white(`Description: ${config.description}`));
+      OutputWriter.writeln(pc.white(`Description: ${config.description}`));
     }
     if (config.author) {
-      console.log(pc.white(`Author:      ${config.author}`));
+      OutputWriter.writeln(pc.white(`Author:      ${config.author}`));
     }
     if (config.license) {
-      console.log(pc.white(`License:     ${config.license}`));
+      OutputWriter.writeln(pc.white(`License:     ${config.license}`));
     }
-    console.log(pc.white(`Quality:     ${config.qualityLevel}`));
-    console.log(pc.white(`Type:        ${config.projectType}`));
-    console.log(pc.white(`AI Assistants: ${config.aiAssistants.join(', ')}`));
-    console.log(pc.gray('─'.repeat(DISPLAY.BORDER_LENGTH)));
-    console.log(pc.green('\n🎉 Ready to generate your project!\n'));
+    OutputWriter.writeln(pc.white(`Quality:     ${config.qualityLevel}`));
+    OutputWriter.writeln(pc.white(`Type:        ${config.projectType}`));
+    OutputWriter.writeln(pc.white(`AI Assistants: ${config.aiAssistants.join(', ')}`));
+    OutputWriter.writeln(pc.gray('─'.repeat(DISPLAY.BORDER_LENGTH)));
+    OutputWriter.writeln(pc.green('\n🎉 Ready to generate your project!\n'));
   }
 }
 
 /**
  * Create a new project wizard instance
- * @returns New ProjectWizardImplementation instance
+ * @returns {ProjectWizard} New ProjectWizardImplementation instance
  */
 export function createProjectWizard(): ProjectWizard {
   return new ProjectWizardImplementation();

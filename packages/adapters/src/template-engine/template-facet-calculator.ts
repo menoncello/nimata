@@ -11,8 +11,8 @@ import type { TemplateMetadata, ProjectType, ProjectQualityLevel } from '@nimata
 export class TemplateFacetCalculator {
   /**
    * Calculate search facets for filtering
-   * @param templates - Array of templates to analyze
-   * @returns Faceted search results
+   * @param {TemplateMetadata[]} templates - Array of templates to analyze
+   * @returns {TemplateMetadata[]):} Faceted search results
    */
   static calculateFacets(templates: TemplateMetadata[]): {
     tags: Array<{ tag: string; count: number }>;
@@ -29,7 +29,7 @@ export class TemplateFacetCalculator {
 
   /**
    * Initialize facet counter maps
-   * @returns Initialized facet counters
+   * @returns {{ tags: Map<string, number>; projectTypes: Map<ProjectType, number>; qualityLevels: Map<ProjectQualityLevel, number>; categories: Map<string, number>; features: Map<string, number>; authors: Map<string, number>; }} Initialized facet counters
    */
   private static initializeFacetCounters(): {
     tags: Map<string, number>;
@@ -51,14 +51,14 @@ export class TemplateFacetCalculator {
 
   /**
    * Populate facet counters from templates
-   * @param templates - Templates to analyze
-   * @param facets - Facet counters to populate
-   * @param facets.tags - Tags counter
-   * @param facets.projectTypes - Project types counter
-   * @param facets.qualityLevels - Quality levels counter
-   * @param facets.categories - Categories counter
-   * @param facets.features - Features counter
-   * @param facets.authors - Authors counter
+   * @param {TemplateMetadata[]} templates - Templates to analyze
+   * @param {{ tags: Map<string, number>; projectTypes: Map<ProjectType, number>; qualityLevels: Map<ProjectQualityLevel, number>; categories: Map<string, number>; features: Map<string, number>; authors: Map<string, number>; }} facets - Facet counters to populate
+   * @param {Map<string, number>} facets.tags - Tags counter
+   * @param {Map<ProjectType, number>} facets.projectTypes - Project types counter
+   * @param {Map<ProjectQualityLevel, number>} facets.qualityLevels - Quality levels counter
+   * @param {Map<string, number>} facets.categories - Categories counter
+   * @param {Map<string, number>} facets.features - Features counter
+   * @param {Map<string, number>} facets.authors - Authors counter
    */
   private static populateFacetCounters(
     templates: TemplateMetadata[],
@@ -86,8 +86,8 @@ export class TemplateFacetCalculator {
 
   /**
    * Increment template tags counter
-   * @param tags - Template tags
-   * @param tagCounter - Tags counter map
+   * @param {string[]} tags - Template tags
+   * @param {Map<string} tagCounter - Tags counter map
    */
   private static incrementTemplateTags(tags: string[], tagCounter: Map<string, number>): void {
     for (const tag of tags) {
@@ -97,8 +97,8 @@ export class TemplateFacetCalculator {
 
   /**
    * Increment template project types counter
-   * @param projectTypes - Template project types
-   * @param typeCounter - Project types counter map
+   * @param {unknown} projectTypes - Template project types
+   * @param {unknown} typeCounter - Project types counter map
    */
   private static incrementTemplateProjectTypes(
     projectTypes: ProjectType[],
@@ -111,8 +111,8 @@ export class TemplateFacetCalculator {
 
   /**
    * Increment template quality levels counter
-   * @param qualityLevels - Template quality levels
-   * @param levelCounter - Quality levels counter map
+   * @param {unknown} qualityLevels - Template quality levels
+   * @param {unknown} levelCounter - Quality levels counter map
    */
   private static incrementTemplateQualityLevels(
     qualityLevels: ProjectQualityLevel[],
@@ -125,8 +125,8 @@ export class TemplateFacetCalculator {
 
   /**
    * Increment template features counter
-   * @param features - Template features
-   * @param featureCounter - Features counter map
+   * @param {Array<{ id: string }>} features - Template features
+   * @param {Map<string, number>} featureCounter - Features counter map
    */
   private static incrementTemplateFeatures(
     features: Array<{ id: string }>,
@@ -139,8 +139,8 @@ export class TemplateFacetCalculator {
 
   /**
    * Increment a counter map
-   * @param key - Key to increment
-   * @param counter - Counter map
+   * @param {K} key - Key to increment
+   * @param {Map<K, number>} counter - Counter map
    */
   private static incrementCounter<K>(key: K, counter: Map<K, number>): void {
     counter.set(key, (counter.get(key) || 0) + 1);
@@ -148,14 +148,14 @@ export class TemplateFacetCalculator {
 
   /**
    * Convert facet maps to arrays
-   * @param facets - Facet maps
-   * @param facets.tags - Tags map
-   * @param facets.projectTypes - Project types map
-   * @param facets.qualityLevels - Quality levels map
-   * @param facets.categories - Categories map
-   * @param facets.features - Features map
-   * @param facets.authors - Authors map
-   * @returns Facet arrays
+   * @param {{ tags: Map<string, number>; projectTypes: Map<ProjectType, number>; qualityLevels: Map<ProjectQualityLevel, number>; categories: Map<string, number>; features: Map<string, number>; authors: Map<string, number>; }} facets - Facet maps to convert
+   * @param {Map<string, number>} facets.tags - Tags map
+   * @param {Map<ProjectType, number>} facets.projectTypes - Project types map
+   * @param {Map<ProjectQualityLevel, number>} facets.qualityLevels - Quality levels map
+   * @param {Map<string, number>} facets.categories - Categories map
+   * @param {Map<string, number>} facets.features - Features map
+   * @param {Map<string, number>} facets.authors - Authors map
+   * @returns {{ tags: Array<{ name: string; count: number }>; projectTypes: Array<{ name: string; count: number }>; qualityLevels: Array<{ name: string; count: number }>; categories: Array<{ name: string; count: number }>; features: Array<{ name: string; count: number }>; authors: Array<{ name: string; count: number }>; }} Facet arrays
    */
   private static convertFacetsToArrays(facets: {
     tags: Map<string, number>;
@@ -184,9 +184,9 @@ export class TemplateFacetCalculator {
 
   /**
    * Convert a map to key-value pairs array
-   * @param map - Map to convert
-   * @param keyName - Name of the key field
-   * @returns Array of key-value pairs
+   * @param {unknown} map - Map to convert
+   * @param {unknown} keyName - Name of the key field
+   * @returns {Array<} Array of key-value pairs
    */
   private static convertMapToPairs<K extends string>(
     map: Map<K, number>,
@@ -209,9 +209,9 @@ export class TemplateFacetCalculator {
   ): Array<{ author: K; count: number }>;
   /**
    * Convert a map to key-value pairs array with fallback
-   * @param map - Map to convert
-   * @param keyName - Name of the key field
-   * @returns Array of key-value pairs
+   * @param {unknown} map - Map to convert
+   * @param {unknown} keyName - Name of the key field
+   * @returns {Array< |} Array of key-value pairs
    */
   private static convertMapToPairs<K extends string>(
     map: Map<K, number>,
@@ -241,8 +241,8 @@ export class TemplateFacetCalculator {
 
   /**
    * Convert project type map to pairs array
-   * @param map - Project type map to convert
-   * @returns Array of project type-count pairs
+   * @param {unknown} map - Project type map to convert
+   * @returns {Array<} Array of project type-count pairs
    */
   private static convertProjectTypeMapToPairs(
     map: Map<ProjectType, number>
@@ -252,8 +252,8 @@ export class TemplateFacetCalculator {
 
   /**
    * Convert quality level map to pairs array
-   * @param map - Quality level map to convert
-   * @returns Array of quality level-count pairs
+   * @param {unknown} map - Quality level map to convert
+   * @returns {Array<} Array of quality level-count pairs
    */
   private static convertQualityLevelMapToPairs(
     map: Map<ProjectQualityLevel, number>

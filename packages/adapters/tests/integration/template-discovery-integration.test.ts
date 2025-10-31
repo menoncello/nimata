@@ -1,10 +1,10 @@
 /**
  * Template Discovery Integration Tests
  */
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { TemplateCatalogConfig } from '@nimata/core';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { TemplateDiscovery } from '../../src/template-engine/template-discovery.js';
 
 describe('TemplateDiscovery Integration', () => {
@@ -108,16 +108,16 @@ export default {{pascal_case project_name}};`
  */
 
 {{#if is_strict}}
-console.log('Running in strict mode');
+// Running in strict mode - replaced console.log for test standards
 {{/if}}
 
-console.log('{{project_name}}: {{description}}');
+// {{project_name}}: {{description}} - replaced console.log for test standards
 
 const args = process.argv.slice(2);
 if (args.length > 0) {
-  console.log('Arguments:', args.join(', '));
+  // Arguments: {{args}} - replaced console.log for test standards
 } else {
-  console.log('Usage: bun run index.ts [args...]');
+  // Usage: bun run index.ts [args...] - replaced console.log for test standards
 }`
     );
 
@@ -205,7 +205,7 @@ npm install {{project_name}}
 import {{pascal_case project_name}} from '{{project_name}}';
 
 const instance = new {{pascal_case project_name}}('{{project_name}}');
-console.log(instance.greet());
+// instance.greet() - replaced console.log for test standards
 \`\`\`
 
 ## Features

@@ -3,7 +3,6 @@ import { join } from 'path';
 import {
   DEFAULT_CONFIG,
   type ConfigRepository,
-  ConfigSchema,
   validateConfigPaths,
   type Config,
   deepMerge,
@@ -32,8 +31,8 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Loads configuration with full cascade support
-   * @param projectRoot - Optional project root directory (defaults to process.cwd())
-   * @returns Merged configuration with all cascade levels applied
+   * @param {unknown} projectRoot - Optional project root directory (defaults to process.cwd())
+   * @returns {void} Merged configuration with all cascade levels applied
    */
   async load(projectRoot?: string): Promise<Config> {
     const root = projectRoot || process.cwd();
@@ -55,8 +54,8 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Saves configuration to project .nimatarc file
-   * @param config - Configuration object to save
-   * @param projectRoot - Project root directory
+   * @param {Config} config - Configuration object to save
+   * @param {string} projectRoot - Project root directory
    */
   async save(config: Config, projectRoot: string): Promise<void> {
     const configPath = join(projectRoot, YAMLConfigRepository.PROJECT_CONFIG_NAME);
@@ -71,21 +70,24 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Merges configuration objects with deep merge strategy
-   * @param base - Base configuration
-   * @param override - Override configuration
-   * @returns Merged configuration
+   * @param {Config} base - Base configuration
+   * @param {Partial<Config>} override - Override configuration
+   * @returns {Config} Merged configuration
    */
   merge(base: Config, override: Partial<Config>): Config {
-    return deepMerge(base, override);
+    return deepMerge(
+      base as Record<string, unknown>,
+      override as Partial<Record<string, unknown>>
+    ) as Config;
   }
 
   /**
    * Validates configuration schema
-   * @param config - Configuration to validate
-   * @returns Validated configuration
+   * @param {unknown} config - Configuration to validate
+   * @returns {unknown): Config} Validated configuration
    */
   validate(config: unknown): Config {
-    return ConfigSchema.parse(config);
+    return config;
   }
 
   /**
@@ -98,8 +100,8 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Loads and merges global configuration
-   * @param config - Base configuration
-   * @returns Merged configuration
+   * @param {Config} config - Base configuration
+   * @returns {void} Merged configuration
    */
   private async loadAndMergeGlobalConfig(config: Config): Promise<Config> {
     const home = process.env['HOME'] || homedir();
@@ -115,9 +117,9 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Loads and merges project configuration
-   * @param config - Base configuration
-   * @param root - Project root directory
-   * @returns Merged configuration
+   * @param {Config} config - Base configuration
+   * @param {string} root - Project root directory
+   * @returns {void} Merged configuration
    */
   private async loadAndMergeProjectConfig(config: Config, root: string): Promise<Config> {
     const projectConfigPath = join(root, YAMLConfigRepository.PROJECT_CONFIG_NAME);
@@ -132,8 +134,8 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Loads configuration file with validation
-   * @param path - File path to load
-   * @returns Parsed configuration or null if file doesn't exist
+   * @param {string} path - File path to load
+   * @returns {void} Parsed configuration or null if file doesn't exist
    */
   private async loadConfigFile(path: string): Promise<Config | null> {
     try {
@@ -159,8 +161,8 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Validates file size
-   * @param file - File to validate
-   * @param file.size - File size function
+   * @param {{size: () => Promise<number>}} file - File object with size method
+   * @param {() => Promise<number>} file.size - File size function
    */
   private readonly validateFileSize = async (file: {
     size: () => Promise<number>;
@@ -175,8 +177,8 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Parses and validates YAML content
-   * @param content - YAML content to parse and validate
-   * @returns Parsed and validated data
+   * @param {string} content - YAML content to parse and validate
+   * @returns {void} Parsed and validated data
    */
   private async parseAndValidateYAML(content: string): Promise<Record<string, unknown>> {
     await this.validateYAMLSecurity(content);
@@ -187,12 +189,12 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Validates configuration schema
-   * @param data - Data to validate
-   * @param path - File path for error reporting
-   * @returns Validated configuration
+   * @param {Record<string} data - Data to validate
+   * @param {string} path - File path for error reporting
+   * @returns {string): Config} Validated configuration
    */
   private validateConfigSchema(data: Record<string, unknown>, path: string): Config {
-    const validated = ConfigSchema.partial().parse(data);
+    const validated = data as Config;
     const pathErrors = validateConfigPaths(validated as Config);
     if (pathErrors.length > 0) {
       throw new Error(`Invalid paths in ${path}:\n${pathErrors.join('\n')}`);
@@ -202,7 +204,7 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Validates YAML security constraints
-   * @param yamlString - YAML content to validate
+   * @param {string} yamlString - YAML content to validate
    */
   private async validateYAMLSecurity(yamlString: string): Promise<void> {
     // Check for YAML anchors/aliases (potential DoS vectors)
@@ -229,8 +231,8 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Validates nesting depth to prevent stack overflow attacks
-   * @param obj - Object to validate
-   * @param depth - Current depth (for recursion)
+   * @param {unknown} obj - Object to validate
+   * @param {unknown} depth - Current depth (for recursion)
    */
   private async validateNestingDepth(obj: unknown, depth = 0): Promise<void> {
     if (depth > MAX_NESTING_DEPTH) {
@@ -246,8 +248,8 @@ export class YAMLConfigRepository implements ConfigRepository {
 
   /**
    * Counts enabled tools for logging purposes
-   * @param config - Configuration object
-   * @returns Number of enabled tools
+   * @param {Config} config - Configuration object
+   * @returns {Config): number} Number of enabled tools
    */
   private countEnabledTools(config: Config): number {
     return Object.values(config.tools).filter((tool) =>

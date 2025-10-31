@@ -8,8 +8,8 @@
 export class TemplateVariableExtractor {
   /**
    * Extract variables from template content
-   * @param content - The template content to analyze
-   * @returns The list of extracted variables
+   * @param {string} content - The template content to analyze
+   * @returns {string): string[]} The list of extracted variables
    */
   static extractVariables(content: string): string[] {
     const variables = new Set<string>();
@@ -34,10 +34,10 @@ export class TemplateVariableExtractor {
 
   /**
    * Extract variable name from match
-   * @param match - Full match including braces
-   * @param braceStart - Number of characters at start
-   * @param braceEnd - Number of characters at end
-   * @returns Variable name
+   * @param {string} match - Full match including braces
+   * @param {number} braceStart - Number of characters at start
+   * @param {number} braceEnd - Number of characters at end
+   * @returns { string} Variable name
    */
   private static extractVariableName(match: string, braceStart: number, braceEnd: number): string {
     // Remove braces and trim
@@ -59,8 +59,8 @@ export class TemplateVariableExtractor {
 
   /**
    * Check if variable is a special construct
-   * @param variable - Variable name to check
-   * @returns True if special construct
+   * @param {string} variable - Variable name to check
+   * @returns {string): boolean} True if special construct
    */
   private static isSpecialConstruct(variable: string): boolean {
     return variable.startsWith('#') || variable.startsWith('/') || variable.startsWith('>');
@@ -68,8 +68,8 @@ export class TemplateVariableExtractor {
 
   /**
    * Check if variable is a special variable
-   * @param variable - Variable name to check
-   * @returns True if special variable
+   * @param {string} variable - Variable name to check
+   * @returns {string): boolean} True if special variable
    */
   private static isSpecialVariable(variable: string): boolean {
     return variable.startsWith('@');
@@ -77,8 +77,8 @@ export class TemplateVariableExtractor {
 
   /**
    * Check if variable name is valid
-   * @param variable - Variable name to check
-   * @returns True if valid
+   * @param {string} variable - Variable name to check
+   * @returns {string): boolean} True if valid
    */
   private static isValidVariable(variable: string): boolean {
     return variable.length > 0 && !/\W/.test(variable);

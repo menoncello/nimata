@@ -9,9 +9,9 @@ import { sortTechStacksByPriority } from './tech-stack-utils.js';
 
 /**
  * Applies text search to results
- * @param results - Initial results
- * @param query - Search query
- * @returns Filtered results
+ * @param {unknown} results - Initial results
+ * @param {unknown} query - Search query
+ * @returns {TechStackDefinition[]} Filtered results
  */
 export function applyTextSearch(
   results: TechStackDefinition[],
@@ -34,12 +34,12 @@ export function applyTextSearch(
 
 /**
  * Applies filters to search results
- * @param results - Results to filter
- * @param filters - Filters to apply
- * @param filters.projectTypes - Project types to filter by
- * @param filters.categories - Categories to filter by
- * @param filters.tags - Tags to filter by
- * @returns Filtered results
+ * @param {TechStackSearchResult[]} results - Results to filter
+ * @param {{ projectTypes?: ProjectType[]; categories?: string[]; tags?: string[] }} filters - Filters to apply
+ * @param {ProjectType[]} filters.projectTypes - Project types to filter by
+ * @param {string[]} filters.categories - Categories to filter by
+ * @param {string[]} filters.tags - Tags to filter by
+ * @returns {TechStackSearchResult[]} Filtered results
  */
 export function applyFilters(
   results: TechStackDefinition[],
@@ -79,8 +79,8 @@ export function applyFilters(
 
 /**
  * Transforms tech stack definitions to metadata format
- * @param results - Results to transform
- * @returns Transformed metadata
+ * @param {TechStackDefinition[]} results - Results to transform
+ * @returns {TechStackDefinition[]): TechStackMetadata[]} Transformed metadata
  */
 export function transformToTechStackMetadata(results: TechStackDefinition[]): TechStackMetadata[] {
   return results.map((stack) => ({
@@ -99,8 +99,8 @@ export function transformToTechStackMetadata(results: TechStackDefinition[]): Te
 
 /**
  * Sorts search results
- * @param results - Results to sort
- * @returns Sorted results
+ * @param {TechStackDefinition[]} results - Results to sort
+ * @returns {TechStackDefinition[]): TechStackDefinition[]} Sorted results
  */
 export function sortResults(results: TechStackDefinition[]): TechStackDefinition[] {
   // Add priority from metadata to each stack for sorting
@@ -114,11 +114,11 @@ export function sortResults(results: TechStackDefinition[]): TechStackDefinition
 
 /**
  * Creates search results object
- * @param stacks - Search results
- * @param query - Search query
- * @param filters - Applied filters
- * @param executionTime - Time taken to execute search
- * @returns Formatted search results
+ * @param {unknown} stacks - Search results
+ * @param {unknown} query - Search query
+ * @param {unknown} filters - Applied filters
+ * @param {unknown} executionTime - Time taken to execute search
+ * @returns {void} Formatted search results
  */
 export function createSearchResults(
   stacks: TechStackDefinition[],

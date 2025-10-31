@@ -1,5 +1,5 @@
-import type { ProjectConfig } from '@nimata/adapters/wizards/project-wizard';
 import { describe, expect, test, mock, beforeEach } from 'bun:test';
+import type { ProjectConfig } from '@nimata/adapters/wizards/project-wizard';
 import {
   displayValidationErrors,
   displayValidationWarnings,

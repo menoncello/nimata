@@ -8,12 +8,12 @@ export type HelperFunction = (...args: unknown[]) => unknown;
 
 /**
  * Registers string manipulation helpers
- * @param registerHelper - Function to register a helper
+ * @param {unknown} registerHelper - Function to register a helper
  */
 /**
  * Capitalize first letter of a string
- * @param args - Arguments array, first element is the string to capitalize
- * @returns Capitalized string
+ * @param {unknown[]} args - Arguments array, first element is the string to capitalize
+ * @returns {unknown[]): string} Capitalized string
  */
 function capitalizeHelper(...args: unknown[]): string {
   const str = String(args[0] || '');
@@ -22,8 +22,8 @@ function capitalizeHelper(...args: unknown[]): string {
 
 /**
  * Convert string to camelCase
- * @param args - Arguments array, first element is the string to convert
- * @returns camelCase string
+ * @param {unknown[]} args - Arguments array, first element is the string to convert
+ * @returns {unknown[]): string} camelCase string
  */
 function camelCaseHelper(...args: unknown[]): string {
   const str = String(args[0] || '');
@@ -40,8 +40,8 @@ function camelCaseHelper(...args: unknown[]): string {
 
 /**
  * Convert string to kebab-case
- * @param args - Arguments array, first element is the string to convert
- * @returns kebab-case string
+ * @param {unknown[]} args - Arguments array, first element is the string to convert
+ * @returns {unknown[]): string} kebab-case string
  */
 function kebabCaseHelper(...args: unknown[]): string {
   const str = String(args[0] || '');
@@ -55,8 +55,8 @@ function kebabCaseHelper(...args: unknown[]): string {
 
 /**
  * Convert string to snake_case
- * @param args - Arguments array, first element is the string to convert
- * @returns snake_case string
+ * @param {unknown[]} args - Arguments array, first element is the string to convert
+ * @returns {unknown[]): string} snake_case string
  */
 function snakeCaseHelper(...args: unknown[]): string {
   const str = String(args[0] || '');
@@ -65,8 +65,8 @@ function snakeCaseHelper(...args: unknown[]): string {
 
 /**
  * Convert string to lowercase
- * @param args - Arguments array, first element is the string to convert
- * @returns Lowercase string
+ * @param {unknown[]} args - Arguments array, first element is the string to convert
+ * @returns {unknown[]): string} Lowercase string
  */
 function lowercaseHelper(...args: unknown[]): string {
   const str = String(args[0] || '');
@@ -75,8 +75,8 @@ function lowercaseHelper(...args: unknown[]): string {
 
 /**
  * Convert string to uppercase
- * @param args - Arguments array, first element is the string to convert
- * @returns Uppercase string
+ * @param {unknown[]} args - Arguments array, first element is the string to convert
+ * @returns {unknown[]): string} Uppercase string
  */
 function uppercaseHelper(...args: unknown[]): string {
   const str = String(args[0] || '');
@@ -85,8 +85,8 @@ function uppercaseHelper(...args: unknown[]): string {
 
 /**
  * Convert string to PascalCase
- * @param args - Arguments array, first element is the string to convert
- * @returns PascalCase string
+ * @param {unknown[]} args - Arguments array, first element is the string to convert
+ * @returns {unknown[]): string} PascalCase string
  */
 function pascalCaseHelper(...args: unknown[]): string {
   const str = String(args[0] || '');
@@ -97,7 +97,7 @@ function pascalCaseHelper(...args: unknown[]): string {
 
 /**
  * Register core string manipulation helpers
- * @param registerHelper - Function to register a helper
+ * @param {(name} registerHelper - Function to register a helper
  */
 function registerCoreStringHelpers(
   registerHelper: (name: string, helper: HelperFunction) => void
@@ -109,7 +109,7 @@ function registerCoreStringHelpers(
 
 /**
  * Register additional string manipulation helpers
- * @param registerHelper - Function to register a helper
+ * @param {(name} registerHelper - Function to register a helper
  */
 function registerAdditionalStringHelpers(
   registerHelper: (name: string, helper: HelperFunction) => void
@@ -130,7 +130,7 @@ function registerAdditionalStringHelpers(
 
 /**
  * Register string manipulation helpers
- * @param registerHelper - Function to register a helper
+ * @param {(name} registerHelper - Function to register a helper
  */
 export function registerStringHelpers(
   registerHelper: (name: string, helper: HelperFunction) => void
@@ -141,7 +141,7 @@ export function registerStringHelpers(
 
 /**
  * Registers array manipulation helpers
- * @param registerHelper - Function to register a helper
+ * @param {(name} registerHelper - Function to register a helper
  */
 export function registerArrayHelpers(
   registerHelper: (name: string, helper: HelperFunction) => void
@@ -165,7 +165,7 @@ export function registerArrayHelpers(
 
 /**
  * Registers conditional helpers
- * @param registerHelper - Function to register a helper
+ * @param {(name} registerHelper - Function to register a helper
  */
 export function registerConditionalHelpers(
   registerHelper: (name: string, helper: HelperFunction) => void
@@ -180,7 +180,7 @@ export function registerConditionalHelpers(
 
 /**
  * Registers utility helpers
- * @param registerHelper - Function to register a helper
+ * @param {(name} registerHelper - Function to register a helper
  */
 export function registerUtilityHelpers(
   registerHelper: (name: string, helper: HelperFunction) => void

@@ -240,7 +240,7 @@ export function createComplexProjectTemplate(
  * {{description}}
  */
 
-console.log('{{welcome_message || "Welcome to " + project_name}}');
+// {{welcome_message || "Welcome to " + project_name}} - replaced console.log for test standards
 
 {{#if enableLogger}}
 import { Logger } from './utils/logger';

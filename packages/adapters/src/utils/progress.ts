@@ -45,7 +45,7 @@ export class ProgressIndicator {
 
   /**
    * Create a new progress indicator
-   * @param options - Progress configuration options
+   * @param {ProgressOptions} options - Progress configuration options
    */
   constructor(options: ProgressOptions) {
     this.total = options.total;
@@ -66,8 +66,8 @@ export class ProgressIndicator {
 
   /**
    * Update progress
-   * @param value - Current progress value
-   * @param message - Optional progress message
+   * @param {number} value - Current progress value
+   * @param {unknown} message - Optional progress message
    */
   update(value: number, message?: string): void {
     if (!this.isActive) return;
@@ -78,7 +78,7 @@ export class ProgressIndicator {
 
   /**
    * Increment progress by 1
-   * @param message - Optional progress message
+   * @param {unknown} message - Optional progress message
    */
   increment(message?: string): void {
     if (!this.isActive) return;
@@ -89,14 +89,14 @@ export class ProgressIndicator {
 
   /**
    * Complete the progress indicator
-   * @param message - Optional completion message
+   * @param {unknown} message - Optional completion message
    */
   complete(message?: string): void {
     if (!this.isActive) return;
 
     this.current = this.total;
     this.render(message);
-    console.log(); // New line after completion
+    process.stdout.write('\n'); // New line after completion
     this.isActive = false;
   }
 
@@ -107,12 +107,12 @@ export class ProgressIndicator {
     if (!this.isActive) return;
 
     this.isActive = false;
-    console.log(); // Clear the line
+    process.stdout.write('\n'); // Clear the line
   }
 
   /**
    * Render the progress bar
-   * @param message - Optional progress message
+   * @param {unknown} message - Optional progress message
    */
   private render(message?: string): void {
     const now = Date.now();
@@ -128,8 +128,8 @@ export class ProgressIndicator {
 
   /**
    * Check if render should be skipped based on throttling
-   * @param now - Current timestamp
-   * @returns Whether to skip the update
+   * @param {number} now - Current timestamp
+   * @returns {number): boolean} Whether to skip the update
    */
   private shouldSkipUpdate(now: number): boolean {
     return now - this.lastUpdate < UPDATE_THROTTLE_MS && this.current < this.total;
@@ -137,9 +137,9 @@ export class ProgressIndicator {
 
   /**
    * Build the complete display string
-   * @param now - Current timestamp
-   * @param message - Optional progress message
-   * @returns Complete display string
+   * @param {number} now - Current timestamp
+   * @param {unknown} message - Optional progress message
+   * @returns { string} Complete display string
    */
   private buildDisplayString(now: number, message?: string): string {
     const progressData = this.calculateProgress();
@@ -156,7 +156,7 @@ export class ProgressIndicator {
 
   /**
    * Calculate progress metrics
-   * @returns Progress data object
+   * @returns {{ percentage: number; filled: number; empty: number }} Progress data object
    */
   private calculateProgress(): { percentage: number; filled: number; empty: number } {
     const percentage = Math.round((this.current / this.total) * PERCENTAGE_MULTIPLIER);
@@ -168,9 +168,9 @@ export class ProgressIndicator {
 
   /**
    * Build progress bar string
-   * @param filled - Number of filled characters
-   * @param empty - Number of empty characters
-   * @returns Progress bar string
+   * @param {number} filled - Number of filled characters
+   * @param {number} empty - Number of empty characters
+   * @returns { string} Progress bar string
    */
   private buildProgressBar(filled: number, empty: number): string {
     return '█'.repeat(filled) + '░'.repeat(empty);
@@ -178,7 +178,7 @@ export class ProgressIndicator {
 
   /**
    * Build label string if label exists
-   * @returns Label string or empty string
+   * @returns {string} Label string or empty string
    */
   private buildLabelString(): string {
     return this.label ? `${this.label} ` : '';
@@ -186,8 +186,8 @@ export class ProgressIndicator {
 
   /**
    * Build percentage string if enabled
-   * @param percentage - Progress percentage
-   * @returns Percentage string or empty string
+   * @param {number} percentage - Progress percentage
+   * @returns {number): string} Percentage string or empty string
    */
   private buildPercentageString(percentage: number): string {
     return this.showPercentage ? ` ${percentage}%` : '';
@@ -195,8 +195,8 @@ export class ProgressIndicator {
 
   /**
    * Build time string if enabled
-   * @param now - Current timestamp
-   * @returns Time string or empty string
+   * @param {number} now - Current timestamp
+   * @returns {number): string} Time string or empty string
    */
   private buildTimeString(now: number): string {
     if (!this.showTime) return '';
@@ -206,8 +206,8 @@ export class ProgressIndicator {
 
   /**
    * Build message string if provided
-   * @param message - Optional message
-   * @returns Message string or empty string
+   * @param {unknown} message - Optional message
+   * @returns {string): string} Message string or empty string
    */
   private buildMessageString(message?: string): string {
     return message ? ` - ${message}` : '';
@@ -215,7 +215,7 @@ export class ProgressIndicator {
 
   /**
    * Render display string to terminal
-   * @param display - Display string to render
+   * @param {string} display - Display string to render
    */
   private renderToTerminal(display: string): void {
     process.stdout.write(`\r${' '.repeat(process.stdout.columns || DEFAULT_TERMINAL_WIDTH)}\r`);
@@ -224,8 +224,8 @@ export class ProgressIndicator {
 
   /**
    * Format time in human readable format
-   * @param ms - Time in milliseconds
-   * @returns Formatted time string
+   * @param {number} ms - Time in milliseconds
+   * @returns {number): string} Formatted time string
    */
   private formatTime(ms: number): string {
     if (ms < MILLISECOND_IN_SECOND) {
@@ -250,8 +250,8 @@ export class StepProgressIndicator {
 
   /**
    * Create a new multi-step progress indicator
-   * @param steps - Array of progress steps
-   * @param label - Optional label for the progress
+   * @param {ProgressStep[]} steps - Array of progress steps
+   * @param {unknown} label - Optional label for the progress
    */
   constructor(steps: ProgressStep[], label?: string) {
     this.steps = steps;
@@ -260,8 +260,8 @@ export class StepProgressIndicator {
 
   /**
    * Start the step progress
-   * @param steps - Optional steps array to override default
-   * @param label - Optional label to override default
+   * @param {unknown} steps - Optional steps array to override default
+   * @param {unknown} label - Optional label to override default
    */
   start(steps?: unknown[], label?: string): void {
     if (steps) {
@@ -303,8 +303,8 @@ export class StepProgressIndicator {
 
   /**
    * Update current step progress
-   * @param value - Progress value
-   * @param message - Optional progress message
+   * @param {number} value - Progress value
+   * @param {unknown} message - Optional progress message
    */
   update(value: number, message?: string): void {
     if (this.currentProgress) {
@@ -314,7 +314,7 @@ export class StepProgressIndicator {
 
   /**
    * Increment current step progress
-   * @param message - Optional progress message
+   * @param {unknown} message - Optional progress message
    */
   increment(message?: string): void {
     if (this.currentProgress) {
@@ -324,7 +324,7 @@ export class StepProgressIndicator {
 
   /**
    * Complete all steps
-   * @param message - Optional completion message
+   * @param {unknown} message - Optional completion message
    */
   complete(message?: string): void {
     if (this.currentProgress) {
@@ -339,22 +339,22 @@ export class StepProgressIndicator {
 
   /**
    * Show error and stop
-   * @param message - Optional error message
+   * @param {unknown} message - Optional error message
    */
   error(message?: string): void {
     if (this.currentProgress) {
       this.currentProgress.stop();
     }
     if (message) {
-      console.log(`❌ ${message}`);
+      process.stderr.write(`❌ ${message}\n`);
     } else {
-      console.log(`❌ ${this.label} failed!`);
+      process.stderr.write(`❌ ${this.label} failed!\n`);
     }
   }
 
   /**
    * Show failure and stop (alias for error)
-   * @param message - Optional error message
+   * @param {unknown} message - Optional error message
    */
   fail(message?: string): void {
     this.error(message);
@@ -362,7 +362,7 @@ export class StepProgressIndicator {
 
   /**
    * Show next step message
-   * @param message - Optional next step message
+   * @param {unknown} message - Optional next step message
    */
   next(message?: string): void {
     if (message && this.currentProgress) {
@@ -392,7 +392,7 @@ export class Spinner {
 
   /**
    * Create a new spinner
-   * @param message - Optional spinner message
+   * @param {unknown} message - Optional spinner message
    */
   constructor(message = 'Working...') {
     this.message = message;
@@ -412,7 +412,7 @@ export class Spinner {
 
   /**
    * Stop the spinner
-   * @param finalMessage - Optional final message to display
+   * @param {unknown} finalMessage - Optional final message to display
    */
   stop(finalMessage?: string): void {
     if (!this.isActive) return;
@@ -433,7 +433,7 @@ export class Spinner {
 
   /**
    * Update spinner message
-   * @param message - New spinner message
+   * @param {string} message - New spinner message
    */
   updateMessage(message: string): void {
     this.message = message;
@@ -456,8 +456,8 @@ export class Spinner {
 export const Progress = {
   /**
    * Create a simple progress indicator
-   * @param options - Progress configuration options
-   * @returns New progress indicator instance
+   * @param {ProgressOptions} options - Progress configuration options
+   * @returns {void} New progress indicator instance
    */
   create: (options: ProgressOptions): ProgressIndicator => {
     return new ProgressIndicator(options);
@@ -465,9 +465,9 @@ export const Progress = {
 
   /**
    * Create a multi-step progress indicator
-   * @param steps - Array of progress steps
-   * @param label - Optional label for the progress
-   * @returns New step progress indicator instance
+   * @param {(steps} steps - Array of progress steps
+   * @param {unknown} label - Optional label for the progress
+   * @returns {void} New step progress indicator instance
    */
   steps: (steps: ProgressStep[], label?: string): StepProgressIndicator => {
     return new StepProgressIndicator(steps, label);
@@ -475,8 +475,8 @@ export const Progress = {
 
   /**
    * Create a spinner
-   * @param message - Optional spinner message
-   * @returns New spinner instance
+   * @param {unknown} message - Optional spinner message
+   * @returns {void} New spinner instance
    */
   spinner: (message?: string): Spinner => {
     return new Spinner(message);

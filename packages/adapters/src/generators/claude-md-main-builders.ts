@@ -15,8 +15,8 @@ import type { ProjectConfig, ClaudeMdConfigOptions, QualityLevel } from './claud
 
 /**
  * Build CLAUDE.md header section
- * @param config - Project configuration
- * @returns Header markdown
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Header markdown
  */
 export function buildHeader(config: ProjectConfig): string {
   const projectTypeName = config.projectType.charAt(0).toUpperCase() + config.projectType.slice(1);
@@ -26,7 +26,7 @@ export function buildHeader(config: ProjectConfig): string {
 
 > ${config.description || `A ${config.projectType} project`}
 
-## Project Overview
+## Project Information
 
 - **Name**: ${config.name}
 - **Project Type**: ${projectTypeName} Application
@@ -40,7 +40,7 @@ export function buildHeader(config: ProjectConfig): string {
 
 /**
  * Build language requirements section
- * @returns Language requirements markdown
+ * @returns {string} Language requirements markdown
  */
 export function buildLanguageRequirementsSection(): string {
   return `
@@ -58,8 +58,8 @@ All code, code comments, and technical documentation MUST be written in **Englis
 
 /**
  * Build ESLint rules section
- * @param _options - Claude.md generation options (reserved for future use)
- * @returns ESLint rules section markdown
+ * @param {ClaudeMdConfigOptions} _options - Claude.md generation options (reserved for future use)
+ * @returns {ClaudeMdConfigOptions): string} ESLint rules section markdown
  */
 export function buildEslintRulesSection(_options: ClaudeMdConfigOptions): string {
   return `
@@ -71,8 +71,8 @@ ${ESLINT_CRITICAL_RULES}
 
 /**
  * Build mutation testing section
- * @param _options - Claude.md generation options (reserved for future use)
- * @returns Mutation testing section markdown
+ * @param {ClaudeMdConfigOptions} _options - Claude.md generation options (reserved for future use)
+ * @returns {ClaudeMdConfigOptions): string} Mutation testing section markdown
  */
 export function buildMutationTestingSection(_options: ClaudeMdConfigOptions): string {
   return `
@@ -84,8 +84,8 @@ ${MUTATION_THRESHOLDS}
 
 /**
  * Build code style requirements section
- * @param qualityLevel - Quality level
- * @returns Code style requirements markdown
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel): string} Code style requirements markdown
  */
 export function buildCodeStyleRequirementsSection(qualityLevel: QualityLevel): string {
   return `
@@ -99,8 +99,8 @@ ${buildCodeStyleConfiguration(qualityLevel)}
 
 /**
  * Build testing section
- * @param options - Claude.md generation options
- * @returns Testing section markdown
+ * @param {ClaudeMdConfigOptions} options - Claude.md generation options
+ * @returns {ClaudeMdConfigOptions): string} Testing section markdown
  */
 export function buildTestingSection(options: ClaudeMdConfigOptions): string {
   const coverageThreshold = getCoverageThreshold(options.qualityLevel);
@@ -121,8 +121,8 @@ export function buildTestingSection(options: ClaudeMdConfigOptions): string {
 
 /**
  * Get coverage threshold based on quality level
- * @param qualityLevel - Quality level
- * @returns Coverage threshold percentage
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel): number} Coverage threshold percentage
  */
 export function getCoverageThreshold(qualityLevel: QualityLevel): number {
   switch (qualityLevel) {
@@ -139,8 +139,8 @@ export function getCoverageThreshold(qualityLevel: QualityLevel): number {
 
 /**
  * Build code style configuration section
- * @param qualityLevel - Quality level
- * @returns Code style configuration object
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel): string} Code style configuration object
  */
 function buildCodeStyleConfiguration(qualityLevel: QualityLevel): string {
   const printWidth = getPrintWidth(qualityLevel);
@@ -160,8 +160,8 @@ function buildCodeStyleConfiguration(qualityLevel: QualityLevel): string {
 
 /**
  * Get print width based on quality level
- * @param qualityLevel - Quality level
- * @returns Print width number
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel): number} Print width number
  */
 function getPrintWidth(qualityLevel: QualityLevel): number {
   switch (qualityLevel) {
@@ -178,8 +178,8 @@ function getPrintWidth(qualityLevel: QualityLevel): number {
 
 /**
  * Build key dependencies section
- * @param config - Project configuration
- * @returns Key dependencies section markdown
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Key dependencies section markdown
  */
 export function buildKeyDependenciesSection(config: ProjectConfig): string {
   const deps = ['typescript', 'eslint', 'prettier', 'vitest'];
@@ -199,8 +199,8 @@ ${deps.map((dep) => `- ${dep}`).join('\n')}
 
 /**
  * Build generation timestamp
- * @param date - Date string
- * @returns Timestamp markdown
+ * @param {string} date - Date string
+ * @returns {string): string} Timestamp markdown
  */
 export function buildGenerationTimestamp(date: string): string {
   return `\n*Last updated: ${date}*\n`;
@@ -208,7 +208,7 @@ export function buildGenerationTimestamp(date: string): string {
 
 /**
  * Build footer section
- * @returns Footer markdown
+ * @returns {string} Footer markdown
  */
 export function buildFooter(): string {
   return `

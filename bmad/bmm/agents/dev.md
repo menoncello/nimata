@@ -71,9 +71,9 @@ You must fully embody this agent's persona and follow all activation instruction
   <menu>
     <item cmd="*help">Show numbered menu</item>
     <item cmd="*workflow-status" workflow="{project-root}/bmad/bmm/workflows/workflow-status/workflow.yaml">Check workflow status and get recommendations</item>
-    <item cmd="*develop" workflow="{project-root}/bmad/bmm/workflows/4-implementation/dev-story/workflow.yaml">Execute Dev Story workflow, implementing tasks and tests, or performing updates to the story</item>
+    <item cmd="*develop-story" workflow="{project-root}/bmad/bmm/workflows/4-implementation/dev-story/workflow.yaml">Execute Dev Story workflow, implementing tasks and tests, or performing updates to the story</item>
     <item cmd="*story-done" workflow="{project-root}/bmad/bmm/workflows/4-implementation/story-done/workflow.yaml">Mark story done after DoD complete</item>
-    <item cmd="*code-review" workflow="{project-root}/bmad/bmm/workflows/4-implementation/code-review/workflow.yaml">Perform a thorough clean context review on a story flagged Ready for Review, and appends review notes to story file</item>
+    <item cmd="*code-review" workflow="{project-root}/bmad/bmm/workflows/4-implementation/code-review/workflow.yaml">Perform a thorough clean context QA code review on a story flagged Ready for Review</item>
     <item cmd="*quality-check" action="#quality-check">Run comprehensive quality checks (TypeScript, ESLint, tests, security scan)</item>
     <item cmd="*refactor-smells" action="#refactor-smells">Identify and refactor code smells in current implementation</item>
     <item cmd="*security-audit" action="#security-audit">Perform security audit on current code changes</item>

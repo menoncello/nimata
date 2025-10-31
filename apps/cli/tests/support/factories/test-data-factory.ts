@@ -1,20 +1,21 @@
 /**
  * Test Data Factory [T900]
  *
- * Factory functions for generating test data with controlled randomness.
+ * Factory functions for generating test data with cryptographically secure randomness.
  * Eliminates hardcoded test data and ensures parallel-safe tests.
  * Priority: P2 - Test infrastructure improvement
  */
 
+import { randomInt } from 'node:crypto';
+
 /**
  * Creates a temporary directory path with unique name
- * Using Math.random() is acceptable for test isolation as we only need uniqueness
+ * Using cryptographically secure random values for test isolation
  */
 export function createTempDirectoryPath(): string {
   const timestamp = Date.now();
-  // Using Math.random() is safe here - we only need unique directory names for test isolation
-  // eslint-disable-next-line sonarjs/pseudo-random
-  const random = Math.random().toString(36).substring(2, 8);
+  // Using cryptographically secure random values for unique directory names
+  const random = randomInt(0, 1000000).toString(36);
   return `/tmp/nimata-test-${timestamp}-${random}`;
 }
 
@@ -23,9 +24,8 @@ export function createTempDirectoryPath(): string {
  */
 export function createProjectConfig(overrides: Partial<ProjectConfig> = {}): ProjectConfig {
   const timestamp = Date.now();
-  // Using Math.random() is safe here - we only need unique project names for test isolation
-  // eslint-disable-next-line sonarjs/pseudo-random
-  const random = Math.random().toString(36).substring(2, 8);
+  // Using cryptographically secure random values for unique project names
+  const random = randomInt(0, 1000000).toString(36);
 
   return {
     projectName: `test-project-${timestamp}-${random}`,
@@ -55,9 +55,8 @@ export function createCLIArgs(overrides: Partial<CLIArgs> = {}): CLIArgs {
  * Creates mock command configuration
  */
 export function createCommandConfig(overrides: Partial<CommandConfig> = {}): CommandConfig {
-  // Using Math.random() is safe here - we only need unique command names for test isolation
-  // eslint-disable-next-line sonarjs/pseudo-random
-  const random = Math.random().toString(36).substring(2, 8);
+  // Using cryptographically secure random values for unique command names
+  const random = randomInt(0, 1000000).toString(36);
 
   return {
     name: `test-command-${random}`,

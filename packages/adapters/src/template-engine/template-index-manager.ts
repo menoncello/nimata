@@ -42,7 +42,7 @@ export class TemplateIndexManager {
 
   /**
    * Add template to index
-   * @param template Template metadata
+   * @param {TemplateMetadata} template Template metadata
    */
   addTemplate(template: TemplateMetadata): void {
     this.index.templatesById.set(template.id, template);
@@ -57,7 +57,7 @@ export class TemplateIndexManager {
 
   /**
    * Remove template from index
-   * @param templateId Template ID
+   * @param {string} templateId Template ID
    */
   removeTemplate(templateId: string): void {
     const template = this.index.templatesById.get(templateId);
@@ -75,13 +75,13 @@ export class TemplateIndexManager {
 
   /**
    * Search templates by query
-   * @param query Search query
-   * @param filters Search filters
-   * @param filters.category Filter by category
-   * @param filters.projectType Filter by project type
-   * @param filters.tags Filter by tags
-   * @param filters.author Filter by author
-   * @returns Array of matching templates
+   * @param {string} query Search query
+   * @param {{ category?: string; projectType?: ProjectType; tags?: string[]; author?: string; }} filters - Search filters
+   * @param {string | undefined} filters.category Filter by category
+   * @param {ProjectType | undefined} filters.projectType Filter by project type
+   * @param {string[] | undefined} filters.tags Filter by tags
+   * @param {string | undefined} filters.author Filter by author
+   * @returns {TemplateMetadata[]} Array of matching templates
    */
   search(
     query: string,
@@ -109,8 +109,8 @@ export class TemplateIndexManager {
 
   /**
    * Get template by ID
-   * @param templateId Template ID
-   * @returns Template metadata or null
+   * @param {string} templateId Template ID
+   * @returns {string): TemplateMetadata | null} Template metadata or null
    */
   getTemplateById(templateId: string): TemplateMetadata | null {
     return this.index.templatesById.get(templateId) || null;
@@ -118,8 +118,8 @@ export class TemplateIndexManager {
 
   /**
    * Get template by file path
-   * @param filePath File path
-   * @returns Template metadata or null
+   * @param {string} filePath File path
+   * @returns {string): TemplateMetadata | null} Template metadata or null
    */
   getTemplateByPath(filePath: string): TemplateMetadata | null {
     return this.index.templatesByPath.get(filePath) || null;
@@ -127,8 +127,8 @@ export class TemplateIndexManager {
 
   /**
    * Get templates by category
-   * @param category Category
-   * @returns Array of templates
+   * @param {string} category Category
+   * @returns {string): TemplateMetadata[]} Array of templates
    */
   getTemplatesByCategory(category: string): TemplateMetadata[] {
     return this.index.templatesByCategory.get(category) || [];
@@ -136,8 +136,8 @@ export class TemplateIndexManager {
 
   /**
    * Get templates by project type
-   * @param projectType Project type
-   * @returns Array of templates
+   * @param {ProjectType} projectType Project type
+   * @returns {ProjectType): TemplateMetadata[]} Array of templates
    */
   getTemplatesByProjectType(projectType: ProjectType): TemplateMetadata[] {
     return this.index.templatesByProjectType.get(projectType) || [];
@@ -145,7 +145,7 @@ export class TemplateIndexManager {
 
   /**
    * Get all templates
-   * @returns Array of all templates
+   * @returns {TemplateMetadata[]} Array of all templates
    */
   getAllTemplates(): TemplateMetadata[] {
     return Array.from(this.index.templatesById.values());
@@ -153,7 +153,7 @@ export class TemplateIndexManager {
 
   /**
    * Get index size
-   * @returns Number of indexed templates
+   * @returns {number} Number of indexed templates
    */
   getIndexSize(): number {
     return this.index.templatesById.size;
@@ -161,7 +161,7 @@ export class TemplateIndexManager {
 
   /**
    * Index multiple templates
-   * @param templates Array of templates to index
+   * @param {TemplateMetadata[]} templates Array of templates to index
    */
   indexTemplates(templates: TemplateMetadata[]): void {
     for (const template of templates) {

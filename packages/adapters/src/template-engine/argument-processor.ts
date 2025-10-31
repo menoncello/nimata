@@ -8,9 +8,9 @@ import type { TemplateContext } from './types.js';
 
 /**
  * Processes helper arguments from argument string
- * @param argsString - String containing arguments
- * @param context - Template context for variable resolution
- * @returns Array of processed arguments
+ * @param {string} argsString - String containing arguments
+ * @param {TemplateContext} context - Template context for variable resolution
+ * @returns { unknown[]} Array of processed arguments
  */
 export function processHelperArguments(argsString: string, context: TemplateContext): unknown[] {
   const argsStringTrimmed = argsString.trim();
@@ -32,9 +32,9 @@ export function processHelperArguments(argsString: string, context: TemplateCont
 
 /**
  * Processes a single helper argument
- * @param part - Argument part to process
- * @param context - Template context for variable resolution
- * @returns Processed argument
+ * @param {string} part - Argument part to process
+ * @param {TemplateContext} context - Template context for variable resolution
+ * @returns { unknown} Processed argument
  */
 export function processHelperArgument(part: string, context: TemplateContext): unknown {
   // Remove quotes if present
@@ -61,8 +61,8 @@ export function processHelperArgument(part: string, context: TemplateContext): u
 
 /**
  * Checks if argument is quoted
- * @param part - Argument part to check
- * @returns True if argument is quoted
+ * @param {string} part - Argument part to check
+ * @returns {string): boolean} True if argument is quoted
  */
 export function isQuotedArgument(part: string): boolean {
   return (
@@ -72,8 +72,8 @@ export function isQuotedArgument(part: string): boolean {
 
 /**
  * Checks if argument is a variable reference
- * @param part - Argument part to check
- * @returns True if argument is a variable reference
+ * @param {string} part - Argument part to check
+ * @returns {string): boolean} True if argument is a variable reference
  */
 export function isVariableReference(part: string): boolean {
   return part.startsWith('{{') && part.endsWith('}}');
@@ -81,8 +81,8 @@ export function isVariableReference(part: string): boolean {
 
 /**
  * Parses helper function arguments from a string
- * @param argsString - String containing arguments to parse
- * @returns Array of parsed arguments with their types
+ * @param {unknown} argsString - String containing arguments to parse
+ * @returns {Array<} Array of parsed arguments with their types
  */
 export function parseHelperArguments(
   argsString: string
@@ -93,8 +93,8 @@ export function parseHelperArguments(
 
 /**
  * Tokenizes argument string into individual tokens
- * @param argsString - String containing arguments
- * @returns Array of argument tokens
+ * @param {string} argsString - String containing arguments
+ * @returns {string): string[]} Array of argument tokens
  */
 export function tokenizeArguments(argsString: string): string[] {
   const { tokens, finalCurrent } = processArgumentCharacters(argsString);
@@ -109,8 +109,8 @@ export function tokenizeArguments(argsString: string): string[] {
 
 /**
  * Processes characters in argument string
- * @param argsString - String containing arguments
- * @returns Object with tokens and final current string
+ * @param {string} argsString - String containing arguments
+ * @returns {string):} Object with tokens and final current string
  */
 export function processArgumentCharacters(argsString: string): {
   tokens: string[];
@@ -137,11 +137,11 @@ export function processArgumentCharacters(argsString: string): {
 
 /**
  * Processes a single character in argument tokenization
- * @param char - Character to process
- * @param current - Current token string
- * @param inQuotes - Whether we're in quotes
- * @param quoteChar - Current quote character
- * @returns New processing state
+ * @param {unknown} char - Character to process
+ * @param {unknown} current - Current token string
+ * @param {unknown} inQuotes - Whether we're in quotes
+ * @param {unknown} quoteChar - Current quote character
+ * @returns {void} New processing state
  */
 export function processArgumentChar(
   char: string,
@@ -166,9 +166,9 @@ export function processArgumentChar(
 
 /**
  * Checks if character starts a quoted section
- * @param char - Character to check
- * @param inQuotes - Whether we're currently in quotes
- * @returns True if character starts quotes
+ * @param {string} char - Character to check
+ * @param {boolean} inQuotes - Whether we're currently in quotes
+ * @returns { boolean} True if character starts quotes
  */
 export function isQuoteStart(char: string, inQuotes: boolean): boolean {
   return !inQuotes && (char === '"' || char === "'");
@@ -176,10 +176,10 @@ export function isQuoteStart(char: string, inQuotes: boolean): boolean {
 
 /**
  * Checks if character ends a quoted section
- * @param char - Character to check
- * @param quoteChar - Current quote character
- * @param inQuotes - Whether we're currently in quotes
- * @returns True if character ends quotes
+ * @param {string} char - Character to check
+ * @param {string} quoteChar - Current quote character
+ * @param {boolean} inQuotes - Whether we're currently in quotes
+ * @returns { boolean} True if character ends quotes
  */
 export function isQuoteEnd(char: string, quoteChar: string, inQuotes: boolean): boolean {
   return inQuotes && char === quoteChar;
@@ -187,9 +187,9 @@ export function isQuoteEnd(char: string, quoteChar: string, inQuotes: boolean): 
 
 /**
  * Checks if character separates arguments
- * @param char - Character to check
- * @param inQuotes - Whether we're currently in quotes
- * @returns True if character separates arguments
+ * @param {string} char - Character to check
+ * @param {boolean} inQuotes - Whether we're currently in quotes
+ * @returns { boolean} True if character separates arguments
  */
 export function isArgumentSeparator(char: string, inQuotes: boolean): boolean {
   return !inQuotes && char === ' ';
@@ -197,8 +197,8 @@ export function isArgumentSeparator(char: string, inQuotes: boolean): boolean {
 
 /**
  * Parses a single argument token
- * @param token - Token to parse
- * @returns Parsed argument object
+ * @param {string} token - Token to parse
+ * @returns {string):} Parsed argument object
  */
 export function parseArgumentToken(token: string): {
   type: 'literal' | 'variable' | 'helper';
@@ -226,8 +226,8 @@ export function parseArgumentToken(token: string): {
 
 /**
  * Checks if token is a variable
- * @param token - Token to check
- * @returns True if token is a variable
+ * @param {string} token - Token to check
+ * @returns {string): boolean} True if token is a variable
  */
 export function isVariableToken(token: string): boolean {
   return token.startsWith('{{') && token.endsWith('}}');
@@ -235,8 +235,8 @@ export function isVariableToken(token: string): boolean {
 
 /**
  * Checks if token is a quoted literal
- * @param token - Token to check
- * @returns True if token is a quoted literal
+ * @param {string} token - Token to check
+ * @returns {string): boolean} True if token is a quoted literal
  */
 export function isQuotedLiteral(token: string): boolean {
   return token.startsWith('"') && token.endsWith('"');
@@ -244,9 +244,9 @@ export function isQuotedLiteral(token: string): boolean {
 
 /**
  * Gets a nested value from an object using dot notation
- * @param obj - Object to get value from
- * @param path - Dot-separated path to the value
- * @returns The nested value or undefined if not found
+ * @param {unknown} obj - Object to get value from
+ * @param {string} path - Dot-separated path to the value
+ * @returns { unknown} The nested value or undefined if not found
  */
 export function getNestedValue(obj: unknown, path: string): unknown {
   const parts = path.split('.');

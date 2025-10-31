@@ -34,7 +34,7 @@ const NAME_FIELD = 'name';
 
 /**
  * Create project types help topic
- * @returns Help topic for project types
+ * @returns {HelpTopic} Help topic for project types
  */
 function createProjectTypesTopic(): HelpTopic {
   return {
@@ -60,7 +60,7 @@ function createProjectTypesTopic(): HelpTopic {
 
 /**
  * Create quality levels help topic
- * @returns Help topic for quality levels
+ * @returns {HelpTopic} Help topic for quality levels
  */
 function createQualityLevelsTopic(): HelpTopic {
   return {
@@ -85,7 +85,7 @@ function createQualityLevelsTopic(): HelpTopic {
 
 /**
  * Create AI assistants help topic
- * @returns Help topic for AI assistants
+ * @returns {HelpTopic} Help topic for AI assistants
  */
 function createAIAssistantsTopic(): HelpTopic {
   return {
@@ -110,7 +110,7 @@ function createAIAssistantsTopic(): HelpTopic {
 
 /**
  * Create configuration help topic
- * @returns Configuration help topic
+ * @returns {HelpTopic} Configuration help topic
  */
 function createConfigurationTopic(): HelpTopic {
   return {
@@ -133,7 +133,7 @@ function createConfigurationTopic(): HelpTopic {
 
 /**
  * Create templates help topic
- * @returns Templates help topic
+ * @returns {HelpTopic} Templates help topic
  */
 function createTemplatesTopic(): HelpTopic {
   return {
@@ -156,7 +156,7 @@ function createTemplatesTopic(): HelpTopic {
 
 /**
  * Create interactive mode help topic
- * @returns Interactive mode help topic
+ * @returns {HelpTopic} Interactive mode help topic
  */
 function createInteractiveModeTopic(): HelpTopic {
   return {
@@ -169,7 +169,7 @@ function createInteractiveModeTopic(): HelpTopic {
 
 /**
  * Create advanced options help topic
- * @returns Advanced options help topic
+ * @returns {HelpTopic} Advanced options help topic
  */
 function createAdvancedOptionsTopic(): HelpTopic {
   return {
@@ -185,7 +185,7 @@ function createAdvancedOptionsTopic(): HelpTopic {
 
 /**
  * Create troubleshooting help topic
- * @returns Troubleshooting help topic
+ * @returns {HelpTopic} Troubleshooting help topic
  */
 function createTroubleshootingTopic(): HelpTopic {
   return {
@@ -202,7 +202,7 @@ function createTroubleshootingTopic(): HelpTopic {
 
 /**
  * Create help topics map
- * @returns Map of help topics
+ * @returns {void} Map of help topics
  */
 export function createHelpTopics(): Map<string, HelpTopic> {
   const topics = new Map<string, HelpTopic>();
@@ -221,7 +221,7 @@ export function createHelpTopics(): Map<string, HelpTopic> {
 
 /**
  * Create command help data
- * @returns Map of command help
+ * @returns {CommandHelp} Map of command help
  */
 function createInitCommandHelp(): CommandHelp {
   return {
@@ -240,7 +240,7 @@ function createInitCommandHelp(): CommandHelp {
 
 /**
  * Get init command options
- * @returns Array of command options
+ * @returns {HelpOption[]} Array of command options
  */
 function getInitCommandOptions(): HelpOption[] {
   return [
@@ -275,7 +275,7 @@ function getInitCommandOptions(): HelpOption[] {
 
 /**
  * Create help command help
- * @returns Help command help
+ * @returns {CommandHelp} Help command help
  */
 function createHelpCommandHelp(): CommandHelp {
   return {
@@ -299,7 +299,7 @@ function createHelpCommandHelp(): CommandHelp {
 
 /**
  * Create version command help
- * @returns Version command help
+ * @returns {CommandHelp} Version command help
  */
 function createVersionCommandHelp(): CommandHelp {
   return {
@@ -318,7 +318,7 @@ function createVersionCommandHelp(): CommandHelp {
 
 /**
  * Create command help data
- * @returns Map of command help
+ * @returns {void} Map of command help
  */
 export function createCommandHelp(): Map<string, CommandHelp> {
   const commands = new Map<string, CommandHelp>();

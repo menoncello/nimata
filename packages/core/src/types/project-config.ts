@@ -29,10 +29,20 @@ export interface ProjectConfig {
   license?: ProjectLicense;
   qualityLevel: ProjectQualityLevel;
   projectType: ProjectType;
+  framework?: string;
   aiAssistants: ProjectAIAssistant[];
   template?: string;
   targetDirectory?: string;
   nonInteractive?: boolean;
+  version?: string;
+  homepage?: string;
+  repository?: string;
+  bugs?: string;
+  keywords?: string[];
+  theme?: {
+    primaryColor?: string;
+    [key: string]: unknown;
+  };
 }
 
 export interface WizardStep {

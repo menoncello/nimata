@@ -34,8 +34,8 @@ export class StringTransformersImpl {
    * Transforms all alphabetic characters in the input string to their lowercase
    * equivalents while leaving non-alphabetic characters unchanged.
    *
-   * @param str - The input string to convert to lowercase
-   * @returns A new string with all characters converted to lowercase
+   * @param {string} str - The input string to convert to lowercase
+   * @returns {string): string} A new string with all characters converted to lowercase
    */
   static toLowerCase(str: string): string {
     return str.toLowerCase();
@@ -47,8 +47,8 @@ export class StringTransformersImpl {
    * Transforms all alphabetic characters in the input string to their uppercase
    * equivalents while leaving non-alphabetic characters unchanged.
    *
-   * @param str - The input string to convert to uppercase
-   * @returns A new string with all characters converted to uppercase
+   * @param {string} str - The input string to convert to uppercase
+   * @returns {string): string} A new string with all characters converted to uppercase
    */
   static toUpperCase(str: string): string {
     return str.toUpperCase();
@@ -61,8 +61,8 @@ export class StringTransformersImpl {
    * and subsequent words have their first letter capitalized. Spaces and word boundaries
    * are removed to create a continuous identifier.
    *
-   * @param str - The input string to convert to camelCase
-   * @returns The camelCase version of the input string
+   * @param {string} str - The input string to convert to camelCase
+   * @returns {string): string} The camelCase version of the input string
    */
   static toCamelCase(str: string): string {
     return (
@@ -89,8 +89,8 @@ export class StringTransformersImpl {
    * letter capitalized and all subsequent letters are lowercase. Spaces and word
    * boundaries are removed to create a continuous identifier.
    *
-   * @param str - The input string to convert to PascalCase
-   * @returns The PascalCase version of the input string
+   * @param {string} str - The input string to convert to PascalCase
+   * @returns {string): string} The PascalCase version of the input string
    */
   static toPascalCase(str: string): string {
     return (
@@ -117,8 +117,8 @@ export class StringTransformersImpl {
    * hyphens and all letters are lowercase. This format is commonly used for URLs
    * and CSS class names.
    *
-   * @param str - The input string to convert to kebab-case
-   * @returns The kebab-case version of the input string
+   * @param {string} str - The input string to convert to kebab-case
+   * @returns {string): string} The kebab-case version of the input string
    */
   static toKebabCase(str: string): string {
     const result = str
@@ -156,8 +156,8 @@ export class StringTransformersImpl {
    * underscores and all letters are lowercase. This format is commonly used for
    * variable names and database identifiers.
    *
-   * @param str - The input string to convert to snake_case
-   * @returns The snake_case version of the input string
+   * @param {string} str - The input string to convert to snake_case
+   * @returns {string): string} The snake_case version of the input string
    */
   static toSnakeCase(str: string): string {
     const result = str
@@ -190,8 +190,8 @@ export class StringTransformersImpl {
 
   /**
    * Converts string to Title Case
-   * @param str - The string to convert
-   * @returns The Title Case string
+   * @param {string} str - The string to convert
+   * @returns {string): string} The Title Case string
    */
   static toTitleCase(str: string): string {
     return str.replace(/\w\S*/g, (txt) => {
@@ -201,8 +201,8 @@ export class StringTransformersImpl {
 
   /**
    * Capitalizes the first letter of the string
-   * @param str - The string to capitalize
-   * @returns The capitalized string
+   * @param {string} str - The string to capitalize
+   * @returns {string): string} The capitalized string
    */
   static capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -215,10 +215,10 @@ export class StringTransformersImpl {
    * if truncation occurs. If the original string is already within the length
    * limit, it is returned unchanged.
    *
-   * @param str - The input string to truncate
-   * @param length - Maximum length of the resulting string including suffix
-   * @param suffix - Suffix to append if truncation occurs (default: '...')
-   * @returns The truncated string with suffix if truncation was needed
+   * @param {string} str - The input string to truncate
+   * @param {number} length - Maximum length of the resulting string including suffix
+   * @param {unknown} suffix - Suffix to append if truncation occurs (default: '...')
+   * @returns {string} The truncated string with suffix if truncation was needed
    */
   static truncate(str: string, length: number, suffix = '...'): string {
     if (str.length <= length) return str;
@@ -232,8 +232,8 @@ export class StringTransformersImpl {
    * letters, numbers, and whitespace characters. This is useful for sanitizing
    * input or creating clean identifiers.
    *
-   * @param str - The input string to clean by removing special characters
-   * @returns The cleaned string containing only letters, numbers, and whitespace
+   * @param {string} str - The input string to clean by removing special characters
+   * @returns {string): string} The cleaned string containing only letters, numbers, and whitespace
    */
   static removeSpecialChars(str: string): string {
     return str.replace(/[^\d\sA-Za-z]/g, '');
@@ -241,8 +241,8 @@ export class StringTransformersImpl {
 
   /**
    * Normalizes whitespace in string
-   * @param str - The string to normalize
-   * @returns The normalized string
+   * @param {string} str - The string to normalize
+   * @returns {string): string} The normalized string
    */
   static normalizeWhitespace(str: string): string {
     return str.replace(/\s+/g, ' ').trim();
@@ -255,8 +255,8 @@ export class StringTransformersImpl {
    * removing special characters, replacing spaces and separators with hyphens, and
    * trimming leading/trailing hyphens. The result is suitable for use in URLs.
    *
-   * @param str - The input string to convert to a URL-safe format
-   * @returns A URL-safe version of the input string
+   * @param {string} str - The input string to convert to a URL-safe format
+   * @returns {string): string} A URL-safe version of the input string
    */
   static toUrlSafe(str: string): string {
     let result = str
@@ -280,8 +280,8 @@ export class StringTransformersImpl {
    * for use in URLs. This method is an alias for toUrlSafe() and provides semantic
    * clarity when the intent is specifically slug generation.
    *
-   * @param str - The input string to convert to a slug
-   * @returns A slugified version of the input string suitable for URLs
+   * @param {string} str - The input string to convert to a slug
+   * @returns {string): string} A slugified version of the input string suitable for URLs
    */
   static slugify(str: string): string {
     return this.toUrlSafe(str);
@@ -294,8 +294,8 @@ export class StringTransformersImpl {
    * by underscores and all letters are uppercase. This format is commonly used
    * for constants and environment variables.
    *
-   * @param str - The input string to convert to constant case
-   * @returns The constant case version of the input string
+   * @param {string} str - The input string to convert to constant case
+   * @returns {string): string} The constant case version of the input string
    */
   static toConstantCase(str: string): string {
     return this.toSnakeCase(str).toUpperCase();
@@ -308,8 +308,8 @@ export class StringTransformersImpl {
    * is capitalized and all subsequent characters are lowercase. This format is
    * commonly used for ordinary sentences and descriptions.
    *
-   * @param str - The input string to convert to sentence case
-   * @returns The sentence case version of the input string
+   * @param {string} str - The input string to convert to sentence case
+   * @returns {string): string} The sentence case version of the input string
    */
   static toSentenceCase(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();

@@ -16,9 +16,9 @@ const COMPATIBILITY_MATRIX: Record<string, string[]> = {
 
 /**
  * Check if template is compatible with project type using exact match
- * @param template - Template name
- * @param projectType - Project type
- * @returns Whether template is exactly compatible
+ * @param {string} template - Template name
+ * @param {string} projectType - Project type
+ * @returns {string} Whether template is exactly compatible
  */
 export function isExactMatch(template: string, projectType: string): boolean {
   return template === projectType;
@@ -26,9 +26,9 @@ export function isExactMatch(template: string, projectType: string): boolean {
 
 /**
  * Check compatibility using the compatibility matrix
- * @param template - Template name
- * @param projectType - Project type
- * @returns Whether template is compatible according to matrix
+ * @param {string} template - Template name
+ * @param {string} projectType - Project type
+ * @returns {string} Whether template is compatible according to matrix
  */
 export function checkMatrixCompatibility(template: string, projectType: string): boolean {
   const compatibleTypes = COMPATIBILITY_MATRIX[template];
@@ -40,9 +40,9 @@ export function checkMatrixCompatibility(template: string, projectType: string):
 
 /**
  * Check default compatibility rules
- * @param template - Template name
- * @param projectType - Project type
- * @returns Whether template is compatible by default rules
+ * @param {string} template - Template name
+ * @param {string} projectType - Project type
+ * @returns {string} Whether template is compatible by default rules
  */
 export function checkDefaultCompatibility(template: string, projectType: string): boolean {
   switch (template) {
@@ -57,9 +57,9 @@ export function checkDefaultCompatibility(template: string, projectType: string)
 
 /**
  * Main template compatibility check function
- * @param template - Template name
- * @param projectType - Project type
- * @returns Whether template is compatible
+ * @param {string} template - Template name
+ * @param {string} projectType - Project type
+ * @returns {string} Whether template is compatible
  */
 export function isTemplateCompatible(template: string, projectType: string): boolean {
   // Exact match is always compatible
@@ -78,9 +78,9 @@ export function isTemplateCompatible(template: string, projectType: string): boo
 
 /**
  * Validate template compatibility and generate warning if needed
- * @param template - Template name (optional)
- * @param projectType - Project type (optional)
- * @returns Warning message if incompatible, null if compatible
+ * @param {string} template - Template name (optional)
+ * @param {string} projectType - Project type (optional)
+ * @returns {string} Warning message if incompatible, null if compatible
  */
 export function validateTemplateCompatibility(
   template?: string,

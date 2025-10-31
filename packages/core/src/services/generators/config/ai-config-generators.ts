@@ -10,8 +10,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class AIConfigGenerators {
   /**
    * Generate Claude configuration
-   * @param config - Project configuration
-   * @returns Claude configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Claude configuration content
    */
   static generateClaudeConfig(config: ProjectConfig): string {
     const projectInfo = this.getProjectInfo(config);
@@ -21,6 +21,9 @@ export class AIConfigGenerators {
     const instructions = this.getAIInstructions();
 
     return `# Claude Code Configuration for ${config.name}
+
+## AI Assistant
+This configuration is for **claude-code** AI assistant.
 
 ${projectInfo}
 
@@ -35,17 +38,21 @@ ${instructions}`;
 
   /**
    * Generate GitHub Copilot configuration
-   * @param config - Project configuration
-   * @returns Copilot configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Copilot configuration content
    */
   static generateCopilotConfig(config: ProjectConfig): string {
     const context = this.getProjectContext(config);
+    const overview = this.getOverviewSection(config);
     const styleGuidelines = this.getCodeStyleGuidelines();
     const testingRequirements = this.getTestingRequirements();
     const securityConsiderations = this.getSecurityConsiderations();
     const performanceGuidelines = this.getPerformanceGuidelines();
+    const projectSpecificGuidelines = this.getProjectSpecificGuidelines(config);
 
-    return `# GitHub Copilot Instructions for ${config.name}
+    return `# GitHub Copilot Instructions
+
+${overview}
 
 ${context}
 
@@ -55,13 +62,15 @@ ${testingRequirements}
 
 ${securityConsiderations}
 
-${performanceGuidelines}`;
+${performanceGuidelines}
+
+${projectSpecificGuidelines}`;
   }
 
   /**
    * Generate AI context configuration
-   * @param config - Project configuration
-   * @returns AI context configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} AI context configuration content
    */
   static generateAIContext(config: ProjectConfig): string {
     const overview = this.getProjectOverview(config);
@@ -91,8 +100,8 @@ ${changeProcess}`;
 
   /**
    * Generate Cursor rules configuration
-   * @param config - Project configuration
-   * @returns Cursor rules configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Cursor rules configuration content
    */
   static generateCursorRules(config: ProjectConfig): string {
     const intro = this.getIntroduction(config);
@@ -122,8 +131,8 @@ ${projectContext}`;
 
   /**
    * Get project information section
-   * @param config - Project configuration
-   * @returns Project information content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Project information content
    */
   private static getProjectInfo(config: ProjectConfig): string {
     return `## Project Information
@@ -135,7 +144,7 @@ ${projectContext}`;
 
   /**
    * Get development guidelines
-   * @returns Development guidelines content
+   * @returns {string} Development guidelines content
    */
   private static getDevelopmentGuidelines(): string {
     return `## Development Guidelines
@@ -149,7 +158,7 @@ ${projectContext}`;
 
   /**
    * Get project structure
-   * @returns Project structure content
+   * @returns {string} Project structure content
    */
   private static getProjectStructure(): string {
     return `## Project Structure
@@ -161,7 +170,7 @@ ${projectContext}`;
 
   /**
    * Get commands section
-   * @returns Commands content
+   * @returns {string} Commands content
    */
   private static getCommands(): string {
     return `## Commands
@@ -173,7 +182,7 @@ ${projectContext}`;
 
   /**
    * Get AI instructions
-   * @returns AI instructions content
+   * @returns {string} AI instructions content
    */
   private static getAIInstructions(): string {
     return `## AI Assistant Instructions
@@ -186,32 +195,53 @@ When generating code for this project:
   }
 
   /**
+   * Get overview section for Copilot
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Overview section content
+   */
+  private static getOverviewSection(config: ProjectConfig): string {
+    const projectTypeNames = {
+      basic: 'Basic Application',
+      web: 'Web Application',
+      cli: 'CLI Application',
+      library: 'Library Package',
+    };
+
+    return `## Overview
+
+This is a ${projectTypeNames[config.projectType as keyof typeof projectTypeNames] || config.projectType}.
+
+**Name**: ${config.name}`;
+  }
+
+  /**
    * Get project context for Copilot
-   * @param config - Project configuration
-   * @returns Project context content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Project context content
    */
   private static getProjectContext(config: ProjectConfig): string {
-    return `## Project Context
-This is a ${config.projectType} project built with Bun and TypeScript.
-Quality level: ${config.qualityLevel}`;
+    return `## Project Guidelines
+- Author: Your Name
+- License: MIT
+- Project Type: ${config.projectType}
+- Quality Level: ${config.qualityLevel}`;
   }
 
   /**
    * Get code style guidelines
-   * @returns Code style guidelines content
+   * @returns {string} Code style guidelines content
    */
   private static getCodeStyleGuidelines(): string {
-    return `## Code Style Guidelines
-- Use TypeScript strict mode
-- Follow ESLint and Prettier configurations
-- Write descriptive variable and function names
-- Include JSDoc comments for public APIs
-- Prefer explicit types over implicit any`;
+    return `## Coding Standards
+- Write all code, comments, and documentation in English
+- Follow TypeScript best practices
+- Use ESLint and Prettier for code formatting
+- Maintain consistent naming conventions`;
   }
 
   /**
    * Get testing requirements
-   * @returns Testing requirements content
+   * @returns {string} Testing requirements content
    */
   private static getTestingRequirements(): string {
     return `## Testing Requirements
@@ -223,7 +253,7 @@ Quality level: ${config.qualityLevel}`;
 
   /**
    * Get security considerations
-   * @returns Security considerations content
+   * @returns {string} Security considerations content
    */
   private static getSecurityConsiderations(): string {
     return `## Security Considerations
@@ -235,7 +265,7 @@ Quality level: ${config.qualityLevel}`;
 
   /**
    * Get performance guidelines
-   * @returns Performance guidelines content
+   * @returns {string} Performance guidelines content
    */
   private static getPerformanceGuidelines(): string {
     return `## Performance Guidelines
@@ -245,19 +275,58 @@ Quality level: ${config.qualityLevel}`;
   }
 
   /**
+   * Get project-specific guidelines based on project type
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Project-specific guidelines content
+   */
+  private static getProjectSpecificGuidelines(config: ProjectConfig): string {
+    if (config.projectType === 'cli') {
+      return `## CLI Development Guidelines
+
+- Use command pattern for CLI operations
+- Handle errors gracefully and provide helpful error messages
+- Support both programmatic and interactive usage
+- TypeScript
+- Browser`;
+    } else if (config.projectType === 'web') {
+      return `## Web Development Guidelines
+
+- Build responsive, accessible user interfaces
+- Follow modern web standards and best practices
+- Optimize for performance and user experience
+- TypeScript
+- Browser`;
+    } else if (config.projectType === 'library') {
+      return `## Library Development Guidelines
+
+- Design clear, well-documented public APIs
+- Follow semantic versioning for releases
+- Provide comprehensive examples and documentation
+- TypeScript
+- Browser`;
+    }
+    return `## Development Guidelines
+
+- Write clean, maintainable code
+- Follow established patterns and conventions
+- TypeScript
+- Browser`;
+  }
+
+  /**
    * Get project overview
-   * @param config - Project configuration
-   * @returns Project overview content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Project overview content
    */
   private static getProjectOverview(config: ProjectConfig): string {
-    return `## Project Overview
+    return `## Project Information
 ${config.description || 'A modern TypeScript library built with Bun'}`;
   }
 
   /**
    * Get tech stack information
-   * @param config - Project configuration
-   * @returns Tech stack content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Tech stack content
    */
   private static getTechStack(config: ProjectConfig): string {
     const mutationTesting = config.qualityLevel === 'high' ? ' + Stryker' : '';
@@ -270,8 +339,8 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get project configuration details
-   * @param config - Project configuration
-   * @returns Project configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Project configuration content
    */
   private static getProjectConfiguration(config: ProjectConfig): string {
     return `## Project Configuration
@@ -283,8 +352,8 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get development standards
-   * @param config - Project configuration
-   * @returns Development standards content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Development standards content
    */
   private static getDevelopmentStandards(config: ProjectConfig): string {
     const mutationRequirement =
@@ -301,7 +370,7 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get testing strategy
-   * @returns Testing strategy content
+   * @returns {string} Testing strategy content
    */
   private static getTestingStrategy(): string {
     return `## Testing Strategy
@@ -313,8 +382,8 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get quality gates
-   * @param config - Project configuration
-   * @returns Quality gates content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Quality gates content
    */
   private static getQualityGates(config: ProjectConfig): string {
     const mutationGate = config.qualityLevel === 'high' ? '\n- 80%+ mutation testing score' : '';
@@ -328,7 +397,7 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get change process
-   * @returns Change process content
+   * @returns {string} Change process content
    */
   private static getChangeProcess(): string {
     return `## When Making Changes
@@ -341,8 +410,8 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get introduction for Cursor rules
-   * @param config - Project configuration
-   * @returns Introduction content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Introduction content
    */
   private static getIntroduction(config: ProjectConfig): string {
     return `You are an expert TypeScript developer working on a ${config.projectType} project.`;
@@ -350,7 +419,7 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get technical guidelines for Cursor
-   * @returns Technical guidelines content
+   * @returns {string} Technical guidelines content
    */
   private static getTechnicalGuidelines(): string {
     return `## Technical Guidelines
@@ -363,7 +432,7 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get quality standards for Cursor
-   * @returns Quality standards content
+   * @returns {string} Quality standards content
    */
   private static getQualityStandards(): string {
     return `## Code Quality Standards
@@ -376,8 +445,8 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get testing requirements for Cursor
-   * @param config - Project configuration
-   * @returns Testing requirements content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Testing requirements content
    */
   private static getCursorTestingRequirements(config: ProjectConfig): string {
     const mutationRequirement =
@@ -392,7 +461,7 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get security principles
-   * @returns Security principles content
+   * @returns {string} Security principles content
    */
   private static getSecurityPrinciples(): string {
     return `## Security Principles
@@ -404,7 +473,7 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get coding process
-   * @returns Coding process content
+   * @returns {string} Coding process content
    */
   private static getCodingProcess(): string {
     return `## When Writing Code
@@ -418,8 +487,8 @@ ${config.description || 'A modern TypeScript library built with Bun'}`;
 
   /**
    * Get project-specific context
-   * @param config - Project configuration
-   * @returns Project-specific context content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean}ic context content
    */
   private static getProjectSpecificContext(config: ProjectConfig): string {
     return `## Project-Specific Context

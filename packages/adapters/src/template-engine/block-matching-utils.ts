@@ -10,10 +10,10 @@ export interface BlockMatch {
 
 /**
  * Finds all block matches in template
- * @param template - Template string to search
- * @param pattern - Regex pattern to match
- * @param isOpen - Whether this pattern matches opening blocks
- * @returns Array of block matches with type and position
+ * @param {string} template - Template string to search
+ * @param {RegExp} pattern - Regex pattern to match
+ * @param {unknown} isOpen - Whether this pattern matches opening blocks
+ * @returns {BlockMatch[]} Array of block matches with type and position
  */
 export function findBlockMatches(template: string, pattern: RegExp, isOpen = true): BlockMatch[] {
   const matches: BlockMatch[] = [];
@@ -32,9 +32,9 @@ export function findBlockMatches(template: string, pattern: RegExp, isOpen = tru
 
 /**
  * Matches opening and closing blocks to find unclosed ones
- * @param openBlockMatches - Array of opening block matches
- * @param closeBlockMatches - Array of closing block matches
- * @returns Array of unclosed block types
+ * @param {unknown} openBlockMatches - Array of opening block matches
+ * @param {unknown} closeBlockMatches - Array of closing block matches
+ * @returns {string[]} Array of unclosed block types
  */
 export function matchBlocks(
   openBlockMatches: BlockMatch[],

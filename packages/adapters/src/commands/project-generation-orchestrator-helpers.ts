@@ -15,8 +15,8 @@ const NPM_INSTALL_COMMAND = 'npm';
 
 /**
  * Validate and sanitize a directory path to prevent path traversal attacks
- * @param path - The path to validate
- * @returns Normalized absolute path if valid, throws error if invalid
+ * @param {string} path - The path to validate
+ * @returns {string): string} Normalized absolute path if valid, throws error if invalid
  */
 function validateDirectoryPath(path: string): string {
   if (!path || typeof path !== 'string') {
@@ -52,9 +52,9 @@ interface ProcessExecutionContext {
 
 /**
  * Setup process output handlers
- * @param process - Child process to setup
- * @param _context - Execution context with command info and callbacks (unused)
- * @returns Output accumulator
+ * @param {ChildProcess} process - Child process to setup
+ * @param {ProcessExecutionContext} _context - Execution context with command info and callbacks (unused)
+ * @returns { string} Output accumulator
  */
 function setupOutputHandlers(process: ChildProcess, _context: ProcessExecutionContext): string {
   let output = '';
@@ -72,9 +72,9 @@ function setupOutputHandlers(process: ChildProcess, _context: ProcessExecutionCo
 
 /**
  * Setup process completion handlers
- * @param process - Child process to setup
- * @param context - Execution context with command info and callbacks
- * @param output - Accumulated output for error reporting
+ * @param {unknown} process - Child process to setup
+ * @param {unknown} context - Execution context with command info and callbacks
+ * @param {unknown} output - Accumulated output for error reporting
  */
 function setupCompletionHandlers(
   process: ChildProcess,
@@ -100,8 +100,8 @@ function setupCompletionHandlers(
 
 /**
  * Setup process event handlers
- * @param process - Child process to setup
- * @param context - Execution context with command info and callbacks
+ * @param {ChildProcess} process - Child process to setup
+ * @param {ProcessExecutionContext} context - Execution context with command info and callbacks
  */
 function setupProcessHandlers(process: ChildProcess, context: ProcessExecutionContext): void {
   const output = setupOutputHandlers(process, context);
@@ -110,11 +110,11 @@ function setupProcessHandlers(process: ChildProcess, context: ProcessExecutionCo
 
 /**
  * Execute a shell command in a specific directory
- * @param command - Command to execute
- * @param args - Arguments for the command
- * @param cwd - Working directory
- * @param logger - Logger instance
- * @returns Promise that resolves when command completes
+ * @param {unknown} command - Command to execute
+ * @param {unknown} args - Arguments for the command
+ * @param {unknown} cwd - Working directory
+ * @param {unknown} logger - Logger instance
+ * @returns {void} Promise that resolves when command completes
  */
 export function executeCommand(
   command: string,
@@ -144,9 +144,9 @@ export function executeCommand(
 
 /**
  * Install npm dependencies in project directory
- * @param projectDir - Project directory path
- * @param logger - Logger instance
- * @returns Promise that resolves when installation completes
+ * @param {string} projectDir - Project directory path
+ * @param {CLILogger} logger - Logger instance
+ * @returns {void} Promise that resolves when installation completes
  */
 export async function installDependencies(projectDir: string, logger: CLILogger): Promise<void> {
   try {
@@ -160,9 +160,9 @@ export async function installDependencies(projectDir: string, logger: CLILogger)
 
 /**
  * Initialize git repository in project directory
- * @param projectDir - Project directory path
- * @param logger - Logger instance
- * @returns Promise that resolves when git initialization completes
+ * @param {unknown} projectDir - Project directory path
+ * @param {unknown} logger - Logger instance
+ * @returns {void} Promise that resolves when git initialization completes
  */
 export async function initializeGitRepository(
   projectDir: string,

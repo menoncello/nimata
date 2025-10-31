@@ -1,24 +1,113 @@
 /**
- * Index File Generator
+ * Enhanced Index File Generator
  *
- * Generates main index.ts files with interfaces and classes
+ * Generates comprehensive main index.ts files with interfaces and classes
+ * supporting all project types with proper entry point patterns
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
-import { toPascalCase } from '../../../utils/string-utils.js';
+// Import all generator modules
+import {
+  generateCLIIndexFile as generateCLIIndexFileModule,
+  generateWebIndexFile as generateWebIndexFileModule,
+  generateLibraryIndexFile as generateLibraryIndexFileModule,
+  generateTypeScriptIndexFile as generateTypeScriptIndexFileModule,
+  generateFrameworkIndexFile as generateFrameworkIndexFileModule,
+  getBaseInterface,
+  getClassHeader,
+  getClassConstructor,
+  getInitializeMethod,
+  getConfigMethod,
+  getSetConfigMethod,
+  getUpdateConfigMethod,
+  getClassFooter,
+  generateIndexDocumentation,
+} from './modules/index.js';
+
+const BUN_FRAMEWORK_PREFIX = 'bun-';
 
 /**
- * Generator for main index files
+ * Generator for main index files with project-type specific patterns
  */
 export class IndexGenerator {
   /**
-   * Generate main index.ts file content
-   * @param config - Project configuration
-   * @returns Index file TypeScript code
+   * Generate main index.ts file content based on project type
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Index file TypeScript code
    */
   generateIndexFile(config: ProjectConfig): string {
+    switch (config.projectType) {
+      case 'cli':
+        return this.generateCLIIndexFile(config);
+      case 'web':
+        return this.generateWebIndexFile(config);
+      case 'library':
+        return this.generateLibraryIndexFile(config);
+      case `${BUN_FRAMEWORK_PREFIX}typescript`:
+        return this.generateTypeScriptIndexFile(config);
+      case `${BUN_FRAMEWORK_PREFIX}react`:
+      case `${BUN_FRAMEWORK_PREFIX}vue`:
+      case `${BUN_FRAMEWORK_PREFIX}express`:
+        return this.generateFrameworkIndexFile(config);
+      case 'basic':
+      default:
+        return this.generateBasicIndexFile(config);
+    }
+  }
+
+  /**
+   * Generate CLI project index file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI index file TypeScript code
+   */
+  private generateCLIIndexFile(config: ProjectConfig): string {
+    return generateCLIIndexFileModule(config);
+  }
+
+  /**
+   * Generate Web project index file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Web index file TypeScript code
+   */
+  private generateWebIndexFile(config: ProjectConfig): string {
+    return generateWebIndexFileModule(config);
+  }
+
+  /**
+   * Generate Library project index file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Library index file TypeScript code
+   */
+  private generateLibraryIndexFile(config: ProjectConfig): string {
+    return generateLibraryIndexFileModule(config);
+  }
+
+  /**
+   * Generate TypeScript project index file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} TypeScript index file TypeScript code
+   */
+  private generateTypeScriptIndexFile(config: ProjectConfig): string {
+    return generateTypeScriptIndexFileModule(config);
+  }
+
+  /**
+   * Generate Framework project index file (React, Vue, Express)
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Framework index file TypeScript code
+   */
+  private generateFrameworkIndexFile(config: ProjectConfig): string {
+    return generateFrameworkIndexFileModule(config);
+  }
+
+  /**
+   * Generate Basic project index file (original implementation)
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Basic index file TypeScript code
+   */
+  private generateBasicIndexFile(config: ProjectConfig): string {
     const exportInterface = this.generateExportInterface(config);
     const exportClass = this.generateExportClass(config);
-    const documentation = this.generateIndexDocumentation(config);
+    const documentation = generateIndexDocumentation(config);
 
     return `${documentation}
 
@@ -29,206 +118,36 @@ ${exportClass}`;
 
   /**
    * Generate export interface
-   * @param config - Project configuration
-   * @returns Interface TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Interface TypeScript code
    */
   private generateExportInterface(config: ProjectConfig): string {
-    const baseInterface = this.getBaseInterface(config);
-    const additionalInterface = this.getAdditionalInterface(config);
-
-    return additionalInterface ? `${baseInterface}\n\n${additionalInterface}` : baseInterface;
-  }
-
-  /**
-   * Get base interface definition
-   * @param config - Project configuration
-   * @returns Base interface code
-   */
-  private getBaseInterface(config: ProjectConfig): string {
-    return `/**
- * ${config.name} configuration and utilities
- */
-export interface ${toPascalCase(config.name)}Config {
-  /**
-   * Enable debug mode
-   */
-  debug?: boolean;
-
-  /**
-   * Custom options for ${config.name}
-   */
-  options?: Record<string, unknown>;
-}`;
-  }
-
-  /**
-   * Get additional interface based on project type
-   * @param config - Project configuration
-   * @returns Additional interface code or empty string
-   */
-  private getAdditionalInterface(config: ProjectConfig): string {
-    switch (config.projectType) {
-      case 'bun-react':
-      case 'bun-vue':
-        return this.getReactInterface(config);
-      case 'bun-express':
-        return this.getExpressInterface(config);
-      default:
-        return '';
-    }
-  }
-
-  /**
-   * Get React-specific interface
-   * @param config - Project configuration
-   * @returns React interface code
-   */
-  private getReactInterface(config: ProjectConfig): string {
-    return `export interface ${toPascalCase(config.name)}Props {
-  /**
-   * Component children
-   */
-  children?: React.ReactNode;
-}`;
-  }
-
-  /**
-   * Get Express-specific interface
-   * @param config - Project configuration
-   * @returns Express interface code
-   */
-  private getExpressInterface(config: ProjectConfig): string {
-    return `export interface ${toPascalCase(config.name)}Middleware {
-  /**
-   * Express middleware function
-   */
-  (req: any, res: any, next: any): void;
-}`;
+    return getBaseInterface(config);
   }
 
   /**
    * Generate export class
-   * @param config - Project configuration
-   * @returns Class TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Class TypeScript code
    */
   private generateExportClass(config: ProjectConfig): string {
-    const className = `${toPascalCase(config.name)}Core`;
+    const className = `${this.toPascalCase(config.name)}Core`;
 
     return [
-      this.getClassHeader(config, className),
-      this.getClassConstructor(config, className),
-      this.getInitializeMethod(config),
-      this.getConfigMethod(className),
-      this.getUpdateConfigMethod(className),
-      this.getClassFooter(),
+      getClassHeader(config, className),
+      getClassConstructor(config),
+      getInitializeMethod(config),
+      getConfigMethod(className),
+      getSetConfigMethod(className),
+      getUpdateConfigMethod(className),
+      getClassFooter(),
     ].join('\n');
   }
 
   /**
-   * Get class header
-   * @param config - Project configuration
-   * @param className - Class name
-   * @returns Class header
-   */
-  private getClassHeader(config: ProjectConfig, className: string): string {
-    return `/**
- * ${config.name} core functionality
- */
-export class ${className} {
-  private config: ${toPascalCase(config.name)}Config;`;
-  }
-
-  /**
-   * Get class constructor
-   * @param config - Project configuration
-   * @param _className - Class name (unused, kept for interface compatibility)
-   * @returns Class constructor
-   */
-  private getClassConstructor(config: ProjectConfig, _className: string): string {
-    return `  constructor(config: ${toPascalCase(config.name)}Config = {}) {
-    this.config = {
-      debug: false,
-      options: {},
-      ...config
-    };
-  }`;
-  }
-
-  /**
-   * Get initialize method
-   * @param config - Project configuration
-   * @returns Initialize method
-   */
-  private getInitializeMethod(config: ProjectConfig): string {
-    return `  /**
-   * Initialize ${config.name}
-   */
-  async initialize(): Promise<void> {
-    if (this.config.debug) {
-      console.log(\`${config.name} initialized with debug mode\`);
-    }
-  }`;
-  }
-
-  /**
-   * Get getConfig method
-   * @param className - Class name
-   * @returns GetConfig method
-   */
-  private getConfigMethod(className: string): string {
-    return `  /**
-   * Get current configuration
-   */
-  getConfig(): ${this.toPascalCase(className.replace('Core', ''))}Config {
-    return { ...this.config };
-  }`;
-  }
-
-  /**
-   * Get updateConfig method
-   * @param className - Class name
-   * @returns UpdateConfig method
-   */
-  private getUpdateConfigMethod(className: string): string {
-    return `  /**
-   * Update configuration
-   */
-  updateConfig(newConfig: Partial<${this.toPascalCase(className.replace('Core', ''))}Config>): void {
-    this.config = { ...this.config, ...newConfig };
-  }`;
-  }
-
-  /**
-   * Get class footer
-   * @returns Class footer
-   */
-  private getClassFooter(): string {
-    return `}`;
-  }
-
-  /**
-   * Generate index documentation
-   * @param config - Project configuration
-   * @returns Documentation JSDoc comment
-   */
-  private generateIndexDocumentation(config: ProjectConfig): string {
-    return `/**
- * ${config.name}
- * ${config.description || 'A modern TypeScript library built with Bun'}
- *
- * @author ${config.author || 'Unknown'}
- * @license ${config.license || 'MIT'}
- * @version 1.0.0
- *
- * This package was generated using ${config.template || 'basic'} template
- * with ${config.qualityLevel} quality standards.
- */`;
-  }
-
-  /**
    * Convert string to PascalCase
-   * @param str - Input string
-   * @returns PascalCase string
+   * @param {string} str - Input string
+   * @returns {string} PascalCase string
    */
   private toPascalCase(str: string): string {
     return str

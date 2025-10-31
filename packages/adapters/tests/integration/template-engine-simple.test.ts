@@ -4,10 +4,10 @@
  * Tests for template rendering with actual supported syntax
  * Priority: P1 - Core template functionality
  */
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdir, rm, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { TemplateEngine } from '../../src/template-engine.js';
 
 describe('Template Engine Simple Integration [T012]', () => {
@@ -276,7 +276,7 @@ export class Server {
 // Client-side code
 export class Client {
   constructor() {
-    console.log('Client initialized');
+    // Client initialized - replaced console.log for test standards
   }
 }
 {{/if}}`;
@@ -316,7 +316,7 @@ import { {{this}} } from './{{this}}';
 
 export class Main {
   constructor() {
-    console.log('Main class initialized');
+    // Main class initialized - replaced console.log for test standards
   }
 }`;
 
@@ -465,7 +465,7 @@ app.{{method}}('{{path}}', {{handler}});
 {{/each}}
 
 app.listen(PORT, () => {
-  console.log(\`Server running on port \${PORT}\`);
+  // Server running on port PORT - replaced console.log for test standards
 });
 
 export default app;`;

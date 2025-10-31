@@ -4,8 +4,8 @@
 
 /**
  * Check if file exists
- * @param filePath - File path
- * @returns True if file exists
+ * @param {string} filePath - File path
+ * @returns {void} True if file exists
  */
 export async function fileExists(filePath: string): Promise<boolean> {
   try {
@@ -19,8 +19,8 @@ export async function fileExists(filePath: string): Promise<boolean> {
 
 /**
  * Check if directory exists
- * @param dirPath - Directory path
- * @returns True if directory exists
+ * @param {string} dirPath - Directory path
+ * @returns {void} True if directory exists
  */
 export async function directoryExists(dirPath: string): Promise<boolean> {
   try {
@@ -34,8 +34,8 @@ export async function directoryExists(dirPath: string): Promise<boolean> {
 
 /**
  * Read file content
- * @param filePath - File path
- * @returns File content as string
+ * @param {string} filePath - File path
+ * @returns {void} File content as string
  */
 export async function readFile(filePath: string): Promise<string> {
   const { readFile: fsReadFile } = await import('fs/promises');

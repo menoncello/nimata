@@ -1,5 +1,5 @@
-import { join } from 'node:path';
 import { spawn } from 'bun';
+import { join } from 'node:path';
 
 /**
  * Result from executing a CLI command
