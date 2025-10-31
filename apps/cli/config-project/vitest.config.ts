@@ -14,21 +14,16 @@ export default defineConfig({
           branches: 90,
           functions: 90,
           lines: 90,
-          statements: 90
-        }
+          statements: 90,
+        },
       },
       include: ['src/**/*'],
-      exclude: [
-        '**/node_modules/**',
-        '**/tests/**',
-        '**/*.d.ts',
-        '**/*.config.*'
-      ]
-    }
+      exclude: ['**/node_modules/**', '**/tests/**', '**/*.d.ts', '**/*.config.*'],
+    },
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src')
-    }
-  }
+      '@': resolve(__dirname, './src'),
+    },
+  },
 });

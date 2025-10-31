@@ -70,7 +70,7 @@ export const testUtils = {
    * @param {number} ms - Milliseconds to wait
    * @returns {Promise<void>} Promise that resolves after delay
    */
-  wait: (ms = 0) => new Promise(resolve => setTimeout(resolve, ms)),
+  wait: (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms)),
 
   /**
    * Create a mock error

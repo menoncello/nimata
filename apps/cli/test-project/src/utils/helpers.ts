@@ -13,7 +13,7 @@ export function formatDate(date: Date = new Date()): string {
  * Delay execution for specified milliseconds
  */
 export function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -45,11 +45,8 @@ export function isObject(value: unknown): value is Record<string, unknown> {
 /**
  * Safely access nested object properties
  */
-export function getNestedValue<T = any>(
-  obj: Record<string, unknown>,
-  path: string
-): T | undefined {
+export function getNestedValue<T = any>(obj: Record<string, unknown>, path: string): T | undefined {
   return path.split('.').reduce((current, key) => {
-    return isObject(current) ? current[key] as T : undefined;
+    return isObject(current) ? (current[key] as T) : undefined;
   }, obj) as T | undefined;
 }

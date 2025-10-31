@@ -4,7 +4,7 @@
 
 /**
  * Wait for DOM to be ready
-  * @param {string} callback - Function to execute when DOM is ready
+ * @param {string} callback - Function to execute when DOM is ready
  */
 export const domReady = (callback: () => void): void => {
   if (document.readyState === 'loading') {
@@ -16,8 +16,8 @@ export const domReady = (callback: () => void): void => {
 
 /**
  * Check if element is in viewport
-  * @param {string} element - Element to check
-  * @returns {boolean} if element is in viewport
+ * @param {string} element - Element to check
+ * @returns {boolean} if element is in viewport
  */
 export const isInViewport = (element: Element): boolean => {
   const rect = element.getBoundingClientRect();
@@ -31,8 +31,8 @@ export const isInViewport = (element: Element): boolean => {
 
 /**
  * Smooth scroll to element
-  * @param {string} element - Element to scroll to
-  * @param {string} offset - Offset from top (default: 0)
+ * @param {string} element - Element to scroll to
+ * @param {string} offset - Offset from top (default: 0)
  */
 export const scrollToElement = (element: Element, offset: number = 0): void => {
   const elementPosition = element.getBoundingClientRect().top;
@@ -40,30 +40,27 @@ export const scrollToElement = (element: Element, offset: number = 0): void => {
 
   window.scrollTo({
     top: offsetPosition,
-    behavior: 'smooth'
+    behavior: 'smooth',
   });
 };
 
 /**
  * Get element's computed style
-  * @param {string} element - Element to get style from
-  * @param {string} property - CSS property to get
-  * @returns {string} CSS property value
+ * @param {string} element - Element to get style from
+ * @param {string} property - CSS property to get
+ * @returns {string} CSS property value
  */
-export const getComputedStyle = (
-  element: Element,
-  property: string
-): string => {
+export const getComputedStyle = (element: Element, property: string): string => {
   return window.getComputedStyle(element).getPropertyValue(property);
 };
 
 /**
  * Add event listener with automatic cleanup
-  * @param {string} element - Element to add listener to
-  * @param {string} event - Event type
-  * @param {string} handler - Event handler
-  * @param {string} options - Event listener options
-  * @returns {string} Cleanup function
+ * @param {string} element - Element to add listener to
+ * @param {string} event - Event type
+ * @param {string} handler - Event handler
+ * @param {string} options - Event listener options
+ * @returns {string} Cleanup function
  */
 export const addEventListenerWithCleanup = <T extends EventTarget>(
   element: T,
@@ -80,8 +77,8 @@ export const addEventListenerWithCleanup = <T extends EventTarget>(
 
 /**
  * Create portal container
-  * @param {string} id - Container ID
-  * @returns {string} Container element
+ * @param {string} id - Container ID
+ * @returns {string} Container element
  */
 export const createPortalContainer = (id: string): HTMLElement => {
   let container = document.getElementById(id);
@@ -97,8 +94,8 @@ export const createPortalContainer = (id: string): HTMLElement => {
 
 /**
  * Copy text to clipboard
-  * @param {string} text - Text to copy
-  * @returns {Promise<void>} that resolves when text is copied
+ * @param {string} text - Text to copy
+ * @returns {Promise<void>} that resolves when text is copied
  */
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
@@ -144,9 +141,9 @@ export const getScrollbarWidth = (): number => {
 
 /**
  * Debounce function
-  * @param {string} func - Function to debounce
-  * @param {string} delay - Delay in milliseconds
-  * @returns {string} Debounced function
+ * @param {string} func - Function to debounce
+ * @param {string} delay - Delay in milliseconds
+ * @returns {string} Debounced function
  */
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
@@ -162,9 +159,9 @@ export const debounce = <T extends (...args: any[]) => any>(
 
 /**
  * Throttle function
-  * @param {string} func - Function to throttle
-  * @param {string} limit - Time limit in milliseconds
-  * @returns {string} Throttled function
+ * @param {string} func - Function to throttle
+ * @param {string} limit - Time limit in milliseconds
+ * @returns {string} Throttled function
  */
 export const throttle = <T extends (...args: any[]) => any>(
   func: T,
@@ -176,7 +173,7 @@ export const throttle = <T extends (...args: any[]) => any>(
     if (!inThrottle) {
       func(...args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      setTimeout(() => (inThrottle = false), limit);
     }
   };
 };

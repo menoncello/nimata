@@ -15,8 +15,8 @@ export const AboutPage: React.FC = () => {
           <section className={styles.section}>
             <h2>Our Mission</h2>
             <p>
-              config-project is dedicated to providing exceptional web experiences
-              through modern technologies and best practices.
+              config-project is dedicated to providing exceptional web experiences through modern
+              technologies and best practices.
             </p>
           </section>
 
@@ -33,8 +33,8 @@ export const AboutPage: React.FC = () => {
           <section className={styles.section}>
             <h2>Get in Touch</h2>
             <p>
-              Have questions or feedback? We'd love to hear from you.
-              Visit our contact page or reach out through our channels.
+              Have questions or feedback? We'd love to hear from you. Visit our contact page or
+              reach out through our channels.
             </p>
           </section>
         </main>

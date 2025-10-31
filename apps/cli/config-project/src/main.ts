@@ -5,7 +5,7 @@
  */
 
 import './styles/main.css';
-import { App } from './App.js';
+import App from './App.js';
 import type { AppConfig } from './types/app.types.js';
 
 /**

@@ -14,9 +14,12 @@ interface AppConfig {
  */
 export function App() {
   const { state, loading, notifications, setTheme } = useAppState();
-  const [router] = useState(() => new Router({
-    debug: import.meta.env.DEV,
-  }));
+  const [router] = useState(
+    () =>
+      new Router({
+        debug: import.meta.env.DEV,
+      })
+  );
 
   useEffect(() => {
     // Initialize router
@@ -53,7 +56,9 @@ export function App() {
               >
                 {notification.message}
                 <button
-                  onClick={() => {/* Handle notification removal */}}
+                  onClick={() => {
+                    /* Handle notification removal */
+                  }}
                   className="notification__close"
                 >
                   ×

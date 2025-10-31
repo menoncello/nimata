@@ -20,7 +20,7 @@ bun add test-project
 import { TestProjectCore } from 'test-project';
 
 const app = new TestProjectCore({
-  debug: true
+  debug: true,
 });
 
 await app.initialize();

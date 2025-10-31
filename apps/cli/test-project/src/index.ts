@@ -34,7 +34,7 @@ export class TestProjectCore {
     this.config = {
       debug: false,
       options: {},
-      ...config
+      ...config,
     };
   }
   /**

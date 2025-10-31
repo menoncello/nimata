@@ -56,7 +56,7 @@ describe('config-project React application', () => {
   describe('App component import', () => {
     it('should import App component successfully', async () => {
       // Given: Import the App component
-      const App = (await import('../src/App')).App;
+      const App = (await import('../src/App')).default;
 
       // When: Checking component
       // Then: Should be a function (React component)
@@ -65,7 +65,7 @@ describe('config-project React application', () => {
 
     it('should have correct component structure', async () => {
       // Given: Import the App component
-      const App = (await import('../src/App')).App;
+      const App = (await import('../src/App')).default;
 
       // When: Creating component instance
       // Then: Should be a valid React component
@@ -160,9 +160,9 @@ describe('config-project React application', () => {
       const module = await import('../src/App');
 
       // When: Checking exports
-      // Then: Should export named App
-      expect(module.App).toBeDefined();
-      expect(typeof module.App).toBe('function');
+      // Then: Should export default App
+      expect(module.default).toBeDefined();
+      expect(typeof module.default).toBe('function');
     });
   });
 
