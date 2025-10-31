@@ -19,8 +19,8 @@ const COLOR_CONVERSION_FACTOR = 2.55;
 
 /**
  * Clamp color values to valid byte range
- * @param value - Color value to clamp
- * @returns Clamped value between 0 and RGB_MAX_VALUE
+ * @param {string} value - Color value to clamp
+ * @returns {string} Clamped value between 0 and RGB_MAX_VALUE
  */
 const clampToByte = (value: number): number => {
   if (value < 1) return 0;
@@ -34,8 +34,8 @@ const clampToByte = (value: number): number => {
 export class ColorUtilities {
   /**
    * Get primary color based on project configuration
-   * @param config - Project configuration containing theme settings
-   * @returns Primary color hex code
+   * @param {ProjectConfig} config - Project configuration containing theme settings
+   * @returns {string} Primary color hex code
    */
   getPrimaryColor(config: ProjectConfig): string {
     // Extract primary color from theme or use default
@@ -44,9 +44,9 @@ export class ColorUtilities {
 
   /**
    * Lighten a hex color by a specified percentage
-   * @param color - Hex color code to lighten (e.g., '#3b82f6')
-   * @param percent - Percentage to lighten (0-100)
-   * @returns Lightened hex color code
+   * @param {string} color - Hex color code to lighten (e.g., '#3b82f6')
+   * @param {string} percent - Percentage to lighten (0-100)
+   * @returns {string} Lightened hex color code
    */
   lightenColor(color: string, percent: number): string {
     const num = Number.parseInt(color.replace('#', ''), HEX_BASE);
@@ -71,9 +71,9 @@ export class ColorUtilities {
 
   /**
    * Darken a hex color by a specified percentage
-   * @param color - Hex color code to darken (e.g., '#3b82f6')
-   * @param percent - Percentage to darken (0-100)
-   * @returns Darkened hex color code
+   * @param {string} color - Hex color code to darken (e.g., '#3b82f6')
+   * @param {string} percent - Percentage to darken (0-100)
+   * @returns {string} Darkened hex color code
    */
   darkenColor(color: string, percent: number): string {
     return this.lightenColor(color, -percent);
@@ -81,8 +81,8 @@ export class ColorUtilities {
 
   /**
    * Generate a color palette based on primary color
-   * @param config - Project configuration
-   * @returns Object containing color palette
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {object} containing color palette
    */
   generateColorPalette(config: ProjectConfig): {
     primary: string;
