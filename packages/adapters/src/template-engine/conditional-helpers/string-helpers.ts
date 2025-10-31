@@ -14,7 +14,7 @@ type HandlebarsInstance = typeof Handlebars;
 export class StringConditionalHelpers {
   /**
    * Register all string-based conditional helpers with Handlebars instance
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   static registerAll(handlebars: HandlebarsInstance): void {
     this.registerBasicStringHelpers(handlebars);
@@ -24,7 +24,7 @@ export class StringConditionalHelpers {
 
   /**
    * Register basic string comparison helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerBasicStringHelpers(handlebars: HandlebarsInstance): void {
     // Case-insensitive string comparison
@@ -64,7 +64,7 @@ export class StringConditionalHelpers {
 
   /**
    * Register string pattern matching helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerStringPatternHelpers(handlebars: HandlebarsInstance): void {
     // String matches regex
@@ -83,7 +83,7 @@ export class StringConditionalHelpers {
 
   /**
    * Register string length comparison helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerStringLengthHelpers(handlebars: HandlebarsInstance): void {
     // String length comparison
@@ -104,10 +104,10 @@ export class StringConditionalHelpers {
 
   /**
    * Evaluates length comparison
-   * @param strLength - String length
-   * @param operator - Comparison operator
-   * @param targetLength - Target length
-   * @returns Comparison result
+   * @param {unknown} strLength - String length
+   * @param {unknown} operator - Comparison operator
+   * @param {unknown} targetLength - Target length
+   * @returns {boolean} Comparison result
    */
   private static evaluateLengthComparison(
     strLength: number,
@@ -143,8 +143,8 @@ export class StringConditionalHelpers {
 
   /**
    * Checks if operator is an equality operator
-   * @param operator - Operator to check
-   * @returns True if equality operator
+   * @param {string} operator - Operator to check
+   * @returns {string): boolean} True if equality operator
    */
   private static isEqualityOperator(operator: string): boolean {
     return operator === 'eq' || operator === '==' || operator === '===';
@@ -152,8 +152,8 @@ export class StringConditionalHelpers {
 
   /**
    * Checks if operator is an inequality operator
-   * @param operator - Operator to check
-   * @returns True if inequality operator
+   * @param {string} operator - Operator to check
+   * @returns {string): boolean} True if inequality operator
    */
   private static isInequalityOperator(operator: string): boolean {
     return operator === 'ne' || operator === '!=' || operator === '!==';
@@ -161,8 +161,8 @@ export class StringConditionalHelpers {
 
   /**
    * Checks if operator is a greater than operator
-   * @param operator - Operator to check
-   * @returns True if greater than operator
+   * @param {string} operator - Operator to check
+   * @returns {string): boolean} True if greater than operator
    */
   private static isGreaterThanOperator(operator: string): boolean {
     return operator === 'gt' || operator === '>';
@@ -170,8 +170,8 @@ export class StringConditionalHelpers {
 
   /**
    * Checks if operator is a greater than or equal operator
-   * @param operator - Operator to check
-   * @returns True if greater than or equal operator
+   * @param {string} operator - Operator to check
+   * @returns {string): boolean} True if greater than or equal operator
    */
   private static isGreaterThanOrEqualOperator(operator: string): boolean {
     return operator === 'gte' || operator === '>=';
@@ -179,8 +179,8 @@ export class StringConditionalHelpers {
 
   /**
    * Checks if operator is a less than operator
-   * @param operator - Operator to check
-   * @returns True if less than operator
+   * @param {string} operator - Operator to check
+   * @returns {string): boolean} True if less than operator
    */
   private static isLessThanOperator(operator: string): boolean {
     return operator === 'lt' || operator === '<';
@@ -188,8 +188,8 @@ export class StringConditionalHelpers {
 
   /**
    * Checks if operator is a less than or equal operator
-   * @param operator - Operator to check
-   * @returns True if less than or equal operator
+   * @param {string} operator - Operator to check
+   * @returns {string): boolean} True if less than or equal operator
    */
   private static isLessThanOrEqualOperator(operator: string): boolean {
     return operator === 'lte' || operator === '<=';

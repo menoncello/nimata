@@ -16,8 +16,8 @@ import { generateMainEntry } from './modules/main-entry-generator.js';
 export class WebEntryGenerators {
   /**
    * Generate main React entry file
-   * @param config - Project configuration
-   * @returns Main entry file code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Main entry file code
    */
   generateMainEntry(config: ProjectConfig): string {
     return generateMainEntry(config);
@@ -25,8 +25,8 @@ export class WebEntryGenerators {
 
   /**
    * Generate application types
-   * @param config - Project configuration
-   * @returns Application types code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Application types code
    */
   generateAppTypes(config: ProjectConfig): string {
     return generateAppTypes(config);
@@ -34,8 +34,8 @@ export class WebEntryGenerators {
 
   /**
    * Generate DOM utilities
-   * @param config - Project configuration
-   * @returns DOM utilities code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} DOM utilities code
    */
   generateDOMUtils(config: ProjectConfig): string {
     return generateDOMUtils(config);

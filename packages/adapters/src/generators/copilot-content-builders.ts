@@ -13,8 +13,8 @@ const MAX_LINE_LENGTH_STRICT = 80;
 
 /**
  * Get quality level configuration
- * @param qualityLevel - Project quality level
- * @returns Quality configuration object
+ * @param {string} qualityLevel - Project quality level
+ * @returns {string):} Quality configuration object
  */
 function getQualityConfig(qualityLevel: string): {
   trailingCommas: 'none' | 'es5' | 'all';
@@ -45,8 +45,8 @@ function getQualityConfig(qualityLevel: string): {
 
 /**
  * Build frameworks list from array of frameworks
- * @param frameworks - Array of framework names
- * @returns Formatted frameworks list string
+ * @param {string[]} frameworks - Array of framework names
+ * @returns {string[]): string} Formatted frameworks list string
  */
 function buildFrameworksList(frameworks: string[]): string {
   return frameworks.map((f: string) => `- ${f}`).join('\n');
@@ -54,8 +54,8 @@ function buildFrameworksList(frameworks: string[]): string {
 
 /**
  * Get security guidelines based on project type
- * @param projectType - Type of project
- * @returns Security guidelines string
+ * @param {string} projectType - Type of project
+ * @returns {string): string} Security guidelines string
  */
 function getSecurityGuidelines(projectType: string): string {
   const baseSecurity = [
@@ -79,8 +79,8 @@ function getSecurityGuidelines(projectType: string): string {
 
 /**
  * Get coverage threshold based on quality level
- * @param qualityLevel - Quality level
- * @returns Coverage threshold number
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel): number} Coverage threshold number
  */
 export function getCopilotCoverageThreshold(qualityLevel: QualityLevel): number {
   switch (qualityLevel) {
@@ -97,8 +97,8 @@ export function getCopilotCoverageThreshold(qualityLevel: QualityLevel): number 
 
 /**
  * Build project context section
- * @param options - Configuration options
- * @returns Project context section string
+ * @param {CopilotConfigOptions} options - Configuration options
+ * @returns {CopilotConfigOptions): string} Project context section string
  */
 export function buildProjectContextSection(options: CopilotConfigOptions): string {
   return `## Project Context
@@ -118,8 +118,8 @@ ${options.frameworks.length > 0 ? buildFrameworksList(options.frameworks) : '- N
 
 /**
  * Build coding standards section
- * @param options - Configuration options
- * @returns Coding standards section string
+ * @param {CopilotConfigOptions} options - Configuration options
+ * @returns {CopilotConfigOptions): string} Coding standards section string
  */
 export function buildCodingStandardsSection(options: CopilotConfigOptions): string {
   const coverageThreshold = getCopilotCoverageThreshold(options.qualityLevel);
@@ -150,8 +150,8 @@ ${qualityConfig.qualityFocus}
 
 /**
  * Build testing guidelines section
- * @param options - Configuration options
- * @returns Testing guidelines section string
+ * @param {CopilotConfigOptions} options - Configuration options
+ * @returns {CopilotConfigOptions): string} Testing guidelines section string
  */
 export function buildTestingGuidelinesSection(options: CopilotConfigOptions): string {
   if (!options.testing) {
@@ -183,8 +183,8 @@ Testing is disabled for this project.`;
 
 /**
  * Build security and performance section
- * @param options - Configuration options
- * @returns Security and performance section string
+ * @param {CopilotConfigOptions} options - Configuration options
+ * @returns {CopilotConfigOptions): string} Security and performance section string
  */
 export function buildSecurityPerformanceSection(options: CopilotConfigOptions): string {
   const securityGuidelines = getSecurityGuidelines(options.projectType);

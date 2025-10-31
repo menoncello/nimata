@@ -15,8 +15,8 @@ export interface ConfigRepository {
   /**
    * Loads and merges configuration from all sources
    *
-   * @param projectRoot - Project root directory (defaults to process.cwd())
-   * @returns Merged configuration with cascade applied
+   * @param {string} projectRoot - Project root directory (defaults to process.cwd())
+   * @returns {string} Merged configuration with cascade applied
    *
    * Cascade order (last wins):
    * 1. Load defaults
@@ -28,8 +28,8 @@ export interface ConfigRepository {
   /**
    * Saves configuration to project-specific file
    *
-   * @param config - Configuration to save
-   * @param projectRoot - Project root directory
+   * @param {string} config - Configuration to save
+   * @param {string} projectRoot - Project root directory
    *
    * Saves to: <projectRoot>/.nimatarc
    */
@@ -38,9 +38,9 @@ export interface ConfigRepository {
   /**
    * Deep merges two configurations with override priority
    *
-   * @param base - Base configuration
-   * @param override - Override configuration (takes priority)
-   * @returns Merged configuration
+   * @param {string} base - Base configuration
+   * @param {string} override - Override configuration (takes priority)
+   * @returns {string} Merged configuration
    *
    * Merge strategy:
    * - Nested objects are deeply merged

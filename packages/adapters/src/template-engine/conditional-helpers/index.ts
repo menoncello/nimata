@@ -21,7 +21,7 @@ type HandlebarsInstance = typeof Handlebars;
 export class ConditionalHelpers {
   /**
    * Register all conditional helpers with Handlebars instance
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   static registerAll(handlebars: HandlebarsInstance): void {
     BasicConditionalHelpers.registerAll(handlebars);

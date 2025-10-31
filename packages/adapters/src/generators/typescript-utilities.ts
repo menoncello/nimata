@@ -23,8 +23,8 @@ const COMMAND_PATHS = {
 
 /**
  * Get include patterns for TypeScript configuration
- * @param options - TypeScript configuration options
- * @returns Include patterns array
+ * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+ * @returns {TypeScriptConfigOptions): string[]} Include patterns array
  */
 export function getIncludePatterns(options: TypeScriptConfigOptions): string[] {
   const patterns = ['src/**/*.ts'];
@@ -40,8 +40,8 @@ export function getIncludePatterns(options: TypeScriptConfigOptions): string[] {
 
 /**
  * Get exclude patterns for TypeScript configuration
- * @param _options - TypeScript configuration options (unused but kept for interface consistency)
- * @returns Exclude patterns array
+ * @param {TypeScriptConfigOptions} _options - TypeScript configuration options (unused but kept for interface consistency)
+ * @returns {TypeScriptConfigOptions): string[]} Exclude patterns array
  */
 export function getExcludePatterns(_options: TypeScriptConfigOptions): string[] {
   return ['node_modules', 'dist', 'build', 'coverage', '**/*.d.ts', '**/*.js', '**/*.mjs'];
@@ -49,8 +49,8 @@ export function getExcludePatterns(_options: TypeScriptConfigOptions): string[] 
 
 /**
  * Get ESBuild target based on target environment
- * @param targetEnvironment - Target environment
- * @returns ESBuild target string
+ * @param {string} targetEnvironment - Target environment
+ * @returns {string): string} ESBuild target string
  */
 export function getESBuildTarget(targetEnvironment: string): string {
   switch (targetEnvironment) {
@@ -67,8 +67,8 @@ export function getESBuildTarget(targetEnvironment: string): string {
 
 /**
  * Get default path mappings for project type
- * @param projectType - Project type
- * @returns Default path mappings
+ * @param {string} projectType - Project type
+ * @returns {void} Default path mappings
  */
 export function getDefaultPaths(projectType: string): Record<string, string> {
   switch (projectType) {
@@ -91,8 +91,8 @@ export function getDefaultPaths(projectType: string): Record<string, string> {
 
 /**
  * Get target environment based on project type
- * @param projectType - Project type
- * @returns Target environment
+ * @param {string} projectType - Project type
+ * @returns {string): 'node' | 'browser' | 'both'} Target environment
  */
 export function getTargetEnvironment(projectType: string): 'node' | 'browser' | 'both' {
   switch (projectType) {
@@ -110,8 +110,8 @@ export function getTargetEnvironment(projectType: string): 'node' | 'browser' | 
 
 /**
  * Get build system based on project type
- * @param projectType - Project type
- * @returns Build system
+ * @param {string} projectType - Project type
+ * @returns {string): 'esbuild' | 'tsc' | 'both'} Build system
  */
 export function getBuildSystem(projectType: string): 'esbuild' | 'tsc' | 'both' {
   switch (projectType) {
@@ -129,8 +129,8 @@ export function getBuildSystem(projectType: string): 'esbuild' | 'tsc' | 'both' 
 
 /**
  * Get project type display name
- * @param projectType - Project type
- * @returns Project type display name
+ * @param {string} projectType - Project type
+ * @returns {string): string} Project type display name
  */
 export function getProjectTypeName(projectType: string): string {
   switch (projectType) {
@@ -149,8 +149,8 @@ export function getProjectTypeName(projectType: string): string {
 
 /**
  * Get ESBuild base configuration
- * @param options - TypeScript configuration options
- * @returns ESBuild base configuration string
+ * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+ * @returns {TypeScriptConfigOptions): string} ESBuild base configuration string
  */
 export function getESBuildBaseConfig(options: TypeScriptConfigOptions): string {
   return `const baseConfig = {
@@ -168,8 +168,8 @@ export function getESBuildBaseConfig(options: TypeScriptConfigOptions): string {
 
 /**
  * Get ESBuild defines
- * @param options - TypeScript configuration options
- * @returns ESBuild defines string
+ * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+ * @returns {TypeScriptConfigOptions): string} ESBuild defines string
  */
 export function getESBuildDefines(options: TypeScriptConfigOptions): string {
   const defines: Record<string, string> = {
@@ -195,7 +195,7 @@ ${defineEntries}
 
 /**
  * Get ESBuild plugins
- * @returns ESBuild plugins string
+ * @returns {string} ESBuild plugins string
  */
 export function getESBuildPlugins(): string {
   return `const plugins = [
@@ -217,7 +217,7 @@ export function getESBuildPlugins(): string {
 
 /**
  * Get ESBuild build configuration
- * @returns ESBuild build configuration string
+ * @returns {string} ESBuild build configuration string
  */
 export function getESBuildBuildConfig(): string {
   return `const buildConfig = {

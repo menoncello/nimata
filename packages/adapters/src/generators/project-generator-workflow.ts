@@ -25,10 +25,10 @@ const UNKNOWN_ERROR_MESSAGE = 'Unknown error';
 
 /**
  * Prepare project setup and validate prerequisites
- * @param config - Project configuration
- * @param templateEngine - Template engine instance
- * @param startTime - Start time for duration calculation
- * @returns Setup result
+ * @param {unknown} config - Project configuration
+ * @param {unknown} templateEngine - Template engine instance
+ * @param {unknown} startTime - Start time for duration calculation
+ * @returns {void} Setup result
  */
 export async function prepareProjectSetup(
   config: ProjectConfig,
@@ -70,9 +70,9 @@ export async function prepareProjectSetup(
 
 /**
  * Load and process template
- * @param config - Project configuration
- * @param templateEngine - Template engine instance
- * @returns Generated files from template
+ * @param {unknown} config - Project configuration
+ * @param {unknown} templateEngine - Template engine instance
+ * @returns {Promise<Array<} Generated files from template
  */
 export async function loadAndProcessTemplate(
   config: ProjectConfig,
@@ -86,11 +86,11 @@ export async function loadAndProcessTemplate(
 
 /**
  * Generate files from template
- * @param config - Project configuration
- * @param templateEngine - Template engine instance
- * @param files - Generated files array
- * @param startTime - Start time for duration calculation
- * @returns Generation result
+ * @param {ProjectConfig} config - Project configuration
+ * @param {TemplateEngine} templateEngine - Template engine instance
+ * @param {Array<{ path: string; content: string; permissions?: string }>} files - Generated files array
+ * @param {number} startTime - Start time for duration calculation
+ * @returns {Promise<GenerationResult>} Generation result
  */
 export async function generateFilesFromTemplate(
   config: ProjectConfig,
@@ -127,8 +127,8 @@ export async function generateFilesFromTemplate(
 
 /**
  * Generate AI context files based on selected AI assistants
- * @param config - Project configuration
- * @returns Array of generated AI context files
+ * @param {unknown} config - Project configuration
+ * @returns {Array<} Array of generated AI context files
  */
 export function generateAIContextFiles(
   config: ProjectConfig
@@ -169,9 +169,9 @@ export function generateAIContextFiles(
 
 /**
  * Create project directory and write files
- * @param config - Project configuration
- * @param files - Files to write
- * @returns Project directory or error
+ * @param {ProjectConfig} config - Project configuration
+ * @param {Array<{ path: string; content: string; permissions?: string }>} files - Files to write
+ * @returns {Promise<{ projectDir: string; writeErrors: string[] }>} Project directory or error
  */
 export async function createProjectAndWriteFiles(
   config: ProjectConfig,
@@ -186,11 +186,11 @@ export async function createProjectAndWriteFiles(
 
 /**
  * Finalize project by writing files and validating
- * @param config - Project configuration
- * @param files - Files to write
- * @param startTime - Start time for duration calculation
- * @param addValidationWarnings - Function to add validation warnings
- * @returns Final result
+ * @param {ProjectConfig} config - Project configuration
+ * @param {Array<{ path: string; content: string; permissions?: string }>} files - Files to write
+ * @param {number} startTime - Start time for duration calculation
+ * @param {(result: GenerationResult} addValidationWarnings - Function to add validation warnings
+ * @returns {Promise<GenerationResult>} Final result
  */
 export async function finalizeProject(
   config: ProjectConfig,

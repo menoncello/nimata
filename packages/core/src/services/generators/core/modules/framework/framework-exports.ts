@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate Framework exports
- * @param config - Project configuration
- * @returns Framework exports TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Framework exports TypeScript code
  */
 export function generateFrameworkExports(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);

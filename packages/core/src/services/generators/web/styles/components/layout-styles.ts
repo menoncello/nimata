@@ -6,12 +6,12 @@
 
 /**
  * Generates CSS layout classes
- * @returns CSS string for layout classes
+ * @returns {string} CSS string for layout classes
  */
 export class LayoutStyles {
   /**
    * Generates container styles
-   * @returns CSS string for container styles
+   * @returns {string} CSS string for container styles
    */
   private generateContainerStyles(): string {
     return `.container {
@@ -24,7 +24,7 @@ export class LayoutStyles {
 
   /**
    * Generates grid system styles
-   * @returns CSS string for grid system
+   * @returns {string} CSS string for grid system
    */
   private generateGridStyles(): string {
     return `.grid {
@@ -40,7 +40,7 @@ export class LayoutStyles {
 
   /**
    * Generates flexbox utilities
-   * @returns CSS string for flexbox utilities
+   * @returns {string} CSS string for flexbox utilities
    */
   private generateFlexStyles(): string {
     return `.flex {
@@ -66,7 +66,7 @@ export class LayoutStyles {
 
   /**
    * Generates gap utilities
-   * @returns CSS string for gap utilities
+   * @returns {string} CSS string for gap utilities
    */
   private generateGapStyles(): string {
     return `.gap-4 { gap: 1rem; }
@@ -76,7 +76,7 @@ export class LayoutStyles {
 
   /**
    * Generates complete CSS for layout classes
-   * @returns Complete CSS string for layout classes
+   * @returns {string} Complete CSS string for layout classes
    */
   generateLayoutStyles(): string {
     const containerStyles = this.generateContainerStyles();

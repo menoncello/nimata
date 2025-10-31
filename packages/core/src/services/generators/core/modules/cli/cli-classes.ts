@@ -6,9 +6,9 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate CLI class constructor
- * @param className - Class name
- * @param config - Project configuration
- * @returns Constructor code
+ * @param {string} className - Class name
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Constructor code
  */
 function generateConstructor(className: string, config: ProjectConfig): string {
   return `  constructor(config: Partial<${className}Config> = {}) {
@@ -23,7 +23,7 @@ function generateConstructor(className: string, config: ProjectConfig): string {
 
 /**
  * Generate initialize method
- * @returns Initialize method code
+ * @returns {string} Initialize method code
  */
 function generateInitializeMethod(): string {
   return `  /**
@@ -49,14 +49,14 @@ function generateInitializeMethod(): string {
 
 /**
  * Generate execute command method
- * @returns Execute command method code
+ * @returns {string} Execute command method code
  */
 function generateExecuteCommandMethod(): string {
   return `  /**
    * Execute CLI command
-   * @param command - Command to execute
-   * @param args - Command arguments
-   * @returns Command result
+   * @param {string} command - Command to execute
+   * @param {string} args - Command arguments
+   * @returns {string} Command result
    */
   async executeCommand(command: string, args: string[] = []): Promise<CommandResult> {
     if (!this.initialized) {
@@ -86,8 +86,8 @@ function generateExecuteCommandMethod(): string {
 
 /**
  * Generate configuration methods
- * @param className - Class name
- * @returns Configuration methods code
+ * @param {string} className - Class name
+ * @returns {string} Configuration methods code
  */
 function generateConfigMethods(className: string): string {
   return `  /**
@@ -107,8 +107,8 @@ function generateConfigMethods(className: string): string {
 
 /**
  * Generate CLI class
- * @param config - Project configuration
- * @returns CLI class TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} CLI class TypeScript code
  */
 export function generateCLIClass(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);

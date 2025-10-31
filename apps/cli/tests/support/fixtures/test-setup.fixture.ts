@@ -5,7 +5,7 @@
  * with proper resource management and cleanup
  */
 
-import { describe, test, expect, beforeEach, afterEach } from 'bun:test';
+import { beforeEach, afterEach } from 'bun:test';
 import { createTempDirectory, cleanupTempDirectory } from '../helpers/file-assertions.js';
 
 export interface TestFixture {

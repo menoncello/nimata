@@ -15,8 +15,8 @@ import type { ProjectConfig } from '../../../../../src/types/project-config.js';
 export class CIConfigGenerator {
   /**
    * Generate CI configuration
-   * @param config - Project configuration
-   * @returns CI configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CI configuration content
    */
   static generateCIConfig(config: ProjectConfig): string {
     return [
@@ -28,10 +28,10 @@ export class CIConfigGenerator {
 
   /**
    * Generate CI configuration header
-   * @param config - Project configuration
-   * @returns CI header configuration
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} CI header configuration
    */
-  private static generateCIHeader(config: ProjectConfig): string {
+  private static generateCIHeader(_config: ProjectConfig): string {
     return `name: CI
 
 on:
@@ -45,7 +45,7 @@ jobs:`;
 
   /**
    * Generate CI jobs configuration
-   * @returns CI jobs configuration
+   * @returns {string} CI jobs configuration
    */
   private static generateCIJobs(): string {
     return `  test:
@@ -82,7 +82,7 @@ jobs:`;
 
   /**
    * Generate CI configuration footer
-   * @returns CI footer configuration
+   * @returns {string} CI footer configuration
    */
   private static generateCIFooter(): string {
     return `  code-quality:

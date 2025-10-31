@@ -33,8 +33,8 @@ export class CLITypeConfigGenerators {
 
   /**
    * Generate CLI types
-   * @param config - Project configuration
-   * @returns CLI types content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI types content
    */
   generateCLITypes(config: ProjectConfig): string {
     return this.typesGenerator.generateCLITypes(config);
@@ -42,8 +42,8 @@ export class CLITypeConfigGenerators {
 
   /**
    * Generate CLI configuration
-   * @param config - Project configuration
-   * @returns CLI configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI configuration content
    */
   generateCLIConfig(config: ProjectConfig): string {
     return this.configGenerator.generateCLIConfig(config);

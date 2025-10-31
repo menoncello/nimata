@@ -24,8 +24,8 @@ import { generateUtilityTypes } from './modules/cli-utility-types.js';
 export class CLITypesGenerator {
   /**
    * Generate CLI types
-   * @param config - Project configuration
-   * @returns CLI types content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI types content
    */
   generateCLITypes(config: ProjectConfig): string {
     const { name } = config;
@@ -47,7 +47,7 @@ export class CLITypesGenerator {
 
   /**
    * Generate CLI types header
-   * @returns Header comment
+   * @returns {string} Header comment
    */
   private generateCLITypesHeader(): string {
     return `/**
@@ -59,7 +59,7 @@ export class CLITypesGenerator {
 
   /**
    * Generate CLI types imports
-   * @returns Import statements
+   * @returns {string} Import statements
    */
   private generateCLITypesImports(): string {
     return `import type { Command, Argument, Option } from 'commander';

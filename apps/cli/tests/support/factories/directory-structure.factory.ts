@@ -178,6 +178,8 @@ export const createDirectoryConfigWithType = (
 
 /**
  * Create test directory items for mocking directory structure output
+ * @param {DirectoryStructureConfig} config - Directory structure configuration
+ * @returns {DirectoryItem[]} Array of directory items
  */
 export const createTestDirectoryItems = (config: DirectoryStructureConfig): DirectoryItem[] => {
   const items: DirectoryItem[] = [];
@@ -185,73 +187,143 @@ export const createTestDirectoryItems = (config: DirectoryStructureConfig): Dire
   // Basic directories
   items.push({ path: 'src', type: 'directory' });
 
-  if (config.includeTests) {
-    items.push(
-      { path: 'tests', type: 'directory' },
-      { path: 'tests/unit', type: 'directory' },
-      { path: 'tests/integration', type: 'directory' },
-      { path: 'tests/e2e', type: 'directory' }
-    );
-  }
+  // Add test directories
+  addTestDirectories(config, items);
 
+  // Add docs directory
+  addDocsDirectory(config, items);
+
+  // Add bin directory
+  addBinDirectory(config, items);
+
+  // Add public directory
+  addPublicDirectory(config, items);
+
+  // Add nimata directory
+  addNimataDirectory(config, items);
+
+  // Add custom directories
+  addCustomDirectories(config, items);
+
+  // Add .gitkeep files to empty directories
+  addGitkeepFiles(config, items);
+
+  return items;
+};
+
+/**
+ * Add test directories to items array
+ * @param {DirectoryStructureConfig} config - Directory structure configuration
+ * @param {DirectoryItem[]} items - Items array to modify
+ */
+function addTestDirectories(config: DirectoryStructureConfig, items: DirectoryItem[]): void {
+  if (!config.includeTests) return;
+
+  items.push(
+    { path: 'tests', type: 'directory' },
+    { path: 'tests/unit', type: 'directory' },
+    { path: 'tests/integration', type: 'directory' },
+    { path: 'tests/e2e', type: 'directory' }
+  );
+}
+
+/**
+ * Add docs directory to items array
+ * @param {DirectoryStructureConfig} config - Directory structure configuration
+ * @param {DirectoryItem[]} items - Items array to modify
+ */
+function addDocsDirectory(config: DirectoryStructureConfig, items: DirectoryItem[]): void {
   if (config.includeDocs) {
     items.push({ path: 'docs', type: 'directory' });
   }
+}
 
+/**
+ * Add bin directory to items array
+ * @param {DirectoryStructureConfig} config - Directory structure configuration
+ * @param {DirectoryItem[]} items - Items array to modify
+ */
+function addBinDirectory(config: DirectoryStructureConfig, items: DirectoryItem[]): void {
   if (config.includeBin) {
     items.push({ path: 'bin', type: 'directory' });
   }
+}
 
+/**
+ * Add public directory to items array
+ * @param {DirectoryStructureConfig} config - Directory structure configuration
+ * @param {DirectoryItem[]} items - Items array to modify
+ */
+function addPublicDirectory(config: DirectoryStructureConfig, items: DirectoryItem[]): void {
   if (config.includePublic) {
     items.push({ path: 'public', type: 'directory' });
   }
+}
 
+/**
+ * Add nimata directory to items array
+ * @param {DirectoryStructureConfig} config - Directory structure configuration
+ * @param {DirectoryItem[]} items - Items array to modify
+ */
+function addNimataDirectory(config: DirectoryStructureConfig, items: DirectoryItem[]): void {
   if (config.includeNimata) {
     items.push(
       { path: '.nimata', type: 'directory' },
       { path: '.nimata/cache', type: 'directory' }
     );
   }
+}
 
-  // Custom directories
-  config.customDirectories?.forEach((dir) => {
-    items.push({ path: dir, type: 'directory' });
-  });
+/**
+ * Add custom directories to items array
+ * @param {DirectoryStructureConfig} config - Directory structure configuration
+ * @param {DirectoryItem[]} items - Items array to modify
+ */
+function addCustomDirectories(config: DirectoryStructureConfig, items: DirectoryItem[]): void {
+  if (config.customDirectories) {
+    for (const dir of config.customDirectories) {
+      items.push({ path: dir, type: 'directory' });
+    }
+  }
+}
 
-  // Add .gitkeep files to empty directories
-  if (config.includeGitkeep) {
-    const potentiallyEmptyDirs = [
-      'bin',
-      'docs',
-      'docs/examples',
-      'tests/fixtures',
-      'tests/fixtures/data',
-      '.nimata/cache',
-      config.includePublic ? 'public' : null,
-    ].filter(Boolean);
+/**
+ * Add .gitkeep files to potentially empty directories
+ * @param {DirectoryStructureConfig} config - Directory structure configuration
+ * @param {DirectoryItem[]} items - Items array to modify
+ */
+function addGitkeepFiles(config: DirectoryStructureConfig, items: DirectoryItem[]): void {
+  if (!config.includeGitkeep) return;
 
-    potentiallyEmptyDirs.forEach((dir) => {
-      if (dir) {
-        items.push({
-          path: `${dir}/.gitkeep`,
-          type: 'file',
-          content: '',
-        });
-      }
-    });
+  const potentiallyEmptyDirs = [
+    'bin',
+    'docs',
+    'docs/examples',
+    'tests/fixtures',
+    'tests/fixtures/data',
+    '.nimata/cache',
+    config.includePublic ? 'public' : null,
+  ].filter(Boolean);
+
+  for (const dir of potentiallyEmptyDirs) {
+    if (dir) {
+      items.push({
+        path: `${dir}/.gitkeep`,
+        type: 'file',
+        content: '',
+      });
+    }
   }
 
   // Custom files
-  Object.entries(config.customFiles).forEach(([path, content]) => {
+  for (const [path, content] of Object.entries(config.customFiles)) {
     items.push({
       path,
       type: 'file',
       content,
     });
-  });
-
-  return items;
-};
+  }
+}
 
 /**
  * Create test configuration file content
@@ -323,7 +395,7 @@ export const createTestPackageJson = (config: DirectoryStructureConfig): string 
 /**
  * Create test TypeScript configuration
  */
-export const createTestTsConfig = (config: DirectoryStructureConfig): string => {
+export const createTestTsConfig = (_config: DirectoryStructureConfig): string => {
   const tsConfig = {
     compilerOptions: {
       target: 'ES2022',

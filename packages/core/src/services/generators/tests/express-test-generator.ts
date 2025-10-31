@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class ExpressTestGenerator {
   /**
    * Generate Express-specific test cases
-   * @param _config - Project configuration
-   * @returns Express test case TypeScript code
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Express test case TypeScript code
    */
   generateExpressTests(_config: ProjectConfig): string {
     return `

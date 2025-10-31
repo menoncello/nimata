@@ -9,8 +9,8 @@ import { generateWebInterface } from './web-interfaces.js';
 
 /**
  * Generate Web project index file
- * @param _config - Project configuration (unused parameter kept for interface consistency)
- * @returns Web index file TypeScript code
+ * @param {ProjectConfig} _config - Project configuration (unused parameter kept for interface consistency)
+ * @returns {string} Web index file TypeScript code
  */
 export function generateWebIndexFile(_config: ProjectConfig): string {
   return `import { StrictMode } from 'react';
@@ -43,8 +43,8 @@ export { initializeApp };`;
 
 /**
  * Generate comprehensive web project index file with interfaces and classes
- * @param config - Project configuration
- * @returns Web index file TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Web index file TypeScript code
  */
 export function generateWebProjectIndexFile(config: ProjectConfig): string {
   const documentation = generateIndexDocumentation(config);

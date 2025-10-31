@@ -14,10 +14,10 @@ import { DEFAULT_DEV_PORT } from '../../validators/validation-constants.js';
 export class WebConfigGenerators {
   /**
    * Generate HTML template
-   * @param config - Project configuration
-   * @returns HTML template code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} HTML template code
    */
-  generateHTMLTemplate(config: ProjectConfig): string {
+  static generateHTMLTemplate(config: ProjectConfig): string {
     const { name } = config;
     const head = this.generateHTMLHead(name);
     const body = this.generateHTMLBody();
@@ -32,10 +32,10 @@ export class WebConfigGenerators {
 
   /**
    * Generate HTML head section
-   * @param name - Project name
-   * @returns HTML head content
+   * @param {string} name - Project name
+   * @returns {string} HTML head content
    */
-  private generateHTMLHead(name: string): string {
+  private static generateHTMLHead(name: string): string {
     return `<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -55,9 +55,9 @@ export class WebConfigGenerators {
 
   /**
    * Generate HTML body section
-   * @returns HTML body content
+   * @returns {string} HTML body content
    */
-  private generateHTMLBody(): string {
+  private static generateHTMLBody(): string {
     return `<body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
@@ -78,9 +78,9 @@ export class WebConfigGenerators {
 
   /**
    * Generate favicon
-   * @returns Favicon SVG code
+   * @returns {string} Favicon SVG code
    */
-  generateFavicon(): string {
+  static generateFavicon(): string {
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <text y=".9em" font-size="90">⚛️</text>
 </svg>`;
@@ -88,10 +88,10 @@ export class WebConfigGenerators {
 
   /**
    * Generate Vite configuration
-   * @param config - Project configuration
-   * @returns Vite configuration code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Vite configuration code
    */
-  generateViteConfig(config: ProjectConfig): string {
+  static generateViteConfig(config: ProjectConfig): string {
     const { name } = config;
 
     return `import { defineConfig } from 'vite';
@@ -125,9 +125,9 @@ export default defineConfig({
 
   /**
    * Generate server configuration for Vite
-   * @returns Server configuration object
+   * @returns {object} Vite server configuration object
    */
-  private generateServerConfig(): string {
+  private static generateServerConfig(): string {
     return `{
     port: ${DEFAULT_DEV_PORT},
     open: true,
@@ -146,9 +146,9 @@ export default defineConfig({
 
   /**
    * Generate build configuration for Vite
-   * @returns Build configuration object
+   * @returns {object} Vite build configuration object
    */
-  private generateBuildConfig(): string {
+  private static generateBuildConfig(): string {
     return `{
     outDir: 'dist',
     sourcemap: true,
@@ -165,9 +165,9 @@ export default defineConfig({
 
   /**
    * Generate path resolution configuration for Vite
-   * @returns Resolve configuration object
+   * @returns {object} Vite path resolution configuration object with aliases
    */
-  private generateResolveConfig(): string {
+  private static generateResolveConfig(): string {
     return `{
     alias: {
       '@': resolve(__dirname, './src'),
@@ -183,10 +183,10 @@ export default defineConfig({
 
   /**
    * Generate environment variables configuration for Vite
-   * @param appName - Application name
-   * @returns Define configuration object
+   * @param {string} appName - Application name
+   * @returns {object} Vite environment variables configuration object
    */
-  private generateDefineConfig(appName: string): string {
+  private static generateDefineConfig(appName: string): string {
     return `{
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
     __APP_NAME__: JSON.stringify('${appName}'),
@@ -195,9 +195,9 @@ export default defineConfig({
 
   /**
    * Generate CSS configuration for Vite
-   * @returns CSS configuration object
+   * @returns {object} Vite CSS configuration object with CSS modules settings
    */
-  private generateCssConfig(): string {
+  private static generateCssConfig(): string {
     return `{
     modules: {
       localsConvention: 'camelCase',
@@ -207,9 +207,9 @@ export default defineConfig({
 
   /**
    * Generate optimization configuration for Vite
-   * @returns Optimize dependencies configuration
+   * @returns {string} Optimize dependencies configuration
    */
-  private generateOptimizeDepsConfig(): string {
+  private static generateOptimizeDepsConfig(): string {
     return `{
     include: ['react', 'react-dom', 'react-router-dom'],
   }`;

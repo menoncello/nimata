@@ -12,28 +12,26 @@ const UNKNOWN_ERROR_MESSAGE = 'Unknown error';
 
 /**
  * Handle text input prompt
- * @param title - Step title
- * @param defaultValue - Default value
- * @param help - Optional help text
- * @returns User input
+ * @param {string} title - Step title
+ * @param {string} defaultValue - Default value
+ * @param {string} help - Optional help text
+ * @returns {Promise<string>} User input
  */
 async function handleTextStep(
   title: string,
   defaultValue?: unknown,
   help?: string
 ): Promise<string> {
-  // Display help separately if provided, then just use title for the prompt
-  if (help) {
-    console.log(help);
-  }
-  return promptText(title, defaultValue as string);
+  // Include help text in the message if provided
+  const message = help ? `${help}\n${title}` : title;
+  return promptText(message, defaultValue as string);
 }
 
 /**
  * Handle list selection prompt
- * @param title - Step title
- * @param step - Wizard step with options
- * @returns Selected value
+ * @param {string} title - Step title
+ * @param {WizardStep} step - Wizard step with options
+ * @returns {Promise<unknown>} Selected value
  */
 async function handleListStep(title: string, step: WizardStep): Promise<unknown> {
   if (!step.options) {
@@ -44,9 +42,9 @@ async function handleListStep(title: string, step: WizardStep): Promise<unknown>
 
 /**
  * Handle checkbox selection prompt
- * @param title - Step title
- * @param step - Wizard step with options
- * @returns Array of selected values
+ * @param {string} title - Step title
+ * @param {WizardStep} step - Wizard step with options
+ * @returns {Promise<unknown[]>} Array of selected values
  */
 async function handleCheckboxStep(title: string, step: WizardStep): Promise<unknown[]> {
   if (!step.options) {
@@ -57,9 +55,9 @@ async function handleCheckboxStep(title: string, step: WizardStep): Promise<unkn
 
 /**
  * Handle confirmation prompt
- * @param title - Step title
- * @param defaultValue - Default value
- * @returns Boolean confirmation
+ * @param {string} title - Step title
+ * @param {boolean} defaultValue - Default value
+ * @returns {Promise<boolean>} Boolean confirmation
  */
 async function handleConfirmStep(title: string, defaultValue?: unknown): Promise<boolean> {
   return promptConfirm(title, defaultValue as boolean);
@@ -67,8 +65,8 @@ async function handleConfirmStep(title: string, defaultValue?: unknown): Promise
 
 /**
  * Prompt user for input based on step type
- * @param step - The wizard step to prompt for
- * @returns User input value
+ * @param {WizardStep} step - The wizard step to prompt for
+ * @returns {Promise<unknown>} User input value
  */
 export async function promptForStep(step: WizardStep): Promise<unknown> {
   switch (step.type) {
@@ -91,8 +89,8 @@ export type { ValidationResult, WizardStep } from './validation-rules.js';
 
 /**
  * Create error message from error object
- * @param error - Error object
- * @returns Error message string
+ * @param {unknown} error - Error object
+ * @returns {string} Error message string
  */
 export function createErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : UNKNOWN_ERROR_MESSAGE;

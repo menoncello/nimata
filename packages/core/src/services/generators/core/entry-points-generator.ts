@@ -21,8 +21,8 @@ const DEFAULT_EXECUTABLE_PERMISSIONS = 0o755;
 export class EntryPointsGenerator {
   /**
    * Generate main entry point file (src/index.ts)
-   * @param basePath - Base project path
-   * @param projectName - Name of the project
+   * @param {string} basePath - Base project path
+   * @param {string} projectName - Name of the project
    * @throws Error if file creation fails or path validation fails
    */
   static async generateMainEntryPoint(basePath: string, projectName: string): Promise<void> {
@@ -42,9 +42,9 @@ export class EntryPointsGenerator {
 
   /**
    * Generate CLI entry point file
-   * @param basePath - Base project path
-   * @param cliName - Name of the CLI executable
-   * @param config - Project configuration
+   * @param {string} basePath - Base project path
+   * @param {string} cliName - Name of the CLI executable
+   * @param {ProjectConfig} config - Project configuration
    * @throws Error if file creation fails or path validation fails
    */
   static async generateCliEntryPoint(
@@ -60,8 +60,8 @@ export class EntryPointsGenerator {
 
   /**
    * Generate entry point files as DirectoryItems
-   * @param config - Project configuration
-   * @returns Entry point files as DirectoryItems
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Directory items
    */
   static generateEntryPoints(config: ProjectConfig): DirectoryItem[] {
     const entryPoints: DirectoryItem[] = [
@@ -82,8 +82,8 @@ export class EntryPointsGenerator {
 
   /**
    * Create main entry point file content
-   * @param projectName - Name of the project
-   * @returns Main entry point file content
+   * @param {string} projectName - Name of the project
+   * @returns {string} Main entry point file content
    */
   static createMainEntryPointContent(projectName: string): string {
     return `/**
@@ -111,8 +111,8 @@ export default { main, VERSION, NAME };
 
   /**
    * Create CLI launcher
-   * @param config - Project configuration
-   * @returns CLI launcher script content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI launcher script content
    */
   static createCLILauncher(config: ProjectConfig): string {
     const header = EntryPointsGenerator.generateCLIHeader(config);
@@ -124,8 +124,8 @@ export default { main, VERSION, NAME };
 
   /**
    * Create CLI launcher as DirectoryItem
-   * @param config - Project configuration
-   * @returns CLI launcher file as DirectoryItem
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Directory item
    */
   private static createCLILauncherItem(config: ProjectConfig): DirectoryItem {
     return {
@@ -139,8 +139,8 @@ export default { main, VERSION, NAME };
 
   /**
    * Generate CLI header
-   * @param config - Project configuration
-   * @returns CLI header content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI header content
    */
   private static generateCLIHeader(config: ProjectConfig): string {
     return `#!/usr/bin/env bun
@@ -157,7 +157,7 @@ export default { main, VERSION, NAME };
 
   /**
    * Generate CLI error handlers
-   * @returns CLI error handlers content
+   * @returns {string} CLI error handlers content
    */
   private static generateCLIErrorHandlers(): string {
     return `// Error handling for uncaught exceptions
@@ -177,8 +177,8 @@ process.on('unhandledRejection', (reason, promise) => {
 
   /**
    * Generate CLI entry point function
-   * @param _config - Project configuration
-   * @returns CLI entry point function content
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} CLI entry point function content
    */
   private static generateCLIEntryPoint(_config: ProjectConfig): string {
     return [
@@ -190,7 +190,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
   /**
    * Generate CLI import statements
-   * @returns Import statements
+   * @returns {string} Import statements
    */
   private static generateCLIImports(): string {
     return `// Import CLI main function
@@ -199,7 +199,7 @@ import { main } from '../src/cli/index.js';`;
 
   /**
    * Generate CLI entry point function
-   * @returns CLI entry point function
+   * @returns {string} CLI entry point function
    */
   private static generateCLIEntryPointFunction(): string {
     return [
@@ -212,7 +212,7 @@ import { main } from '../src/cli/index.js';`;
 
   /**
    * Generate CLI entry point header
-   * @returns Function header and opening
+   * @returns {string} Function header and opening
    */
   private static generateCLIEntryPointHeader(): string {
     return `/**
@@ -224,7 +224,7 @@ async function cliEntryPoint(): Promise<void> {
 
   /**
    * Generate CLI entry point try block
-   * @returns Try block implementation
+   * @returns {string} Try block implementation
    */
   private static generateCLIEntryPointTryBlock(): string {
     return `    console.log('🚀 Starting CLI...');
@@ -243,7 +243,7 @@ async function cliEntryPoint(): Promise<void> {
 
   /**
    * Generate CLI entry point catch block
-   * @returns Error handling implementation
+   * @returns {string} Error handling implementation
    */
   private static generateCLIEntryPointCatchBlock(): string {
     return `  } catch (error) {
@@ -264,7 +264,7 @@ async function cliEntryPoint(): Promise<void> {
 
   /**
    * Generate CLI entry point footer
-   * @returns Function closing
+   * @returns {string} Function closing
    */
   private static generateCLIEntryPointFooter(): string {
     return `  }
@@ -273,7 +273,7 @@ async function cliEntryPoint(): Promise<void> {
 
   /**
    * Generate CLI execution call
-   * @returns Execution statement
+   * @returns {string} Execution statement
    */
   private static generateCLIExecution(): string {
     return `// Execute CLI entry point
@@ -282,7 +282,7 @@ cliEntryPoint();`;
 
   /**
    * Ensure src directory exists
-   * @param basePath - Base project path
+   * @param {string} basePath - Base project path
    * @throws Error if directory creation fails
    */
   private static async ensureSrcDirectoryExists(basePath: string): Promise<void> {
@@ -291,9 +291,9 @@ cliEntryPoint();`;
 
   /**
    * Create a standardized file creation error
-   * @param fileName - Name of the file being created
-   * @param originalError - Original error that occurred
-   * @returns Error with standardized message
+   * @param {string} fileName - Name of the file being created
+   * @param {string} originalError - Original error that occurred
+   * @returns {string} Error with standardized message
    */
   private static createFileError(fileName: string, originalError: unknown): Error {
     if (originalError instanceof Error) {
@@ -304,8 +304,8 @@ cliEntryPoint();`;
 
   /**
    * Generate web-specific entry points
-   * @param config - Project configuration
-   * @returns Web-specific entry point files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Web-specific entry point files
    */
   static generateWebEntryPoints(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -324,8 +324,8 @@ cliEntryPoint();`;
 
   /**
    * Generate library-specific entry points
-   * @param config - Project configuration
-   * @returns Library-specific entry point files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Library-specific entry point files
    */
   static generateLibraryEntryPoints(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -339,8 +339,8 @@ cliEntryPoint();`;
 
   /**
    * Generate web main entry point
-   * @param config - Project configuration
-   * @returns Web main entry point content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Web main entry point content
    */
   private static generateWebMainEntry(config: ProjectConfig): string {
     return `/**
@@ -373,7 +373,7 @@ if (import.meta.hot) {
 
   /**
    * Generate Vite types
-   * @returns Vite type definitions
+   * @returns {string} Vite type definitions
    */
   private static generateViteTypes(): string {
     return `/// <reference types="vite/client" />
@@ -400,8 +400,8 @@ interface ImportMeta {
 
   /**
    * Generate library main export
-   * @param config - Project configuration
-   * @returns Library main export content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Library main export content
    */
   private static generateLibraryMainExport(config: ProjectConfig): string {
     const className = config.name

@@ -4,8 +4,7 @@
  * Template engine using Handlebars.js for rendering project templates
  * with TypeScript bindings, caching, and validation
  */
-/* eslint-disable max-lines */
-import { createHash } from 'node:crypto';
+import { createHash, randomInt } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import Handlebars, { type TemplateDelegate } from 'handlebars';
@@ -46,11 +45,20 @@ const TYPESCRIPT_BUN_CLI_SUBDIR = 'typescript-bun-cli';
 // Hash algorithm constants
 // Using SHA-256 for secure template hashing
 
-// Cache TTL constant (30 minutes in milliseconds)
-// eslint-disable-next-line no-magic-numbers
-const DEFAULT_CACHE_TTL = 30 * 60 * 1000;
+// Cache TTL constants
+const MINUTES_PER_HOUR = 60;
+const SECONDS_PER_MINUTE = 60;
+const MILLISECONDS_PER_SECOND = 1000;
+const DEFAULT_CACHE_TTL_MINUTES = 30;
 
-const CACHE_CLEANUP_PROBABILITY = 0.01; // 1% for periodic cleanup
+// Cache TTL constant (30 minutes in milliseconds)
+const DEFAULT_CACHE_TTL =
+  DEFAULT_CACHE_TTL_MINUTES * MINUTES_PER_HOUR * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
+
+const _CACHE_CLEANUP_PROBABILITY = 0.01; // 1% for periodic cleanup
+
+// Random number range for cache cleanup decision
+const RANDOM_NUMBER_MAX = 100;
 
 /**
  * Handlebars Template Engine Implementation
@@ -62,7 +70,7 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Creates a new HandlebarsTemplateEngine instance
-   * @param templatesDir - Directory containing template files
+   * @param {string} templatesDir - Directory containing template files
    */
   constructor(templatesDir?: string) {
     this.templatesDir = templatesDir || this.resolveTemplatesDirectory();
@@ -72,7 +80,7 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Resolves the templates directory path
-   * @returns Resolved templates directory path
+   * @returns {string} Resolved templates directory path
    */
   private resolveTemplatesDirectory(): string {
     const currentFilePath = new URL(import.meta.url).pathname;
@@ -82,8 +90,8 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Loads a template from the file system
-   * @param templateName - Name of the template to load
-   * @returns Loaded project template
+   * @param {string} templateName - Name of the template to load
+   * @returns {Promise<ProjectTemplate>} Loaded project template
    */
   async loadTemplate(templateName: string): Promise<ProjectTemplate> {
     const subDirPath = this.getTemplatePath(templateName, true);
@@ -94,10 +102,10 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Attempts to load template with fallback to alternative path
-   * @param primaryPath - Primary path to try
-   * @param fallbackPath - Fallback path to try if primary fails
-   * @param templateName - Name of the template for error messages
-   * @returns Loaded project template
+   * @param {string} primaryPath - Primary path to try
+   * @param {string} fallbackPath - Fallback path to try if primary fails
+   * @param {string} templateName - Name of the template for error messages
+   * @returns {Promise<ProjectTemplate>} Loaded project template
    */
   private async loadTemplateWithFallback(
     primaryPath: string,
@@ -116,10 +124,10 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Handles fallback template loading
-   * @param fallbackPath - Fallback path to try
-   * @param primaryPath - Primary path that failed
-   * @param templateName - Name of the template
-   * @returns Loaded project template
+   * @param {string} fallbackPath - Fallback path to try
+   * @param {string} primaryPath - Primary path that failed
+   * @param {string} templateName - Name of the template
+   * @returns {Promise<ProjectTemplate>} Loaded project template
    */
   private async handleFallbackLoad(
     fallbackPath: string,
@@ -138,9 +146,9 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Gets template file path
-   * @param templateName - Name of the template
-   * @param useSubDir - Whether to use subdirectory
-   * @returns Template file path
+   * @param {string} templateName - Name of the template
+   * @param {boolean} useSubDir - Whether to use subdirectory
+   * @returns {string} Template file path
    */
   private getTemplatePath(templateName: string, useSubDir: boolean): string {
     const baseDir = useSubDir
@@ -151,9 +159,9 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Loads template from specified path
-   * @param templatePath - Path to template file
-   * @param templateName - Name of the template for error messages
-   * @returns Parsed and validated template
+   * @param {string} templatePath - Path to template file
+   * @param {string} templateName - Name of the template for error messages
+   * @returns {Promise<ProjectTemplate>} Parsed and validated template
    */
   private async loadTemplateFromPath(
     templatePath: string,
@@ -167,9 +175,9 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Parses template content from JSON string
-   * @param content - JSON content to parse
-   * @param templateName - Name of the template for error messages
-   * @returns Parsed template
+   * @param {string} content - JSON content to parse
+   * @param {string} templateName - Name of the template for error messages
+   * @returns {ProjectTemplate} Parsed template
    */
   private parseTemplateContent(content: string, templateName: string): ProjectTemplate {
     try {
@@ -182,7 +190,7 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Validates template and throws error if invalid
-   * @param template - Template to validate
+   * @param {ProjectTemplate} template - Template to validate
    */
   private validateTemplateOrThrow(template: ProjectTemplate): void {
     const validation = this.validateTemplateStructure(template);
@@ -193,8 +201,8 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Checks if error is a file not found error
-   * @param error - Error to check
-   * @returns True if error is ENOENT
+   * @param {unknown} error - Error to check
+   * @returns {boolean} True if error is ENOENT
    */
   private isFileNotFound(error: unknown): boolean {
     return error instanceof Error && error.message.includes('ENOENT');
@@ -202,10 +210,10 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Creates template not found error with both attempted paths
-   * @param templateName - Name of the template
-   * @param subDirPath - Subdirectory path attempted
-   * @param directPath - Direct path attempted
-   * @returns Error with descriptive message
+   * @param {string} templateName - Name of the template
+   * @param {string} subDirPath - Subdirectory path attempted
+   * @param {string} directPath - Direct path attempted
+   * @returns {Error} Error with descriptive message
    */
   private createTemplateNotFoundError(
     templateName: string,
@@ -217,9 +225,9 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Renders a template string with the provided context using Handlebars
-   * @param template - Template string to render
-   * @param context - Context object containing variable values
-   * @returns The rendered template string
+   * @param {string} template - Template string to render
+   * @param {TemplateContext} context - Context object containing variable values
+   * @returns {Promise<string>} The rendered template string
    */
   async renderTemplate(template: string, context: TemplateContext): Promise<string> {
     try {
@@ -237,13 +245,14 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Compiles a template with caching support
-   * @param template - Template string to compile
-   * @returns Compiled Handlebars template
+   * @param {string} template - Template string to compile
+   * @returns {TemplateDelegate} Compiled Handlebars template
    */
   private compileTemplate(template: string): TemplateDelegate {
     // Evict expired entries periodically (1 in 100 calls)
-    // eslint-disable-next-line sonarjs/pseudo-random
-    if (Math.random() < CACHE_CLEANUP_PROBABILITY) {
+    // Use a cryptographically secure random number generator for cache cleanup decision
+    const CACHE_CLEANUP_THRESHOLD = 1;
+    if (randomInt(0, RANDOM_NUMBER_MAX) < CACHE_CLEANUP_THRESHOLD) {
       this.evictExpiredEntries();
     }
 
@@ -275,8 +284,8 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Validates template syntax and structure
-   * @param template - Template string to validate
-   * @returns Validation result with any errors found
+   * @param {string} template - Template string to validate
+   * @returns {ValidationResult} Validation result with any errors found
    */
   validateTemplate(template: string): ValidationResult {
     const errors: string[] = [];
@@ -312,8 +321,8 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Validates project template structure
-   * @param template - Project template to validate
-   * @returns Validation result
+   * @param {ProjectTemplate} template - Project template to validate
+   * @returns {ValidationResult} Validation result
    */
   validateTemplateStructure(template: ProjectTemplate): ValidationResult {
     const errors: string[] = [];
@@ -332,8 +341,8 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Validates basic template fields
-   * @param template - Template to validate
-   * @param errors - Array to collect errors
+   * @param {ProjectTemplate} template - Template to validate
+   * @param {string[]} errors - Array to collect errors
    */
   private validateBasicTemplateFields(template: ProjectTemplate, errors: string[]): void {
     if (!template.name || typeof template.name !== 'string') {
@@ -345,8 +354,8 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Validates template files
-   * @param template - Template to validate
-   * @param errors - Array to collect errors
+   * @param {ProjectTemplate} template - Template to validate
+   * @param {string[]} errors - Array to collect errors
    */
   private validateTemplateFiles(template: ProjectTemplate, errors: string[]): void {
     if (!Array.isArray(template.files)) {
@@ -366,8 +375,8 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Validates template variables
-   * @param template - Template to validate
-   * @param errors - Array to collect errors
+   * @param {ProjectTemplate} template - Template to validate
+   * @param {string[]} errors - Array to collect errors
    */
   private validateTemplateVariables(template: ProjectTemplate, errors: string[]): void {
     // Variables are optional - only validate if present
@@ -378,8 +387,8 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Finds unclosed Handlebars blocks in template
-   * @param template - Template string to check
-   * @returns Array of unclosed block types
+   * @param {string} template - Template string to check
+   * @returns {string[]} Array of unclosed block types
    */
   private findUnclosedBlocks(template: string): string[] {
     const OPEN_BLOCK_PATTERN = /{{#(\w+)}}/g;
@@ -393,9 +402,9 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Processes a project template and generates all files
-   * @param projectTemplate - Project template to process
-   * @param context - Context object containing variable values
-   * @returns Array of generated files
+   * @param {ProjectTemplate} projectTemplate - Project template to process
+   * @param {TemplateContext} context - Context object containing variable values
+   * @returns {Promise<GeneratedFile[]>} Array of generated files
    */
   async processProjectTemplate(
     projectTemplate: ProjectTemplate,
@@ -423,10 +432,10 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Determines if a file should be rendered based on conditions
-   * @param file - File configuration
-   * @param file.condition - Optional condition to check
-   * @param context - Template context
-   * @returns True if file should be rendered
+   * @param {{condition?: string}} file - File object with optional condition
+   * @param {string} file.condition - Condition property for file rendering
+   * @param {TemplateContext} context - Template context
+   * @returns {boolean} True if file should be rendered
    */
   private shouldRenderFile(file: { condition?: string }, context: TemplateContext): boolean {
     if (!file.condition) {
@@ -439,12 +448,12 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Generates a single file from template
-   * @param file - File configuration
-   * @param file.path - Output file path template
-   * @param file.template - File content template
-   * @param file.permissions - Optional file permissions
-   * @param context - Template context
-   * @returns Generated file object
+   * @param {{path: string}} file - File object with path, template and optional permissions
+   * @param {string} file.path - File path property
+   * @param {string} file.template - File template property
+   * @param {string} file.permissions - File permissions property
+   * @param {TemplateContext} context - Template context
+   * @returns {GeneratedFile} Generated file object
    */
   private async generateFile(
     file: { path: string; template: string; permissions?: string },
@@ -462,8 +471,8 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Registers a custom helper function
-   * @param name - Name of the helper function
-   * @param helper - Helper function implementation
+   * @param {string} name - Name of the helper function
+   * @param {(...args: unknown[]) => unknown} helper - Helper function implementation
    */
   registerHelper(name: string, helper: (...args: unknown[]) => unknown): void {
     this.handlebars.registerHelper(name, helper);
@@ -471,7 +480,7 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Gets a list of all available templates
-   * @returns Array of template names
+   * @returns {Promise<string[]>} Array of template names
    */
   async getAvailableTemplates(): Promise<string[]> {
     const templates = new Set<string>();
@@ -508,7 +517,7 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Evicts expired entries from the cache
-   * @returns Number of evicted entries
+   * @returns {number} Number of evicted entries
    */
   private evictExpiredEntries(): number {
     const now = Date.now();
@@ -526,9 +535,9 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Gets or creates a cached template with TTL support
-   * @param templateHash - Hash of the template
-   * @param templateContent - Content of the template
-   * @returns Compiled template
+   * @param {string} templateHash - Hash of the template
+   * @param {string} templateContent - Content of the template
+   * @returns {TemplateDelegate} Compiled template
    */
   private getOrCreateCachedTemplate(
     templateHash: string,
@@ -558,7 +567,7 @@ export class HandlebarsTemplateEngine implements ITemplateEngine {
 
   /**
    * Gets cache statistics
-   * @returns Cache size and hit information
+   * @returns {{ size: number; templates: string[] }} Cache size and hit information
    */
   getCacheStats(): { size: number; templates: string[] } {
     return {

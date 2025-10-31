@@ -88,8 +88,8 @@ const RESERVED_WORDS = new Set([
 export class TemplateContextValidator {
   /**
    * Validates template context variables
-   * @param variables - Variables to validate
-   * @returns Validation result
+   * @param {TemplateVariable[]} variables - Variables to validate
+   * @returns {TemplateVariable[]): ValidationResult} Validation result
    */
   static validateVariables(variables: TemplateVariable[]): ValidationResult {
     const errors: string[] = [];
@@ -111,8 +111,8 @@ export class TemplateContextValidator {
 
   /**
    * Validates variable name format
-   * @param variable - Variable to validate
-   * @param errors - Array to collect errors
+   * @param {TemplateVariable} variable - Variable to validate
+   * @param {string[]} errors - Array to collect errors
    */
   private static validateVariableName(variable: TemplateVariable, errors: string[]): void {
     if (!TEMPLATE_CONTEXT_CONSTANTS.STRING_CASE_PATTERN.test(variable.name)) {
@@ -122,8 +122,8 @@ export class TemplateContextValidator {
 
   /**
    * Validates variable name against reserved words
-   * @param variable - Variable to validate
-   * @param warnings - Array to collect warnings
+   * @param {TemplateVariable} variable - Variable to validate
+   * @param {string[]} warnings - Array to collect warnings
    */
   private static validateReservedWords(variable: TemplateVariable, warnings: string[]): void {
     if (RESERVED_WORDS.has(variable.name.toLowerCase())) {
@@ -133,8 +133,8 @@ export class TemplateContextValidator {
 
   /**
    * Validates required variable has a value
-   * @param variable - Variable to validate
-   * @param errors - Array to collect errors
+   * @param {TemplateVariable} variable - Variable to validate
+   * @param {string[]} errors - Array to collect errors
    */
   private static validateRequiredValue(variable: TemplateVariable, errors: string[]): void {
     if (
@@ -147,8 +147,8 @@ export class TemplateContextValidator {
 
   /**
    * Validates variable type matches default value
-   * @param variable - Variable to validate
-   * @param errors - Array to collect errors
+   * @param {TemplateVariable} variable - Variable to validate
+   * @param {string[]} errors - Array to collect errors
    */
   private static validateVariableType(variable: TemplateVariable, errors: string[]): void {
     if (
@@ -164,9 +164,9 @@ export class TemplateContextValidator {
 
   /**
    * Validates context depth
-   * @param context - Context to validate
-   * @param maxDepth - Maximum allowed depth
-   * @returns Validation result
+   * @param {unknown} context - Context to validate
+   * @param {unknown} maxDepth - Maximum allowed depth
+   * @returns {ValidationResult} Validation result
    */
   static validateDepth(
     context: unknown,
@@ -189,9 +189,9 @@ export class TemplateContextValidator {
 
   /**
    * Calculates the maximum depth of an object
-   * @param obj - Object to analyze
-   * @param currentDepth - Current depth (for recursion)
-   * @returns Maximum depth
+   * @param {unknown} obj - Object to analyze
+   * @param {unknown} currentDepth - Current depth (for recursion)
+   * @returns {number} Maximum depth
    */
   private static calculateDepth(obj: unknown, currentDepth = 0): number {
     if (typeof obj !== 'object' || obj === null) {
@@ -213,9 +213,9 @@ export class TemplateContextValidator {
 
   /**
    * Validates type of a value
-   * @param value - Value to validate
-   * @param expectedType - Expected type
-   * @returns True if type is valid
+   * @param {unknown} value - Value to validate
+   * @param {string} expectedType - Expected type
+   * @returns { boolean} True if type is valid
    */
   private static validateType(value: unknown, expectedType: string): boolean {
     switch (expectedType) {

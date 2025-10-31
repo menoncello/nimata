@@ -322,10 +322,10 @@ describe('ValidateCommand [T006]', () => {
     it('[T006-61] should have consistent interface with other commands', () => {
       const requiredProperties = ['command', 'describe', 'builder', 'handler'];
 
-      requiredProperties.forEach((prop) => {
+      for (const prop of requiredProperties) {
         expect(validateCommand).toHaveProperty(prop);
         expect(validateCommand[prop as keyof typeof validateCommand]).toBeDefined();
-      });
+      }
     });
 
     it('[T006-62] should have command name matching file structure', () => {

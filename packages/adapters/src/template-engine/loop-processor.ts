@@ -9,14 +9,14 @@ import type { TemplateContext } from './types.js';
 
 /**
  * Create loop item context with iteration metadata
- * @param params - Parameters object containing loop info
- * @param params.baseContext - Base context object
- * @param params.item - Current array item
- * @param params.index - Current index
- * @param params.arrayLength - Total array length
- * @param params.arrayName - Name of the array being iterated
- * @param params.key - Property key for object iteration
- * @returns Item context with iteration metadata
+ * @param {{ baseContext: TemplateContext; item: unknown; index: number; arrayLength: number; arrayName?: string; key?: string | number }} params - Parameters object
+ * @param {TemplateContext} params.baseContext - Base context object
+ * @param {unknown} params.item - Current array item
+ * @param {number} params.index - Current index
+ * @param {number} params.arrayLength - Total array length
+ * @param {string} params.arrayName - Name of the array being iterated
+ * @param {string | number} params.key - Property key for object iteration
+ * @returns {TemplateContext} Item context with iteration metadata
  */
 function createLoopItemContext(params: {
   baseContext: TemplateContext;
@@ -55,9 +55,9 @@ function createLoopItemContext(params: {
 
 /**
  * Process a single loop item with all template transformations
- * @param content - Loop content template
- * @param itemContext - Item-specific context
- * @returns Processed content string
+ * @param {string} content - Loop content template
+ * @param {TemplateContext} itemContext - Item-specific context
+ * @returns {void} Processed content string
  */
 async function processLoopItem(content: string, itemContext: TemplateContext): Promise<string> {
   let processedContent = content;
@@ -82,11 +82,11 @@ async function processLoopItem(content: string, itemContext: TemplateContext): P
 
 /**
  * Process all items in an array loop
- * @param array - Array to iterate over
- * @param content - Loop content template
- * @param context - Base context
- * @param arrayName - Name of the array being iterated
- * @returns Processed content for all items
+ * @param {unknown} array - Array to iterate over
+ * @param {unknown} content - Loop content template
+ * @param {unknown} context - Base context
+ * @param {unknown} arrayName - Name of the array being iterated
+ * @returns {void} Processed content for all items
  */
 async function processArrayItems(
   array: unknown[],
@@ -120,11 +120,11 @@ async function processArrayItems(
 
 /**
  * Process loop items in object
- * @param obj - Object to iterate over
- * @param content - Loop content template
- * @param context - Base context
- * @param objectName - Name of the object being iterated
- * @returns Processed content for all items
+ * @param {unknown} obj - Object to iterate over
+ * @param {unknown} content - Loop content template
+ * @param {unknown} context - Base context
+ * @param {unknown} objectName - Name of the object being iterated
+ * @returns {void} Processed content for all items
  */
 async function processObjectItems(
   obj: Record<string, unknown>,
@@ -173,9 +173,9 @@ interface LoopMatch {
 
 /**
  * Find matching closing tag for a loop block
- * @param template - Template string
- * @param contentStart - Position where content starts
- * @returns Position of closing tag or -1 if not found
+ * @param {string} template - Template string
+ * @param {number} contentStart - Position where content starts
+ * @returns { number} Position of closing tag or -1 if not found
  */
 function findClosingTag(template: string, contentStart: number): number {
   let depth = 1;
@@ -202,11 +202,11 @@ function findClosingTag(template: string, contentStart: number): number {
 
 /**
  * Extract loop match from template
- * @param template - Template string
- * @param startIndex - Start position
- * @param arrayName - Name of array being looped
- * @param match - Regex match result
- * @returns Loop match object or null
+ * @param {unknown} template - Template string
+ * @param {unknown} startIndex - Start position
+ * @param {unknown} arrayName - Name of array being looped
+ * @param {unknown} match - Regex match result
+ * @returns {void} Loop match object or null
  */
 function extractLoopMatch(
   template: string,
@@ -247,8 +247,8 @@ interface LoopStartParams {
 
 /**
  * Process loop start tag
- * @param params - Loop start parameters
- * @returns New position
+ * @param {LoopStartParams} params - Loop start parameters
+ * @returns {LoopStartParams): number} New position
  */
 function processLoopStart(params: LoopStartParams): number {
   const { template, position, depth, results, pattern } = params;
@@ -268,8 +268,8 @@ function processLoopStart(params: LoopStartParams): number {
 
 /**
  * Find top-level loop blocks (not nested inside other loops)
- * @param template - Template string to search
- * @returns Array of top-level loop matches
+ * @param {string} template - Template string to search
+ * @returns {string): LoopMatch[]} Array of top-level loop matches
  */
 function findTopLevelLoops(template: string): LoopMatch[] {
   const results: LoopMatch[] = [];
@@ -304,9 +304,9 @@ function findTopLevelLoops(template: string): LoopMatch[] {
 
 /**
  * Process one iteration of loop replacements
- * @param currentResult - Current template result
- * @param context - Template context
- * @returns Tuple of [hasChanges, newResult]
+ * @param {unknown} currentResult - Current template result
+ * @param {unknown} context - Template context
+ * @returns {void} Tuple of [hasChanges, newResult]
  */
 async function processLoopIteration(
   currentResult: string,
@@ -327,9 +327,9 @@ async function processLoopIteration(
 
 /**
  * Processes loop blocks in the template
- * @param template - Template string to process
- * @param context - Context object containing variable values
- * @returns Template string with processed loops
+ * @param {string} template - Template string to process
+ * @param {TemplateContext} context - Context object containing variable values
+ * @returns {void} Template string with processed loops
  */
 export async function processLoops(template: string, context: TemplateContext): Promise<string> {
   let result = template;
@@ -344,11 +344,11 @@ export async function processLoops(template: string, context: TemplateContext): 
 
 /**
  * Process a single each block in template
- * @param fullMatch - Full matched block from template
- * @param arrayName - Name of array to iterate
- * @param content - Content inside each block
- * @param context - Template context
- * @returns Processed content string
+ * @param {unknown} fullMatch - Full matched block from template
+ * @param {unknown} arrayName - Name of array to iterate
+ * @param {unknown} content - Content inside each block
+ * @param {unknown} context - Template context
+ * @returns {void} Processed content string
  */
 async function processEachBlock(
   fullMatch: string,

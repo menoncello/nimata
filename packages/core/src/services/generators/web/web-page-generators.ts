@@ -20,8 +20,8 @@ import {
 export class WebPageGenerators {
   /**
    * Generate about page component
-   * @param config - Project configuration
-   * @returns About page component code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} About page component code
    */
   generateAboutPage(config: ProjectConfig): string {
     return generateAboutPage(config);
@@ -29,8 +29,8 @@ export class WebPageGenerators {
 
   /**
    * Generate contact page component
-   * @param config - Project configuration
-   * @returns Contact page component code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Contact page component code
    */
   generateContactPage(config: ProjectConfig): string {
     const { name } = config;

@@ -193,6 +193,21 @@ export default [
       yoda: 'error',
     },
   },
+  // Utility files that need console output for CLI functionality
+  {
+    files: ['**/utils/**/*.ts'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+  // Complex template engine files - Relaxed length rules due to complexity
+  {
+    files: ['**/template-engine-handlebars.ts', '**/builtin-stacks.ts'],
+    rules: {
+      'max-lines': ['error', { max: 600, skipBlankLines: true, skipComments: true }],
+      'max-lines-per-function': ['error', { max: 50, skipBlankLines: true, skipComments: true }],
+    },
+  },
   // Test files - Relaxed rules
   {
     files: ['**/*.test.ts', '**/*.spec.ts', '**/tests/**/*.ts'],

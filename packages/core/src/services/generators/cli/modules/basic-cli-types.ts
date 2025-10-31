@@ -6,7 +6,7 @@
 
 /**
  * Generate command types
- * @returns Command type definitions
+ * @returns {string} Command type definitions
  */
 export function generateCommandTypes(): string {
   return `/**
@@ -32,7 +32,7 @@ export type CommandHandler = (args: unknown, options: unknown) => Promise<Comman
 
 /**
  * Generate application types
- * @returns Application type definitions
+ * @returns {string} Application type definitions
  */
 export function generateApplicationTypes(): string {
   return [
@@ -44,7 +44,7 @@ export function generateApplicationTypes(): string {
 
 /**
  * Generate AppConfig interface
- * @returns AppConfig interface definition
+ * @returns {string} AppConfig interface definition
  */
 function generateAppConfigInterface(): string {
   return `/**
@@ -66,7 +66,7 @@ export interface AppConfig {
 
 /**
  * Generate CLIApplication interface
- * @returns CLIApplication interface definition
+ * @returns {string} CLIApplication interface definition
  */
 function generateCLIApplicationInterface(): string {
   return `/**
@@ -82,7 +82,7 @@ export interface CLIApplication {
 
 /**
  * Generate CLIState interface
- * @returns CLIState interface definition
+ * @returns {string} CLIState interface definition
  */
 function generateCLIStateInterface(): string {
   return `/**
@@ -99,7 +99,7 @@ export interface CLIState {
 
 /**
  * Generate command option types
- * @returns Command option type definitions
+ * @returns {string} Command option type definitions
  */
 export function generateCommandOptionTypes(): string {
   return [
@@ -112,7 +112,7 @@ export function generateCommandOptionTypes(): string {
 
 /**
  * Generate global options interface
- * @returns Global options interface definition
+ * @returns {string} Global options interface definition
  */
 function generateGlobalOptions(): string {
   return `/**
@@ -129,7 +129,7 @@ export interface GlobalOptions {
 
 /**
  * Generate build command options interface
- * @returns Build options interface definition
+ * @returns {string} Build options interface definition
  */
 function generateBuildOptions(): string {
   return `/**
@@ -146,7 +146,7 @@ export interface BuildOptions extends GlobalOptions {
 
 /**
  * Generate deploy command options interface
- * @returns Deploy options interface definition
+ * @returns {string} Deploy options interface definition
  */
 function generateDeployOptions(): string {
   return `/**
@@ -162,7 +162,7 @@ export interface DeployOptions extends GlobalOptions {
 
 /**
  * Generate test command options interface
- * @returns Test options interface definition
+ * @returns {string} Test options interface definition
  */
 function generateTestOptions(): string {
   return `/**

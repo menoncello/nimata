@@ -1,4 +1,4 @@
-import { existsSync, chmodSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { mkdtemp, rm, writeFile, readFile, mkdir, chmod } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -21,7 +21,12 @@ export class TestProject {
   static async create(prefix = 'nimata-test-'): Promise<TestProject> {
     const tmpDir = await mkdtemp(join(tmpdir(), prefix));
     // Set more permissive permissions on the temp directory to avoid permission issues
-    await chmod(tmpDir, 0o755);
+    try {
+      await chmod(tmpDir, 0o777);
+    } catch {
+      // If chmod fails, continue with default permissions
+      // Silently ignore permission errors in test environment
+    }
     return new TestProject(tmpDir);
   }
 
@@ -33,8 +38,27 @@ export class TestProject {
     const dir = join(fullPath, '..');
 
     // Create parent directories if needed
-    await mkdir(dir, { recursive: true });
-    await writeFile(fullPath, content, 'utf-8');
+    try {
+      await mkdir(dir, { recursive: true, mode: 0o755 });
+      await writeFile(fullPath, content, { mode: 0o644, encoding: 'utf-8' });
+    } catch (error) {
+      // If permission denied, try with more permissive permissions
+      if (
+        error instanceof Error &&
+        (error.message.includes('EACCES') || error.message.includes('permission denied'))
+      ) {
+        try {
+          await mkdir(dir, { recursive: true, mode: 0o777 });
+          await writeFile(fullPath, content, { mode: 0o666, encoding: 'utf-8' });
+          return;
+        } catch (retryError) {
+          throw new Error(
+            `Failed to write file '${relativePath}': ${retryError instanceof Error ? retryError.message : 'Unknown error'}`
+          );
+        }
+      }
+      throw error;
+    }
   }
 
   /**
@@ -118,7 +142,7 @@ export class TestProject {
       this.cleaned = true;
     } catch (error) {
       // Best effort cleanup
-      console.warn(`Failed to cleanup test project: ${error}`);
+      process.stderr.write(`Failed to cleanup test project: ${error}\n`);
     }
   }
 }

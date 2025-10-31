@@ -21,9 +21,9 @@ const SCORING_CONSTANTS = {
 export class TemplateScoringUtils {
   /**
    * Calculate text relevance score for template
-   * @param template Template metadata
-   * @param term Search term
-   * @returns Relevance score
+   * @param {TemplateMetadata} template Template metadata
+   * @param {string} term Search term
+   * @returns { number} Relevance score
    */
   static calculateTextScore(template: TemplateMetadata, term: string): number {
     let score = 0;
@@ -38,9 +38,9 @@ export class TemplateScoringUtils {
 
   /**
    * Calculate name match score
-   * @param template Template metadata
-   * @param term Search term
-   * @returns Name match score
+   * @param {TemplateMetadata} template Template metadata
+   * @param {string} term Search term
+   * @returns { number} Name match score
    */
   static getNameMatchScore(template: TemplateMetadata, term: string): number {
     return template.name.toLowerCase().includes(term) ? SCORING_CONSTANTS.NAME_BOOST : 0;
@@ -48,9 +48,9 @@ export class TemplateScoringUtils {
 
   /**
    * Calculate description match score
-   * @param template Template metadata
-   * @param term Search term
-   * @returns Description match score
+   * @param {TemplateMetadata} template Template metadata
+   * @param {string} term Search term
+   * @returns { number} Description match score
    */
   static getDescriptionMatchScore(template: TemplateMetadata, term: string): number {
     return template.description.toLowerCase().includes(term)
@@ -60,9 +60,9 @@ export class TemplateScoringUtils {
 
   /**
    * Calculate tag match score
-   * @param template Template metadata
-   * @param term Search term
-   * @returns Tag match score
+   * @param {TemplateMetadata} template Template metadata
+   * @param {string} term Search term
+   * @returns { number} Tag match score
    */
   static getTagMatchScore(template: TemplateMetadata, term: string): number {
     return template.tags.some((tag) => tag.toLowerCase().includes(term))
@@ -72,9 +72,9 @@ export class TemplateScoringUtils {
 
   /**
    * Calculate category match score
-   * @param template Template metadata
-   * @param term Search term
-   * @returns Category match score
+   * @param {TemplateMetadata} template Template metadata
+   * @param {string} term Search term
+   * @returns { number} Category match score
    */
   static getCategoryMatchScore(template: TemplateMetadata, term: string): number {
     return template.category.toLowerCase().includes(term) ? SCORING_CONSTANTS.CATEGORY_BOOST : 0;

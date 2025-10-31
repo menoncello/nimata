@@ -13,11 +13,11 @@
  * STATUS: SKIPPED - Implementation pending for Epic 2 (Validation)
  * Story 1.2 implements configuration loading but not validation with error codes
  */
+import { spawn } from 'bun';
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { spawn } from 'bun';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 
 const CLI_PATH = join(__dirname, '../../bin/nimata');
 

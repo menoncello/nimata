@@ -29,9 +29,9 @@ export interface ValidationResult {
 
 /**
  * Validate user input against step validation rules
- * @param step - The wizard step with validation rules
- * @param value - The user input value to validate
- * @returns Validation result with any errors
+ * @param {WizardStep} step - The wizard step with validation rules
+ * @param {unknown} value - The user input value to validate
+ * @returns {ValidationResult} Validation result with any errors
  */
 export function validateStepInput(step: WizardStep, value: unknown): ValidationResult {
   const errors: string[] = [];
@@ -58,9 +58,9 @@ export function validateStepInput(step: WizardStep, value: unknown): ValidationR
 
 /**
  * Check if required field is empty
- * @param step - The wizard step
- * @param value - The input value
- * @returns True if required field is empty
+ * @param {WizardStep} step - The wizard step
+ * @param {unknown} value - The input value
+ * @returns {boolean} True if required field is empty
  */
 export function isRequiredFieldEmpty(step: WizardStep, value: unknown): boolean {
   return step.required && (value === undefined || value === null || value === '');
@@ -68,9 +68,9 @@ export function isRequiredFieldEmpty(step: WizardStep, value: unknown): boolean 
 
 /**
  * Check if optional field is empty
- * @param step - The wizard step
- * @param value - The input value
- * @returns True if optional field is empty
+ * @param {WizardStep} step - The wizard step
+ * @param {unknown} value - The input value
+ * @returns {boolean} True if optional field is empty
  */
 export function isOptionalFieldEmpty(step: WizardStep, value: unknown): boolean {
   return !step.required && (value === undefined || value === null || value === '');
@@ -78,9 +78,9 @@ export function isOptionalFieldEmpty(step: WizardStep, value: unknown): boolean 
 
 /**
  * Run all validation rules for a step
- * @param step - The wizard step
- * @param value - The input value
- * @param errors - Array to collect validation errors
+ * @param {WizardStep} step - The wizard step
+ * @param {unknown} value - The input value
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function runValidationRules(step: WizardStep, value: unknown, errors: string[]): void {
   if (!step.validation) {
@@ -94,9 +94,15 @@ export function runValidationRules(step: WizardStep, value: unknown, errors: str
 
 /**
  * Validate a single rule against a value
- * @param rule - The validation rule to apply
- * @param value - The value to validate
- * @param errors - Array to collect validation errors
+ * @param {object} rule - The validation rule to apply
+ * @param {'required' | 'pattern' | 'length' | 'custom'} rule.type - The type of validation rule
+ * @param {string} rule.message - The error message to display if validation fails
+ * @param {RegExp} [rule.pattern] - The regex pattern for pattern validation
+ * @param {number} [rule.min] - The minimum length value for length validation
+ * @param {number} [rule.max] - The maximum length value for length validation
+ * @param {(value: unknown) => boolean | string} [rule.validator] - The custom validator function
+ * @param {unknown} value - The value to validate
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateRule(
   rule: {
@@ -127,9 +133,11 @@ export function validateRule(
 
 /**
  * Validate pattern rule against a value
- * @param rule - The pattern validation rule
- * @param value - The value to validate
- * @param errors - Array to collect validation errors
+ * @param {object} rule - Pattern validation rule
+ * @param {RegExp} [rule.pattern] - The regex pattern to match against
+ * @param {string} rule.message - The error message to display if pattern doesn't match
+ * @param {unknown} value - The value to validate
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validatePatternRule(
   rule: { pattern?: RegExp; message: string },
@@ -147,9 +155,12 @@ export function validatePatternRule(
 
 /**
  * Validate length rule against a value
- * @param rule - The length validation rule
- * @param value - The value to validate
- * @param errors - Array to collect validation errors
+ * @param {object} rule - Length validation rule
+ * @param {number} [rule.min] - The minimum allowed length
+ * @param {number} [rule.max] - The maximum allowed length
+ * @param {string} rule.message - The error message to display if length constraints are violated
+ * @param {unknown} value - The value to validate
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateLengthRule(
   rule: { min?: number; max?: number; message: string },
@@ -171,9 +182,11 @@ export function validateLengthRule(
 
 /**
  * Validate custom rule against a value
- * @param rule - The custom validation rule
- * @param value - The value to validate
- * @param errors - Array to collect validation errors
+ * @param {object} rule - Custom validation rule
+ * @param {(value: unknown) => boolean | string} [rule.validator] - The custom validator function
+ * @param {string} rule.message - The error message to display if validation fails
+ * @param {unknown} value - The value to validate
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateCustomRule(
   rule: { validator?: (value: unknown) => boolean | string; message: string },

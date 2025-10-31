@@ -42,7 +42,7 @@ export class ConfigurableVariableSubstitutionEngine extends VariableSubstitution
 
   /**
    * Creates a new configurable variable substitution engine with provided settings
-   * @param config - Partial configuration object to customize behavior
+   * @param {Partial<VariableSubstitutionConfig> = {}} config - Partial configuration object to customize behavior
    */
   constructor(config: Partial<VariableSubstitutionConfig> = {}) {
     super();
@@ -57,10 +57,10 @@ export class ConfigurableVariableSubstitutionEngine extends VariableSubstitution
 
   /**
    * Substitutes variables in template content using configuration settings
-   * @param content - Template content with variable placeholders
-   * @param context - Template context containing variable values
-   * @param variables - Optional variable definitions for validation
-   * @returns Substitution result with applied configuration and validation
+   * @param {unknown} content - Template content with variable placeholders
+   * @param {unknown} context - Template context containing variable values
+   * @param {unknown} variables - Optional variable definitions for validation
+   * @returns {VariableSubstitutionResult} Substitution result with applied configuration and validation
    */
   substituteWithConfig(
     content: string,
@@ -83,9 +83,9 @@ export class ConfigurableVariableSubstitutionEngine extends VariableSubstitution
 
   /**
    * Applies custom formatters to the content
-   * @param content - Template content to process
-   * @param context - Template context containing variable values
-   * @returns Processed content with formatters applied
+   * @param {string} content - Template content to process
+   * @param {ExtendedTemplateContext} context - Template context containing variable values
+   * @returns { string} Processed content with formatters applied
    */
   private applyCustomFormatters(content: string, context: ExtendedTemplateContext): string {
     let processedContent = content;
@@ -101,10 +101,10 @@ export class ConfigurableVariableSubstitutionEngine extends VariableSubstitution
 
   /**
    * Handles missing variables in template content
-   * @param content - Template content to process
-   * @param context - Template context containing variable values
-   * @param warnings - Array to collect warning messages
-   * @returns Processed content with missing variables handled
+   * @param {unknown} content - Template content to process
+   * @param {unknown} context - Template context containing variable values
+   * @param {unknown} warnings - Array to collect warning messages
+   * @returns {string} Processed content with missing variables handled
    */
   private handleMissingVariables(
     content: string,
@@ -128,8 +128,8 @@ export class ConfigurableVariableSubstitutionEngine extends VariableSubstitution
 
   /**
    * Validates strict mode requirements and throws errors if needed
-   * @param result - Substitution result to validate
-   * @param substitutionWarnings - Warnings from substitution process
+   * @param {unknown} result - Substitution result to validate
+   * @param {unknown} substitutionWarnings - Warnings from substitution process
    */
   private validateStrictMode(
     result: VariableSubstitutionResult,
@@ -149,7 +149,7 @@ export class ConfigurableVariableSubstitutionEngine extends VariableSubstitution
 
   /**
    * Filters warnings based on configuration settings
-   * @param result - Substitution result to filter warnings for
+   * @param {VariableSubstitutionResult} result - Substitution result to filter warnings for
    */
   private filterWarningsIfNeeded(result: VariableSubstitutionResult): void {
     if (!this.config.includeWarnings && !this.config.strictMode) {
@@ -159,7 +159,7 @@ export class ConfigurableVariableSubstitutionEngine extends VariableSubstitution
 
   /**
    * Updates the engine configuration with new settings
-   * @param newConfig - Partial configuration object with settings to update
+   * @param {Partial<VariableSubstitutionConfig>} newConfig - Partial configuration object with settings to update
    */
   updateConfig(newConfig: Partial<VariableSubstitutionConfig>): void {
     this.config = { ...this.config, ...newConfig };
@@ -167,7 +167,7 @@ export class ConfigurableVariableSubstitutionEngine extends VariableSubstitution
 
   /**
    * Gets a copy of the current configuration settings
-   * @returns Copy of the current configuration object
+   * @returns {VariableSubstitutionConfig} Copy of the current configuration object
    */
   getConfig(): VariableSubstitutionConfig {
     return { ...this.config };

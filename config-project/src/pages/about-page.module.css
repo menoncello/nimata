@@ -1,0 +1,87 @@
+.aboutContainer {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.aboutHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.aboutHeader h1 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.aboutHeader p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.aboutContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.aboutSection {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.aboutSection h2 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.aboutSection p {
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.teamSection {
+  margin-top: 3rem;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.teamMember {
+  text-align: center;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.teamMember h3 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.teamMember p {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .aboutContent {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .teamGrid {
+    grid-template-columns: 1fr;
+  }
+}

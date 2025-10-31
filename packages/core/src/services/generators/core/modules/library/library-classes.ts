@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate Library class
- * @param config - Project configuration
- * @returns Library class TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Library class TypeScript code
  */
 export function generateLibraryClass(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -23,9 +23,9 @@ export function generateLibraryClass(config: ProjectConfig): string {
 
 /**
  * Generate class header and properties
- * @param className - Class name
- * @param _config - Project configuration
- * @returns Class header TypeScript code
+ * @param {string} className - Class name
+ * @param {ProjectConfig} _config - Project configuration
+ * @returns {string} Class header TypeScript code
  */
 function generateClassHeader(className: string, _config: ProjectConfig): string {
   return `export class ${className} {
@@ -35,9 +35,9 @@ function generateClassHeader(className: string, _config: ProjectConfig): string 
 
 /**
  * Generate constructor method
- * @param className - Class name
- * @param config - Project configuration
- * @returns Constructor TypeScript code
+ * @param {string} className - Class name
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Constructor TypeScript code
  */
 function generateConstructor(className: string, config: ProjectConfig): string {
   return `  constructor(config: Partial<${className}Config> = {}) {
@@ -53,7 +53,7 @@ function generateConstructor(className: string, config: ProjectConfig): string {
 
 /**
  * Generate initialize method
- * @returns Initialize method TypeScript code
+ * @returns {string} Initialize method TypeScript code
  */
 function generateInitializeMethod(): string {
   return `  /**
@@ -79,8 +79,8 @@ function generateInitializeMethod(): string {
 
 /**
  * Generate process method
- * @param className - Class name
- * @returns Process method TypeScript code
+ * @param {string} className - Class name
+ * @returns {string} Process method TypeScript code
  */
 function generateProcessMethod(className: string): string {
   return [
@@ -92,15 +92,15 @@ function generateProcessMethod(className: string): string {
 
 /**
  * Generate process method signature
- * @param className - Class name
- * @returns Method signature
+ * @param {string} className - Class name
+ * @returns {string} Method signature
  */
 function generateProcessMethodSignature(className: string): string {
   return `  /**
    * Process data with library
-   * @param input - Input data
-   * @param options - Processing options
-   * @returns Library result
+   * @param {string} input - Input data
+   * @param {string} options - Processing options
+   * @returns {string} Library result
    */
   async process<T = unknown>(
     input: T,
@@ -110,7 +110,7 @@ function generateProcessMethodSignature(className: string): string {
 
 /**
  * Generate process method main body
- * @returns Method body implementation
+ * @returns {string} Method body implementation
  */
 function generateProcessMethodBody(): string {
   return `    if (!this.initialized) {
@@ -139,7 +139,7 @@ function generateProcessMethodBody(): string {
 
 /**
  * Generate process method error handling
- * @returns Error handling implementation
+ * @returns {string} Error handling implementation
  */
 function generateProcessMethodErrorHandling(): string {
   return `    } catch (error) {
@@ -156,8 +156,8 @@ function generateProcessMethodErrorHandling(): string {
 
 /**
  * Generate configuration methods
- * @param className - Class name
- * @returns Configuration methods TypeScript code
+ * @param {string} className - Class name
+ * @returns {string} Configuration methods TypeScript code
  */
 function generateConfigMethods(className: string): string {
   return `  /**
@@ -177,14 +177,14 @@ function generateConfigMethods(className: string): string {
 
 /**
  * Generate static create method
- * @param className - Class name
- * @returns Create method TypeScript code
+ * @param {string} className - Class name
+ * @returns {string} Create method TypeScript code
  */
 function generateCreateMethod(className: string): string {
   return `  /**
    * Create instance with configuration
-   * @param config - Configuration
-   * @returns Initialized instance
+   * @param {string} config - Configuration
+   * @returns {string} Initialized instance
    */
   static async create(config?: Partial<${className}Config>): Promise<${className}> {
     const instance = new ${className}(config);

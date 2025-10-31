@@ -7,8 +7,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 
 /**
  * Generate environment configurations
- * @param config - Project configuration
- * @returns Environment configurations
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Environment configurations
  */
 export function generateEnvironmentConfigs(config: ProjectConfig): string {
   return [generateDevelopmentConfig(), generateProductionConfig(), generateTestConfig(config)].join(
@@ -18,7 +18,7 @@ export function generateEnvironmentConfigs(config: ProjectConfig): string {
 
 /**
  * Generate development environment configuration
- * @returns Development configuration definition
+ * @returns {string} Development configuration definition
  */
 function generateDevelopmentConfig(): string {
   return `/**
@@ -41,7 +41,7 @@ export const devConfig: ConfigFileOptions = {
 
 /**
  * Generate production environment configuration
- * @returns Production configuration definition
+ * @returns {string} Production configuration definition
  */
 function generateProductionConfig(): string {
   return `/**
@@ -69,8 +69,8 @@ export const prodConfig: ConfigFileOptions = {
 
 /**
  * Generate test environment configuration
- * @param config - Project configuration
- * @returns Test configuration definition
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Test configuration definition
  */
 function generateTestConfig(config: ProjectConfig): string {
   return `/**

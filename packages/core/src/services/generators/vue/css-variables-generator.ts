@@ -10,7 +10,7 @@ import { CSS_VALUES } from './vue-constants.js';
 export class CSSVariablesGenerator {
   /**
    * Get CSS variables
-   * @returns CSS variables
+   * @returns {string} CSS variables
    */
   static getCSSVariables(): string {
     const lightTheme = this.getLightThemeVariables();
@@ -49,7 +49,7 @@ export class CSSVariablesGenerator {
 
   /**
    * Get light theme variables
-   * @returns Light theme CSS variables
+   * @returns {string} Light theme CSS variables
    */
   private static getLightThemeVariables(): string {
     return `--color-primary: #3498db;
@@ -68,7 +68,7 @@ export class CSSVariablesGenerator {
 
   /**
    * Get dark theme variables
-   * @returns Dark theme CSS variables
+   * @returns {string} Dark theme CSS variables
    */
   private static getDarkThemeVariables(): string {
     return `--color-background: #1a1a1a;
@@ -80,7 +80,7 @@ export class CSSVariablesGenerator {
 
   /**
    * Get typography variables
-   * @returns Typography CSS variables
+   * @returns {string} Typography CSS variables
    */
   private static getTypographyVariables(): string {
     return `--font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -103,7 +103,7 @@ export class CSSVariablesGenerator {
 
   /**
    * Get spacing variables
-   * @returns Spacing CSS variables
+   * @returns {string} Spacing CSS variables
    */
   private static getSpacingVariables(): string {
     return `--spacing-1: 0.25rem;
@@ -121,7 +121,7 @@ export class CSSVariablesGenerator {
 
   /**
    * Get border radius variables
-   * @returns Border radius CSS variables
+   * @returns {string} Border radius CSS variables
    */
   private static getBorderRadiusVariables(): string {
     return `--radius-sm: 0.25rem;
@@ -133,7 +133,7 @@ export class CSSVariablesGenerator {
 
   /**
    * Get shadow variables
-   * @returns Shadow CSS variables
+   * @returns {string} Shadow CSS variables
    */
   private static getShadowVariables(): string {
     return `--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -145,7 +145,7 @@ export class CSSVariablesGenerator {
 
   /**
    * Get transition variables
-   * @returns Transition CSS variables
+   * @returns {string} Transition CSS variables
    */
   private static getTransitionVariables(): string {
     return `--transition-colors: background-color 150ms ease-in-out, border-color 150ms ease-in-out, color 150ms ease-in-out;

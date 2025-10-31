@@ -5,12 +5,12 @@
  * Includes temporary directory management and template file creation.
  */
 
+import { beforeEach, afterEach } from 'bun:test';
 import { mkdtemp, rm, writeFile, mkdir } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { beforeEach, afterEach } from 'bun:test';
 // Import the Handlebars template engine (will fail during RED phase)
-import { HandlebarsTemplateEngine } from '../../src/template-engine/handlebars-template-engine';
+import { HandlebarsTemplateEngine } from '../../src/template-engine-handlebars';
 
 /**
  * Template engine test fixture interface

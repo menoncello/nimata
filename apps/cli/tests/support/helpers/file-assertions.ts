@@ -6,17 +6,17 @@
  */
 
 import { mkdir, writeFile, rm } from 'fs/promises';
+import { randomInt } from 'node:crypto';
 import { join } from 'path';
 
 /**
  * Creates a temporary directory path with unique name (synchronous)
- * Using Math.random() is acceptable for test isolation as we only need uniqueness
+ * Using cryptographically secure random values for test isolation
  */
 export function createTempDirectoryPath(): string {
   const timestamp = Date.now();
-  // Using Math.random() is safe here - we only need unique directory names for test isolation
-  // eslint-disable-next-line sonarjs/pseudo-random
-  const random = Math.random().toString(36).substring(2, 8);
+  // Using cryptographically secure random values for unique directory names
+  const random = randomInt(0, 1000000).toString(36);
   return `/tmp/nimata-test-${timestamp}-${random}`;
 }
 
@@ -35,9 +35,9 @@ export async function createTempDirectory(prefix = 'test-'): Promise<string> {
 export async function cleanupTempDirectory(tempDir: string): Promise<void> {
   try {
     await rm(tempDir, { recursive: true, force: true });
-  } catch (error) {
-    // Ignore cleanup errors
-    console.warn(`Warning: Failed to cleanup ${tempDir}:`, error);
+  } catch {
+    // Silently ignore cleanup errors in test environment as they don't affect test validity
+    // File might already be deleted or permissions might prevent cleanup
   }
 }
 

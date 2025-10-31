@@ -41,8 +41,8 @@ export class LibraryStructureGenerator {
 
   /**
    * Generate library project structure
-   * @param config - Project configuration
-   * @returns Library-specific directory structure
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean}ic directory structure
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const directories = this.getLibraryDirectories();
@@ -53,25 +53,26 @@ export class LibraryStructureGenerator {
 
   /**
    * Get library-specific directory structure
-   * @returns Array of directory items
+   * @returns {DirectoryItem[]} Array of directory items items
    */
   private getLibraryDirectories(): DirectoryItem[] {
     return [
+      { path: 'src/types', type: 'directory' },
       { path: 'src/lib', type: 'directory' },
-      { path: 'src/lib/types', type: 'directory' },
       { path: 'src/lib/utils', type: 'directory' },
       { path: 'src/lib/constants', type: 'directory' },
       { path: 'examples', type: 'directory' },
       { path: 'examples/basic', type: 'directory' },
       { path: 'examples/advanced', type: 'directory' },
       { path: 'benchmarks', type: 'directory' },
+      { path: 'docs/api', type: 'directory' },
     ];
   }
 
   /**
    * Get library-specific files
-   * @param config - Project configuration
-   * @returns Array of file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of directory items items
    */
   private getLibraryFiles(config: ProjectConfig): DirectoryItem[] {
     const coreFiles = this.generateCoreFiles(config);
@@ -83,15 +84,16 @@ export class LibraryStructureGenerator {
 
   /**
    * Generates core library files
-   * @param config - Project configuration
-   * @returns Core file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Directory items
    */
   private generateCoreFiles(config: ProjectConfig): DirectoryItem[] {
     const fileContents = this.generateCoreFileContents(config);
     const filePaths = [
+      'src/index.ts',
       'src/lib/index.ts',
       'src/lib/core.ts',
-      'src/lib/types/index.ts',
+      'src/types/index.ts',
       'src/lib/utils/index.ts',
       'src/lib/constants/index.ts',
     ];
@@ -105,11 +107,12 @@ export class LibraryStructureGenerator {
 
   /**
    * Generates core file contents
-   * @param config - Project configuration
-   * @returns Array of file contents
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of directory items contents
    */
   private generateCoreFileContents(config: ProjectConfig): string[] {
     return [
+      this.mainExportGenerator.generateMainExport(config),
       this.mainExportGenerator.generateMainExport(config),
       this.coreModuleGenerator.generateCoreModule(config),
       this.typesGenerator.generateTypeExports(config),
@@ -120,8 +123,8 @@ export class LibraryStructureGenerator {
 
   /**
    * Generates example files
-   * @param config - Project configuration
-   * @returns Example file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Directory items
    */
   private generateExampleFiles(config: ProjectConfig): DirectoryItem[] {
     const basicExample = this.examplesGenerator.generateBasicExample(config);
@@ -143,8 +146,8 @@ export class LibraryStructureGenerator {
 
   /**
    * Generates benchmark files
-   * @param config - Project configuration
-   * @returns Benchmark file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Directory items
    */
   private generateBenchmarkFiles(config: ProjectConfig): DirectoryItem[] {
     const performanceBenchmark =

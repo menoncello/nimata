@@ -224,10 +224,10 @@ describe('FixCommand [T003]', () => {
     it('[T003-51] should have consistent interface with other commands', () => {
       const requiredProperties = ['command', 'describe', 'builder', 'handler'];
 
-      requiredProperties.forEach((prop) => {
+      for (const prop of requiredProperties) {
         expect(fixCommand).toHaveProperty(prop);
         expect(fixCommand[prop as keyof typeof fixCommand]).toBeDefined();
-      });
+      }
     });
 
     it('[T003-52] should have command name matching file structure', () => {

@@ -8,9 +8,9 @@ import type { ProjectTemplate, TemplateFile, ValidationResult } from './types.js
 
 /**
  * Validates template syntax and structure
- * @param template - Template string to validate
- * @param helpers - Map of registered helper functions
- * @returns Validation result with any errors found
+ * @param {unknown} template - Template string to validate
+ * @param {Map<string} helpers - Map of registered helper functions
+ * @returns {void} Validation result with any errors found
  */
 export function validateTemplateSyntax(
   template: string,
@@ -30,8 +30,8 @@ export function validateTemplateSyntax(
 
 /**
  * Validates that all template blocks are properly paired
- * @param template - Template string to validate
- * @param errors - Array to collect validation errors
+ * @param {string} template - Template string to validate
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateBlockPairs(template: string, errors: string[]): void {
   const blockPairs = [
@@ -51,8 +51,8 @@ export function validateBlockPairs(template: string, errors: string[]): void {
 
 /**
  * Validates template variable reference syntax
- * @param template - Template string to validate
- * @param errors - Array to collect validation errors
+ * @param {string} template - Template string to validate
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateVariableReferences(template: string, errors: string[]): void {
   const malformedVars = template.match(REGEX_PATTERNS.VARIABLE_REFERENCE);
@@ -63,9 +63,9 @@ export function validateVariableReferences(template: string, errors: string[]): 
 
 /**
  * Validates helper function syntax and existence
- * @param template - Template string to validate
- * @param helpers - Map of registered helper functions
- * @param errors - Array to collect validation errors
+ * @param {unknown} template - Template string to validate
+ * @param {Map<string} helpers - Map of registered helper functions
+ * @param {unknown} errors - Array to collect validation errors
  */
 export function validateHelperSyntax(
   template: string,
@@ -87,8 +87,8 @@ export function validateHelperSyntax(
 
 /**
  * Escapes special characters in a string for use in regular expressions
- * @param string - String to escape
- * @returns Escaped string safe for use in RegExp
+ * @param {string} string - String to escape
+ * @returns {string): string} Escaped string safe for use in RegExp
  */
 export function escapeRegExp(string: string): string {
   return string.replace(REGEX_PATTERNS.ESCAPE_REGEX, '\\$&');
@@ -96,8 +96,8 @@ export function escapeRegExp(string: string): string {
 
 /**
  * Validates the structure of a project template
- * @param template - Template to validate
- * @returns Validation result with any errors found
+ * @param {ProjectTemplate} template - Template to validate
+ * @returns {ProjectTemplate): ValidationResult} Validation result with any errors found
  */
 export function validateTemplateStructure(template: ProjectTemplate): ValidationResult {
   const errors: string[] = [];
@@ -114,8 +114,8 @@ export function validateTemplateStructure(template: ProjectTemplate): Validation
 
 /**
  * Validates basic template fields
- * @param template - Template to validate
- * @param errors - Array to collect errors
+ * @param {ProjectTemplate} template - Template to validate
+ * @param {string[]} errors - Array to collect errors
  */
 export function validateBasicTemplateFields(template: ProjectTemplate, errors: string[]): void {
   if (!template.name) {
@@ -129,8 +129,8 @@ export function validateBasicTemplateFields(template: ProjectTemplate, errors: s
 
 /**
  * Validates template array fields
- * @param template - Template to validate
- * @param errors - Array to collect errors
+ * @param {ProjectTemplate} template - Template to validate
+ * @param {string[]} errors - Array to collect errors
  */
 export function validateTemplateArrays(template: ProjectTemplate, errors: string[]): void {
   if (!Array.isArray(template.supportedProjectTypes)) {
@@ -144,8 +144,8 @@ export function validateTemplateArrays(template: ProjectTemplate, errors: string
 
 /**
  * Validates template files array
- * @param template - Template to validate
- * @param errors - Array to collect errors
+ * @param {ProjectTemplate} template - Template to validate
+ * @param {string[]} errors - Array to collect errors
  */
 export function validateTemplateFiles(template: ProjectTemplate, errors: string[]): void {
   if (!Array.isArray(template.files)) {
@@ -160,9 +160,9 @@ export function validateTemplateFiles(template: ProjectTemplate, errors: string[
 
 /**
  * Validates a single template file
- * @param file - File to validate
- * @param index - File index
- * @param errors - Array to collect errors
+ * @param {TemplateFile} file - File to validate
+ * @param {number} index - File index
+ * @param {string[]} errors - Array to collect errors
  */
 export function validateTemplateFile(file: TemplateFile, index: number, errors: string[]): void {
   if (!file.path) {

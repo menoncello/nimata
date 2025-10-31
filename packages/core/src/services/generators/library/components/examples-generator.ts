@@ -12,8 +12,8 @@ import { toPascalCase } from '../../../../utils/string-utils.js';
 export class ExamplesGenerator {
   /**
    * Generates basic usage example
-   * @param config - Project configuration
-   * @returns Basic example code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Basic example code
    */
   generateBasicExample(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -28,8 +28,8 @@ export class ExamplesGenerator {
 
   /**
    * Generates advanced usage example
-   * @param config - Project configuration
-   * @returns Advanced example code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Advanced example code
    */
   generateAdvancedExample(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -43,10 +43,10 @@ export class ExamplesGenerator {
 
   /**
    * Generates the example file header
-   * @param className - Name of the class
-   * @param config - Project configuration
-   * @param title - Example title
-   * @returns Header code
+   * @param {string} className - Name of the class
+   * @param {ProjectConfig} config - Project configuration
+   * @param {string} title - Example title
+   * @returns {string} Header code
    */
   private generateExampleHeader(className: string, config: ProjectConfig, title: string): string {
     return `/**
@@ -60,8 +60,8 @@ import { ${className}, create${className}, quickProcess } from '../../src/lib/in
 
   /**
    * Generates basic example 1 - constructor usage
-   * @param className - Name of the class
-   * @returns Example 1 code
+   * @param {string} className - Name of the class
+   * @returns {string} Example 1 code
    */
   private generateBasicExample1(className: string): string {
     return `/**
@@ -90,8 +90,8 @@ async function example1() {
 
   /**
    * Generates basic example 2 - convenience function
-   * @param className - Name of the class
-   * @returns Example 2 code
+   * @param {string} className - Name of the class
+   * @returns {string} Example 2 code
    */
   private generateBasicExample2(className: string): string {
     return `/**
@@ -114,8 +114,8 @@ async function example2() {
 
   /**
    * Generates basic example 3 - quick processing
-   * @param _className - Name of the class
-   * @returns Example 3 code
+   * @param {string} _className - Name of the class
+   * @returns {string} Example 3 code
    */
   private generateBasicExample3(_className: string): string {
     return `/**
@@ -142,8 +142,8 @@ async function example3() {
 
   /**
    * Generates advanced configuration example
-   * @param _className - Name of the class
-   * @returns Configuration example code
+   * @param {string} _className - Name of the class
+   * @returns {string} Configuration example code
    */
   private generateAdvancedConfig(_className: string): string {
     return `/**
@@ -161,8 +161,8 @@ const customConfig = {
 
   /**
    * Generates advanced examples
-   * @param className - Name of the class
-   * @returns Advanced examples code
+   * @param {string} className - Name of the class
+   * @returns {string} Advanced examples code
    */
   private generateAdvancedExamples(className: string): string {
     const example1 = this.generateAdvancedExample1(className);
@@ -178,8 +178,8 @@ ${example3}`;
 
   /**
    * Generates advanced example 1 - custom configuration
-   * @param className - Name of the class
-   * @returns Example 1 code
+   * @param {string} className - Name of the class
+   * @returns {string} Example 1 code
    */
   private generateAdvancedExample1(className: string): string {
     return `/**
@@ -200,8 +200,8 @@ async function example1() {
 
   /**
    * Generates advanced example 2 - error handling
-   * @param className - Name of the class
-   * @returns Example 2 code
+   * @param {string} className - Name of the class
+   * @returns {string} Example 2 code
    */
   private generateAdvancedExample2(className: string): string {
     return `/**
@@ -229,8 +229,8 @@ async function example2() {
 
   /**
    * Generates advanced example 3 - performance monitoring
-   * @param className - Name of the class
-   * @returns Example 3 code
+   * @param {string} className - Name of the class
+   * @returns {string} Example 3 code
    */
   private generateAdvancedExample3(className: string): string {
     return `/**
@@ -264,8 +264,8 @@ async function example3() {
 
   /**
    * Generates run function for basic examples
-   * @param exampleNames - Names of example functions
-   * @returns Run function code
+   * @param {string} exampleNames - Names of example functions
+   * @returns {string} Run function code
    */
   private generateRunFunction(exampleNames: string[]): string {
     const exampleCalls = exampleNames.map((name) => `    await ${name}();`).join('\n');
@@ -296,7 +296,7 @@ export { ${exampleNames.join(', ')}, runExamples };`;
 
   /**
    * Generates run function for advanced examples
-   * @returns Advanced run function code
+   * @returns {string} Advanced run function code
    */
   private generateAdvancedRunFunction(): string {
     return `/**

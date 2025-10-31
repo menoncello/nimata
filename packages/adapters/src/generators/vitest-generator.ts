@@ -52,8 +52,8 @@ export class VitestGenerator {
   /**
    * Generate Vitest configuration for a project
    *
-   * @param config - Project configuration
-   * @returns Generated Vitest configuration files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): GeneratedVitestConfig[]} Generated Vitest configuration files
    */
   generate(config: ProjectConfig): GeneratedVitestConfig[] {
     const options: VitestConfigOptions = {
@@ -84,8 +84,8 @@ export class VitestGenerator {
 
   /**
    * Generate main Vitest configuration
-   * @param options - Configuration options for Vitest
-   * @returns Main Vitest configuration object
+   * @param {VitestConfigOptions} options - Configuration options for Vitest
+   * @returns {VitestConfigOptions): GeneratedVitestConfig} Main Vitest configuration object
    */
   private generateMainConfig(options: VitestConfigOptions): GeneratedVitestConfig {
     const filename = 'vitest.config.ts';
@@ -100,8 +100,8 @@ export class VitestGenerator {
 
   /**
    * Generate workspace configuration
-   * @param options - Configuration options for Vitest workspace
-   * @returns Workspace configuration object
+   * @param {VitestConfigOptions} options - Configuration options for Vitest workspace
+   * @returns {VitestConfigOptions): GeneratedVitestConfig} Workspace configuration object
    */
   private generateWorkspaceConfig(options: VitestConfigOptions): GeneratedVitestConfig {
     const filename = 'vitest.workspace.ts';
@@ -116,8 +116,8 @@ export class VitestGenerator {
 
   /**
    * Generate setup file
-   * @param options - Configuration options for Vitest setup
-   * @returns Setup file configuration object
+   * @param {VitestConfigOptions} options - Configuration options for Vitest setup
+   * @returns {VitestConfigOptions): GeneratedVitestConfig} Setup file configuration object
    */
   private generateSetupFile(options: VitestConfigOptions): GeneratedVitestConfig {
     const filename = 'tests/setup.ts';
@@ -132,8 +132,8 @@ export class VitestGenerator {
 
   /**
    * Build main Vitest configuration content
-   * @param options - Configuration options for Vitest
-   * @returns Generated configuration string
+   * @param {VitestConfigOptions} options - Configuration options for Vitest
+   * @returns {VitestConfigOptions): string} Generated configuration string
    */
   private buildMainConfigContent(options: VitestConfigOptions): string {
     const testEnvironment = this.getTestEnvironment(options.targetEnvironment);
@@ -148,8 +148,8 @@ ${testConfig}
 
   /**
    * Build import section for Vitest configuration
-   * @param options - Configuration options for Vitest
-   * @returns Import section string
+   * @param {VitestConfigOptions} options - Configuration options for Vitest
+   * @returns {VitestConfigOptions): string} Import section string
    */
   private buildImportSection(options: VitestConfigOptions): string {
     const tsconfigImport = options.enableTypeScript
@@ -162,10 +162,10 @@ ${tsconfigImport}`;
 
   /**
    * Build test configuration section
-   * @param options - Configuration options for Vitest
-   * @param testEnvironment - Test environment to use
-   * @param coverageConfig - Coverage configuration string
-   * @returns Test configuration section
+   * @param {unknown} options - Configuration options for Vitest
+   * @param {unknown} testEnvironment - Test environment to use
+   * @param {unknown} coverageConfig - Coverage configuration string
+   * @returns {string} Test configuration section
    */
   private buildTestConfigSection(
     options: VitestConfigOptions,
@@ -196,8 +196,8 @@ ${tsconfigImport}`;
 
   /**
    * Build test configuration body
-   * @param options - Test configuration options
-   * @returns Test configuration body string
+   * @param {TestConfigOptions} options - Test configuration options
+   * @returns {TestConfigOptions): string} Test configuration body string
    */
   private buildTestConfigBody(options: TestConfigOptions): string {
     return buildTestConfigBody(options);
@@ -205,8 +205,8 @@ ${tsconfigImport}`;
 
   /**
    * Build workspace configuration content
-   * @param options - Configuration options for Vitest workspace
-   * @returns Generated workspace configuration string
+   * @param {VitestConfigOptions} options - Configuration options for Vitest workspace
+   * @returns {VitestConfigOptions): string} Generated workspace configuration string
    */
   private buildWorkspaceConfigContent(options: VitestConfigOptions): string {
     const unitTestConfig = this.buildUnitTestConfig();
@@ -226,7 +226,7 @@ export default defineWorkspace([
 
   /**
    * Build unit test configuration for workspace
-   * @returns Unit test configuration string
+   * @returns {string} Unit test configuration string
    */
   private buildUnitTestConfig(): string {
     return buildUnitTestConfig();
@@ -234,8 +234,8 @@ export default defineWorkspace([
 
   /**
    * Build integration test configuration for workspace
-   * @param options - Configuration options for Vitest
-   * @returns Integration test configuration string
+   * @param {VitestConfigOptions} options - Configuration options for Vitest
+   * @returns {VitestConfigOptions): string} Integration test configuration string
    */
   private buildIntegrationTestConfig(options: VitestConfigOptions): string {
     const testEnvironment = this.getTestEnvironment(options.targetEnvironment);
@@ -244,7 +244,7 @@ export default defineWorkspace([
 
   /**
    * Build browser test configuration for workspace
-   * @returns Browser test configuration string or empty string if not applicable
+   * @returns {boolean} not applicable
    */
   private buildBrowserTestConfig(): string {
     return buildBrowserTestConfig();
@@ -252,8 +252,8 @@ export default defineWorkspace([
 
   /**
    * Build setup file content
-   * @param options - Configuration options for Vitest setup
-   * @returns Generated setup file content
+   * @param {VitestConfigOptions} options - Configuration options for Vitest setup
+   * @returns {VitestConfigOptions): string} Generated setup file content
    */
   private buildSetupFileContent(options: VitestConfigOptions): string {
     const baseSetup = this.buildBaseSetupContent();
@@ -265,7 +265,7 @@ export default defineWorkspace([
 
   /**
    * Build base setup content for all projects
-   * @returns Base setup content
+   * @returns {string} Base setup content
    */
   private buildBaseSetupContent(): string {
     const header = buildSetupHeader();
@@ -279,7 +279,7 @@ export default defineWorkspace([
 
   /**
    * Build web-specific setup content
-   * @returns Web setup content
+   * @returns {string} Web setup content
    */
   private buildWebSetupContent(): string {
     return buildWebSetupContent();
@@ -287,7 +287,7 @@ export default defineWorkspace([
 
   /**
    * Build strict quality setup content
-   * @returns Strict quality setup content
+   * @returns {string} Strict quality setup content
    */
   private buildStrictSetupContent(): string {
     return buildStrictSetupContent();
@@ -295,8 +295,8 @@ export default defineWorkspace([
 
   /**
    * Get test environment based on target environment
-   * @param targetEnvironment - Target environment type
-   * @returns Test environment string
+   * @param {string} targetEnvironment - Target environment type
+   * @returns {string): string} Test environment string
    */
   private getTestEnvironment(targetEnvironment: string): string {
     switch (targetEnvironment) {
@@ -313,8 +313,8 @@ export default defineWorkspace([
 
   /**
    * Get coverage configuration
-   * @param options - Configuration options for Vitest
-   * @returns Coverage configuration string
+   * @param {VitestConfigOptions} options - Configuration options for Vitest
+   * @returns {VitestConfigOptions): string} Coverage configuration string
    */
   private getCoverageConfig(options: VitestConfigOptions): string {
     if (!options.enableCoverage) {
@@ -334,8 +334,8 @@ export default defineWorkspace([
 
   /**
    * Get test match patterns based on project type
-   * @param projectType - Project type identifier
-   * @returns Test match patterns string
+   * @param {string} projectType - Project type identifier
+   * @returns {string): string} Test match patterns string
    */
   private getTestMatchPatterns(projectType: string): string {
     switch (projectType) {
@@ -365,8 +365,8 @@ export default defineWorkspace([
 
   /**
    * Get reporter configuration based on quality level
-   * @param qualityLevel - Quality level identifier
-   * @returns Reporter configuration string
+   * @param {string} qualityLevel - Quality level identifier
+   * @returns {string): string} Reporter configuration string
    */
   private getReporterConfig(qualityLevel: string): string {
     switch (qualityLevel) {
@@ -383,8 +383,8 @@ export default defineWorkspace([
 
   /**
    * Get timeout configuration based on quality level
-   * @param qualityLevel - Quality level identifier
-   * @returns Timeout configuration string
+   * @param {string} qualityLevel - Quality level identifier
+   * @returns {string): string} Timeout configuration string
    */
   private getTimeoutConfig(qualityLevel: string): string {
     switch (qualityLevel) {
@@ -401,8 +401,8 @@ export default defineWorkspace([
 
   /**
    * Get coverage threshold based on quality level
-   * @param qualityLevel - Quality level identifier
-   * @returns Coverage threshold percentage
+   * @param {string} qualityLevel - Quality level identifier
+   * @returns {string): number} Coverage threshold percentage
    */
   private getCoverageThreshold(qualityLevel: string): number {
     switch (qualityLevel) {
@@ -419,8 +419,8 @@ export default defineWorkspace([
 
   /**
    * Get target environment based on project type
-   * @param projectType - Project type identifier
-   * @returns Target environment string
+   * @param {string} projectType - Project type identifier
+   * @returns {string): 'node' | 'browser' | 'both'} Target environment string
    */
   private getTargetEnvironment(projectType: string): 'node' | 'browser' | 'both' {
     switch (projectType) {
@@ -438,7 +438,7 @@ export default defineWorkspace([
 
 /**
  * Create a Vitest generator instance
- * @returns VitestGenerator instance
+ * @returns {VitestGenerator} VitestGenerator instance
  */
 export function createVitestGenerator(): VitestGenerator {
   return new VitestGenerator();

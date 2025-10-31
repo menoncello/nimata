@@ -13,8 +13,8 @@ const MAX_PATH_LENGTH = 1024;
 export class DirectoryPathValidator {
   /**
    * Validates a directory path with comprehensive security checks
-   * @param basePath - Base path to validate against
-   * @param targetPath - Target path to validate
+   * @param {string} basePath - Base path to validate against
+   * @param {string} targetPath - Target path to validate
    * @throws Error if any validation fails
    */
   static validatePath(basePath: string, targetPath: string): void {
@@ -30,8 +30,8 @@ export class DirectoryPathValidator {
 
   /**
    * Validates basic path inputs
-   * @param basePath - Base path to validate against
-   * @param targetPath - Target path to validate
+   * @param {string} basePath - Base path to validate against
+   * @param {string} targetPath - Target path to validate
    * @throws Error if inputs are invalid
    */
   private static validatePathInputs(basePath: string, targetPath: string): void {
@@ -46,7 +46,7 @@ export class DirectoryPathValidator {
 
   /**
    * Validates for dangerous characters in path
-   * @param targetPath - Target path to validate
+   * @param {string} targetPath - Target path to validate
    * @throws Error if dangerous characters are found
    */
   private static validatePathCharacters(targetPath: string): void {
@@ -57,7 +57,7 @@ export class DirectoryPathValidator {
 
   /**
    * Validates for path traversal patterns
-   * @param targetPath - Target path to validate
+   * @param {string} targetPath - Target path to validate
    * @throws Error if traversal patterns are found
    */
   private static validatePathTraversalPatterns(targetPath: string): void {
@@ -85,7 +85,7 @@ export class DirectoryPathValidator {
 
   /**
    * Validates that path is not absolute
-   * @param targetPath - Target path to validate
+   * @param {string} targetPath - Target path to validate
    * @throws Error if absolute path is detected
    */
   private static validateAbsolutePath(targetPath: string): void {
@@ -98,8 +98,8 @@ export class DirectoryPathValidator {
 
   /**
    * Validates path resolution to prevent directory escape
-   * @param basePath - Base path to validate against
-   * @param targetPath - Target path to validate
+   * @param {string} basePath - Base path to validate against
+   * @param {string} targetPath - Target path to validate
    * @throws Error if path resolves outside base directory
    */
   private static validatePathResolution(basePath: string, targetPath: string): void {
@@ -117,7 +117,7 @@ export class DirectoryPathValidator {
 
   /**
    * Validates path length to prevent DoS attacks
-   * @param targetPath - Target path to validate
+   * @param {string} targetPath - Target path to validate
    * @throws Error if path is too long
    */
   private static validatePathLength(targetPath: string): void {
@@ -128,7 +128,7 @@ export class DirectoryPathValidator {
 
   /**
    * Validates for suspicious characters that might cause issues
-   * @param targetPath - Target path to validate
+   * @param {string} targetPath - Target path to validate
    * @throws Error if suspicious characters are found
    */
   private static validateSuspiciousCharacters(targetPath: string): void {
@@ -140,7 +140,7 @@ export class DirectoryPathValidator {
 
   /**
    * Validates path normalization to detect encoding issues
-   * @param targetPath - Target path to validate
+   * @param {string} targetPath - Target path to validate
    * @throws Error if normalization issues are detected
    */
   private static validatePathNormalization(targetPath: string): void {

@@ -5,7 +5,7 @@
 export class ReactHookTemplates {
   /**
    * Generate useApp hook template
-   * @returns useApp hook template
+   * @returns {string} useApp hook template
    */
   getUseAppHookTemplate(): string {
     const imports = this.getHookImports();
@@ -21,7 +21,7 @@ ${hook}`;
 
   /**
    * Get React hook import statements
-   * @returns Import statements string for React hooks
+   * @returns {string} Import statements string for React hooks
    */
   private getHookImports(): string {
     return `import { useState, useCallback } from 'react';`;
@@ -29,7 +29,7 @@ ${hook}`;
 
   /**
    * Generate TypeScript interfaces for app state
-   * @returns TypeScript interface definitions string
+   * @returns {string} TypeScript interface definitions string
    */
   private getHookInterfaces(): string {
     return `interface AppState {
@@ -44,7 +44,7 @@ ${hook}`;
 
   /**
    * Generate the main useApp hook implementation
-   * @returns Complete hook implementation string
+   * @returns {string} Complete hook implementation string
    */
   private getHookImplementation(): string {
     const stateInit = this.getHookStateInitialization();
@@ -64,7 +64,7 @@ export function useAppState() {
 
   /**
    * Generate React state initialization for the hook
-   * @returns State initialization code string
+   * @returns {string} State initialization code string
    */
   private getHookStateInitialization(): string {
     return `const [state, setState] = useState<AppState>({
@@ -76,7 +76,7 @@ export function useAppState() {
 
   /**
    * Generate callback functions for state manipulation
-   * @returns Callback functions implementation string
+   * @returns {string} Callback functions implementation string
    */
   private getHookCallbacks(): string {
     return `const toggleDebug = useCallback(() => {
@@ -98,7 +98,7 @@ export function useAppState() {
 
   /**
    * Generate the hook return statement with exposed API
-   * @returns Return statement exposing state and functions
+   * @returns {string} Return statement exposing state and functions
    */
   private getHookReturnStatement(): string {
     return `return {

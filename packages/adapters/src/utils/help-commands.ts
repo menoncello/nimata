@@ -27,7 +27,7 @@ const HELP_DESCRIPTION = 'Show help information';
 
 /**
  * Get basic init command options
- * @returns Basic init options array
+ * @returns {HelpOption[]} Basic init options array
  */
 function getBasicInitOptions(): HelpOption[] {
   return [
@@ -52,7 +52,7 @@ function getBasicInitOptions(): HelpOption[] {
 
 /**
  * Get advanced init command options
- * @returns Advanced init options array
+ * @returns {HelpOption[]} Advanced init options array
  */
 function getAdvancedInitOptions(): HelpOption[] {
   return [
@@ -87,7 +87,7 @@ function getAdvancedInitOptions(): HelpOption[] {
 
 /**
  * Get all init command options
- * @returns All init options array
+ * @returns {HelpOption[]} All init options array
  */
 function getInitCommandOptions(): HelpOption[] {
   return [...getBasicInitOptions(), ...getAdvancedInitOptions()];
@@ -95,7 +95,7 @@ function getInitCommandOptions(): HelpOption[] {
 
 /**
  * Create init command help
- * @returns Init command help
+ * @returns {CommandHelp} Init command help
  */
 export function createInitCommand(): CommandHelp {
   return {
@@ -114,7 +114,7 @@ export function createInitCommand(): CommandHelp {
 
 /**
  * Create help command help
- * @returns Help command help
+ * @returns {CommandHelp} Help command help
  */
 export function createHelpCommand(): CommandHelp {
   return {
@@ -138,7 +138,7 @@ export function createHelpCommand(): CommandHelp {
 
 /**
  * Create version command help
- * @returns Version command help
+ * @returns {CommandHelp} Version command help
  */
 export function createVersionCommand(): CommandHelp {
   return {
@@ -157,7 +157,7 @@ export function createVersionCommand(): CommandHelp {
 
 /**
  * Get all command help data
- * @returns Map of all command help
+ * @returns {void} Map of all command help
  */
 export function getAllCommandHelp(): Map<string, CommandHelp> {
   const commands = new Map<string, CommandHelp>();

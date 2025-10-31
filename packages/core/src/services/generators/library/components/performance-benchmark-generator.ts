@@ -12,8 +12,8 @@ import { toPascalCase } from '../../../../utils/string-utils.js';
 export class PerformanceBenchmarkGenerator {
   /**
    * Generates performance benchmarks
-   * @param config - Project configuration
-   * @returns Performance benchmark code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Performance benchmark code
    */
   generatePerformanceBenchmark(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -36,8 +36,8 @@ export class PerformanceBenchmarkGenerator {
 
   /**
    * Generates the benchmark file header
-   * @param config - Project configuration
-   * @returns Header code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Header code
    */
   private generateBenchmarkHeader(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -63,8 +63,8 @@ describe('${config.name} Performance', () => {
 
   /**
    * Generates initialization performance tests
-   * @param className - Name of the class
-   * @returns Initialization tests code
+   * @param {string} className - Name of the class
+   * @returns {string} Initialization tests code
    */
   private generateInitializationTests(className: string): string {
     return `  describe('Initialization Performance', () => {
@@ -93,8 +93,8 @@ describe('${config.name} Performance', () => {
 
   /**
    * Generates processing performance tests
-   * @param _className - Name of the class
-   * @returns Processing tests code
+   * @param {string} _className - Name of the class
+   * @returns {string} Processing tests code
    */
   private generateProcessingTests(_className: string): string {
     const singleItemTest = this.generateSingleItemTest();
@@ -115,7 +115,7 @@ describe('${config.name} Performance', () => {
 
   /**
    * Generates single item processing test
-   * @returns Single item test code
+   * @returns {string} Single item test code
    */
   private generateSingleItemTest(): string {
     return `it('should process single item in under 10ms', async () => {
@@ -132,7 +132,7 @@ describe('${config.name} Performance', () => {
 
   /**
    * Generates 100 items batch processing test
-   * @returns 100 items test code
+   * @returns {string} 100 items test code
    */
   private generateBatchTest100(): string {
     return `it('should process 100 items in under 500ms', async () => {
@@ -151,7 +151,7 @@ describe('${config.name} Performance', () => {
 
   /**
    * Generates 1000 items batch processing test
-   * @returns 1000 items test code
+   * @returns {string} 1000 items test code
    */
   private generateBatchTest1000(): string {
     return `it('should process 1000 items in under 2000ms', async () => {
@@ -170,7 +170,7 @@ describe('${config.name} Performance', () => {
 
   /**
    * Generates concurrent processing test
-   * @returns Concurrent test code
+   * @returns {string} Concurrent test code
    */
   private generateConcurrentTest(): string {
     return `it('should handle concurrent processing', async () => {
@@ -188,7 +188,7 @@ describe('${config.name} Performance', () => {
 
   /**
    * Generates memory usage tests
-   * @returns Memory tests code
+   * @returns {string} Memory tests code
    */
   private generateMemoryTests(): string {
     return `  describe('Memory Usage', () => {
@@ -216,7 +216,7 @@ describe('${config.name} Performance', () => {
 
   /**
    * Generates throughput tests
-   * @returns Throughput tests code
+   * @returns {string} Throughput tests code
    */
   private generateThroughputTests(): string {
     return `  describe('Throughput', () => {
@@ -239,7 +239,7 @@ describe('${config.name} Performance', () => {
 
   /**
    * Generates scalability tests
-   * @returns Scalability tests code
+   * @returns {string} Scalability tests code
    */
   private generateScalabilityTests(): string {
     return `  describe('Scalability', () => {

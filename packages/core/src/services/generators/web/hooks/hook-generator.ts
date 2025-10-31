@@ -18,8 +18,8 @@ export class HookGenerator {
 
   /**
    * Generates application state hook
-   * @param _config - The project configuration
-   * @returns Application state hook content
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Application state hook content
    */
   generateAppStateHook(_config: ProjectConfig): string {
     const imports = this.generateHookImports();
@@ -35,7 +35,7 @@ ${appStateHook}`;
 
   /**
    * Generate imports for hooks
-   * @returns Imports content
+   * @returns {string} Imports content
    */
   private generateHookImports(): string {
     return `import { useState, useEffect, useCallback, useRef } from 'react';`;
@@ -43,7 +43,7 @@ ${appStateHook}`;
 
   /**
    * Generate application state interfaces
-   * @returns Interfaces content
+   * @returns {string} Interfaces content
    */
   private generateAppStateInterfaces(): string {
     return `interface AppState {
@@ -71,7 +71,7 @@ interface Notification {
 
   /**
    * Generate the main application state hook
-   * @returns Main app state hook content
+   * @returns {string} Main app state hook content
    */
   private generateMainAppStateHook(): string {
     const hookDeclaration = this.generateAppStateHookDeclaration();
@@ -101,7 +101,7 @@ ${returnValue}
 
   /**
    * Generate hook state initialization
-   * @returns Hook initialization content
+   * @returns {string} Hook initialization content
    */
   private generateAppStateHookDeclaration(): string {
     return `  const [state, setState] = useState<AppState>(() => ({
@@ -115,7 +115,7 @@ ${returnValue}
 
   /**
    * Generate core state management logic
-   * @returns Core logic content
+   * @returns {string} Core logic content
    */
   private generateAppStateCoreLogic(): string {
     return `  const updateUser = useCallback((user: User | null) => {
@@ -133,7 +133,7 @@ ${returnValue}
 
   /**
    * Generate notification management logic
-   * @returns Notification logic content
+   * @returns {boolean}ication logic content
    */
   private generateNotificationLogic(): string {
     return `  const addNotification = useCallback((notification: Omit<Notification, 'id' | 'timestamp'>) => {
@@ -163,7 +163,7 @@ ${returnValue}
 
   /**
    * Generate theme management logic
-   * @returns Theme logic content
+   * @returns {string} Theme logic content
    */
   private generateThemeLogic(): string {
     return `  const setTheme = useCallback((theme: 'light' | 'dark') => {
@@ -177,7 +177,7 @@ ${returnValue}
 
   /**
    * Generate lifecycle effects
-   * @returns Lifecycle effects content
+   * @returns {boolean}ecycle effects content
    */
   private generateAppStateLifecycleEffects(): string {
     return `  useEffect(() => {
@@ -208,7 +208,7 @@ ${returnValue}
 
   /**
    * Generate return value
-   * @returns Return value content
+   * @returns {string} Return value content
    */
   private generateAppStateReturnValue(): string {
     return `  return {
@@ -225,8 +225,8 @@ ${returnValue}
 
   /**
    * Generate utility hooks
-   * @param config - The project configuration
-   * @returns Utility hooks content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Utility hooks content
    */
   generateUtilityHooks(config: ProjectConfig): string {
     return this.utilityHooksGenerator.generateUtilityHooks(config);
@@ -234,8 +234,8 @@ ${returnValue}
 
   /**
    * Generate API hooks
-   * @param config - The project configuration
-   * @returns API hooks content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} API hooks content
    */
   generateApiHooks(config: ProjectConfig): string {
     return this.apiHooksGenerator.generateApiHooks(config);
@@ -243,8 +243,8 @@ ${returnValue}
 
   /**
    * Generate router hooks
-   * @param config - The project configuration
-   * @returns Router hooks content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Router hooks content
    */
   generateRouterHooks(config: ProjectConfig): string {
     return this.routerHooksGenerator.generateRouterHooks(config);

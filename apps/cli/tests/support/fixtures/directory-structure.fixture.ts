@@ -6,14 +6,20 @@
  * for directory structure generation functionality.
  */
 
+import { test as base } from 'bun:test';
 import { promises as fs } from 'node:fs';
 import { join } from 'node:path';
-import { test as base } from '@bun:test';
-import { TestProject } from '../e2e/support/test-project';
+import { TestProject } from '../../e2e/support/test-project';
 import {
   createDirectoryStructureConfig,
   DirectoryStructureConfig,
 } from '../factories/directory-structure.factory';
+
+// Cleanup function for temporary files - moved to outer scope
+const cleanupTempFilesFn = async (): Promise<void> => {
+  // This would be called during test to cleanup specific files
+  // The actual cleanup happens in the createTestFiles fixture
+};
 
 // Extend the base test type with our fixtures
 interface DirectoryStructureFixture {
@@ -61,21 +67,16 @@ export const test = base.extend<DirectoryStructureFixture>({
     for (const filePath of createdTempFiles) {
       try {
         await fs.unlink(join(testProject.path, filePath));
-      } catch (error) {
+      } catch {
         // Best effort cleanup
-        console.warn(`Failed to cleanup temp file: ${filePath}`, error);
+        // Failed to cleanup temp file: ${filePath} ${error}
       }
     }
   },
 
   // Fixture for cleaning up temporary files
-  cleanupTempFiles: async ({ testProject }, use) => {
-    const cleanupTempFiles = async () => {
-      // This would be called during test to cleanup specific files
-      // The actual cleanup happens in the createTestFiles fixture
-    };
-
-    await use(cleanupTempFiles);
+  cleanupTempFiles: async ({ testProject: _testProject }, use) => {
+    await use(cleanupTempFilesFn);
   },
 
   // Fixture for tracking created temp files
@@ -86,7 +87,7 @@ export const test = base.extend<DirectoryStructureFixture>({
 });
 
 // Export the extended test for use in test files
-export { expect } from '@bun:test';
+export { expect } from 'bun:test';
 
 /**
  * Helper fixture for directory structure integration tests

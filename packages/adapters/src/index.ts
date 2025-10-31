@@ -1,5 +1,5 @@
 /**
- * @nimata/adapters - Adapter implementations
+ * Adapter implementations for Nimata framework
  */
 
 export const ADAPTERS_VERSION = '0.1.0';

@@ -9,8 +9,8 @@ import { generateCLIInterface } from './cli-interfaces.js';
 
 /**
  * Generate CLI project index file
- * @param config - Project configuration
- * @returns CLI index file TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} CLI index file TypeScript code
  */
 export function generateCLIIndexFile(config: ProjectConfig): string {
   const documentation = generateIndexDocumentation(config);

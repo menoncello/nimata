@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 export class UtilsExportGenerator {
   /**
    * Generates utility function definitions and exports
-   * @param config - The project configuration
-   * @returns Utility function definitions string
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Utility function definitions string
    */
   generateUtilsExports(config: ProjectConfig): string {
     const { name } = config;
@@ -42,8 +42,8 @@ ${urlUtils}
 
   /**
    * Get header comment
-   * @param name - Project name
-   * @returns Header string
+   * @param {string} name - Project name
+   * @returns {string} Header string
    */
   private getHeader(name: string): string {
     return `// Utility functions for ${name}`;
@@ -51,7 +51,7 @@ ${urlUtils}
 
   /**
    * Get object manipulation utilities
-   * @returns Object utilities code
+   * @returns {object} utilities code
    */
   private getObjectUtilities(): string {
     const deepClone = this.getDeepCloneFunction();
@@ -67,7 +67,7 @@ ${isObject}`;
 
   /**
    * Get deep clone function
-   * @returns Deep clone function code
+   * @returns {string} Deep clone function code
    */
   private getDeepCloneFunction(): string {
     return `/**
@@ -102,7 +102,7 @@ export function deepClone<T>(obj: T): T {
 
   /**
    * Get deep merge function
-   * @returns Deep merge function code
+   * @returns {string} Deep merge function code
    */
   private getDeepMergeFunction(): string {
     return `/**
@@ -129,7 +129,7 @@ export function deepMerge<T extends Record<string, unknown>>(target: T, ...sourc
 
   /**
    * Get is object function
-   * @returns Is object function code
+   * @returns {object} function code
    */
   private getIsObjectFunction(): string {
     return `/**
@@ -142,7 +142,7 @@ function isObject(item: unknown): item is Record<string, unknown> {
 
   /**
    * Get function control utilities
-   * @returns Function utilities code
+   * @returns {string} Function utilities code
    */
   private getFunctionUtilities(): string {
     const debounce = this.getDebounceFunction();
@@ -155,7 +155,7 @@ ${throttle}`;
 
   /**
    * Get debounce function
-   * @returns Debounce function code
+   * @returns {string} Debounce function code
    */
   private getDebounceFunction(): string {
     return `/**
@@ -175,7 +175,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
 
   /**
    * Get throttle function
-   * @returns Throttle function code
+   * @returns {string} Throttle function code
    */
   private getThrottleFunction(): string {
     return `/**
@@ -198,7 +198,7 @@ export function throttle<T extends (...args: unknown[]) => unknown>(
 
   /**
    * Get promise and async utilities
-   * @returns Promise utilities code
+   * @returns {Promise<void>} utilities code
    */
   private getPromiseUtilities(): string {
     const retry = this.getRetryFunction();
@@ -214,7 +214,7 @@ ${sleep}`;
 
   /**
    * Get retry function
-   * @returns Retry function code
+   * @returns {string} Retry function code
    */
   private getRetryFunction(): string {
     return `/**
@@ -248,7 +248,7 @@ export async function retry<T>(
 
   /**
    * Get timeout function
-   * @returns Timeout function code
+   * @returns {string} Timeout function code
    */
   private getTimeoutFunction(): string {
     return `/**
@@ -269,7 +269,7 @@ export function timeout<T>(
 
   /**
    * Get sleep function
-   * @returns Sleep function code
+   * @returns {string} Sleep function code
    */
   private getSleepFunction(): string {
     return `/**
@@ -282,7 +282,7 @@ export function sleep(ms: number): Promise<void> {
 
   /**
    * Get data validation and format utilities
-   * @returns Data utilities code
+   * @returns {string} Data utilities code
    */
   private getDataUtilities(): string {
     const generateUUID = this.getGenerateUUIDFunction();
@@ -298,7 +298,7 @@ ${isEmpty}`;
 
   /**
    * Get generate UUID function
-   * @returns Generate UUID function code
+   * @returns {string} Generate UUID function code
    */
   private getGenerateUUIDFunction(): string {
     return `/**
@@ -315,7 +315,7 @@ export function generateUUID(): string {
 
   /**
    * Get format bytes function
-   * @returns Format bytes function code
+   * @returns {string} Format bytes function code
    */
   private getFormatBytesFunction(): string {
     return `/**
@@ -336,7 +336,7 @@ export function formatBytes(bytes: number, decimals: number = 2): string {
 
   /**
    * Get is empty function
-   * @returns Is empty function code
+   * @returns {string} Is empty function code
    */
   private getIsEmptyFunction(): string {
     return `/**
@@ -353,7 +353,7 @@ export function isEmpty(value: unknown): boolean {
 
   /**
    * Get string manipulation utilities
-   * @returns String utilities code
+   * @returns {string} String utilities code
    */
   private getStringUtilities(): string {
     return `/**
@@ -388,7 +388,7 @@ export function kebabCase(str: string): string {
 
   /**
    * Get URL and query string utilities
-   * @returns URL utilities code
+   * @returns {string} URL utilities code
    */
   private getUrlUtilities(): string {
     return `/**

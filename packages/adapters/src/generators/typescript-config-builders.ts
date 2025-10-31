@@ -9,11 +9,11 @@ import type { TypeScriptConfigOptions, CompilerOptions } from './typescript-gene
 
 /**
  * Build main TypeScript configuration content
- * @param options - TypeScript configuration options
- * @param getCompilerOptions - Function to get compiler options
- * @param getIncludePatterns - Function to get include patterns
- * @param getExcludePatterns - Function to get exclude patterns
- * @returns Main TypeScript configuration content
+ * @param {(options} options - TypeScript configuration options
+ * @param {(options} getCompilerOptions - Function to get compiler options
+ * @param {unknown} getIncludePatterns - Function to get include patterns
+ * @param {unknown} getExcludePatterns - Function to get exclude patterns
+ * @returns {void} Main TypeScript configuration content
  */
 export function buildMainConfigContent(
   options: TypeScriptConfigOptions,
@@ -39,11 +39,11 @@ export function buildMainConfigContent(
 
 /**
  * Build TSC TypeScript configuration content
- * @param options - TypeScript configuration options
- * @param getCompilerOptions - Function to get compiler options
- * @param getIncludePatterns - Function to get include patterns
- * @param getExcludePatterns - Function to get exclude patterns
- * @returns TSC TypeScript configuration content
+ * @param {(options} options - TypeScript configuration options
+ * @param {(options} getCompilerOptions - Function to get compiler options
+ * @param {unknown} getIncludePatterns - Function to get include patterns
+ * @param {unknown} getExcludePatterns - Function to get exclude patterns
+ * @returns {void} TSC TypeScript configuration content
  */
 export function buildTscConfigContent(
   options: TypeScriptConfigOptions,
@@ -75,9 +75,9 @@ export function buildTscConfigContent(
 
 /**
  * Build TSC types configuration content
- * @param options - TypeScript configuration options
- * @param getCompilerOptions - Function to get compiler options
- * @returns TSC types configuration content
+ * @param {(options} options - TypeScript configuration options
+ * @param {(options} getCompilerOptions - Function to get compiler options
+ * @returns {void} TSC types configuration content
  */
 export function buildTscTypesConfigContent(
   options: TypeScriptConfigOptions,
@@ -109,9 +109,9 @@ export function buildTscTypesConfigContent(
 
 /**
  * Build ESBuild configuration header
- * @param projectType - Project type
- * @param getProjectTypeName - Function to get project type name
- * @returns ESBuild configuration header
+ * @param {string} projectType - Project type
+ * @param {(projectType} getProjectTypeName - Function to get project type name
+ * @returns {void} ESBuild configuration header
  */
 export function buildEsbuildConfigHeader(
   projectType: string,
@@ -129,11 +129,11 @@ const isWatchMode = process.argv.includes('--watch');`;
 
 /**
  * Build ESBuild configuration sections
- * @param options - TypeScript configuration options
- * @param getESBuildBaseConfig - Function to get ESBuild base config
- * @param getESBuildDefines - Function to get ESBuild defines
- * @param getESBuildPlugins - Function to get ESBuild plugins
- * @returns ESBuild configuration sections
+ * @param {TypeScriptConfigOptions} options - TypeScript configuration options
+ * @param {(options} getESBuildBaseConfig - Function to get ESBuild base config
+ * @param {unknown} getESBuildDefines - Function to get ESBuild defines
+ * @param {unknown} getESBuildPlugins - Function to get ESBuild plugins
+ * @returns {void} ESBuild configuration sections
  */
 export function buildEsbuildConfigSections(
   options: TypeScriptConfigOptions,
@@ -150,7 +150,7 @@ ${getESBuildPlugins()};`;
 
 /**
  * Build ESBuild watch configuration
- * @returns ESBuild watch configuration
+ * @returns {string} ESBuild watch configuration
  */
 export function buildEsbuildWatchConfig(): string {
   return `if (isWatchMode) {
@@ -168,7 +168,7 @@ export function buildEsbuildWatchConfig(): string {
 
 /**
  * Build ESBuild execution block
- * @returns ESBuild execution block
+ * @returns {string} ESBuild execution block
  */
 export function buildEsbuildExecutionBlock(): string {
   return `try {
@@ -191,9 +191,9 @@ interface ESBuildHelpers {
 
 /**
  * Build ESBuild configuration content
- * @param options - TypeScript configuration options
- * @param helpers - ESBuild helper functions
- * @returns ESBuild configuration content
+ * @param {unknown} options - TypeScript configuration options
+ * @param {unknown} helpers - ESBuild helper functions
+ * @returns {string} ESBuild configuration content
  */
 export function buildEsbuildConfigContent(
   options: TypeScriptConfigOptions,
@@ -227,9 +227,9 @@ ${execution}
 
 /**
  * Get testing compiler options
- * @param options - TypeScript configuration options
- * @param getCompilerOptions - Function to get base compiler options
- * @returns Testing compiler options
+ * @param {(options} options - TypeScript configuration options
+ * @param {(options} getCompilerOptions - Function to get base compiler options
+ * @returns {void} Testing compiler options
  */
 function getTestingCompilerOptions(
   options: TypeScriptConfigOptions,
@@ -247,9 +247,9 @@ function getTestingCompilerOptions(
 
 /**
  * Build testing TypeScript configuration content
- * @param options - TypeScript configuration options
- * @param getCompilerOptions - Function to get compiler options
- * @returns Testing TypeScript configuration content
+ * @param {(options} options - TypeScript configuration options
+ * @param {(options} getCompilerOptions - Function to get compiler options
+ * @returns {void} Testing TypeScript configuration content
  */
 export function buildTestingConfigContent(
   options: TypeScriptConfigOptions,
@@ -280,9 +280,9 @@ export function buildTestingConfigContent(
 
 /**
  * Build base TypeScript configuration content
- * @param options - TypeScript configuration options
- * @param getCompilerOptions - Function to get compiler options
- * @returns Base TypeScript configuration content
+ * @param {(options} options - TypeScript configuration options
+ * @param {(options} getCompilerOptions - Function to get compiler options
+ * @returns {void} Base TypeScript configuration content
  */
 export function buildBaseConfigContent(
   options: TypeScriptConfigOptions,

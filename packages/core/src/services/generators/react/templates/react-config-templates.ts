@@ -7,8 +7,8 @@ import { ProjectConfig } from '../../../../types/project-config.js';
 export class ReactConfigTemplates {
   /**
    * Generate HTML template
-   * @param config - Project configuration
-   * @returns HTML template
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} HTML template
    */
   getHtmlTemplate(config: ProjectConfig): string {
     return `<!DOCTYPE html>
@@ -29,7 +29,7 @@ export class ReactConfigTemplates {
 
   /**
    * Generate Vite configuration
-   * @returns Vite configuration template
+   * @returns {string} Vite configuration template
    */
   getViteConfigTemplate(): string {
     return `import { defineConfig } from 'vite';

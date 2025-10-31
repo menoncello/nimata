@@ -7,8 +7,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 
 /**
  * Generate about page component
- * @param config - Project configuration
- * @returns About page component code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} About page component code
  */
 export function generateAboutPage(config: ProjectConfig): string {
   const { name } = config;
@@ -25,7 +25,7 @@ ${defaultExport}`;
 
 /**
  * Get about page imports
- * @returns Import statements
+ * @returns {string} Import statements
  */
 function getAboutPageImports(): string {
   return `import React from 'react';
@@ -35,8 +35,8 @@ import styles from './about-page.module.css';`;
 
 /**
  * Get about page component
- * @param name - Project name
- * @returns About page component code
+ * @param {string} name - Project name
+ * @returns {string} About page component code
  */
 function getAboutPageComponent(name: string): string {
   const header = getAboutPageHeader(name);
@@ -57,8 +57,8 @@ function getAboutPageComponent(name: string): string {
 
 /**
  * Get about page header
- * @param name - Project name
- * @returns Header JSX
+ * @param {string} name - Project name
+ * @returns {string} Header JSX
  */
 function getAboutPageHeader(name: string): string {
   return `<header className={styles.header}>
@@ -69,8 +69,8 @@ function getAboutPageHeader(name: string): string {
 
 /**
  * Get about page main content
- * @param name - Project name
- * @returns Main content JSX
+ * @param {string} name - Project name
+ * @returns {string} Main content JSX
  */
 function getAboutPageMain(name: string): string {
   const missionSection = getMissionSection(name);
@@ -88,8 +88,8 @@ function getAboutPageMain(name: string): string {
 
 /**
  * Get mission section
- * @param name - Project name
- * @returns Mission section JSX
+ * @param {string} name - Project name
+ * @returns {string} Mission section JSX
  */
 function getMissionSection(name: string): string {
   return `<section className={styles.section}>
@@ -103,7 +103,7 @@ function getMissionSection(name: string): string {
 
 /**
  * Get technologies section
- * @returns Technologies section JSX
+ * @returns {string} Technologies section JSX
  */
 function getTechnologiesSection(): string {
   return `<section className={styles.section}>
@@ -119,7 +119,7 @@ function getTechnologiesSection(): string {
 
 /**
  * Get contact section
- * @returns Contact section JSX
+ * @returns {string} Contact section JSX
  */
 function getContactSection(): string {
   return `<section className={styles.section}>
@@ -133,7 +133,7 @@ function getContactSection(): string {
 
 /**
  * Get about page default export
- * @returns Default export statement
+ * @returns {string} Default export statement
  */
 function getAboutPageDefaultExport(): string {
   return `export default AboutPage;`;

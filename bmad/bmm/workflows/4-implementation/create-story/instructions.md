@@ -170,22 +170,6 @@ Will update existing story file rather than creating new one.
   <step n="6" goal="Assemble acceptance criteria and tasks">
     <action>Assemble acceptance criteria list from tech_spec or epics. If gaps exist, derive minimal, testable criteria from PRD verbatim phrasing (NO invention).</action>
     <action>Create tasks/subtasks directly mapped to ACs. Include explicit testing subtasks per testing-strategy and existing tests framework. Cite architecture/source documents for any technical mandates.</action>
-
-    <!-- MANDATORY Code Example Quality Validation -->
-    <critical>CODE EXAMPLES MUST MEET PROJECT QUALITY STANDARDS - ZERO TOLERANCE</critical>
-    <action>MUST verify any code examples in story meet these standards:
-      - NO eslint-disable comments allowed
-      - NO @ts-ignore/@ts-expect-error comments allowed
-      - Proper TypeScript types must be used
-      - Error handling must be included where applicable
-      - Code must follow established patterns from previous stories
-    </action>
-    <action>MUST include test example code that demonstrates:
-      - Bun Test syntax and patterns
-      - Proper test structure with given/when/then
-      - Mock usage for external dependencies
-      - Coverage of success and failure scenarios
-    </action>
     <template-output file="{default_output_file}">acceptance_criteria</template-output>
     <template-output file="{default_output_file}">tasks_subtasks</template-output>
   </step>
@@ -250,6 +234,7 @@ You may need to run sprint-planning to refresh tracking, or manually set the sto
     <output>**✅ Story Created Successfully, {user_name}!**
 
 **Story Details:**
+
 - Story ID: {{story_id}}
 - Story Key: {{story_key}}
 - File: {{story_file}}
@@ -258,6 +243,7 @@ You may need to run sprint-planning to refresh tracking, or manually set the sto
 **⚠️ Important:** The following workflows are context-intensive. It's recommended to clear context and restart the SM agent before running the next command.
 
 **Next Steps:**
+
 1. Review the drafted story in {{story_file}}
 2. **[RECOMMENDED]** Run `story-context` to generate technical context XML and mark story ready for development (combines context + ready in one step)
 3. Or run `story-ready` to manually mark the story ready without generating technical context

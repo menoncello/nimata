@@ -38,9 +38,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 
@@ -52,16 +50,25 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
         'tests/e2e',
         'tests/fixtures',
         'tests/helpers',
-        'tests/setup.ts',
       ];
 
-      expectedTestDirectories.forEach((dir) => {
+      const expectedTestFiles = ['tests/setup.ts'];
+
+      // Test directories
+      for (const dir of expectedTestDirectories) {
         const dirItem = testStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem?.type).toBe('directory');
-      });
+      }
+
+      // Test files
+      for (const file of expectedTestFiles) {
+        const fileItem = testStructure.find((item) => item.path === file && item.type === 'file');
+        expect(fileItem).toBeDefined();
+        expect(fileItem?.type).toBe('file');
+      }
     });
 
     it('should create source-mirroring test directories', async () => {
@@ -75,9 +82,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 
@@ -91,13 +96,13 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
         'tests/integration/api',
       ];
 
-      expectedMirrorDirectories.forEach((dir) => {
+      for (const dir of expectedMirrorDirectories) {
         const dirItem = testStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem?.type).toBe('directory');
-      });
+      }
     });
   });
 
@@ -113,9 +118,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 
@@ -126,7 +129,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
         'tests/e2e/basic-workflow.e2e.test.ts',
       ];
 
-      expectedTestFiles.forEach((filePath) => {
+      for (const filePath of expectedTestFiles) {
         const testFile = testStructure.find(
           (item) => item.path === filePath && item.type === 'file'
         );
@@ -135,7 +138,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
         expect(testFile?.content).toContain('it');
         expect(testFile?.content).toContain('expect');
         expect(testFile?.content).toContain('bun:test');
-      });
+      }
     });
 
     it('should include proper test structure in generated test files', async () => {
@@ -149,9 +152,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 
@@ -162,8 +163,8 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
       expect(unitTestFile).toBeDefined();
       expect(unitTestFile?.content).toContain('import { describe, it, expect } from');
       expect(unitTestFile?.content).toContain("describe('");
-      expect(unitTestFile?.content).toContain("it(''");
-      expect(unitTestFile?.content).toContain("expect('");
+      expect(unitTestFile?.content).toContain("it('should pass this example test'");
+      expect(unitTestFile?.content).toContain("expect(result).toBe('TEST'");
     });
   });
 
@@ -179,21 +180,19 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 
       // THEN: Test configuration files should be generated
       const configFiles = ['tests/setup.ts', 'vitest.config.ts'];
 
-      configFiles.forEach((filePath) => {
+      for (const filePath of configFiles) {
         const configFile = testStructure.find(
           (item) => item.path === filePath && item.type === 'file'
         );
         expect(configFile).toBeDefined();
-      });
+      }
     });
 
     it('should include proper test setup configuration', async () => {
@@ -207,9 +206,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 
@@ -236,9 +233,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 
@@ -249,13 +244,13 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
         'tests/fixtures/mock-responses',
       ];
 
-      expectedFixtureDirectories.forEach((dir) => {
+      for (const dir of expectedFixtureDirectories) {
         const dirItem = testStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem?.type).toBe('directory');
-      });
+      }
     });
 
     it('should include .gitkeep files in fixture directories', async () => {
@@ -269,9 +264,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 
@@ -282,13 +275,13 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
         'tests/fixtures/mock-responses/.gitkeep',
       ];
 
-      expectedGitkeepFiles.forEach((filePath) => {
+      for (const filePath of expectedGitkeepFiles) {
         const gitkeepFile = testStructure.find(
           (item) => item.path === filePath && item.type === 'file'
         );
         expect(gitkeepFile).toBeDefined();
         expect(gitkeepFile?.content).toBe(''); // Empty .gitkeep file
-      });
+      }
     });
   });
 
@@ -304,9 +297,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 
@@ -333,9 +324,7 @@ describe('Test Structure Generator - AC5: Quality and Testing Structure (RED PHA
 
       // This will fail because Test Structure Generator is not implemented yet
       // @ts-expect-error - Test Structure Generator import doesn't exist
-      const { TestStructureGenerator } = await import(
-        '../../../../../packages/core/src/services/generators/test-structure-generator'
-      );
+      const { TestStructureGenerator } = await import('@nimata/core');
       const generator = new TestStructureGenerator();
       const testStructure = generator.generate(projectConfig);
 

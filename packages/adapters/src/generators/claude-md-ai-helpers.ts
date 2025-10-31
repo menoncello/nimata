@@ -14,9 +14,9 @@ import type {
 
 /**
  * Build AI context header section
- * @param config - Project configuration
- * @param options - Configuration options
- * @returns Header section string
+ * @param {unknown} config - Project configuration
+ * @param {unknown} options - Configuration options
+ * @returns {string} Header section string
  */
 export function buildAIContextHeader(
   config: ProjectConfig,
@@ -33,8 +33,8 @@ export function buildAIContextHeader(
 
 /**
  * Build AI context project overview section
- * @param config - Project configuration
- * @returns Overview section string
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Overview section string
  */
 export function buildAIContextOverview(config: ProjectConfig): string {
   const projectTypeNames = {
@@ -44,7 +44,7 @@ export function buildAIContextOverview(config: ProjectConfig): string {
     library: 'Library Package Project',
   };
 
-  return `## Project Overview
+  return `## Project Information
 
 **Name**: ${config.name}
 **Type**: ${projectTypeNames[config.projectType as keyof typeof projectTypeNames] || config.projectType}
@@ -53,8 +53,8 @@ export function buildAIContextOverview(config: ProjectConfig): string {
 
 /**
  * Build AI context dependencies section
- * @param config - Project configuration
- * @returns Dependencies section string
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Dependencies section string
  */
 export function buildAIContextDependencies(config: ProjectConfig): string {
   const baseDependencies = [
@@ -82,8 +82,8 @@ ${[...baseDependencies, ...additionalDeps].join('\n')}`;
 
 /**
  * Build AI context code patterns section
- * @param config - Project configuration
- * @returns Code patterns section string
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Code patterns section string
  */
 export function buildAIContextCodePatterns(config: ProjectConfig): string {
   const cliPattern = config.projectType === 'cli' ? `\n\n${CLI_PATTERN}` : '';
@@ -103,9 +103,9 @@ ${BAD_PATTERNS}`;
 
 /**
  * Build AI context testing strategy section
- * @param options - Configuration options
- * @param getCoverageThreshold - Function to get coverage threshold
- * @returns Testing strategy section string
+ * @param {unknown} options - Configuration options
+ * @param {(qualityLevel} getCoverageThreshold - Function to get coverage threshold
+ * @returns {void} Testing strategy section string
  */
 export function buildAIContextTestingStrategy(
   options: ClaudeMdConfigOptions,
@@ -121,8 +121,8 @@ export function buildAIContextTestingStrategy(
 
 /**
  * Build AI context development guidelines section
- * @param projectType - Project type
- * @returns Guidelines section string
+ * @param {unknown} projectType - Project type
+ * @returns {ProjectType): string} Guidelines section string
  */
 export function buildAIContextGuidelines(projectType?: ProjectType): string {
   const cliGuidelines =
@@ -139,7 +139,7 @@ export function buildAIContextGuidelines(projectType?: ProjectType): string {
 
 /**
  * Build AI context project structure section
- * @returns Project structure section string
+ * @returns {string} Project structure section string
  */
 export function buildAIContextProjectStructure(): string {
   return `## Project Structure

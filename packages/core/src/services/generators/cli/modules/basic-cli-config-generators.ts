@@ -7,7 +7,7 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 
 /**
  * Generate CLI config header
- * @returns Header comment
+ * @returns {string} Header comment
  */
 export function generateCLIConfigHeader(): string {
   return `/**
@@ -19,7 +19,7 @@ export function generateCLIConfigHeader(): string {
 
 /**
  * Generate CLI config imports
- * @returns Import statements
+ * @returns {string} Import statements
  */
 export function generateCLIConfigImports(): string {
   return `import type { ConfigFileOptions, CommandConfig, PluginConfig, HookConfig } from './types.js';
@@ -30,8 +30,8 @@ import { Console } from 'winston/transports';`;
 
 /**
  * Generate CLI config body
- * @param config - Project configuration
- * @returns Basic configuration
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Basic configuration
  */
 export function generateCLIConfigBody(config: ProjectConfig): string {
   return [generateAppConfig(config), generateLoggingConfig()].join('\n\n');
@@ -39,8 +39,8 @@ export function generateCLIConfigBody(config: ProjectConfig): string {
 
 /**
  * Generate application configuration
- * @param config - Project configuration
- * @returns Application configuration object
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Application configuration object
  */
 function generateAppConfig(config: ProjectConfig): string {
   return `/**
@@ -65,7 +65,7 @@ const appConfig = {
 
 /**
  * Generate logging configuration
- * @returns Logging configuration object
+ * @returns {string} Logging configuration object
  */
 function generateLoggingConfig(): string {
   return `/**

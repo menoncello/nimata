@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate Framework interface
- * @param config - Project configuration
- * @returns Framework interface TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Framework interface TypeScript code
  */
 export function generateFrameworkInterface(config: ProjectConfig): string {
   switch (config.projectType) {
@@ -24,8 +24,8 @@ export function generateFrameworkInterface(config: ProjectConfig): string {
 
 /**
  * Get Vue interface
- * @param config - Project configuration
- * @returns Vue interface TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Vue interface TypeScript code
  */
 export function getVueInterface(config: ProjectConfig): string {
   return `export interface ${convertToPascalCase(config.name)}Config {
@@ -40,8 +40,8 @@ export function getVueInterface(config: ProjectConfig): string {
 
 /**
  * Get React-specific interface
- * @param config - Project configuration
- * @returns React interface code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} React interface code
  */
 export function getReactInterface(config: ProjectConfig): string {
   return `export interface ${convertToPascalCase(config.name)}Props {
@@ -54,8 +54,8 @@ export function getReactInterface(config: ProjectConfig): string {
 
 /**
  * Get Express-specific interface
- * @param config - Project configuration
- * @returns Express interface code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Express interface code
  */
 export function getExpressInterface(config: ProjectConfig): string {
   return `export interface ${convertToPascalCase(config.name)}Middleware {
@@ -68,8 +68,8 @@ export function getExpressInterface(config: ProjectConfig): string {
 
 /**
  * Get base interface
- * @param config - Project configuration
- * @returns Base interface code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Base interface code
  */
 export function getBaseInterface(config: ProjectConfig): string {
   return `/**

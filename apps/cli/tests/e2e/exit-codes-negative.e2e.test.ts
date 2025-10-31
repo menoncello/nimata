@@ -11,9 +11,9 @@
  * Story 1.1 stub commands always exit 0 (success)
  * Epic 2 will implement exit 1 (validation errors), exit 3 (config errors)
  */
-import { existsSync, mkdirSync, rmSync, writeFileSync } from 'fs';
 import { spawn } from 'bun';
 import { describe, it, expect, beforeAll, afterAll } from 'bun:test';
+import { existsSync, mkdirSync, rmSync, writeFileSync } from 'fs';
 
 const CLI_PATH = './bin/nimata';
 const TEST_DIR = `${import.meta.dir}/../../.test-tmp`;

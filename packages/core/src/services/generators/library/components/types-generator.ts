@@ -12,8 +12,8 @@ import { toPascalCase } from '../../../../utils/string-utils.js';
 export class TypesGenerator {
   /**
    * Generates the types exports file
-   * @param config - Project configuration
-   * @returns Types module code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Types module code
    */
   generateTypeExports(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -49,8 +49,8 @@ ${pluginInterface}
 
   /**
    * Generates the configuration interface
-   * @param className - Name of the class
-   * @returns Configuration interface code
+   * @param {string} className - Name of the class
+   * @returns {string} Configuration interface code
    */
   private generateConfigInterface(className: string): string {
     return `export interface ${className}Config {
@@ -67,8 +67,8 @@ ${pluginInterface}
 
   /**
    * Generates the options interface
-   * @param className - Name of the class
-   * @returns Options interface code
+   * @param {string} className - Name of the class
+   * @returns {string} Options interface code
    */
   private generateOptionsInterface(className: string): string {
     return `export interface ${className}Options {
@@ -85,8 +85,8 @@ ${pluginInterface}
 
   /**
    * Generates the result interface
-   * @param className - Name of the class
-   * @returns Result interface code
+   * @param {string} className - Name of the class
+   * @returns {string} Result interface code
    */
   private generateResultInterface(className: string): string {
     return `export interface ${className}Result<T = unknown> {
@@ -105,8 +105,8 @@ ${pluginInterface}
 
   /**
    * Generates the event interface
-   * @param className - Name of the class
-   * @returns Event interface code
+   * @param {string} className - Name of the class
+   * @returns {string} Event interface code
    */
   private generateEventInterface(className: string): string {
     return `export interface ${className}Event {
@@ -121,8 +121,8 @@ ${pluginInterface}
 
   /**
    * Generates the error interface
-   * @param className - Name of the class
-   * @returns Error interface code
+   * @param {string} className - Name of the class
+   * @returns {string} Error interface code
    */
   private generateErrorInterface(className: string): string {
     return `export interface ${className}Error extends Error {
@@ -135,8 +135,8 @@ ${pluginInterface}
 
   /**
    * Generates the event handler type
-   * @param className - Name of the class
-   * @returns Event handler type code
+   * @param {string} className - Name of the class
+   * @returns {string} Event handler type code
    */
   private generateEventHandlerType(className: string): string {
     return `export type ${className}EventHandler<T = unknown> = (event: ${className}Event<T>) => void | Promise<void>;`;
@@ -144,8 +144,8 @@ ${pluginInterface}
 
   /**
    * Generates the plugin interface
-   * @param className - Name of the class
-   * @returns Plugin interface code
+   * @param {string} className - Name of the class
+   * @returns {string} Plugin interface code
    */
   private generatePluginInterface(className: string): string {
     return `export interface ${className}Plugin {

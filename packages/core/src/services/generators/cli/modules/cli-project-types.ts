@@ -6,8 +6,8 @@
 
 /**
  * Generate project-specific types
- * @param className - Class name for the project
- * @returns Project-specific type definitions
+ * @param {string} className - Class name for the project
+ * @returns {boolean}ic type definitions
  */
 export function generateProjectSpecificTypes(className: string): string {
   return `/**

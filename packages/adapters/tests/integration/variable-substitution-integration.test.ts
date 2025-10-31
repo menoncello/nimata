@@ -3,10 +3,10 @@
  *
  * Tests variable substitution with real templates and contexts
  */
+import { describe, test, expect, beforeEach, afterEach } from 'bun:test';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { TemplateVariable, ProjectConfig } from '@nimata/core';
-import { describe, test, expect, beforeEach, afterEach } from 'bun:test';
 import { TemplateContextFactoryImpl } from '../../src/template-engine/template-context-factory.js';
 import { VariableSubstitutionEngine } from '../../src/template-engine/variable-substitution.js';
 import { HandlebarsTemplateEngine } from '../../src/template-engine-handlebars.js';
@@ -173,9 +173,9 @@ The application runs on port \`{{custom_variables.port}}\` and connects to \`{{c
       }));
 
       // All substitutions should be valid
-      results.forEach((result) => {
+      for (const result of results) {
         expect(result.substitution.validation.valid).toBe(true);
-      });
+      }
 
       // Test actual rendering
       for (const result of results) {

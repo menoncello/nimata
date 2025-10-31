@@ -37,8 +37,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates base template context from project config
-   * @param config - Project configuration
-   * @returns Base template context
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): BaseTemplateContext} Base template context
    */
   createBase(config: ProjectConfig): BaseTemplateContext {
     return this.transformers.fromProjectConfig(config);
@@ -46,9 +46,9 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates extended template context
-   * @param config - Project configuration
-   * @param customData - Custom data to include
-   * @returns Extended template context
+   * @param {unknown} config - Project configuration
+   * @param {unknown} customData - Custom data to include
+   * @returns {ExtendedTemplateContext} Extended template context
    */
   createExtended(
     config: ProjectConfig,
@@ -66,10 +66,10 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates context with validation
-   * @param config - Project configuration
-   * @param variables - Variable definitions
-   * @param customData - Custom data to include
-   * @returns Validated context and result
+   * @param {unknown} config - Project configuration
+   * @param {unknown} variables - Variable definitions
+   * @param {unknown} customData - Custom data to include
+   * @returns {{ context: ExtendedTemplateContext; validation: ValidationResult }} Validated context and result
    */
   createValidated(
     config: ProjectConfig,
@@ -90,8 +90,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates a base template context from project configuration (legacy method)
-   * @param config - Project configuration
-   * @returns Base template context
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): BaseTemplateContext} Base template context
    */
   createBaseContext(config: ProjectConfig): BaseTemplateContext {
     return this.createBase(config);
@@ -99,8 +99,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates an extended template context with additional computed properties (legacy method)
-   * @param base - Base template context
-   * @returns Extended template context
+   * @param {BaseTemplateContext} base - Base template context
+   * @returns {BaseTemplateContext): ExtendedTemplateContext} Extended template context
    */
   createExtendedContext(base: BaseTemplateContext): ExtendedTemplateContext {
     return this.transformers.extend(base);
@@ -108,8 +108,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates a full template context from project configuration (legacy method)
-   * @param config - Project configuration
-   * @returns Complete template context
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): ExtendedTemplateContext} Complete template context
    */
   createFullContext(config: ProjectConfig): ExtendedTemplateContext {
     return this.createExtended(config);
@@ -117,9 +117,9 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates a template context with custom variables
-   * @param base - Base template context
-   * @param variables - Custom variables to include
-   * @returns Extended template context with custom variables
+   * @param {unknown} base - Base template context
+   * @param {unknown} variables - Custom variables to include
+   * @returns {ExtendedTemplateContext} Extended template context with custom variables
    */
   createContextWithVariables(
     base: BaseTemplateContext,
@@ -144,8 +144,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Gets a variable getter for a specific context
-   * @param contextId - Context identifier
-   * @returns Variable getter instance
+   * @param {string} contextId - Context identifier
+   * @returns {string): VariableGetter} Variable getter instance
    */
   getVariableGetter(contextId: string): VariableGetter {
     let getter = this.getters.get(contextId);
@@ -158,9 +158,9 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Validates a template context
-   * @param context - Context to validate
-   * @param schema - Validation schema
-   * @returns Validation result
+   * @param {unknown} context - Context to validate
+   * @param {unknown} schema - Validation schema
+   * @returns {ValidationResult} Validation result
    */
   validateContext(
     context: BaseTemplateContext,
@@ -195,8 +195,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates a quality-specific context configuration
-   * @param qualityLevel - Project quality level
-   * @returns Quality-specific configuration
+   * @param {ProjectQualityLevel} qualityLevel - Project quality level
+   * @returns {void} Quality-specific configuration
    */
   getQualityConfig(qualityLevel: ProjectQualityLevel): Record<string, unknown> {
     const baseConfig = this.createBaseQualityConfig(qualityLevel);
@@ -217,8 +217,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates base quality configuration
-   * @param qualityLevel - Quality level
-   * @returns Base configuration
+   * @param {ProjectQualityLevel} qualityLevel - Quality level
+   * @returns {void} Base configuration
    */
   private createBaseQualityConfig(qualityLevel: ProjectQualityLevel): Record<string, unknown> {
     return {
@@ -231,8 +231,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates light quality configuration
-   * @param baseConfig - Base configuration
-   * @returns Light quality configuration
+   * @param {Record<string} baseConfig - Base configuration
+   * @returns {void} Light quality configuration
    */
   private createLightQualityConfig(baseConfig: Record<string, unknown>): Record<string, unknown> {
     return {
@@ -245,8 +245,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates medium quality configuration
-   * @param baseConfig - Base configuration
-   * @returns Medium quality configuration
+   * @param {Record<string} baseConfig - Base configuration
+   * @returns {void} Medium quality configuration
    */
   private createMediumQualityConfig(baseConfig: Record<string, unknown>): Record<string, unknown> {
     return {
@@ -259,8 +259,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates high quality configuration
-   * @param baseConfig - Base configuration
-   * @returns High quality configuration
+   * @param {Record<string} baseConfig - Base configuration
+   * @returns {void} High quality configuration
    */
   private createHighQualityConfig(baseConfig: Record<string, unknown>): Record<string, unknown> {
     return {
@@ -275,8 +275,8 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Creates strict quality configuration
-   * @param baseConfig - Base configuration
-   * @returns Strict quality configuration
+   * @param {Record<string} baseConfig - Base configuration
+   * @returns {void} Strict quality configuration
    */
   private createStrictQualityConfig(baseConfig: Record<string, unknown>): Record<string, unknown> {
     return {
@@ -293,7 +293,7 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Gets string transformers
-   * @returns String transformers instance
+   * @returns {StringTransformers} String transformers instance
    */
   getStringTransformers(): StringTransformers {
     return StringTransformersImpl;
@@ -301,7 +301,7 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Gets context transformers
-   * @returns Context transformers instance
+   * @returns {ContextTransformers} Context transformers instance
    */
   getContextTransformers(): ContextTransformers {
     return this.transformers;
@@ -309,7 +309,7 @@ export class TemplateContextFactoryImpl implements TemplateContextFactory {
 
   /**
    * Cleans up resources for a specific context
-   * @param contextId - Context identifier to clean up
+   * @param {string} contextId - Context identifier to clean up
    */
   cleanup(contextId: string): void {
     this.getters.delete(contextId);

@@ -8,9 +8,9 @@
 export class VariableFormatter {
   /**
    * Formats variable value for substitution
-   * @param value - The value to format
-   * @param _variableName - Name of the variable (unused)
-   * @returns Formatted string value
+   * @param {unknown} value - The value to format
+   * @param {string} _variableName - Name of the variable (unused)
+   * @returns { string} Formatted string value
    */
   static formatVariableValue(value: unknown, _variableName: string): string {
     if (value === null || value === undefined) {
@@ -43,8 +43,8 @@ export class VariableFormatter {
 
   /**
    * Formats a number value
-   * @param value - The number to format
-   * @returns Formatted number string
+   * @param {number} value - The number to format
+   * @returns {number): string} Formatted number string
    */
   private static formatNumber(value: number): string {
     // Handle special number values
@@ -57,8 +57,8 @@ export class VariableFormatter {
 
   /**
    * Formats an array value
-   * @param value - The array to format
-   * @returns Formatted array string
+   * @param {unknown[]} value - The array to format
+   * @returns {unknown[]): string} Formatted array string
    */
   private static formatArray(value: unknown[]): string {
     return value.map((item) => this.formatVariableValue(item, '')).join(', ');
@@ -66,8 +66,8 @@ export class VariableFormatter {
 
   /**
    * Formats an object value
-   * @param value - The object to format
-   * @returns Formatted object string
+   * @param {Record<string} value - The object to format
+   * @returns {string} Formatted object string
    */
   private static formatObject(value: Record<string, unknown>): string {
     try {
@@ -79,9 +79,9 @@ export class VariableFormatter {
 
   /**
    * Processes complex type values
-   * @param value - The complex value to process
-   * @param variableName - Name of the variable
-   * @returns Processed string value
+   * @param {unknown} value - The complex value to process
+   * @param {string} variableName - Name of the variable
+   * @returns { string} Processed string value
    */
   static processComplexType(value: unknown, variableName: string): string {
     if (value === null || value === undefined) {

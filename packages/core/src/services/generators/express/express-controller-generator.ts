@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class ExpressControllerCodeGenerator {
   /**
    * Generate Express app controller
-   * @param config - Project configuration
-   * @returns App controller TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} App controller TypeScript code
    */
   generateAppController(config: ProjectConfig): string {
     return [
@@ -25,7 +25,7 @@ export class ExpressControllerCodeGenerator {
 
   /**
    * Get controller import statements
-   * @returns Import statements
+   * @returns {string} Import statements
    */
   private getControllerImports(): string {
     return `import { Request, Response, NextFunction } from 'express';`;
@@ -33,7 +33,7 @@ export class ExpressControllerCodeGenerator {
 
   /**
    * Get controller interface definition
-   * @returns Controller interface
+   * @returns {string} Controller interface
    */
   private getControllerInterface(): string {
     return `/**
@@ -50,8 +50,8 @@ export interface ApiResponse {
 
   /**
    * Get controller class implementation
-   * @param config - Project configuration
-   * @returns Controller class code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Controller class code
    */
   private getControllerClass(config: ProjectConfig): string {
     return [
@@ -66,7 +66,7 @@ export interface ApiResponse {
 
   /**
    * Get controller class header
-   * @returns Controller class header
+   * @returns {string} Controller class header
    */
   private getControllerClassHeader(): string {
     return `/**
@@ -79,8 +79,8 @@ export class AppController {
 
   /**
    * Get controller constructor
-   * @param config - Project configuration
-   * @returns Controller constructor
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Controller constructor
    */
   private getControllerConstructor(config: ProjectConfig): string {
     return `  constructor() {
@@ -90,14 +90,14 @@ export class AppController {
 
   /**
    * Get getAppInfo method
-   * @returns getAppInfo method
+   * @returns {string} getAppInfo method
    */
   private getGetAppInfoMethod(): string {
     return `  /**
    * Get application information
-   * @param req - Express request object
-   * @param res - Express response object
-   * @param next - Express next function
+   * @param {string} req - Express request object
+   * @param {string} res - Express response object
+   * @param {string} next - Express next function
    */
   public getAppInfo(req: Request, res: Response, next: NextFunction): void {
     try {
@@ -124,14 +124,14 @@ export class AppController {
 
   /**
    * Get healthCheck method
-   * @returns healthCheck method
+   * @returns {string} healthCheck method
    */
   private getHealthCheckMethod(): string {
     return `  /**
    * Health check endpoint
-   * @param req - Express request object
-   * @param res - Express response object
-   * @param next - Express next function
+   * @param {string} req - Express request object
+   * @param {string} res - Express response object
+   * @param {string} next - Express next function
    */
   public healthCheck(req: Request, res: Response, next: NextFunction): void {
     try {
@@ -155,14 +155,14 @@ export class AppController {
 
   /**
    * Get testEndpoint method
-   * @returns testEndpoint method
+   * @returns {string} testEndpoint method
    */
   private getTestEndpointMethod(): string {
     return `  /**
    * Test endpoint for development
-   * @param req - Express request object
-   * @param res - Express response object
-   * @param next - Express next function
+   * @param {string} req - Express request object
+   * @param {string} res - Express response object
+   * @param {string} next - Express next function
    */
   public testEndpoint(req: Request, res: Response, next: NextFunction): void {
     try {
@@ -187,7 +187,7 @@ export class AppController {
 
   /**
    * Get controller class footer
-   * @returns Controller class footer
+   * @returns {string} Controller class footer
    */
   private getControllerClassFooter(): string {
     return `}`;
@@ -195,7 +195,7 @@ export class AppController {
 
   /**
    * Get controller export statement
-   * @returns Export statement
+   * @returns {string} Export statement
    */
   private getControllerExport(): string {
     return `// Export singleton instance

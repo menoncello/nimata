@@ -34,7 +34,7 @@ export const isInViewport = (element: Element): boolean => {
  * @param {string} element - Element to scroll to
  * @param {string} offset - Offset from top (default: 0)
  */
-export const scrollToElement = (element: Element, offset: number = 0): void => {
+export const scrollToElement = (element: Element, offset = 0): void => {
   const elementPosition = element.getBoundingClientRect().top;
   const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -100,7 +100,7 @@ export const createPortalContainer = (id: string): HTMLElement => {
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
     await navigator.clipboard.writeText(text);
-  } catch (err) {
+  } catch {
     // Fallback for older browsers
     const textArea = document.createElement('textarea');
     textArea.value = text;
@@ -145,7 +145,7 @@ export const getScrollbarWidth = (): number => {
  * @param {string} delay - Delay in milliseconds
  * @returns {string} Debounced function
  */
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   delay: number
 ): ((...args: Parameters<T>) => void) => {
@@ -163,7 +163,7 @@ export const debounce = <T extends (...args: any[]) => any>(
  * @param {string} limit - Time limit in milliseconds
  * @returns {string} Throttled function
  */
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {

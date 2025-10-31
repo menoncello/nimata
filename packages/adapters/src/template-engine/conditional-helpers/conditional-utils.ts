@@ -12,9 +12,9 @@ import Handlebars from 'handlebars';
 export class ConditionalUtils {
   /**
    * Evaluate a conditional expression string
-   * @param expression - Expression to evaluate (e.g., "a > b && c === 'test'")
-   * @param context - Context object with variables
-   * @returns Evaluation result
+   * @param {string} expression - Expression to evaluate (e.g., "a > b && c === 'test'")
+   * @param {Record<string} context - Context object with variables
+   * @returns {boolean} Evaluation result
    */
   static evaluateExpression(expression: string, context: Record<string, unknown>): boolean {
     try {
@@ -46,8 +46,8 @@ export class ConditionalUtils {
 
   /**
    * Create a conditional helper from an expression
-   * @param expression - Expression string
-   * @returns Handlebars helper function
+   * @param {string} expression - Expression string
+   * @returns {unknown[]): string} Handlebars helper function
    */
   static createHelper(expression: string) {
     return function (this: Record<string, unknown>, ...args: unknown[]): string {
@@ -61,9 +61,9 @@ export class ConditionalUtils {
 
   /**
    * Evaluates AND expression
-   * @param expression - AND expression
-   * @param context - Context variables
-   * @returns Evaluation result
+   * @param {unknown} expression - AND expression
+   * @param {unknown} context - Context variables
+   * @returns {boolean} Evaluation result
    */
   private static evaluateAndExpression(
     expression: string,
@@ -75,9 +75,9 @@ export class ConditionalUtils {
 
   /**
    * Evaluates OR expression
-   * @param expression - OR expression
-   * @param context - Context variables
-   * @returns Evaluation result
+   * @param {unknown} expression - OR expression
+   * @param {unknown} context - Context variables
+   * @returns {boolean} Evaluation result
    */
   private static evaluateOrExpression(
     expression: string,
@@ -89,9 +89,9 @@ export class ConditionalUtils {
 
   /**
    * Evaluates equality expression
-   * @param expression - Equality expression
-   * @param context - Context variables
-   * @returns Evaluation result
+   * @param {unknown} expression - Equality expression
+   * @param {unknown} context - Context variables
+   * @returns {boolean} Evaluation result
    */
   private static evaluateEqualityExpression(
     expression: string,
@@ -103,9 +103,9 @@ export class ConditionalUtils {
 
   /**
    * Evaluates inequality expression
-   * @param expression - Inequality expression
-   * @param context - Context variables
-   * @returns Evaluation result
+   * @param {unknown} expression - Inequality expression
+   * @param {unknown} context - Context variables
+   * @returns {boolean} Evaluation result
    */
   private static evaluateInequalityExpression(
     expression: string,
@@ -117,10 +117,10 @@ export class ConditionalUtils {
 
   /**
    * Evaluates comparison expression
-   * @param expression - Comparison expression
-   * @param context - Context variables
-   * @param operator - Comparison operator
-   * @returns Evaluation result
+   * @param {unknown} expression - Comparison expression
+   * @param {unknown} context - Context variables
+   * @param {unknown} operator - Comparison operator
+   * @returns {boolean} Evaluation result
    */
   private static evaluateComparisonExpression(
     expression: string,
@@ -135,10 +135,10 @@ export class ConditionalUtils {
 
   /**
    * Extracts numeric values from comparison expression
-   * @param expression - Comparison expression
-   * @param context - Context variables
-   * @param operator - Comparison operator
-   * @returns Extracted values
+   * @param {unknown} expression - Comparison expression
+   * @param {unknown} context - Context variables
+   * @param {unknown} operator - Comparison operator
+   * @returns {{ leftValue: number | null; rightValue: number | null }} Extracted values
    */
   private static extractComparisonValues(
     expression: string,
@@ -160,8 +160,8 @@ export class ConditionalUtils {
 
   /**
    * Creates optimized regex for comparison operator
-   * @param operator - Comparison operator
-   * @returns Optimized regex pattern
+   * @param {string} operator - Comparison operator
+   * @returns {string): RegExp | null} Optimized regex pattern
    */
   private static createComparisonRegex(operator: string): RegExp | null {
     switch (operator) {
@@ -180,9 +180,9 @@ export class ConditionalUtils {
 
   /**
    * Parses numeric value from context or direct value
-   * @param valueStr - String value to parse
-   * @param context - Context variables
-   * @returns Parsed numeric value or null
+   * @param {unknown} valueStr - String value to parse
+   * @param {unknown} context - Context variables
+   * @returns {number | null} Parsed numeric value or null
    */
   private static parseNumericValue(
     valueStr: string,
@@ -197,10 +197,10 @@ export class ConditionalUtils {
 
   /**
    * Compares two numeric values
-   * @param left - Left value
-   * @param right - Right value
-   * @param operator - Comparison operator
-   * @returns Comparison result
+   * @param {number} left - Left value
+   * @param {number} right - Right value
+   * @param {string} operator - Comparison operator
+   * @returns { boolean} Comparison result
    */
   private static compareNumbers(left: number, right: number, operator: string): boolean {
     switch (operator) {
@@ -219,9 +219,9 @@ export class ConditionalUtils {
 
   /**
    * Evaluates a single expression part
-   * @param part - Expression part
-   * @param context - Context variables
-   * @returns Evaluation result
+   * @param {string} part - Expression part
+   * @param {Record<string} context - Context variables
+   * @returns {boolean} Evaluation result
    */
   private static evaluateExpressionPart(part: string, context: Record<string, unknown>): boolean {
     // Handle comparison expressions
@@ -251,8 +251,8 @@ export class ConditionalUtils {
 
   /**
    * Validate conditional syntax in template
-   * @param template - Template content to validate
-   * @returns Validation result
+   * @param {string} template - Template content to validate
+   * @returns {string):} Validation result
    */
   static validateConditionalSyntax(template: string): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
@@ -268,8 +268,8 @@ export class ConditionalUtils {
 
   /**
    * Validates balanced block syntax
-   * @param template - Template content
-   * @param errors - Array to collect errors
+   * @param {string} template - Template content
+   * @param {string[]} errors - Array to collect errors
    */
   private static validateBalancedBlocks(template: string, errors: string[]): void {
     const blockCounts = this.countBlockTypes(template);
@@ -281,8 +281,8 @@ export class ConditionalUtils {
 
   /**
    * Counts different types of blocks in template
-   * @param template - Template content
-   * @returns Object with block counts
+   * @param {string} template - Template content
+   * @returns {string):} Object with block counts
    */
   private static countBlockTypes(template: string): {
     if: { open: number; close: number };
@@ -307,10 +307,10 @@ export class ConditionalUtils {
 
   /**
    * Validates block balance for a specific block type
-   * @param blockType - Type of block
-   * @param openCount - Opening block count
-   * @param closeCount - Closing block count
-   * @param errors - Array to collect errors
+   * @param {unknown} blockType - Type of block
+   * @param {unknown} openCount - Opening block count
+   * @param {unknown} closeCount - Closing block count
+   * @param {unknown} errors - Array to collect errors
    */
   private static validateBlockBalance(
     blockType: string,
@@ -325,8 +325,8 @@ export class ConditionalUtils {
 
   /**
    * Validates nested block syntax
-   * @param template - Template content
-   * @param errors - Array to collect errors
+   * @param {string} template - Template content
+   * @param {string[]} errors - Array to collect errors
    */
   private static validateNestedBlockSyntax(template: string, errors: string[]): void {
     const nestedBlockPattern = /{{(#(if|unless|each))[^}]*}.*{{#\1[^}]*}/gs;

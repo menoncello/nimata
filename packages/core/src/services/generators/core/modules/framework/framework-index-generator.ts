@@ -9,8 +9,8 @@ import { generateFrameworkInterface } from './framework-interfaces.js';
 
 /**
  * Generate Framework project index file
- * @param config - Project configuration
- * @returns Framework index file TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Framework index file TypeScript code
  */
 export function generateFrameworkIndexFile(config: ProjectConfig): string {
   const documentation = generateIndexDocumentation(config);

@@ -16,8 +16,8 @@ import { DirectoryItem } from './directory-structure-generator.js';
 export class EntryPointsGenerator {
   /**
    * Generate entry point files for a project
-   * @param config - Project configuration
-   * @returns Array of entry point file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of entry point file items
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const entryPoints: DirectoryItem[] = [];
@@ -35,8 +35,8 @@ export class EntryPointsGenerator {
 
   /**
    * Generate main entry point file (src/index.ts)
-   * @param config - Project configuration
-   * @returns Main entry point file item
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Main entry point file item
    */
   private generateMainEntryPoint(config: ProjectConfig): DirectoryItem {
     const content = this.generateMainEntryPointContent(config);
@@ -51,8 +51,8 @@ export class EntryPointsGenerator {
 
   /**
    * Generate CLI entry point file
-   * @param config - Project configuration
-   * @returns CLI entry point file item
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} CLI entry point file item
    */
   private generateCliEntryPoint(config: ProjectConfig): DirectoryItem {
     const content = this.generateCliEntryPointContent(config);
@@ -68,8 +68,8 @@ export class EntryPointsGenerator {
 
   /**
    * Generate main entry point content
-   * @param config - Project configuration
-   * @returns Main entry point content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Main entry point content
    */
   private generateMainEntryPointContent(config: ProjectConfig): string {
     const header = this.generateFileHeader(config);
@@ -92,8 +92,8 @@ ${exports}
 
   /**
    * Generate file header with project information
-   * @param config - Project configuration
-   * @returns File header content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} File header content
    */
   private generateFileHeader(config: ProjectConfig): string {
     return `/**
@@ -109,8 +109,8 @@ ${exports}
 
   /**
    * Generate main constants for the entry point
-   * @param config - Project configuration
-   * @returns Constants content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Constants content
    */
   private generateMainConstants(config: ProjectConfig): string {
     return `// Main exports
@@ -120,8 +120,8 @@ export const NAME = '${config.name}';`;
 
   /**
    * Generate the main core class
-   * @param config - Project configuration
-   * @returns Core class content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Core class content
    */
   private generateMainCoreClass(config: ProjectConfig): string {
     const className = this.toPascalCase(config.name);
@@ -162,8 +162,8 @@ export class ${className}Core {
 
   /**
    * Generate the main function
-   * @param config - Project configuration
-   * @returns Main function content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Main function content
    */
   private generateMainFunction(config: ProjectConfig): string {
     const className = this.toPascalCase(config.name);
@@ -183,8 +183,8 @@ export async function main(): Promise<void> {
 
   /**
    * Generate the main exports
-   * @param config - Project configuration
-   * @returns Main exports content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Main exports content
    */
   private generateMainExports(config: ProjectConfig): string {
     const className = this.toPascalCase(config.name);
@@ -195,8 +195,8 @@ export default { main, ${className}Core, VERSION, NAME };`;
 
   /**
    * Generate CLI entry point content
-   * @param config - Project configuration
-   * @returns CLI entry point content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI entry point content
    */
   private generateCliEntryPointContent(config: ProjectConfig): string {
     const header = this.generateCliHeader(config);
@@ -219,8 +219,8 @@ ${execution}
 
   /**
    * Generate CLI file header
-   * @param config - Project configuration
-   * @returns CLI header content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI header content
    */
   private generateCliHeader(config: ProjectConfig): string {
     return `#!/usr/bin/env bun
@@ -237,7 +237,7 @@ ${execution}
 
   /**
    * Generate CLI error handlers
-   * @returns Error handlers content
+   * @returns {string} Error handlers content
    */
   private generateCliErrorHandlers(): string {
     return `// Error handling for uncaught exceptions
@@ -257,8 +257,8 @@ process.on('unhandledRejection', (reason, promise) => {
 
   /**
    * Generate CLI entry point function
-   * @param config - Project configuration
-   * @returns CLI entry point function content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI entry point function content
    */
   private generateCliEntryPointFunction(config: ProjectConfig): string {
     return `/**
@@ -294,8 +294,8 @@ async function cliEntryPoint(): Promise<void> {
 
   /**
    * Generate CLI help function
-   * @param config - Project configuration
-   * @returns CLI help function content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI help function content
    */
   private generateCliHelpFunction(config: ProjectConfig): string {
     const helpFunction = this.generateShowHelpFunction(config);
@@ -308,8 +308,8 @@ ${helperFunctions}`;
 
   /**
    * Generate the main show help function
-   * @param config - Project configuration
-   * @returns Show help function content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Show help function content
    */
   private generateShowHelpFunction(config: ProjectConfig): string {
     return `/**
@@ -334,7 +334,7 @@ function showHelp(): void {
 
   /**
    * Generate CLI helper functions
-   * @returns CLI helper functions content
+   * @returns {string} CLI helper functions content
    */
   private generateCliHelperFunctions(): string {
     const argumentHelpers = this.generateArgumentHelpers();
@@ -350,7 +350,7 @@ ${errorHelper}`;
 
   /**
    * Generate argument helper functions
-   * @returns Argument helper functions content
+   * @returns {string} Argument helper functions content
    */
   private generateArgumentHelpers(): string {
     return `/**
@@ -374,7 +374,7 @@ function isVersionRequested(args: string[]): boolean {
 
   /**
    * Generate version helper function
-   * @returns Version helper function content
+   * @returns {string} Version helper function content
    */
   private generateVersionHelper(): string {
     return `/**
@@ -388,7 +388,7 @@ function showVersion(projectName: string): void {
 
   /**
    * Generate error helper function
-   * @returns Error helper function content
+   * @returns {string} Error helper function content
    */
   private generateErrorHelper(): string {
     return `/**
@@ -413,7 +413,7 @@ function handleCliError(error: unknown, projectName: string): void {
 
   /**
    * Generate CLI execution call
-   * @returns CLI execution content
+   * @returns {string} CLI execution content
    */
   private generateCliExecution(): string {
     return `// Execute CLI entry point
@@ -422,8 +422,8 @@ cliEntryPoint();`;
 
   /**
    * Convert string to PascalCase
-   * @param str - Input string
-   * @returns PascalCase string
+   * @param {string} str - Input string
+   * @returns {string} PascalCase string
    */
   private toPascalCase(str: string): string {
     return str.replace(/(?:^|[_-])(\w)/g, (_, char) => char.toUpperCase()).replace(/[_-]/g, '');
@@ -431,8 +431,8 @@ cliEntryPoint();`;
 
   /**
    * Generate only main entry point
-   * @param config - Project configuration
-   * @returns Main entry point file item
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Main entry point file item
    */
   generateMainEntryPointOnly(config: ProjectConfig): DirectoryItem {
     return this.generateMainEntryPoint(config);
@@ -440,8 +440,8 @@ cliEntryPoint();`;
 
   /**
    * Generate only CLI entry point
-   * @param config - Project configuration
-   * @returns CLI entry point file item
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} CLI entry point file item
    */
   generateCliEntryPointOnly(config: ProjectConfig): DirectoryItem {
     return this.generateCliEntryPoint(config);
@@ -449,8 +449,8 @@ cliEntryPoint();`;
 
   /**
    * Check if project should have CLI entry point
-   * @param config - Project configuration
-   * @returns Whether project should have CLI entry point
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean} Whether project should have CLI entry point
    */
   shouldHaveCliEntryPoint(config: ProjectConfig): boolean {
     return config.projectType === 'cli';

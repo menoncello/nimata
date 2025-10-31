@@ -27,8 +27,8 @@ export class ConfigurationFilesGenerator {
 
   /**
    * Generate configuration files for a project
-   * @param config - Project configuration
-   * @returns Array of configuration file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of configuration file items
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const configFiles: DirectoryItem[] = [];

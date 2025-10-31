@@ -7,8 +7,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 
 /**
  * Generate main React entry file
- * @param _config - Project configuration (unused)
- * @returns Main entry file code
+ * @param {ProjectConfig} _config - Project configuration (unused)
+ * @returns {string} Main entry file code
  */
 export function generateMainEntry(_config: ProjectConfig): string {
   const imports = getImports();
@@ -34,7 +34,7 @@ ${errorHandling}
 
 /**
  * Get import statements for main entry
- * @returns Import statements
+ * @returns {string} Import statements
  */
 function getImports(): string {
   return `import React from 'react';
@@ -47,7 +47,7 @@ import './styles/main.css';`;
 
 /**
  * Get root element finding code
- * @returns Root element code
+ * @returns {string} Root element code
  */
 function getRootElementCode(): string {
   return `// Find the root element
@@ -63,7 +63,7 @@ const root = createRoot(rootElement);`;
 
 /**
  * Get React render code
- * @returns Render code
+ * @returns {string} Render code
  */
 function getRenderCode(): string {
   return `// Render the app
@@ -76,7 +76,7 @@ root.render(
 
 /**
  * Get production features code
- * @returns Production features code
+ * @returns {string} Production features code
  */
 function getProductionFeatures(): string {
   return `// Register service worker for production
@@ -90,7 +90,7 @@ reportWebVitals(console.log);`;
 
 /**
  * Get development features code
- * @returns Development features code
+ * @returns {string} Development features code
  */
 function getDevelopmentFeatures(): string {
   return `// Hot module replacement
@@ -101,7 +101,7 @@ if (import.meta.env.DEV) {
 
 /**
  * Get error handling code
- * @returns Error handling code
+ * @returns {string} Error handling code
  */
 function getErrorHandling(): string {
   return `// Error boundary setup

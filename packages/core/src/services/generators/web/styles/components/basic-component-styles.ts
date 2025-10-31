@@ -6,12 +6,12 @@
 
 /**
  * Generates CSS styles for basic UI components
- * @returns CSS string for basic components
+ * @returns {string} CSS string for basic components
  */
 export class BasicComponentStyles {
   /**
    * Generates CSS for buttons
-   * @returns CSS string for button styles
+   * @returns {string} CSS string for button styles
    */
   private generateButtonStyles(): string {
     const baseButton = this.getBaseButtonStyles();
@@ -27,7 +27,7 @@ ${secondaryButton}`;
 
   /**
    * Get base button styles
-   * @returns Base button CSS
+   * @returns {string} Base button CSS
    */
   private getBaseButtonStyles(): string {
     return `.btn {
@@ -46,7 +46,7 @@ ${secondaryButton}`;
 
   /**
    * Get primary button styles
-   * @returns Primary button CSS
+   * @returns {string} Primary button CSS
    */
   private getPrimaryButtonStyles(): string {
     return `.btn-primary {
@@ -62,7 +62,7 @@ ${secondaryButton}`;
 
   /**
    * Get secondary button styles
-   * @returns Secondary button CSS
+   * @returns {string} Secondary button CSS
    */
   private getSecondaryButtonStyles(): string {
     return `.btn-secondary {
@@ -79,7 +79,7 @@ ${secondaryButton}`;
 
   /**
    * Generates CSS for cards
-   * @returns CSS string for card styles
+   * @returns {string} CSS string for card styles
    */
   private generateCardStyles(): string {
     return `.card {
@@ -97,7 +97,7 @@ ${secondaryButton}`;
 
   /**
    * Generates CSS for form inputs
-   * @returns CSS string for form input styles
+   * @returns {string} CSS string for form input styles
    */
   private generateFormInputStyles(): string {
     return `.form-input {
@@ -118,7 +118,7 @@ ${secondaryButton}`;
 
   /**
    * Generates complete CSS for basic components
-   * @returns Complete CSS string for basic components
+   * @returns {string} Complete CSS string for basic components
    */
   generateBasicComponentStyles(): string {
     const buttonStyles = this.generateButtonStyles();

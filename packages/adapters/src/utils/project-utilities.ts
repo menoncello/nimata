@@ -14,8 +14,8 @@ import { toCamelCase, toPascalCase, toKebabCase, toSnakeCase } from './string-ut
 
 /**
  * Get project directory path
- * @param config - Project configuration
- * @returns Project directory path
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Project directory path
  */
 export function getProjectDirectory(config: ProjectConfig): string {
   if (config.targetDirectory) {
@@ -35,9 +35,9 @@ export function getProjectDirectory(config: ProjectConfig): string {
 
 /**
  * Check if project directory already exists
- * @param projectDir - Project directory path
- * @param allowExisting - If true, don't throw error if directory exists (default: true)
- * @returns Promise that resolves if directory doesn't exist (or allowExisting is true), rejects otherwise
+ * @param {unknown} projectDir - Project directory path
+ * @param {unknown} allowExisting - If true, don't throw error if directory exists (default: true)
+ * @returns {void} Promise that resolves if directory doesn't exist (or allowExisting is true), rejects otherwise
  */
 export async function checkDirectoryExists(
   projectDir: string,
@@ -61,11 +61,11 @@ export async function checkDirectoryExists(
 
 /**
  * Load and validate a project template
- * @param templateEngine - Template engine instance
- * @param templateEngine.loadTemplate - Function to load template by name
- * @param templateName - Template name
- * @param projectType - Project type
- * @returns Loaded template
+ * @param {{ loadTemplate: (name: string) => Promise<ProjectTemplate> }} templateEngine - Template engine with loadTemplate function
+ * @param {() => Promise<ProjectTemplate>} templateEngine.loadTemplate - Function to load template by name
+ * @param {string} templateName - Template name
+ * @param {string} projectType - Project type
+ * @returns {Promise<ProjectTemplate>} Loaded template
  */
 export async function loadAndValidateTemplate(
   templateEngine: { loadTemplate: (name: string) => Promise<ProjectTemplate> },
@@ -93,11 +93,11 @@ export async function loadAndValidateTemplate(
 
 /**
  * Validate variable type
- * @param variable - Template variable definition
- * @param variable.name - Variable name
- * @param variable.type - Variable type
- * @param value - Variable value
- * @returns Error message if validation fails, null if valid
+ * @param {{ name: string; type: string }} variable - Variable configuration with name and type
+ * @param {string} variable.name - Variable name
+ * @param {string} variable.type - Variable type
+ * @param {unknown} value - Variable value to validate
+ * @returns {string | null} Error message if validation fails, null if valid
  */
 function validateVariableType(
   variable: { name: string; type: string },
@@ -126,11 +126,11 @@ function validateVariableType(
 
 /**
  * Validate pattern rule
- * @param value - Variable value
- * @param rule - Validation rule
- * @param rule.pattern - Pattern for regex validation
- * @param rule.message - Error message
- * @returns Error message if validation fails, null if valid
+ * @param {unknown} value - Variable value
+ * @param {{ pattern?: RegExp; message: string }} rule - Validation rule with pattern and message
+ * @param {RegExp} [rule.pattern] - Pattern for regex validation
+ * @param {string} rule.message - Error message
+ * @returns {string | null} Error message if validation fails, null if valid
  */
 function validatePatternRule(
   value: unknown,
@@ -144,12 +144,12 @@ function validatePatternRule(
 
 /**
  * Validate length rule
- * @param value - Variable value
- * @param rule - Validation rule
- * @param rule.min - Minimum length
- * @param rule.max - Maximum length
- * @param rule.message - Error message
- * @returns Error message if validation fails, null if valid
+ * @param {unknown} value - Variable value
+ * @param {{ min?: number; max?: number; message: string }} rule - Validation rule with min/max length and error message
+ * @param {number} [rule.min] - Minimum length
+ * @param {number} [rule.max] - Maximum length
+ * @param {string} rule.message - Error message
+ * @returns {string | null} Error message if validation fails, null if valid
  */
 function validateLengthRule(
   value: unknown,
@@ -165,12 +165,12 @@ function validateLengthRule(
 
 /**
  * Validate custom validator rule
- * @param variable - Variable name
- * @param value - Variable value
- * @param rule - Validation rule
- * @param rule.validator - Custom validator function
- * @param rule.message - Error message
- * @returns Error message if validation fails, null if valid
+ * @param {string} variable - Variable name
+ * @param {unknown} value - Variable value
+ * @param {{ validator?: (value: unknown) => boolean | string; message: string }} rule - Validation rule with custom validator and error message
+ * @param {(value: unknown) => boolean | string} [rule.validator] - Custom validator function
+ * @param {string} rule.message - Error message
+ * @returns {string | null} Error message if validation fails, null if valid
  */
 function validateCustomValidatorRule(
   variable: string,
@@ -190,17 +190,17 @@ function validateCustomValidatorRule(
 
 /**
  * Validate variable against custom rules
- * @param variable - Template variable definition
- * @param variable.name - Variable name
- * @param value - Variable value
- * @param rule - Validation rule
- * @param rule.type - Rule type
- * @param rule.pattern - Pattern for regex validation
- * @param rule.min - Minimum length
- * @param rule.max - Maximum length
- * @param rule.validator - Custom validator function
- * @param rule.message - Error message
- * @returns Error message if validation fails, null if valid
+ * @param {unknown} variable - Template variable definition
+ * @param {unknown} variable.name - Variable name
+ * @param {unknown} value - Variable value
+ * @param {unknown} rule - Validation rule
+ * @param {unknown} rule.type - Rule type
+ * @param {unknown} rule.pattern - Pattern for regex validation
+ * @param {unknown} rule.min - Minimum length
+ * @param {unknown} rule.max - Maximum length
+ * @param {unknown} rule.validator - Custom validator function
+ * @param {unknown} rule.message - Error message
+ * @returns {string | null} Error message if validation fails, null if valid
  */
 function validateCustomRule(
   variable: { name: string },
@@ -227,13 +227,13 @@ function validateCustomRule(
 
 /**
  * Validate single template variable
- * @param variable - Template variable definition
- * @param variable.name - Variable name
- * @param variable.type - Variable type
- * @param variable.required - Whether variable is required
- * @param variable.validation - Validation rules array
- * @param value - Variable value
- * @returns Array of validation errors
+ * @param {{ name: string; type: string; required: boolean; validation?: Array<unknown> }} variable - Variable configuration
+ * @param {string} variable.name - Variable name
+ * @param {string} variable.type - Variable type
+ * @param {boolean} variable.required - Whether variable is required
+ * @param {Array<unknown>} [variable.validation] - Validation rules array
+ * @param {unknown} value - Variable value
+ * @returns {string[]} Array of validation errors
  */
 function validateSingleVariable(
   variable: {
@@ -267,8 +267,8 @@ function validateSingleVariable(
 
 /**
  * Check if value is empty (undefined, null, or empty string)
- * @param value - Value to check
- * @returns True if value is empty
+ * @param {unknown} value - Value to check
+ * @returns {unknown): boolean} True if value is empty
  */
 function isValueEmpty(value: unknown): boolean {
   return value === undefined || value === null || value === '';
@@ -276,12 +276,12 @@ function isValueEmpty(value: unknown): boolean {
 
 /**
  * Validate variable type and rules
- * @param variable - Template variable definition
- * @param variable.name - Variable name
- * @param variable.type - Variable type
- * @param variable.validation - Validation rules array
- * @param value - Variable value
- * @returns Array of validation errors
+ * @param {{ name: string; type: string; validation?: Array<unknown> }} variable - Variable configuration
+ * @param {string} variable.name - Variable name
+ * @param {string} variable.type - Variable type
+ * @param {Array<unknown>} [variable.validation] - Validation rules array
+ * @param {unknown} value - Variable value
+ * @returns {string[]} Array of validation errors
  */
 function validateVariableTypeAndRules(
   variable: {
@@ -316,11 +316,11 @@ function validateVariableTypeAndRules(
 
 /**
  * Validate custom validation rules
- * @param variable - Variable configuration
- * @param variable.name - Variable name
- * @param variable.validation - Validation rules array
- * @param value - Value to validate
- * @returns Array of validation error messages
+ * @param {{ name: string; validation?: Array<unknown> }} variable - Variable configuration
+ * @param {string} variable.name - Variable name
+ * @param {Array<unknown>} [variable.validation] - Validation rules array
+ * @param {unknown} value - Value to validate
+ * @returns {string[]} Array of validation error messages
  */
 function validateCustomRules(
   variable: {
@@ -354,9 +354,9 @@ function validateCustomRules(
 
 /**
  * Validate template variables
- * @param template - Project template
- * @param variables - Provided variables
- * @returns Validation result
+ * @param {unknown} template - Project template
+ * @param {unknown} variables - Provided variables
+ * @returns {ValidationResult} Validation result
  */
 export function validateTemplateVariables(
   template: ProjectTemplate,
@@ -378,8 +378,8 @@ export function validateTemplateVariables(
 
 /**
  * Generate project summary
- * @param config - Project configuration
- * @returns Formatted project summary
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Formatted project summary
  */
 export function generateProjectSummary(config: ProjectConfig): string {
   const lines = [
@@ -406,8 +406,8 @@ export function generateProjectSummary(config: ProjectConfig): string {
 
 /**
  * Create template context
- * @param config - Project configuration
- * @returns Template context
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {void} Template context
  */
 export function createTemplateContext(config: ProjectConfig): Record<string, unknown> {
   return {

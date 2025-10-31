@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 export class EnumExportGenerator {
   /**
    * Generates common enum definitions and exports
-   * @param config - The project configuration
-   * @returns Enum definitions string
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Enum definitions string
    */
   generateEnumExports(config: ProjectConfig): string {
     const { name } = config;
@@ -36,8 +36,8 @@ ${utilityEnums}
 
   /**
    * Get header comment
-   * @param name - Project name
-   * @returns Header string
+   * @param {string} name - Project name
+   * @returns {string} Header string
    */
   private getHeader(name: string): string {
     return `// Enum definitions for ${name}`;
@@ -45,7 +45,7 @@ ${utilityEnums}
 
   /**
    * Get core application enums
-   * @returns Core enum definitions
+   * @returns {string} Core enum definitions
    */
   private getCoreEnums(): string {
     const logLevel = this.getLogLevelEnum();
@@ -61,7 +61,7 @@ ${priority}`;
 
   /**
    * Get LogLevel enum
-   * @returns LogLevel enum code
+   * @returns {string} LogLevel enum code
    */
   private getLogLevelEnum(): string {
     return `/**
@@ -79,7 +79,7 @@ export enum LogLevel {
 
   /**
    * Get Environment enum
-   * @returns Environment enum code
+   * @returns {string} Environment enum code
    */
   private getEnvironmentEnum(): string {
     return `/**
@@ -95,7 +95,7 @@ export enum Environment {
 
   /**
    * Get Priority enum
-   * @returns Priority enum code
+   * @returns {string} Priority enum code
    */
   private getPriorityEnum(): string {
     return `/**
@@ -111,7 +111,7 @@ export enum Priority {
 
   /**
    * Get system and error-related enums
-   * @returns System enum definitions
+   * @returns {string} System enum definitions
    */
   private getSystemEnums(): string {
     const httpStatus = this.getHttpStatusEnum();
@@ -130,7 +130,7 @@ ${retryStrategy}`;
 
   /**
    * Get HttpStatus enum
-   * @returns HttpStatus enum code
+   * @returns {string} HttpStatus enum code
    */
   private getHttpStatusEnum(): string {
     return `/**
@@ -168,7 +168,7 @@ export enum HttpStatus {
 
   /**
    * Get ErrorCode enum
-   * @returns ErrorCode enum code
+   * @returns {string} ErrorCode enum code
    */
   private getErrorCodeEnum(): string {
     return `/**
@@ -197,7 +197,7 @@ export enum ErrorCode {
 
   /**
    * Get CacheStrategy enum
-   * @returns CacheStrategy enum code
+   * @returns {string} CacheStrategy enum code
    */
   private getCacheStrategyEnum(): string {
     return `/**
@@ -213,7 +213,7 @@ export enum CacheStrategy {
 
   /**
    * Get RetryStrategy enum
-   * @returns RetryStrategy enum code
+   * @returns {string} RetryStrategy enum code
    */
   private getRetryStrategyEnum(): string {
     return `/**
@@ -229,7 +229,7 @@ export enum RetryStrategy {
 
   /**
    * Get data processing enums
-   * @returns Data enum definitions
+   * @returns {string} Data enum definitions
    */
   private getDataEnums(): string {
     const dataFormat = this.getDataFormatEnum();
@@ -245,7 +245,7 @@ ${hashAlgorithm}`;
 
   /**
    * Get DataFormat enum
-   * @returns DataFormat enum code
+   * @returns {string} DataFormat enum code
    */
   private getDataFormatEnum(): string {
     return `/**
@@ -263,7 +263,7 @@ export enum DataFormat {
 
   /**
    * Get Compression enum
-   * @returns Compression enum code
+   * @returns {string} Compression enum code
    */
   private getCompressionEnum(): string {
     return `/**
@@ -279,7 +279,7 @@ export enum Compression {
 
   /**
    * Get HashAlgorithm enum
-   * @returns HashAlgorithm enum code
+   * @returns {string} HashAlgorithm enum code
    */
   private getHashAlgorithmEnum(): string {
     return `/**
@@ -295,7 +295,7 @@ export enum HashAlgorithm {
 
   /**
    * Get utility and helper enums
-   * @returns Utility enum definitions
+   * @returns {string} Utility enum definitions
    */
   private getUtilityEnums(): string {
     const sortDirection = this.getSortDirectionEnum();
@@ -311,7 +311,7 @@ ${booleanState}`;
 
   /**
    * Get SortDirection enum
-   * @returns SortDirection enum code
+   * @returns {string} SortDirection enum code
    */
   private getSortDirectionEnum(): string {
     return `/**
@@ -325,7 +325,7 @@ export enum SortDirection {
 
   /**
    * Get ComparisonOperator enum
-   * @returns ComparisonOperator enum code
+   * @returns {string} ComparisonOperator enum code
    */
   private getComparisonOperatorEnum(): string {
     return `/**
@@ -348,7 +348,7 @@ export enum ComparisonOperator {
 
   /**
    * Get BooleanState enum
-   * @returns BooleanState enum code
+   * @returns {boolean}State enum code
    */
   private getBooleanStateEnum(): string {
     return `/**

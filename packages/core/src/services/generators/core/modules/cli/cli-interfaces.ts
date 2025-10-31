@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate CLI interface
- * @param config - Project configuration
- * @returns CLI interface TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} CLI interface TypeScript code
  */
 export function generateCLIInterface(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -24,8 +24,8 @@ ${resultInterface}`;
 
 /**
  * Generate CLI config interface
- * @param className - Class name
- * @returns Config interface code
+ * @param {string} className - Class name
+ * @returns {string} Config interface code
  */
 export function generateCLIConfigInterface(className: string): string {
   return `export interface ${className}Config {
@@ -46,7 +46,7 @@ export function generateCLIConfigInterface(className: string): string {
 
 /**
  * Generate CLI options interface
- * @returns Options interface code
+ * @returns {string} Options interface code
  */
 export function generateCLIOptionsInterface(): string {
   return `export interface CLIOptions {
@@ -63,7 +63,7 @@ export function generateCLIOptionsInterface(): string {
 
 /**
  * Generate Command result interface
- * @returns Result interface code
+ * @returns {string} Result interface code
  */
 export function generateCommandResultInterface(): string {
   return `export interface CommandResult {

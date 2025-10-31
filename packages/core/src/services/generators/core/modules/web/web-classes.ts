@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate Web class
- * @param config - Project configuration
- * @returns Web class TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Web class TypeScript code
  */
 export function generateWebClass(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -23,9 +23,9 @@ export function generateWebClass(config: ProjectConfig): string {
 
 /**
  * Generate Web class header and properties
- * @param className - Class name
- * @param _config - Project configuration
- * @returns Class header TypeScript code
+ * @param {string} className - Class name
+ * @param {ProjectConfig} _config - Project configuration
+ * @returns {string} Class header TypeScript code
  */
 function generateWebClassHeader(className: string, _config: ProjectConfig): string {
   return `export class ${className}App {
@@ -36,9 +36,9 @@ function generateWebClassHeader(className: string, _config: ProjectConfig): stri
 
 /**
  * Generate Web class constructor
- * @param className - Class name
- * @param config - Project configuration
- * @returns Constructor TypeScript code
+ * @param {string} className - Class name
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Constructor TypeScript code
  */
 function generateWebConstructor(className: string, config: ProjectConfig): string {
   return `  constructor(config: Partial<${className}Config> = {}) {
@@ -55,7 +55,7 @@ function generateWebConstructor(className: string, config: ProjectConfig): strin
 
 /**
  * Generate Web initialize method
- * @returns Initialize method TypeScript code
+ * @returns {string} Initialize method TypeScript code
  */
 function generateWebInitializeMethod(): string {
   return `  /**
@@ -84,7 +84,7 @@ function generateWebInitializeMethod(): string {
 
 /**
  * Generate Web routing and theme methods
- * @returns Routing and theme methods TypeScript code
+ * @returns {string} Routing and theme methods TypeScript code
  */
 function generateWebRoutingMethods(): string {
   return `  /**
@@ -109,12 +109,12 @@ function generateWebRoutingMethods(): string {
 
 /**
  * Generate Web navigation method
- * @returns Navigation method TypeScript code
+ * @returns {string} Navigation method TypeScript code
  */
 function generateWebNavigationMethod(): string {
   return `  /**
    * Navigate to route
-   * @param path - Route path
+   * @param {string} path - Route path
    */
   navigateTo(path: string): void {
     this.currentRoute = path;
@@ -139,8 +139,8 @@ function generateWebNavigationMethod(): string {
 
 /**
  * Generate Web configuration methods
- * @param className - Class name
- * @returns Configuration methods TypeScript code
+ * @param {string} className - Class name
+ * @returns {string} Configuration methods TypeScript code
  */
 function generateWebConfigMethods(className: string): string {
   return `  /**

@@ -12,37 +12,43 @@ import { injectable, singleton } from 'tsyringe';
 export interface OutputWriter {
   /**
    * Write to stdout
-   * @param message - Message to write
+   * @param {string} message - Message to write
+   * @returns {void}
    */
   stdout: (message: string) => void;
 
   /**
    * Write to stderr
-   * @param message - Message to write
+   * @param {string} message - Message to write
+   * @returns {void}
    */
   stderr: (message: string) => void;
 
   /**
    * Log to console
-   * @param messages - Messages to log
+   * @param {unknown[]} messages - Messages to log
+   * @returns {void}
    */
   log: (...messages: unknown[]) => void;
 
   /**
    * Log error to console
-   * @param messages - Error messages to log
+   * @param {unknown[]} messages - Error messages to log
+   * @returns {void}
    */
   error: (...messages: unknown[]) => void;
 
   /**
    * Log success message to console
-   * @param message - Success message to log
+   * @param {string} message - Success message to log
+   * @returns {void}
    */
   success: (message: string) => void;
 
   /**
    * Log info message to console
-   * @param message - Info message to log
+   * @param {string} message - Info message to log
+   * @returns {void}
    */
   info: (message: string) => void;
 }
@@ -62,19 +68,19 @@ export class ConsoleOutputWriter implements OutputWriter {
   }
 
   log(...messages: unknown[]): void {
-    console.log(...messages);
+    process.stdout.write(`${messages.map(String).join(' ')}\n`);
   }
 
   error(...messages: unknown[]): void {
-    console.error(...messages);
+    process.stderr.write(`${messages.map(String).join(' ')}\n`);
   }
 
   success(message: string): void {
-    console.log(message);
+    process.stdout.write(`${message}\n`);
   }
 
   info(message: string): void {
-    console.log(message);
+    process.stdout.write(`${message}\n`);
   }
 }
 

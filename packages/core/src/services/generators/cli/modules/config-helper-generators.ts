@@ -6,7 +6,7 @@
 
 /**
  * Generate configuration helper functions
- * @returns Helper functions code
+ * @returns {string} Helper functions code
  */
 export function generateConfigHelpers(): string {
   return [generateGetConfigFunction(), generateValidateConfigFunction()].join('\n\n');
@@ -14,13 +14,13 @@ export function generateConfigHelpers(): string {
 
 /**
  * Generate get configuration function
- * @returns Get configuration function code
+ * @returns {string} Get configuration function code
  */
 function generateGetConfigFunction(): string {
   return `/**
  * Get configuration based on environment
- * @param env - Environment name
- * @returns Configuration for the specified environment
+   * @param {string} env - Environment name
+   * @returns {boolean}ied environment
  */
 export const getConfig = (env: string = 'development'): ConfigFileOptions => {
   switch (env) {
@@ -36,12 +36,12 @@ export const getConfig = (env: string = 'development'): ConfigFileOptions => {
 
 /**
  * Generate validate configuration function
- * @returns Validate configuration function code
+ * @returns {string} Validate configuration function code
  */
 function generateValidateConfigFunction(): string {
   return `/**
  * Validate configuration
- * @param config - Configuration to validate
+   * @param {string} config - Configuration to validate
  * @throws Error if configuration is invalid
  */
 export const validateConfig = (config: ConfigFileOptions): void => {
@@ -62,7 +62,7 @@ export const validateConfig = (config: ConfigFileOptions): void => {
 
 /**
  * Generate default export
- * @returns Default export statement
+ * @returns {string} Default export statement
  */
 export function generateConfigDefaultExport(): string {
   return `/**

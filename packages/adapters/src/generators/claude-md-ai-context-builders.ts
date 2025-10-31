@@ -14,9 +14,9 @@ import type { ProjectConfig, ClaudeMdConfigOptions, ProjectType } from './claude
 
 /**
  * Build AI context header section
- * @param config - Project configuration
- * @param options - Claude.md generation options
- * @returns AI context header markdown
+ * @param {unknown} config - Project configuration
+ * @param {unknown} options - Claude.md generation options
+ * @returns {string} AI context header markdown
  */
 export function buildAIContextHeader(
   config: ProjectConfig,
@@ -34,14 +34,14 @@ export function buildAIContextHeader(
 
 /**
  * Build AI context overview section
- * @param config - Project configuration
- * @returns AI context overview markdown
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} AI context overview markdown
  */
 export function buildAIContextOverview(config: ProjectConfig): string {
   const projectTypeName = config.projectType.charAt(0).toUpperCase() + config.projectType.slice(1);
 
   return `
-## Project Overview
+## Project Information
 
 **Name**: ${config.name}
 **Type**: ${projectTypeName} TypeScript Project
@@ -58,8 +58,8 @@ export function buildAIContextOverview(config: ProjectConfig): string {
 
 /**
  * Build AI context dependencies section
- * @param config - Project configuration
- * @returns Dependencies section markdown
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Dependencies section markdown
  */
 export function buildAIContextDependencies(config: ProjectConfig): string {
   const deps: string[] = ['typescript', 'eslint', 'prettier', 'vitest'];
@@ -75,8 +75,8 @@ export function buildAIContextDependencies(config: ProjectConfig): string {
 
 /**
  * Build AI context code patterns section
- * @param config - Project configuration
- * @returns Code patterns section markdown
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {ProjectConfig): string} Code patterns section markdown
  */
 export function buildAIContextCodePatterns(config: ProjectConfig): string {
   const goodPattern = config.projectType === 'cli' ? CLI_PATTERN : GOOD_PATTERNS;
@@ -101,8 +101,8 @@ ${badPattern}
 
 /**
  * Build AI context testing strategy section
- * @param options - Claude.md generation options
- * @returns Testing strategy section markdown
+ * @param {ClaudeMdConfigOptions} options - Claude.md generation options
+ * @returns {ClaudeMdConfigOptions): string} Testing strategy section markdown
  */
 export function buildAIContextTestingStrategy(options: ClaudeMdConfigOptions): string {
   const coverageTarget = getCoverageThreshold(options.qualityLevel);
@@ -119,8 +119,8 @@ export function buildAIContextTestingStrategy(options: ClaudeMdConfigOptions): s
 
 /**
  * Build AI context development guidelines section
- * @param _projectType - Project type (reserved for future use)
- * @returns Development guidelines section markdown
+ * @param {unknown} _projectType - Project type (reserved for future use)
+ * @returns {ProjectType): string} Development guidelines section markdown
  */
 export function buildAIContextGuidelines(_projectType?: ProjectType): string {
   return `
@@ -136,7 +136,7 @@ export function buildAIContextGuidelines(_projectType?: ProjectType): string {
 
 /**
  * Build AI context project structure section
- * @returns Project structure section markdown
+ * @returns {string} Project structure section markdown
  */
 export function buildAIContextProjectStructure(): string {
   return `
@@ -153,8 +153,8 @@ src/
 
 /**
  * Get coverage threshold based on quality level
- * @param qualityLevel - Quality level
- * @returns Coverage threshold percentage
+ * @param {string} qualityLevel - Quality level
+ * @returns {string): number} Coverage threshold percentage
  */
 function getCoverageThreshold(qualityLevel: string): number {
   switch (qualityLevel) {

@@ -29,8 +29,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Creates a new template registry instance
-   * @param config - Template catalog configuration
-   * @param cache - Template cache instance
+   * @param {TemplateCatalogConfig} config - Template catalog configuration
+   * @param {ITemplateCache} cache - Template cache instance
    */
   constructor(config: TemplateCatalogConfig, cache: ITemplateCache) {
     this.config = config;
@@ -39,7 +39,7 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Register a new template
-   * @param template The template to register
+   * @param {TemplateMetadata} template The template to register
    */
   async register(template: TemplateMetadata): Promise<void> {
     // Validate template before registration
@@ -61,8 +61,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Get template by ID
-   * @param templateId The template ID to retrieve
-   * @returns The template metadata or null if not found
+   * @param {string} templateId The template ID to retrieve
+   * @returns {void} The template metadata or null if not found
    */
   async unregister(templateId: string): Promise<void> {
     this.templates.delete(templateId);
@@ -71,8 +71,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Get template by ID
-   * @param templateId - The template ID to retrieve
-   * @returns Template metadata or null if not found
+   * @param {string} templateId - The template ID to retrieve
+   * @returns {void} Template metadata or null if not found
    */
   async get(templateId: string): Promise<TemplateMetadata | null> {
     // Try cache first
@@ -89,7 +89,7 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Get all registered templates
-   * @returns Array of all template metadata
+   * @returns {void} Array of all template metadata
    */
   async getAll(): Promise<TemplateMetadata[]> {
     return Array.from(this.templates.values());
@@ -97,8 +97,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Search templates using filter criteria
-   * @param filter - Search filter criteria
-   * @returns Search results with matching templates
+   * @param {TemplateSearchFilter} filter - Search filter criteria
+   * @returns {void} Search results with matching templates
    */
   async search(filter: TemplateSearchFilter): Promise<TemplateSearchResult> {
     const allTemplates = Array.from(this.templates.values());
@@ -121,9 +121,9 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Apply registry-specific filters to search results
-   * @param searchResult - Initial search result from search engine
-   * @param filter - Original search filter
-   * @returns Filtered search result
+   * @param {unknown} searchResult - Initial search result from search engine
+   * @param {unknown} filter - Original search filter
+   * @returns {TemplateSearchResult} Filtered search result
    */
   private applyRegistryFilters(
     searchResult: TemplateSearchResult,
@@ -163,8 +163,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Get templates by project type
-   * @param projectType - The project type to filter by
-   * @returns Array of templates supporting the project type
+   * @param {ProjectType} projectType - The project type to filter by
+   * @returns {void} Array of templates supporting the project type
    */
   async getByProjectType(projectType: ProjectType): Promise<TemplateMetadata[]> {
     return Array.from(this.templates.values()).filter((template) =>
@@ -174,8 +174,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Get templates by category
-   * @param category - The category to filter by
-   * @returns Array of templates in the category
+   * @param {string} category - The category to filter by
+   * @returns {void} Array of templates in the category
    */
   async getByCategory(category: string): Promise<TemplateMetadata[]> {
     return Array.from(this.templates.values()).filter((template) => template.category === category);
@@ -183,8 +183,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Get popular templates by usage count
-   * @param limit - Maximum number of templates to return
-   * @returns Array of popular templates sorted by usage
+   * @param {unknown} limit - Maximum number of templates to return
+   * @returns {void} Array of popular templates sorted by usage
    */
   async getPopular(limit = 10): Promise<TemplateMetadata[]> {
     return Array.from(this.templates.values())
@@ -194,8 +194,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Get recently updated templates
-   * @param limit - Maximum number of templates to return
-   * @returns Array of recently updated templates sorted by modification date
+   * @param {unknown} limit - Maximum number of templates to return
+   * @returns {void} Array of recently updated templates sorted by modification date
    */
   async getRecentlyUpdated(limit = 10): Promise<TemplateMetadata[]> {
     return Array.from(this.templates.values())
@@ -205,8 +205,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Validate a template by ID
-   * @param templateId - The template ID to validate
-   * @returns Validation result with any errors found
+   * @param {string} templateId - The template ID to validate
+   * @returns {void} Validation result with any errors found
    */
   async validate(templateId: string): Promise<TemplateValidationResult> {
     const template = await this.get(templateId);
@@ -219,8 +219,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Update template metadata
-   * @param templateId - The template ID to update
-   * @param metadata - Partial metadata to merge with existing
+   * @param {string} templateId - The template ID to update
+   * @param {Partial<TemplateMetadata>} metadata - Partial metadata to merge with existing
    */
   async updateMetadata(templateId: string, metadata: Partial<TemplateMetadata>): Promise<void> {
     const existingTemplate = await this.get(templateId);
@@ -239,12 +239,12 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Record template usage statistics
-   * @param usageData - Usage data object containing all tracking information
-   * @param usageData.templateId - The template ID that was used
-   * @param usageData.projectType - The project type the template was used for
-   * @param usageData.qualityLevel - The quality level of the template usage
-   * @param usageData.renderTime - Time taken to render the template
-   * @param usageData.success - Whether the template rendering was successful
+   * @param {{ templateId: string; projectType: ProjectType; qualityLevel: ProjectQualityLevel; renderTime: number; success: boolean }} usageData - Usage data to record
+   * @param {string} usageData.templateId - The template ID that was used
+   * @param {ProjectType} usageData.projectType - The project type the template was used for
+   * @param {ProjectQualityLevel} usageData.qualityLevel - The quality level of the template usage
+   * @param {number} usageData.renderTime - Time taken to render the template
+   * @param {boolean} usageData.success - Whether the template rendering was successful
    */
   async recordUsage(usageData: {
     templateId: string;
@@ -269,10 +269,10 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Calculate updated usage statistics
-   * @param template - Template with current stats
-   * @param renderTime - New render time to include
-   * @param success - Whether the usage was successful
-   * @returns Updated usage statistics
+   * @param {unknown} template - Template with current stats
+   * @param {unknown} renderTime - New render time to include
+   * @param {unknown} success - Whether the usage was successful
+   * @returns {TemplateUsageStats} Updated usage statistics
    */
   private calculateUpdatedUsageStats(
     template: TemplateMetadata,
@@ -296,9 +296,9 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Update popular project types in usage stats
-   * @param stats - Usage statistics to update
-   * @param projectType - Project type to increment
-   * @returns Updated usage statistics
+   * @param {TemplateUsageStats} stats - Usage statistics to update
+   * @param {ProjectType} projectType - Project type to increment
+   * @returns { void} Updated usage statistics
    */
   private updatePopularProjectTypes(stats: TemplateUsageStats, projectType: ProjectType): void {
     const existingTypeIndex = stats.popularProjectTypes.findIndex(
@@ -314,8 +314,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Update popular quality levels in usage stats
-   * @param stats - Usage statistics to update
-   * @param qualityLevel - Quality level to increment
+   * @param {unknown} stats - Usage statistics to update
+   * @param {unknown} qualityLevel - Quality level to increment
    */
   private updatePopularQualityLevels(
     stats: TemplateUsageStats,
@@ -334,8 +334,8 @@ export class TemplateRegistry implements ITemplateRegistry {
 
   /**
    * Update cache if enabled
-   * @param templateId - Template ID to update in cache
-   * @param updatedTemplate - Updated template to cache
+   * @param {unknown} templateId - Template ID to update in cache
+   * @param {unknown} updatedTemplate - Updated template to cache
    */
   private async updateCacheIfNeeded(
     templateId: string,

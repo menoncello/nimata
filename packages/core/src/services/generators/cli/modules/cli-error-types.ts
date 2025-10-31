@@ -6,7 +6,7 @@
 
 /**
  * Generate error types
- * @returns Error type definitions
+ * @returns {string} Error type definitions
  */
 export function generateErrorTypes(): string {
   return [generateErrorCodeEnum(), generateErrorClass(), generateErrorHandlerType()].join('\n\n');
@@ -14,7 +14,7 @@ export function generateErrorTypes(): string {
 
 /**
  * Generate CLI error code enumeration
- * @returns Error code enum definition
+ * @returns {string} Error code enum definition
  */
 function generateErrorCodeEnum(): string {
   return `/**
@@ -34,7 +34,7 @@ export enum CLIErrorCode {
 
 /**
  * Generate CLI error class
- * @returns Error class definition
+ * @returns {string} Error class definition
  */
 function generateErrorClass(): string {
   return `/**
@@ -55,7 +55,7 @@ export class CLIError extends Error {
 
 /**
  * Generate error handler type
- * @returns Error handler type definition
+ * @returns {string} Error handler type definition
  */
 function generateErrorHandlerType(): string {
   return `/**

@@ -6,8 +6,8 @@ import { toPascalCase } from '../../../../../utils/string-utils.js';
 
 /**
  * Generate index documentation
- * @param config - Project configuration
- * @returns Documentation JSDoc comment
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Documentation JSDoc comment
  */
 export function generateIndexDocumentation(config: ProjectConfig): string {
   return `/**
@@ -25,8 +25,8 @@ export function generateIndexDocumentation(config: ProjectConfig): string {
 
 /**
  * Generate base interface definition
- * @param config - Project configuration
- * @returns Base interface code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Base interface code
  */
 export function getBaseInterface(config: ProjectConfig): string {
   return `/**
@@ -47,9 +47,9 @@ export interface ${toPascalCase(config.name)}Config {
 
 /**
  * Generate class header
- * @param config - Project configuration
- * @param className - Class name
- * @returns Class header
+ * @param {ProjectConfig} config - Project configuration
+ * @param {string} className - Class name
+ * @returns {string} Class header
  */
 export function getClassHeader(config: ProjectConfig, className: string): string {
   return `/**
@@ -61,8 +61,8 @@ export class ${className} {
 
 /**
  * Generate class constructor
- * @param config - Project configuration
- * @returns Class constructor
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Class constructor
  */
 export function getClassConstructor(config: ProjectConfig): string {
   return `  constructor(config: ${toPascalCase(config.name)}Config = {}) {
@@ -76,8 +76,8 @@ export function getClassConstructor(config: ProjectConfig): string {
 
 /**
  * Generate initialize method
- * @param config - Project configuration
- * @returns Initialize method
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Initialize method
  */
 export function getInitializeMethod(config: ProjectConfig): string {
   return `  /**
@@ -92,8 +92,8 @@ export function getInitializeMethod(config: ProjectConfig): string {
 
 /**
  * Generate getConfig method
- * @param className - Class name
- * @returns GetConfig method
+ * @param {string} className - Class name
+ * @returns {string} GetConfig method
  */
 export function getConfigMethod(className: string): string {
   return `  /**
@@ -105,9 +105,23 @@ export function getConfigMethod(className: string): string {
 }
 
 /**
+ * Generate setConfig method
+ * @param {string} className - Class name
+ * @returns {string} SetConfig method
+ */
+export function getSetConfigMethod(className: string): string {
+  return `  /**
+   * Set configuration (replaces entire config)
+   */
+  setConfig(newConfig: ${className.replace('Core', '')}Config): void {
+    this.config = { ...newConfig };
+  }`;
+}
+
+/**
  * Generate updateConfig method
- * @param className - Class name
- * @returns UpdateConfig method
+ * @param {string} className - Class name
+ * @returns {string} UpdateConfig method
  */
 export function getUpdateConfigMethod(className: string): string {
   return `  /**
@@ -120,7 +134,7 @@ export function getUpdateConfigMethod(className: string): string {
 
 /**
  * Generate class footer
- * @returns Class footer
+ * @returns {string} Class footer
  */
 export function getClassFooter(): string {
   return `}`;
@@ -128,8 +142,8 @@ export function getClassFooter(): string {
 
 /**
  * Convert string to PascalCase
- * @param str - Input string
- * @returns PascalCase string
+ * @param {string} str - Input string
+ * @returns {string} PascalCase string
  */
 export function convertToPascalCase(str: string): string {
   return toPascalCase(str);

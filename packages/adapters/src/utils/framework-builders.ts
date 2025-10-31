@@ -6,8 +6,8 @@
 
 /**
  * Get Claude-specific guidelines
- * @param projectType - Type of project being generated
- * @returns Formatted markdown string with Claude-specific guidelines
+ * @param {string} projectType - Type of project being generated
+ * @returns {string): string} Formatted markdown string with Claude-specific guidelines
  */
 export function getClaudeSpecificGuidelines(projectType: string): string {
   switch (projectType) {
@@ -39,9 +39,9 @@ export function getClaudeSpecificGuidelines(projectType: string): string {
 
 /**
  * Get Copilot framework guidelines
- * @param frameworks - List of frameworks used in the project
- * @param _projectType - Type of project being generated (unused)
- * @returns Formatted markdown string with Copilot framework guidelines
+ * @param {string[]} frameworks - List of frameworks used in the project
+ * @param {string} _projectType - Type of project being generated (unused)
+ * @returns { string} Formatted markdown string with Copilot framework guidelines
  */
 export function getCopilotFrameworkGuidelines(frameworks: string[], _projectType: string): string {
   return frameworks
@@ -64,8 +64,8 @@ export function getCopilotFrameworkGuidelines(frameworks: string[], _projectType
 
 /**
  * Get Copilot architecture guidelines
- * @param projectType - Type of project being generated
- * @returns Formatted markdown string with Copilot architecture guidelines
+ * @param {string} projectType - Type of project being generated
+ * @returns {string): string} Formatted markdown string with Copilot architecture guidelines
  */
 export function getCopilotArchitectureGuidelines(projectType: string): string {
   switch (projectType) {

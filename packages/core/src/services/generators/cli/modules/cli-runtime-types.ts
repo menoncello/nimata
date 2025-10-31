@@ -6,7 +6,7 @@
 
 /**
  * Generate runtime types
- * @returns Runtime type definitions
+ * @returns {string} Runtime type definitions
  */
 export function generateRuntimeTypes(): string {
   return [generatePluginTypes(), generateHookTypes(), generateManagerInterfaces()].join('\n\n');
@@ -14,7 +14,7 @@ export function generateRuntimeTypes(): string {
 
 /**
  * Generate plugin-related types
- * @returns Plugin type definitions
+ * @returns {string} Plugin type definitions
  */
 function generatePluginTypes(): string {
   return `/**
@@ -43,7 +43,7 @@ export interface PluginManager {
 
 /**
  * Generate hook-related types
- * @returns Hook type definitions
+ * @returns {string} Hook type definitions
  */
 function generateHookTypes(): string {
   return `/**
@@ -76,7 +76,7 @@ export interface HookManager {
 
 /**
  * Generate manager interfaces (kept for compatibility)
- * @returns Manager interface definitions
+ * @returns {string} Manager interface definitions
  */
 function generateManagerInterfaces(): string {
   return '';

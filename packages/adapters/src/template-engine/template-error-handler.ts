@@ -62,9 +62,9 @@ export class TemplateErrorHandler {
 
   /**
    * Validate template and return enhanced errors
-   * @param content - Template content to validate
-   * @param metadata - Optional template metadata
-   * @returns Enhanced validation result with detailed errors
+   * @param {string} content - Template content to validate
+   * @param {TemplateMetadata | undefined} metadata - Optional template metadata
+   * @returns {{ valid: boolean; errors: TemplateError[]; warnings: TemplateError[]; recovery: ErrorRecoveryStrategy; }} Enhanced validation result with detailed errors
    */
   static validateTemplate(
     content: string,
@@ -90,9 +90,9 @@ export class TemplateErrorHandler {
 
   /**
    * Run all validation rules and collect errors
-   * @param content - Template content to validate
-   * @param metadata - Optional template metadata
-   * @returns Collected errors and warnings
+   * @param {string} content - Template content to validate
+   * @param {TemplateMetadata | undefined} metadata - Optional template metadata
+   * @returns {{ errors: TemplateError[]; warnings: TemplateError[]; }} Collected errors and warnings
    */
   private static runValidationRules(
     content: string,
@@ -102,12 +102,12 @@ export class TemplateErrorHandler {
     const warnings: TemplateError[] = [];
 
     // Run all validation rules
-    for (const [ruleName, ruleFn] of this.ERROR_RULES.entries()) {
+    for (const [, ruleFn] of this.ERROR_RULES.entries()) {
       try {
         const ruleErrors = ruleFn(content, metadata);
         this.categorizeErrors(ruleErrors, allErrors, warnings);
-      } catch (error) {
-        console.warn(`Error in validation rule ${ruleName}:`, error);
+      } catch {
+        // Validation rule failed, continuing with other rules
       }
     }
 
@@ -116,9 +116,9 @@ export class TemplateErrorHandler {
 
   /**
    * Categorize errors into errors and warnings
-   * @param ruleErrors - Errors from a rule
-   * @param allErrors - Array to collect errors
-   * @param warnings - Array to collect warnings
+   * @param {unknown} ruleErrors - Errors from a rule
+   * @param {unknown} allErrors - Array to collect errors
+   * @param {unknown} warnings - Array to collect warnings
    */
   private static categorizeErrors(
     ruleErrors: TemplateError[],
@@ -136,9 +136,9 @@ export class TemplateErrorHandler {
 
   /**
    * Handle template loading errors
-   * @param filePath - Path to the template file
-   * @param error - Original error that occurred
-   * @returns Enhanced template error with context
+   * @param {string} filePath - Path to the template file
+   * @param {Error} error - Original error that occurred
+   * @returns { TemplateError} Enhanced template error with context
    */
   static handleLoadingError(filePath: string, error: Error): TemplateError {
     return handleLoadingError(filePath, error);
@@ -146,10 +146,10 @@ export class TemplateErrorHandler {
 
   /**
    * Handle template parsing errors
-   * @param content - Template content that failed to parse
-   * @param error - Original parsing error
-   * @param filePath - Optional file path where error occurred
-   * @returns Enhanced template error with parsing context
+   * @param {string} content - Template content that failed to parse
+   * @param {Error} error - Original parsing error
+   * @param {unknown} filePath - Optional file path where error occurred
+   * @returns { TemplateError} Enhanced template error with parsing context
    */
   static handleParsingError(content: string, error: Error, filePath?: string): TemplateError {
     return handleParsingError(content, error, filePath);
@@ -157,10 +157,10 @@ export class TemplateErrorHandler {
 
   /**
    * Handle template rendering errors
-   * @param templateId - ID of the template that failed to render
-   * @param error - Original rendering error
-   * @param _context - Optional rendering context data
-   * @returns Enhanced template error with rendering context
+   * @param {unknown} templateId - ID of the template that failed to render
+   * @param {unknown} error - Original rendering error
+   * @param {unknown} _context - Optional rendering context data
+   * @returns {TemplateError} Enhanced template error with rendering context
    */
   static handleRenderingError(
     templateId: string,
@@ -172,8 +172,8 @@ export class TemplateErrorHandler {
 
   /**
    * Convert enhanced errors to standard validation result
-   * @param enhancedErrors - Array of enhanced template errors
-   * @returns Standard validation result with errors and warnings
+   * @param {TemplateError[]} enhancedErrors - Array of enhanced template errors
+   * @returns {TemplateError[]): TemplateValidationResult} Standard validation result with errors and warnings
    */
   static toValidationResult(enhancedErrors: TemplateError[]): TemplateValidationResult {
     const errors: TemplateValidationError[] = [];
@@ -192,9 +192,9 @@ export class TemplateErrorHandler {
 
   /**
    * Convert enhanced errors to standard format
-   * @param enhancedErrors - Enhanced errors to convert
-   * @param errors - Array to collect converted errors
-   * @param warnings - Array to collect converted warnings
+   * @param {unknown} enhancedErrors - Enhanced errors to convert
+   * @param {unknown} errors - Array to collect converted errors
+   * @param {unknown} warnings - Array to collect converted warnings
    */
   private static convertEnhancedErrors(
     enhancedErrors: TemplateError[],
@@ -212,8 +212,8 @@ export class TemplateErrorHandler {
 
   /**
    * Create a validation error from enhanced error
-   * @param error - Enhanced error
-   * @returns Validation error
+   * @param {TemplateError} error - Enhanced error
+   * @returns {TemplateError): TemplateValidationError} Validation error
    */
   private static createValidationError(error: TemplateError): TemplateValidationError {
     return {
@@ -229,8 +229,8 @@ export class TemplateErrorHandler {
 
   /**
    * Create a validation warning from enhanced error
-   * @param error - Enhanced error
-   * @returns Validation warning
+   * @param {TemplateError} error - Enhanced error
+   * @returns {TemplateError): TemplateValidationWarning} Validation warning
    */
   private static createValidationWarning(error: TemplateError): TemplateValidationWarning {
     return {

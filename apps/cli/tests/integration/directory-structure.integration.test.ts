@@ -11,8 +11,6 @@
  * - Structure supports both basic and CLI project types
  * - Empty .gitkeep files included in otherwise empty directories
  */
-import { constants, mode } from 'node:fs';
-import { join } from 'node:path';
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { TestProject } from '../e2e/support/test-project';
 import { createProjectConfig } from '../support/factories/project-config.factory';
@@ -46,13 +44,13 @@ describe('Directory Structure Generator - AC1: Standard Directory Structure Crea
       // THEN: All standard directories should be included in structure
       const expectedDirectories = ['src', 'tests', 'bin', 'docs', '.nimata'];
 
-      expectedDirectories.forEach((dir) => {
+      for (const dir of expectedDirectories) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem?.type).toBe('directory');
-      });
+      }
     });
 
     it('should create CLI-specific directories for CLI project type', async () => {
@@ -79,13 +77,13 @@ describe('Directory Structure Generator - AC1: Standard Directory Structure Crea
         'src/cli', // CLI-specific directory
       ];
 
-      expectedDirectories.forEach((dir) => {
+      for (const dir of expectedDirectories) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem?.type).toBe('directory');
-      });
+      }
     });
   });
 
@@ -116,13 +114,13 @@ describe('Directory Structure Generator - AC1: Standard Directory Structure Crea
         'tests/e2e', // End-to-end tests
       ];
 
-      solidDirectories.forEach((dir) => {
+      for (const dir of solidDirectories) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem?.type).toBe('directory');
-      });
+      }
     });
   });
 
@@ -142,11 +140,9 @@ describe('Directory Structure Generator - AC1: Standard Directory Structure Crea
       const directoryStructure = generator.generate(projectConfig);
 
       // THEN: All directories should have 755 permissions
-      directoryStructure
-        .filter((item) => item.type === 'directory')
-        .forEach((dirItem) => {
-          expect(dirItem.mode).toBe(0o755); // rwxr-xr-x
-        });
+      for (const dirItem of directoryStructure.filter((item) => item.type === 'directory')) {
+        expect(dirItem.mode).toBe(0o755); // rwxr-xr-x
+      }
     });
   });
 
@@ -168,13 +164,13 @@ describe('Directory Structure Generator - AC1: Standard Directory Structure Crea
       // THEN: Empty directories should contain .gitkeep files
       const potentiallyEmptyDirs = ['docs/examples', 'tests/fixtures', '.nimata/cache'];
 
-      potentiallyEmptyDirs.forEach((dir) => {
+      for (const dir of potentiallyEmptyDirs) {
         const gitkeepFile = directoryStructure.find(
           (item) => item.path === `${dir}/.gitkeep` && item.type === 'file'
         );
         expect(gitkeepFile).toBeDefined();
         expect(gitkeepFile?.content).toBe(''); // Empty .gitkeep file
-      });
+      }
     });
   });
 });

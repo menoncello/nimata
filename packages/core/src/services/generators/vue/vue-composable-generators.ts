@@ -11,8 +11,8 @@ import { INTERFACES, THEMES } from './vue-constants.js';
 export class VueComposableGenerators {
   /**
    * Generate Vue composable
-   * @param _config - Project configuration (unused)
-   * @returns Vue composable TypeScript code
+   * @param {ProjectConfig} _config - Project configuration (unused)
+   * @returns {string} Vue composable TypeScript code
    */
   static generateVueComposable(_config: ProjectConfig): string {
     const imports = this.getComposableImports();
@@ -46,7 +46,7 @@ export function useAppState() {
 
   /**
    * Get composable imports
-   * @returns Import statements
+   * @returns {string} Import statements
    */
   private static getComposableImports(): string {
     return `import { ref, reactive, computed, watch, readonly } from 'vue'`;
@@ -54,7 +54,7 @@ export function useAppState() {
 
   /**
    * Get composable interfaces
-   * @returns TypeScript interfaces
+   * @returns {string} TypeScript interfaces
    */
   private static getComposableInterfaces(): string {
     return `interface ${INTERFACES.APP_STATE} {
@@ -82,7 +82,7 @@ interface UserPreferences {
 
   /**
    * Get composable state
-   * @returns State definition
+   * @returns {string} State definition
    */
   private static getComposableState(): string {
     return `// Application state
@@ -103,7 +103,7 @@ const preferences = reactive<UserPreferences>({
 
   /**
    * Get computed properties
-   * @returns Computed properties
+   * @returns {string} Computed properties
    */
   private static getComputedProperties(): string {
     return `// Computed properties
@@ -126,7 +126,7 @@ const textColor = computed(() =>
 
   /**
    * Get methods
-   * @returns Methods
+   * @returns {string} Methods
    */
   private static getMethods(): string {
     const stateMethods = this.getStateMethods();
@@ -146,7 +146,7 @@ ${initializationMethods}`;
 
   /**
    * Get state management methods
-   * @returns State methods
+   * @returns {string} State methods
    */
   private static getStateMethods(): string {
     return `const setState = (newState: Partial<${INTERFACES.APP_STATE}>) => {
@@ -176,7 +176,7 @@ const resetState = () => {
 
   /**
    * Get notification management methods
-   * @returns Notification methods
+   * @returns {boolean}ication methods
    */
   private static getNotificationMethods(): string {
     return `const addNotification = (message: string, type: 'info' | 'success' | 'warning' | 'error' = 'info') => {
@@ -210,7 +210,7 @@ const clearNotifications = () => {
 
   /**
    * Get user management methods
-   * @returns User methods
+   * @returns {string} User methods
    */
   private static getUserMethods(): string {
     return `const setUser = (user: ${INTERFACES.APP_STATE}['user']) => {
@@ -224,7 +224,7 @@ const clearUser = () => {
 
   /**
    * Get initialization methods
-   * @returns Initialization methods
+   * @returns {string} Initialization methods
    */
   private static getInitializationMethods(): string {
     return `// Initialize from localStorage
@@ -244,7 +244,7 @@ const initializeFromStorage = () => {
 
   /**
    * Get watchers
-   * @returns Watchers
+   * @returns {string} Watchers
    */
   private static getWatchers(): string {
     return `// Watchers

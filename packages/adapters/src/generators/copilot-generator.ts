@@ -34,8 +34,8 @@ const LINE_LENGTH_STRICT = 80;
 export class CopilotGenerator {
   /**
    * Generate Copilot instructions for a project
-   * @param config - Project configuration
-   * @returns Generated Copilot instructions files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): GeneratedCopilotConfig[]} Generated Copilot instructions files
    */
   generate(config: ProjectConfig): GeneratedCopilotConfig[] {
     const targetEnvironment = this.getTargetEnvironment(config.projectType);
@@ -69,8 +69,8 @@ export class CopilotGenerator {
 
   /**
    * Get target environment based on project type
-   * @param projectType - Project type
-   * @returns Target environment
+   * @param {ProjectType} projectType - Project type
+   * @returns {ProjectType): 'node' | 'browser' | 'both'} Target environment
    */
   private getTargetEnvironment(projectType: ProjectType): 'node' | 'browser' | 'both' {
     switch (projectType) {
@@ -87,8 +87,8 @@ export class CopilotGenerator {
 
   /**
    * Get formatted environment name for display
-   * @param targetEnvironment - Target environment
-   * @returns Formatted environment name
+   * @param {'node' | 'browser' | 'both'} targetEnvironment - Target environment
+   * @returns {'node' | 'browser' | 'both'): string} Formatted environment name
    */
   private getFormattedEnvironment(targetEnvironment: 'node' | 'browser' | 'both'): string {
     switch (targetEnvironment) {
@@ -105,7 +105,7 @@ export class CopilotGenerator {
 
   /**
    * Get default code style configuration
-   * @returns Default code style configuration
+   * @returns {void} Default code style configuration
    */
   private getDefaultCodeStyle(): Record<string, unknown> {
     return {
@@ -120,8 +120,8 @@ export class CopilotGenerator {
 
   /**
    * Get frameworks based on project type
-   * @param projectType - Project type
-   * @returns Array of framework names
+   * @param {ProjectType} projectType - Project type
+   * @returns {ProjectType): string[]} Array of framework names
    */
   private getFrameworks(projectType: ProjectType): string[] {
     switch (projectType) {
@@ -138,8 +138,8 @@ export class CopilotGenerator {
 
   /**
    * Build complete Copilot instructions
-   * @param options - Configuration options
-   * @returns Complete Copilot instructions string
+   * @param {CopilotConfigOptions} options - Configuration options
+   * @returns {CopilotConfigOptions): string} Complete Copilot instructions string
    */
   private buildCopilotInstructions(options: CopilotConfigOptions): string {
     const sections = [
@@ -161,8 +161,8 @@ export class CopilotGenerator {
 
   /**
    * Build header section
-   * @param options - Configuration options
-   * @returns Header section string
+   * @param {CopilotConfigOptions} options - Configuration options
+   * @returns {CopilotConfigOptions): string} Header section string
    */
   private buildHeader(options: CopilotConfigOptions): string {
     const today = new Date().toISOString().split('T')[0];
@@ -193,7 +193,7 @@ This file contains specific instructions for GitHub Copilot to help generate hig
 
   /**
    * Build language standards section
-   * @returns Language standards section string
+   * @returns {string} Language standards section string
    */
   private buildLanguageStandardsSection(): string {
     return `### Language Standards
@@ -210,8 +210,8 @@ This file contains specific instructions for GitHub Copilot to help generate hig
 
   /**
    * Build formatting rules section
-   * @param options - Configuration options
-   * @returns Formatting rules section string
+   * @param {CopilotConfigOptions} options - Configuration options
+   * @returns {CopilotConfigOptions): string} Formatting rules section string
    */
   private buildFormattingRulesSection(options: CopilotConfigOptions): string {
     const indentSize =
@@ -248,8 +248,8 @@ This file contains specific instructions for GitHub Copilot to help generate hig
 
   /**
    * Build testing requirements section
-   * @param options - Configuration options
-   * @returns Testing requirements section string
+   * @param {CopilotConfigOptions} options - Configuration options
+   * @returns {CopilotConfigOptions): string} Testing requirements section string
    */
   private buildTestingRequirementsSection(options: CopilotConfigOptions): string {
     const coverageThreshold = getCopilotCoverageThreshold(options.qualityLevel);
@@ -268,8 +268,8 @@ This file contains specific instructions for GitHub Copilot to help generate hig
 
   /**
    * Build what to avoid section
-   * @param options - Configuration options
-   * @returns What to avoid section string
+   * @param {CopilotConfigOptions} options - Configuration options
+   * @returns {CopilotConfigOptions): string} What to avoid section string
    */
   private buildWhatToAvoidSection(options: CopilotConfigOptions): string {
     const strictRules =
@@ -284,7 +284,7 @@ This file contains specific instructions for GitHub Copilot to help generate hig
 
   /**
    * Build code patterns section
-   * @returns Code patterns section string
+   * @returns {string} Code patterns section string
    */
   private buildCodePatternsSection(): string {
     return `## Code Patterns
@@ -312,8 +312,8 @@ This file contains specific instructions for GitHub Copilot to help generate hig
 
   /**
    * Build project-specific guidelines
-   * @param options - Configuration options
-   * @returns Project-specific guidelines string
+   * @param {CopilotConfigOptions} options - Configuration options
+   * @returns {CopilotConfigOptions): string} Project-specific guidelines string
    */
   private buildProjectSpecificGuidelines(options: CopilotConfigOptions): string {
     if (options.projectType === 'cli') {
@@ -337,8 +337,8 @@ This file contains specific instructions for GitHub Copilot to help generate hig
 
   /**
    * Build Copilot-specific instructions
-   * @param _options - Configuration options (unused but kept for consistency)
-   * @returns Copilot-specific instructions string
+   * @param {CopilotConfigOptions} _options - Configuration options (unused but kept for consistency)
+   * @returns {CopilotConfigOptions): string} Copilot-specific instructions string
    */
   private buildCopilotSpecificInstructions(_options: CopilotConfigOptions): string {
     return `${this.buildCodeGenerationInstructions()}
@@ -350,7 +350,7 @@ ${this.getFinalInstructions()}`;
 
   /**
    * Build code generation instructions
-   * @returns Code generation instructions string
+   * @returns {string} Code generation instructions string
    */
   private buildCodeGenerationInstructions(): string {
     return `### When Generating Code
@@ -365,7 +365,7 @@ ${this.getFinalInstructions()}`;
 
   /**
    * Build refactoring instructions
-   * @returns Refactoring instructions string
+   * @returns {string} Refactoring instructions string
    */
   private buildRefactoringInstructions(): string {
     return `### When Refactoring Code
@@ -379,7 +379,7 @@ ${this.getFinalInstructions()}`;
 
   /**
    * Build testing instructions
-   * @returns Testing instructions string
+   * @returns {string} Testing instructions string
    */
   private buildTestingInstructions(): string {
     return `### When Writing Tests
@@ -393,7 +393,7 @@ ${this.getFinalInstructions()}`;
 
   /**
    * Get code quality standards
-   * @returns Code quality standards string
+   * @returns {string} Code quality standards string
    */
   private getCodeQualityStandards(): string {
     return `### Code Quality Standards
@@ -413,7 +413,7 @@ ${this.getFinalInstructions()}`;
 
   /**
    * Get final instructions
-   * @returns Final instructions string
+   * @returns {string} Final instructions string
    */
   private getFinalInstructions(): string {
     return `### Final Instructions
@@ -427,8 +427,8 @@ ${this.getFinalInstructions()}`;
 
   /**
    * Build Copilot patterns content
-   * @param options - Configuration options
-   * @returns Copilot patterns content string
+   * @param {CopilotConfigOptions} options - Configuration options
+   * @returns {CopilotConfigOptions): string} Copilot patterns content string
    */
   private buildCopilotPatterns(options: CopilotConfigOptions): string {
     const today = new Date().toISOString().split('T')[0];
@@ -450,7 +450,7 @@ ${bestPractices}`;
 
 /**
  * Factory function to create Copilot generator instance
- * @returns New CopilotGenerator instance
+ * @returns {CopilotGenerator} New CopilotGenerator instance
  */
 export function createCopilotGenerator(): CopilotGenerator {
   return new CopilotGenerator();

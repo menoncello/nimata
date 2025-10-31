@@ -10,11 +10,6 @@ import { container } from 'tsyringe';
 import { CliApp } from '../../src/app.js';
 import { EXIT_CODES } from '../../src/index.js';
 
-// Test helpers to reduce nesting
-const createNoOpMock = (): void => {
-  /* Intentionally empty - stub for testing */
-};
-
 const createExitMock = (): ReturnType<typeof spyOn> => {
   return spyOn(process, 'exit').mockImplementation(() => {
     throw new Error('process.exit called');
@@ -22,7 +17,7 @@ const createExitMock = (): ReturnType<typeof spyOn> => {
 };
 
 const createErrorMock = (): ReturnType<typeof spyOn> => {
-  return spyOn(console, 'error').mockImplementation(createNoOpMock);
+  return spyOn(process.stderr, 'write').mockImplementation(() => true);
 };
 
 describe('Index Module', () => {
@@ -46,6 +41,19 @@ describe('Index Module', () => {
       const codes = Object.values(EXIT_CODES);
       const uniqueCodes = new Set(codes);
       expect(uniqueCodes.size).toBe(codes.length);
+    });
+  });
+
+  describe('Module imports', () => {
+    it('should import required modules', () => {
+      // Verify that the index module properly imports reflect-metadata
+      expect(() => import('../../src/index.js')).not.toThrow();
+    });
+
+    it('should have proper exports', async () => {
+      // Verify that the module exports EXIT_CODES
+      const indexModule = await import('../../src/index.js');
+      expect(indexModule.EXIT_CODES).toBeDefined();
     });
   });
 
@@ -77,15 +85,17 @@ describe('Index Module', () => {
       // Simulate the catch block from index.ts
       try {
         await mockApp.run().catch((error: unknown) => {
-          console.error('Fatal error:', error);
+          process.stderr.write(`Fatal error: ${error}\n`);
           process.exit(EXIT_CODES.CONFIG_ERROR);
         });
       } catch {
         // Expected - process.exit throws in mock
       }
 
-      // Verify console.error was called with fatal error message
-      expect(errorSpy).toHaveBeenCalledWith('Fatal error:', expect.any(Error));
+      // Verify stderr.write was called with fatal error message
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Fatal error: Error: Simulated fatal error')
+      );
 
       // Verify process.exit was called with CONFIG_ERROR
       expect(exitSpy).toHaveBeenCalledWith(EXIT_CODES.CONFIG_ERROR);
@@ -111,7 +121,7 @@ describe('Index Module', () => {
 
       try {
         await mockApp.run().catch((error: unknown) => {
-          console.error('Fatal error:', error);
+          process.stderr.write(`Fatal error: ${error}\n`);
           process.exit(EXIT_CODES.CONFIG_ERROR);
         });
       } catch {
@@ -121,7 +131,7 @@ describe('Index Module', () => {
       // Verify the exact format of the error log
       const calls = errorSpy.mock.calls;
       expect(calls.length).toBeGreaterThan(0);
-      expect(calls[0]?.[0]).toBe('Fatal error:');
+      expect(calls[0]?.[0]).toContain('Fatal error: Error: Test error');
 
       errorSpy.mockRestore();
       exitSpy.mockRestore();

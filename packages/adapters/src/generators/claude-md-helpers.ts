@@ -6,8 +6,8 @@
 
 /**
  * Get target environment based on project type
- * @param projectType - Project type identifier
- * @returns Target environment string
+ * @param {string} projectType - Project type identifier
+ * @returns {string): 'node' | 'browser' | 'both'} Target environment string
  */
 export function getTargetEnvironment(projectType: string): 'node' | 'browser' | 'both' {
   switch (projectType) {
@@ -24,8 +24,8 @@ export function getTargetEnvironment(projectType: string): 'node' | 'browser' | 
 
 /**
  * Get project type name for display
- * @param projectType - Project type identifier
- * @returns Display name for project type
+ * @param {string} projectType - Project type identifier
+ * @returns {string): string} Display name for project type
  */
 export function getProjectTypeName(projectType: string): string {
   const names = {
@@ -39,8 +39,8 @@ export function getProjectTypeName(projectType: string): string {
 
 /**
  * Get environment name for display
- * @param targetEnvironment - Target environment identifier
- * @returns Display name for environment
+ * @param {string} targetEnvironment - Target environment identifier
+ * @returns {string): string} Display name for environment
  */
 export function getEnvironmentName(targetEnvironment: string): string {
   const names = {

@@ -8,6 +8,11 @@
 /**
  * Process exit codes
  */
+
+/**
+ * Debug JSON spacing
+ */
+export const DEBUG_JSON_SPACING = 2;
 export const EXIT_CODES = {
   /** Successful execution */
   SUCCESS: 0,
@@ -156,6 +161,34 @@ export const DISPLAY = {
   /** Default step number for instructions */
   DEFAULT_STEP: 1,
 } as const;
+
+/**
+ * File System Permission Constants (octal notation)
+ */
+export const FILE_PERMISSIONS = {
+  /** Read/write for owner, read for group and others (644) */
+  OWNER_READ_WRITE_ALL_READ: 0o644,
+  /** Read/write/execute for owner, read/execute for group and others (755) */
+  OWNER_FULL_GROUP_READ_EXECUTE: 0o755,
+  /** Read/write/execute for owner, read/execute for group, none for others (750) */
+  OWNER_FULL_GROUP_EXECUTE: 0o750,
+  /** Read/write for owner, read for group, none for others (640) */
+  OWNER_READ_WRITE_GROUP_ONLY: 0o640,
+  /** Read/write for owner only (600) */
+  OWNER_READ_WRITE_ONLY: 0o600,
+  /** Read/write/execute for owner only (700) */
+  OWNER_FULL_ONLY: 0o700,
+} as const;
+
+/** Array of safe file permissions */
+export const SAFE_FILE_PERMISSIONS: number[] = [
+  FILE_PERMISSIONS.OWNER_READ_WRITE_ALL_READ,
+  FILE_PERMISSIONS.OWNER_FULL_GROUP_READ_EXECUTE,
+  FILE_PERMISSIONS.OWNER_FULL_GROUP_EXECUTE,
+  FILE_PERMISSIONS.OWNER_READ_WRITE_GROUP_ONLY,
+  FILE_PERMISSIONS.OWNER_READ_WRITE_ONLY,
+  FILE_PERMISSIONS.OWNER_FULL_ONLY,
+];
 
 /**
  * List and Array Constants

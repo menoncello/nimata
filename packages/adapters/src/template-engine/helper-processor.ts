@@ -11,9 +11,9 @@ const DOUBLE_BRACE_LENGTH = 2;
 
 /**
  * Find the next helper match in template
- * @param template - Template string to search
- * @param startPos - Starting position for search
- * @returns Helper match info or null
+ * @param {string} template - Template string to search
+ * @param {number} startPos - Starting position for search
+ * @returns {{ match: RegExpMatchArray; matchIndex: number; helperName: string; closingBraceIndex: number; hasNoArgs: boolean } | null} Helper match info or null
  */
 function findNextHelperMatch(
   template: string,
@@ -45,13 +45,13 @@ function findNextHelperMatch(
 
 /**
  * Extract helper arguments from template
- * @param template - Template string
- * @param params - Parameters object containing match info
- * @param params.matchIndex - Match start position
- * @param params.match - RegExp match
- * @param params.closingBraceIndex - Closing brace position
- * @param params.hasNoArgs - Whether helper has no arguments
- * @returns Arguments string
+ * @param {string} template - Template string
+ * @param {{ matchIndex: number; match: RegExpMatchArray; closingBraceIndex: number; hasNoArgs: boolean }} params - Parameters object
+ * @param {number} params.matchIndex - Match start position
+ * @param {RegExpMatchArray} params.match - RegExp match
+ * @param {number} params.closingBraceIndex - Closing brace position
+ * @param {boolean} params.hasNoArgs - Whether helper has no arguments
+ * @returns {string} Arguments string
  */
 function extractHelperArguments(
   template: string,
@@ -68,10 +68,10 @@ function extractHelperArguments(
 
 /**
  * Execute helper function and return result
- * @param helper - Helper function
- * @param argsString - Arguments string
- * @param context - Template context
- * @returns Helper result or original template snippet on error
+ * @param {(...args: unknown[]) => unknown} helper - Helper function
+ * @param {string} argsString - Arguments string
+ * @param {TemplateContext} context - Template context
+ * @returns {string} Helper result or original template snippet on error
  */
 function executeHelper(
   helper: (...args: unknown[]) => unknown,
@@ -89,16 +89,16 @@ function executeHelper(
 
 /**
  * Process a single helper match
- * @param template - Template string
- * @param matchInfo - Helper match information
- * @param matchInfo.match - RegExp match
- * @param matchInfo.matchIndex - Match start position
- * @param matchInfo.helperName - Helper name
- * @param matchInfo.closingBraceIndex - Closing brace position
- * @param matchInfo.hasNoArgs - Whether helper has no arguments
- * @param context - Template context
- * @param helpers - Available helpers
- * @returns Processed result string
+ * @param {string} template - Template string
+ * @param {{ match: RegExpMatchArray; matchIndex: number; helperName: string; closingBraceIndex: number; hasNoArgs: boolean }} matchInfo - Helper match information
+ * @param {RegExpMatchArray} matchInfo.match - RegExp match
+ * @param {number} matchInfo.matchIndex - Match start position
+ * @param {string} matchInfo.helperName - Helper name
+ * @param {number} matchInfo.closingBraceIndex - Closing brace position
+ * @param {boolean} matchInfo.hasNoArgs - Whether helper has no arguments
+ * @param {TemplateContext} context - Template context
+ * @param {Map<string} helpers - Available helpers
+ * @returns {string} Processed result string
  */
 function processSingleHelper(
   template: string,
@@ -132,10 +132,10 @@ function processSingleHelper(
 
 /**
  * Processes helper functions in the template
- * @param template - Template string to process
- * @param context - Context object containing variable values
- * @param helpers - Map of registered helper functions
- * @returns Template string with processed helpers
+ * @param {string} template - Template string to process
+ * @param {TemplateContext} context - Context object containing variable values
+ * @param {Map<string} helpers - Map of registered helper functions
+ * @returns {Promise<string>} Template string with processed helpers
  */
 export async function processHelpers(
   template: string,

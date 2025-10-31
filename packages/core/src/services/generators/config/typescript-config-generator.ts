@@ -1,109 +1,126 @@
 /**
  * TypeScript Configuration Generator
- *
- * Generates TypeScript configuration files for projects
  */
+
 import type { ProjectConfig } from '../../../types/project-config.js';
+import { JSON_INDENTATION, TS_TARGETS, TS_MODULES, TS_JSX } from './constants.js';
 
 /**
- * TypeScript Configuration Generator class
+ * TypeScript configuration generator
  */
 export class TypeScriptConfigGenerator {
   /**
-   * Generate TypeScript configuration
-   * @param _config - Project configuration
-   * @returns tsconfig.json content
+   * Build basic TypeScript configuration options
+   * @returns {Record<string, unknown>} Basic compiler options
    */
-  generate(_config: ProjectConfig): string {
-    return `{
-  "compilerOptions": ${this.generateCompilerOptions()},
-  "include": ${this.generateInclude()},
-  "exclude": ${this.generateExclude()},
-  "ts-node": ${this.generateTsNode()}
-}`;
+  private static buildBasicOptions(): Record<string, unknown> {
+    return {
+      target: TS_TARGETS.ES2022,
+      module: TS_MODULES.ESNEXT,
+      moduleResolution: 'node',
+      allowSyntheticDefaultImports: true,
+      esModuleInterop: true,
+      allowJs: true,
+      checkJs: false,
+      jsx: TS_JSX.REACT,
+    };
   }
 
   /**
-   * Generate TypeScript compiler options
-   * @returns Compiler options JSON string
+   * Build output configuration options
+   * @returns {Record<string, unknown>} Output compiler options
    */
-  private generateCompilerOptions(): string {
-    return `{
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "allowJs": true,
-    "strict": true,
-    "noEmit": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "dist",
-    "rootDir": "src",
-    "removeComments": false,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "baseUrl": ".",
-    "paths": ${this.generatePaths()}
-  }`;
+  private static buildOutputOptions(): Record<string, unknown> {
+    return {
+      declaration: true,
+      declarationMap: true,
+      sourceMap: true,
+      outDir: 'dist',
+      rootDir: 'src',
+      removeComments: false,
+      noEmit: true,
+    };
   }
 
   /**
-   * Generate TypeScript path mappings
-   * @returns Path mappings JSON string
+   * Build strict type checking options
+   * @returns {Record<string, unknown>} Strict type checking options
    */
-  private generatePaths(): string {
-    return `{
-      "@/*": ["src/*"],
-      "@/types/*": ["src/types/*"],
-      "@/utils/*": ["src/utils/*"],
-      "@/config/*": ["src/config/*"],
-      "@/services/*": ["src/services/*"]
-    }`;
+  private static buildStrictOptions(): Record<string, unknown> {
+    return {
+      strict: true,
+      noImplicitAny: true,
+      strictNullChecks: true,
+      strictFunctionTypes: true,
+      noImplicitReturns: true,
+      noFallthroughCasesInSwitch: true,
+      noUncheckedIndexedAccess: true,
+      noImplicitOverride: true,
+      exactOptionalPropertyTypes: true,
+    };
   }
 
   /**
-   * Generate TypeScript include patterns
-   * @returns Include patterns JSON string
+   * Build module resolution options
+   * @returns {Record<string, unknown>} Module resolution options
    */
-  private generateInclude(): string {
-    return `[
-    "src/**/*",
-    "tests/**/*"
-  ]`;
+  private static buildModuleOptions(): Record<string, unknown> {
+    return {
+      skipLibCheck: true,
+      forceConsistentCasingInFileNames: true,
+      isolatedModules: true,
+      verbatimModuleSyntax: true,
+      resolveJsonModule: true,
+      baseUrl: '.',
+      paths: {
+        '@/*': ['src/*'],
+        '@/types/*': ['src/types/*'],
+        '@/utils/*': ['src/utils/*'],
+        '@/config/*': ['src/config/*'],
+        '@/services/*': ['src/services/*'],
+      },
+    };
   }
 
   /**
-   * Generate TypeScript exclude patterns
-   * @returns Exclude patterns JSON string
+   * Build TypeScript compiler options
+   * @returns {Record<string, unknown>} Compiler options object
    */
-  private generateExclude(): string {
-    return `[
-    "node_modules",
-    "dist",
-    "build",
-    "coverage"
-  ]`;
+  private static buildCompilerOptions(): Record<string, unknown> {
+    return {
+      ...this.buildBasicOptions(),
+      ...this.buildOutputOptions(),
+      ...this.buildStrictOptions(),
+      ...this.buildModuleOptions(),
+    };
   }
 
   /**
-   * Generate TypeScript ts-node configuration
-   * @returns ts-node configuration JSON string
+   * Generates TypeScript configuration file content
+   * @param {ProjectConfig} _config - The project configuration (unused for TypeScript config generation)
+   * @returns {string} TypeScript config JSON string
    */
-  private generateTsNode(): string {
-    return `{
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }`;
+  static generateTypeScriptConfig(_config: ProjectConfig): string {
+    const compilerOptions = this.buildCompilerOptions();
+    const baseConfig = {
+      compilerOptions,
+      include: ['src/**/*', 'tests/**/*'],
+      exclude: ['node_modules', 'dist', 'build', 'coverage'],
+      'ts-node': {
+        esm: true,
+        experimentalSpecifierResolution: 'node',
+      },
+    };
+
+    return JSON.stringify(baseConfig, null, JSON_INDENTATION);
+  }
+
+  /**
+   * Generate TypeScript configuration (instance method for backward compatibility)
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} TypeScript config JSON
+   */
+  generate(config: ProjectConfig): string {
+    return TypeScriptConfigGenerator.generateTypeScriptConfig(config);
   }
 }

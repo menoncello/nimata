@@ -45,8 +45,8 @@ export class TemplateGenerator {
 
   /**
    * Generate project structure based on project type
-   * @param config - Project configuration
-   * @returns Directory structure for specified project type
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Directory structure for specified project type
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     switch (config.projectType) {

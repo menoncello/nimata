@@ -9,8 +9,8 @@ import type { ProjectConfig, ValidationResult } from './project-generation-helpe
 
 /**
  * Validate project name configuration
- * @param config - Project configuration
- * @param errors - Array to collect validation errors
+ * @param {ProjectConfig} config - Project configuration
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateProjectNameConfig(config: ProjectConfig, errors: string[]): void {
   if (!config.name) {
@@ -26,8 +26,8 @@ export function validateProjectNameConfig(config: ProjectConfig, errors: string[
 
 /**
  * Validate quality level configuration
- * @param config - Project configuration
- * @param errors - Array to collect validation errors
+ * @param {ProjectConfig} config - Project configuration
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateQualityLevelConfig(config: ProjectConfig, errors: string[]): void {
   if (!config.qualityLevel) {
@@ -42,8 +42,8 @@ export function validateQualityLevelConfig(config: ProjectConfig, errors: string
 
 /**
  * Validate project type configuration
- * @param config - Project configuration
- * @param errors - Array to collect validation errors
+ * @param {ProjectConfig} config - Project configuration
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateProjectTypeConfig(config: ProjectConfig, errors: string[]): void {
   if (!config.projectType) {
@@ -58,8 +58,8 @@ export function validateProjectTypeConfig(config: ProjectConfig, errors: string[
 
 /**
  * Validate AI assistants configuration
- * @param config - Project configuration
- * @param errors - Array to collect validation errors
+ * @param {ProjectConfig} config - Project configuration
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateAIAssistantsConfig(config: ProjectConfig, errors: string[]): void {
   if (!config.aiAssistants || config.aiAssistants.length === 0) {
@@ -80,8 +80,8 @@ export function validateAIAssistantsConfig(config: ProjectConfig, errors: string
 
 /**
  * Validate optional fields configuration
- * @param config - Project configuration
- * @param errors - Array to collect validation errors
+ * @param {ProjectConfig} config - Project configuration
+ * @param {string[]} errors - Array to collect validation errors
  */
 export function validateOptionalConfig(config: ProjectConfig, errors: string[]): void {
   if (
@@ -110,8 +110,8 @@ export function validateOptionalConfig(config: ProjectConfig, errors: string[]):
 
 /**
  * Validate project name format
- * @param name - Project name to validate
- * @returns Validation result with any errors
+ * @param {string} name - Project name to validate
+ * @returns {string): ValidationResult} Validation result with any errors
  */
 export function validateProjectName(name: string): ValidationResult {
   const errors: string[] = [];
@@ -151,8 +151,8 @@ export function validateProjectName(name: string): ValidationResult {
 
 /**
  * Check if license is valid SPDX identifier
- * @param license - License string to validate
- * @returns True if license is valid
+ * @param {string} license - License string to validate
+ * @returns {string): boolean} True if license is valid
  */
 export function isValidLicense(license: string): boolean {
   const validLicenses = [

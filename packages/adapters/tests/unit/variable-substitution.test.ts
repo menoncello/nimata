@@ -3,8 +3,8 @@
  *
  * Tests variable substitution, type checking, and complex type handling
  */
-import type { TemplateVariable, ExtendedTemplateContext, ProjectConfig } from '@nimata/core';
 import { describe, test, expect, beforeEach } from 'bun:test';
+import type { TemplateVariable, ExtendedTemplateContext, ProjectConfig } from '@nimata/core';
 import { ConfigurableVariableSubstitutionEngine } from '../../src/template-engine/configurable-variable-substitution.js';
 import { TemplateContextFactoryImpl } from '../../src/template-engine/template-context-factory.js';
 import {

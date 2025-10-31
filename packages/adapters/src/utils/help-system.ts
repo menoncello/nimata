@@ -57,7 +57,7 @@ export class HelpSystem {
 
   /**
    * Show help for a specific command
-   * @param commandName - Name of the command to show help for
+   * @param {string} commandName - Name of the command to show help for
    */
   showCommandHelp(commandName: string): void {
     const command = this.commands.get(commandName);
@@ -74,7 +74,7 @@ export class HelpSystem {
 
   /**
    * Show help for a specific topic
-   * @param topicName - Name of the topic to show help for
+   * @param {string} topicName - Name of the topic to show help for
    */
   showTopicHelp(topicName: string): void {
     const topic = this.topics.get(topicName);
@@ -111,7 +111,7 @@ export class HelpSystem {
 
   /**
    * Get all available topics
-   * @returns Array of topic names
+   * @returns {string[]} Array of topic names
    */
   getAvailableTopics(): string[] {
     return Array.from(this.topics.keys());
@@ -119,7 +119,7 @@ export class HelpSystem {
 
   /**
    * Get all available commands
-   * @returns Array of command names
+   * @returns {string[]} Array of command names
    */
   getAvailableCommands(): string[] {
     return Array.from(this.commands.keys());
@@ -127,8 +127,8 @@ export class HelpSystem {
 
   /**
    * Check if a topic exists
-   * @param topicName - Name of the topic to check
-   * @returns True if topic exists
+   * @param {string} topicName - Name of the topic to check
+   * @returns {string): boolean} True if topic exists
    */
   hasTopic(topicName: string): boolean {
     return this.topics.has(topicName);
@@ -136,8 +136,8 @@ export class HelpSystem {
 
   /**
    * Check if a command exists
-   * @param commandName - Name of the command to check
-   * @returns True if command exists
+   * @param {string} commandName - Name of the command to check
+   * @returns {string): boolean} True if command exists
    */
   hasCommand(commandName: string): boolean {
     return this.commands.has(commandName);
@@ -159,7 +159,7 @@ export class HelpSystem {
 
   /**
    * Alias for getAvailableTopics for backward compatibility
-   * @returns Array of available topic names
+   * @returns {string[]} Array of available topic names
    */
   getTopics(): string[] {
     return this.getAvailableTopics();
@@ -167,7 +167,7 @@ export class HelpSystem {
 
   /**
    * Alias for getAvailableCommands for backward compatibility
-   * @returns Array of available command names
+   * @returns {string[]} Array of available command names
    */
   getCommands(): string[] {
     return this.getAvailableCommands();

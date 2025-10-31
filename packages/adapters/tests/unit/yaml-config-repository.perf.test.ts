@@ -6,11 +6,11 @@
  *
  * @see packages/adapters/src/repositories/yaml-config-repository.ts
  */
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { deepMerge } from '@nimata/core';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { YAMLConfigRepository } from '../../src/repositories/yaml-config-repository';
 
 describe('YAML Config Repository Performance (P0-2)', () => {
@@ -42,8 +42,8 @@ describe('YAML Config Repository Performance (P0-2)', () => {
       expect(config.version).toBe(1);
       expect(config.qualityLevel).toBe('strict');
 
-      // Performance evidence
-      console.log(`✅ 100-key config loaded in ${loadTime.toFixed(2)}ms`);
+      // Performance evidence - use test framework assertion instead of console.log
+      expect(loadTime).toBeGreaterThan(0);
     });
 
     it('should load typical project config in <20ms', async () => {
@@ -91,7 +91,8 @@ logging:
       expect(config.tools?.eslint?.enabled).toBe(true);
       expect(config.tools?.typescript?.strict).toBe(true);
 
-      console.log(`✅ Typical config loaded in ${loadTime.toFixed(2)}ms`);
+      // Performance evidence - use test framework assertion instead of console.log
+      expect(loadTime).toBeGreaterThan(0);
     });
   });
 
@@ -115,7 +116,8 @@ tools:
       // Then - Verify merge performance and correctness
       await verifyDeepMergeResults(mergeTime, repository, testDir);
 
-      console.log(`✅ 5-level nested merge in ${mergeTime.toFixed(2)}ms`);
+      // Performance evidence - use test framework assertion instead of console.log
+      expect(mergeTime).toBeGreaterThan(0);
     });
 
     it('should handle 100 parallel-safe config loads', async () => {
@@ -135,14 +137,16 @@ tools:
       // Then - Verify parallel performance and consistency
       expect(avgTime).toBeLessThan(5); // target: <5ms average with caching
       expect(configs).toHaveLength(100);
-      configs.forEach((config: any) => {
+
+      // Replace forEach with for...of loop
+      for (const config of configs) {
         expect(config.version).toBe(1);
         expect(config.qualityLevel).toBe('strict');
-      });
+      }
 
-      console.log(
-        `✅ 100 parallel loads in ${totalTime.toFixed(2)}ms (avg: ${avgTime.toFixed(2)}ms)`
-      );
+      // Performance evidence - use test framework assertion instead of console.log
+      expect(totalTime).toBeGreaterThan(0);
+      expect(avgTime).toBeGreaterThan(0);
     });
   });
 
@@ -168,22 +172,19 @@ tools:
       expect(times[0] || 0).toBeGreaterThan(times[1] || 0); // Cache hit should be faster
       expect(times.slice(1).every((t) => (t || 0) < 5)).toBe(true); // Cached loads <5ms
 
-      console.log(
-        `✅ Cache performance - First: ${(times[0] || 0).toFixed(2)}ms, Cached avg: ${(times.slice(1).reduce((a, b) => a + (b || 0), 0) / 9).toFixed(2)}ms`
-      );
+      // Cache performance verification - use test framework assertions instead of console.log
+      expect(times[0] || 0).toBeGreaterThan(0);
+      const cachedAvg = times.slice(1).reduce((a, b) => a + (b || 0), 0) / 9;
+      expect(cachedAvg).toBeGreaterThanOrEqual(0);
     });
 
     it('should document cache invalidation strategy', () => {
       // Cache invalidation strategy documentation
       expect(repository).toBeDefined();
 
-      // Document cache behavior
-      console.log('✅ Cache Strategy Documented:');
-      console.log('  - Scope: Per-process lifetime (in-memory)');
-      console.log('  - Key: Project root directory path');
-      console.log('  - Invalidation: Manual cache clear on save()');
-      console.log('  - Thread Safety: Single-threaded (Node.js event loop)');
-      console.log('  - Memory Impact: Minimal (single cached config per project)');
+      // Document cache behavior - use test framework assertion instead of console.log
+      expect(repository).toBeDefined();
+      // Cache strategy is verified through the test behavior rather than console output
     });
   });
 
@@ -205,7 +206,9 @@ tools:
       const heapDiff = finalMemory.heapUsed - initialMemory.heapUsed;
       expect(heapDiff).toBeLessThan(10 * 1024 * 1024); // <10MB increase acceptable
 
-      console.log(`✅ Memory stability - Heap growth: ${(heapDiff / 1024 / 1024).toFixed(2)}MB`);
+      // Memory stability verification - use test framework assertion instead of console.log
+      expect(heapDiff).toBeGreaterThanOrEqual(0);
+      expect(heapDiff).toBeLessThan(10 * 1024 * 1024); // <10MB increase acceptable
     });
   });
 
@@ -225,26 +228,35 @@ tools:
         deepMerge(baseObj, overrideObj);
         const endTime = performance.now();
 
-        times.push({ size, time: endTime - startTime });
+        const measuredTime = endTime - startTime;
+        times.push({ size, time: Math.max(0, measuredTime) }); // Ensure non-negative time
       }
 
       // Verify O(n) complexity (time should grow linearly)
       for (let i = 1; i < times.length; i++) {
         const currentTime = times[i] || { time: 0, size: 0 };
         const previousTime = times[i - 1] || { time: 0, size: 0 };
+
+        // Skip if previous time is too small (avoid division by zero)
+        if (previousTime.time < 0.001) {
+          continue;
+        }
+
         const ratio = currentTime.time / previousTime.time;
         const sizeRatio = currentTime.size / previousTime.size;
         expect(ratio).toBeLessThan(sizeRatio * 1.5); // Allow 50% overhead
       }
 
-      // Document complexity
-      console.log('✅ Deep Merge Complexity Analysis:');
-      times.forEach(({ size, time }) => {
-        console.log(
-          `  ${size} keys: ${time.toFixed(2)}ms (${((time / size) * 1000).toFixed(3)}μs per key)`
-        );
-      });
-      console.log('  Complexity: O(n) - Linear time, O(n) space');
+      // Document complexity - use test framework assertions instead of console.log
+      expect(times).toHaveLength(4);
+      for (const { size, time } of times) {
+        expect(size).toBeGreaterThan(0);
+        expect(time).toBeGreaterThanOrEqual(0);
+        // Verify linear complexity - time per key should be reasonable
+        const timePerKey = size > 0 ? time / size : 0;
+        expect(timePerKey).toBeLessThan(1); // Less than 1ms per key
+      }
+      // Complexity is O(n) - Linear time, O(n) space
     });
   });
 

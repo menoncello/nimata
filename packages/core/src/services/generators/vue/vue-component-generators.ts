@@ -18,8 +18,8 @@ import {
 export class VueComponentGenerators {
   /**
    * Generate main App component for Vue
-   * @param config - Project configuration
-   * @returns App component Vue template
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} App component Vue template
    */
   static generateVueAppComponent(config: ProjectConfig): string {
     const template = this.getAppTemplate(config);
@@ -35,8 +35,8 @@ ${style}`;
 
   /**
    * Generate main Vue component
-   * @param config - Project configuration
-   * @returns Main component Vue template
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Main component Vue template
    */
   static generateVueMainComponent(config: ProjectConfig): string {
     const componentName = toPascalCase(config.name);
@@ -53,8 +53,8 @@ ${style}`;
 
   /**
    * Get App template section
-   * @param config - Project configuration
-   * @returns Template HTML
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Template HTML
    */
   private static getAppTemplate(config: ProjectConfig): string {
     const componentName = toPascalCase(config.name);
@@ -81,8 +81,8 @@ ${style}`;
 
   /**
    * Get App script section
-   * @param config - Project configuration
-   * @returns Script TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Script TypeScript code
    */
   private static getAppScript(config: ProjectConfig): string {
     const componentName = toPascalCase(config.name);
@@ -109,7 +109,7 @@ const handleStateChange = (newState: ${INTERFACES.COMPONENT_STATE}) => {
 
   /**
    * Get App style section
-   * @returns Style CSS
+   * @returns {string} Style CSS
    */
   private static getAppStyle(): string {
     return `<style>
@@ -119,8 +119,8 @@ const handleStateChange = (newState: ${INTERFACES.COMPONENT_STATE}) => {
 
   /**
    * Get main component template
-   * @param componentName - Component name
-   * @returns Template HTML
+   * @param {string} componentName - Component name
+   * @returns {string} Template HTML
    */
   private static getMainComponentTemplate(componentName: string): string {
     return `<template>
@@ -153,9 +153,9 @@ const handleStateChange = (newState: ${INTERFACES.COMPONENT_STATE}) => {
 
   /**
    * Get main component script
-   * @param config - Project configuration
-   * @param componentName - Component name
-   * @returns Script TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @param {string} componentName - Component name
+   * @returns {string} Script TypeScript code
    */
   private static getMainComponentScript(config: ProjectConfig, componentName: string): string {
     const imports = this.getMainComponentImports();
@@ -188,7 +188,7 @@ ${lifecycle}
 
   /**
    * Get main component imports
-   * @returns Import statements
+   * @returns {string} Import statements
    */
   private static getMainComponentImports(): string {
     return `import { ${VUE_IMPORTS.join(', ')} } from 'vue'`;
@@ -196,7 +196,7 @@ ${lifecycle}
 
   /**
    * Get main component interfaces
-   * @returns TypeScript interfaces
+   * @returns {string} TypeScript interfaces
    */
   private static getMainComponentInterfaces(): string {
     return `interface ${INTERFACES.COMPONENT_STATE} {
@@ -219,7 +219,7 @@ interface Emits {
 
   /**
    * Get props definition
-   * @returns Props definition
+   * @returns {string} Props definition
    */
   private static getPropsDefinition(): string {
     return `const props = withDefaults(defineProps<Props>(), {
@@ -231,8 +231,8 @@ const emit = defineEmits<Emits>()`;
 
   /**
    * Get state definition
-   * @param componentName - Component name
-   * @returns State definition
+   * @param {string} componentName - Component name
+   * @returns {string} State definition
    */
   private static getStateDefinition(componentName: string): string {
     return `const componentName = ref('${componentName}')
@@ -245,7 +245,7 @@ const state = ref<${INTERFACES.COMPONENT_STATE}>({
 
   /**
    * Get computed properties
-   * @returns Computed properties
+   * @returns {string} Computed properties
    */
   private static getComputedProperties(): string {
     return `// Computed properties
@@ -260,9 +260,9 @@ const debugInfo = computed(() => {
 
   /**
    * Get methods
-   * @param config - Project configuration
-   * @param _componentName - Component name (unused)
-   * @returns Methods
+   * @param {ProjectConfig} config - Project configuration
+   * @param {string} _componentName - Component name (unused)
+   * @returns {string} Methods
    */
   private static getMethods(config: ProjectConfig, _componentName: string): string {
     return `// Methods
@@ -302,8 +302,8 @@ const initializeComponent = async () => {
 
   /**
    * Get watchers
-   * @param _componentName - Component name (unused)
-   * @returns Watchers
+   * @param {string} _componentName - Component name (unused)
+   * @returns {string} Watchers
    */
   private static getWatchers(_componentName: string): string {
     return `// Watchers
@@ -316,7 +316,7 @@ watch(() => props.debug, (newDebug) => {
 
   /**
    * Get lifecycle hooks
-   * @returns Lifecycle hooks
+   * @returns {boolean}ecycle hooks
    */
   private static getLifecycle(): string {
     return `// Lifecycle
@@ -327,8 +327,8 @@ onMounted(() => {
 
   /**
    * Get main component style
-   * @param componentName - Component name
-   * @returns Style CSS
+   * @param {string} componentName - Component name
+   * @returns {string} Style CSS
    */
   private static getMainComponentStyle(componentName: string): string {
     return `<style scoped>

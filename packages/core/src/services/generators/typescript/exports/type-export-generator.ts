@@ -12,8 +12,8 @@ import { toPascalCase } from '../../../../utils/string-utils.js';
 export class TypeExportGenerator {
   /**
    * Generates common type definitions and exports
-   * @param config - The project configuration
-   * @returns Type definitions string
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Type definitions string
    */
   generateTypeExports(config: ProjectConfig): string {
     const header = this.generateTypeHeader(config);
@@ -36,8 +36,8 @@ ${utilityTypes}
 
   /**
    * Generate type file header
-   * @param config - Project configuration
-   * @returns Header content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Header content
    */
   private generateTypeHeader(config: ProjectConfig): string {
     return `// Type definitions for ${config.name}`;
@@ -45,8 +45,8 @@ ${utilityTypes}
 
   /**
    * Generate configuration interface
-   * @param config - Project configuration
-   * @returns Configuration interface content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Configuration interface content
    */
   private generateConfigInterface(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -68,7 +68,7 @@ export interface ${className}Config {
 
   /**
    * Generate common types
-   * @returns Common types content
+   * @returns {string} Common types content
    */
   private generateCommonTypes(): string {
     return `/**
@@ -86,7 +86,7 @@ export type EventHandler<T = unknown> = (data: T) => void | Promise<void>;`;
 
   /**
    * Generate function types
-   * @returns Function types content
+   * @returns {string} Function types content
    */
   private generateFunctionTypes(): string {
     return `/**
@@ -112,7 +112,7 @@ export type Reducer<T, U> = (accumulator: U, current: T, index: number) => U;`;
 
   /**
    * Generate utility types
-   * @returns Utility types content
+   * @returns {string} Utility types content
    */
   private generateUtilityTypes(): string {
     return `/**

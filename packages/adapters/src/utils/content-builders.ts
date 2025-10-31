@@ -8,9 +8,9 @@ import { CodeStyleConfig } from '../types/config-types.js';
 
 /**
  * Get core technologies section for the context
- * @param frameworks - List of frameworks used in the project
- * @param _projectType - Type of project being generated (unused)
- * @returns Formatted markdown string with core technologies information
+ * @param {string[]} frameworks - List of frameworks used in the project
+ * @param {string} _projectType - Type of project being generated (unused)
+ * @returns { string} Formatted markdown string with core technologies information
  */
 export function getCoreTechnologies(frameworks: string[], _projectType: string): string {
   return frameworks
@@ -33,8 +33,8 @@ export function getCoreTechnologies(frameworks: string[], _projectType: string):
 
 /**
  * Get architecture section for the context
- * @param projectType - Type of project being generated
- * @returns Formatted markdown string with architecture information
+ * @param {string} projectType - Type of project being generated
+ * @returns {string): string} Formatted markdown string with architecture information
  */
 export function getArchitectureSection(projectType: string): string {
   switch (projectType) {
@@ -66,10 +66,10 @@ export function getArchitectureSection(projectType: string): string {
 
 /**
  * Get style guidelines
- * @param codeStyle - Code style configuration object
- * @param jsonIndentSize - JSON indent size from constants
- * @param defaultPrintWidth - Default print width
- * @returns Formatted markdown string with style guidelines
+ * @param {unknown} codeStyle - Code style configuration object
+ * @param {unknown} jsonIndentSize - JSON indent size from constants
+ * @param {unknown} defaultPrintWidth - Default print width
+ * @returns {string} Formatted markdown string with style guidelines
  */
 export function getStyleGuidelines(
   codeStyle: CodeStyleConfig,
@@ -90,8 +90,8 @@ export function getStyleGuidelines(
 
 /**
  * Get quality standards
- * @param qualityLevel - Quality level of the project ('light', 'medium', 'strict')
- * @returns Formatted markdown string with quality standards
+ * @param {string} qualityLevel - Quality level of the project ('light', 'medium', 'strict')
+ * @returns {string): string} Formatted markdown string with quality standards
  */
 export function getQualityStandards(qualityLevel: string): string {
   switch (qualityLevel) {
@@ -120,9 +120,9 @@ export function getQualityStandards(qualityLevel: string): string {
 
 /**
  * Get testing requirements
- * @param qualityLevel - Quality level of the project ('light', 'medium', 'strict')
- * @param getCoverageThreshold - Function to get coverage threshold
- * @returns Formatted markdown string with testing requirements
+ * @param {string} qualityLevel - Quality level of the project ('light', 'medium', 'strict')
+ * @param {(qualityLevel} getCoverageThreshold - Function to get coverage threshold
+ * @returns {void} Formatted markdown string with testing requirements
  */
 export function getTestingRequirements(
   qualityLevel: string,
@@ -139,10 +139,10 @@ export function getTestingRequirements(
 
 /**
  * Get AI assistant integration
- * @param aiAssistants - List of AI assistants configured for the project
- * @param claudeCodeAssistant - Claude code assistant constant
- * @param copilotAssistant - Copilot assistant constant
- * @returns Formatted markdown string with AI assistant integration information
+ * @param {unknown} aiAssistants - List of AI assistants configured for the project
+ * @param {unknown} claudeCodeAssistant - Claude code assistant constant
+ * @param {unknown} copilotAssistant - Copilot assistant constant
+ * @returns {string} Formatted markdown string with AI assistant integration information
  */
 export function getAIAssistantIntegration(
   aiAssistants: string[],
@@ -165,8 +165,8 @@ export function getAIAssistantIntegration(
 
 /**
  * Get common AI guidelines
- * @param qualityLevel - Quality level of the project ('light', 'medium', 'strict')
- * @returns Formatted markdown string with common AI guidelines
+ * @param {string} qualityLevel - Quality level of the project ('light', 'medium', 'strict')
+ * @returns {string): string} Formatted markdown string with common AI guidelines
  */
 export function getCommonAIGuidelines(qualityLevel: string): string {
   const baseGuidelines = `- Understand the existing codebase before making changes
@@ -189,8 +189,8 @@ export function getCommonAIGuidelines(qualityLevel: string): string {
 
 /**
  * Get avoidance rules
- * @param qualityLevel - Quality level of the project ('light', 'medium', 'strict')
- * @returns Formatted markdown string with rules to avoid
+ * @param {string} qualityLevel - Quality level of the project ('light', 'medium', 'strict')
+ * @returns {string): string} Formatted markdown string with rules to avoid
  */
 export function getAvoidanceRules(qualityLevel: string): string {
   const baseRules = `- Never disable ESLint rules or ignore errors

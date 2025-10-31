@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 export class RouterHooksGenerator {
   /**
    * Generates router hooks collection
-   * @param _config - The project configuration
-   * @returns Router hooks content
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Router hooks content
    */
   generateRouterHooks(_config: ProjectConfig): string {
     const imports = this.generateRouterImports();
@@ -28,7 +28,7 @@ ${routerHook}`;
 
   /**
    * Generate imports for router hooks
-   * @returns Imports content
+   * @returns {string} Imports content
    */
   private generateRouterImports(): string {
     return `import { useState, useEffect, useCallback } from 'react';`;
@@ -36,7 +36,7 @@ ${routerHook}`;
 
   /**
    * Generate router interfaces
-   * @returns Interfaces content
+   * @returns {string} Interfaces content
    */
   private generateRouterInterfaces(): string {
     return `interface Route {
@@ -55,7 +55,7 @@ interface RouterState {
 
   /**
    * Generate router hook
-   * @returns Router hook content
+   * @returns {string} Router hook content
    */
   private generateRouterHook(): string {
     const hookDeclaration = this.generateRouterHookDeclaration();
@@ -89,7 +89,7 @@ ${effects}
 
   /**
    * Generate router hook declaration
-   * @returns Hook declaration code
+   * @returns {string} Hook declaration code
    */
   private generateRouterHookDeclaration(): string {
     return `  const [state, setState] = useState<RouterState>(() => ({
@@ -102,21 +102,57 @@ ${effects}
 
   /**
    * Generate navigation logic
-   * @returns Navigation logic code
+   * @returns {string} Navigation logic code
    */
   private generateNavigationLogic(): string {
-    return `  const navigate = useCallback((path: string, replace = false) => {
-    setState(prev => ({ ...prev, isNavigating: true }));
+    return [this.getNavigateFunction(), this.getGoBackFunction(), this.getGoForwardFunction()].join(
+      '\n\n'
+    );
+  }
 
-    if (typeof window !== 'undefined') {
+  /**
+   * Get navigate function
+   * @returns {string} Navigate function code
+   */
+  private getNavigateFunction(): string {
+    return [
+      this.getNavigateFunctionStart(),
+      this.getNavigateHistoryHandling(),
+      this.getUrlParsing(),
+      this.getRouteMatching(),
+      this.getNavigateFunctionEnd(),
+    ].join('\n');
+  }
+
+  /**
+   * Get navigate function start
+   * @returns {string} Navigate function start
+   */
+  private getNavigateFunctionStart(): string {
+    return `  const navigate = useCallback((path: string, replace = false) => {
+    setState(prev => ({ ...prev, isNavigating: true }));`;
+  }
+
+  /**
+   * Get navigate history handling
+   * @returns {string} Navigate history handling code
+   */
+  private getNavigateHistoryHandling(): string {
+    return `    if (typeof window !== 'undefined') {
       if (replace) {
         window.history.replaceState(null, '', path);
       } else {
         window.history.pushState(null, '', path);
       }
-    }
+    }`;
+  }
 
-    // Parse URL
+  /**
+   * Get URL parsing logic
+   * @returns {string} URL parsing code
+   */
+  private getUrlParsing(): string {
+    return `    // Parse URL
     const url = new URL(path, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
     const params: Record<string, string> = {};
     const query: Record<string, string> = {};
@@ -124,9 +160,15 @@ ${effects}
     // Extract query parameters
     url.searchParams.forEach((value, key) => {
       query[key] = value;
-    });
+    });`;
+  }
 
-    // Find matching route and extract params
+  /**
+   * Get route matching logic
+   * @returns {string} Route matching code
+   */
+  private getRouteMatching(): string {
+    return `    // Find matching route and extract params
     const matchedRoute = routes.find(route => {
       const routePattern = route.path
         .replace(/:[^/]+/g, '([^/]+)')
@@ -143,24 +185,42 @@ ${effects}
         return true;
       }
       return false;
-    });
+    });`;
+  }
 
-    setState(prev => ({
+  /**
+   * Get navigate function end
+   * @returns {string} Navigate function end
+   */
+  private getNavigateFunctionEnd(): string {
+    return `    setState(prev => ({
       ...prev,
       currentPath: path,
       params,
       query,
       isNavigating: false,
     }));
-  }, [routes]);
+  }, [routes]);`;
+  }
 
-  const goBack = useCallback(() => {
+  /**
+   * Get go back function
+   * @returns {string} Go back function code
+   */
+  private getGoBackFunction(): string {
+    return `  const goBack = useCallback(() => {
     if (typeof window !== 'undefined') {
       window.history.back();
     }
-  }, []);
+  }, []);`;
+  }
 
-  const goForward = useCallback(() => {
+  /**
+   * Get go forward function
+   * @returns {string} Go forward function code
+   */
+  private getGoForwardFunction(): string {
+    return `  const goForward = useCallback(() => {
     if (typeof window !== 'undefined') {
       window.history.forward();
     }
@@ -169,7 +229,7 @@ ${effects}
 
   /**
    * Generate router event handlers
-   * @returns Event handlers code
+   * @returns {string} Event handlers code
    */
   private generateRouterEventHandlers(): string {
     return `  const handlePopState = useCallback(() => {
@@ -181,7 +241,7 @@ ${effects}
 
   /**
    * Generate router effects
-   * @returns Effects code
+   * @returns {string} Effects code
    */
   private generateRouterEffects(): string {
     return `  useEffect(() => {

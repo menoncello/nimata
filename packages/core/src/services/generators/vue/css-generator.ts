@@ -12,8 +12,8 @@ import { CSSVariablesGenerator } from './css-variables-generator.js';
 export class CSSGenerator {
   /**
    * Generate main CSS
-   * @param _config - Project configuration (unused)
-   * @returns CSS content
+   * @param {ProjectConfig} _config - Project configuration (unused)
+   * @returns {string} CSS content
    */
   static generateMainCSS(_config: ProjectConfig): string {
     const cssVariables = CSSVariablesGenerator.getCSSVariables();

@@ -6,8 +6,8 @@
 
 /**
  * Get frameworks based on project type
- * @param projectType - Type of project being generated
- * @returns List of frameworks configured for the project type
+ * @param {string} projectType - Type of project being generated
+ * @returns {string): string[]} List of frameworks configured for the project type
  */
 export function getFrameworks(projectType: string): string[] {
   const baseFrameworks = ['typescript', 'vitest'];
@@ -26,8 +26,8 @@ export function getFrameworks(projectType: string): string[] {
 
 /**
  * Get target environment based on project type
- * @param projectType - Type of project being generated
- * @returns Target environment ('node', 'browser', or 'both')
+ * @param {string} projectType - Type of project being generated
+ * @returns {string): string} Target environment ('node', 'browser', or 'both')
  */
 export function getTargetEnvironment(projectType: string): string {
   switch (projectType) {
@@ -44,8 +44,8 @@ export function getTargetEnvironment(projectType: string): string {
 
 /**
  * Get project type name for display
- * @param projectType - Type of project being generated
- * @returns Human-readable project type name
+ * @param {string} projectType - Type of project being generated
+ * @returns {string): string} Human-readable project type name
  */
 export function getProjectTypeName(projectType: string): string {
   const names = {
@@ -59,8 +59,8 @@ export function getProjectTypeName(projectType: string): string {
 
 /**
  * Get environment name for display
- * @param targetEnvironment - Target environment ('node', 'browser', 'both')
- * @returns Human-readable environment name
+ * @param {string} targetEnvironment - Target environment ('node', 'browser', 'both')
+ * @returns {string): string} Human-readable environment name
  */
 export function getEnvironmentName(targetEnvironment: string): string {
   const names = {

@@ -13,8 +13,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class CLIUtilGenerators {
   /**
    * Generate logger utility
-   * @param _config - Project configuration
-   * @returns Logger utility content
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Logger utility content
    */
   generateLoggerUtil(_config: ProjectConfig): string {
     return [
@@ -27,7 +27,7 @@ export class CLIUtilGenerators {
 
   /**
    * Generate logger header comment
-   * @returns Header comment
+   * @returns {string} Header comment
    */
   private generateLoggerHeader(): string {
     return `/**
@@ -39,7 +39,7 @@ export class CLIUtilGenerators {
 
   /**
    * Generate logger type definitions
-   * @returns Type definitions
+   * @returns {string} Type definitions
    */
   private generateLoggerTypes(): string {
     return `export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
@@ -53,7 +53,7 @@ export interface LoggerOptions {
 
   /**
    * Generate logger class implementation
-   * @returns Logger class code
+   * @returns {string} Logger class code
    */
   private generateLoggerClass(): string {
     return [
@@ -70,7 +70,7 @@ export interface LoggerOptions {
 
   /**
    * Generate logger class declaration
-   * @returns Class declaration
+   * @returns {string} Class declaration
    */
   private generateLoggerClassDeclaration(): string {
     return `/**
@@ -84,7 +84,7 @@ export class Logger {
 
   /**
    * Generate logger constructor
-   * @returns Constructor implementation
+   * @returns {string} Constructor implementation
    */
   private generateLoggerConstructor(): string {
     return `  constructor(options: LoggerOptions = {}) {
@@ -96,12 +96,12 @@ export class Logger {
 
   /**
    * Generate logger setter methods
-   * @returns Setter methods
+   * @returns {string} Setter methods
    */
   private generateLoggerSetters(): string {
     return `  /**
    * Set log level
-   * @param level - New log level
+   * @param {string} level - New log level
    */
   setLevel(level: LogLevel): void {
     this.level = level;
@@ -109,7 +109,7 @@ export class Logger {
 
   /**
    * Enable/disable colors
-   * @param enabled - Whether to enable colors
+   * @param {string} enabled - Whether to enable colors
    */
   setColorEnabled(enabled: boolean): void {
     this.colorEnabled = enabled;
@@ -118,7 +118,7 @@ export class Logger {
 
   /**
    * Generate logger helper methods
-   * @returns Helper methods
+   * @returns {string} Helper methods
    */
   private generateLoggerHelperMethods(): string {
     return [this.generateShouldLogMethod(), this.generateFormatMessageMethod()].join('\n');
@@ -126,13 +126,13 @@ export class Logger {
 
   /**
    * Generate shouldLog method
-   * @returns shouldLog method implementation
+   * @returns {string} shouldLog method implementation
    */
   private generateShouldLogMethod(): string {
     return `  /**
    * Check if a log level should be output
-   * @param level - Log level to check
-   * @returns True if should log
+   * @param {string} level - Log level to check
+   * @returns {boolean} if should log
    */
   private shouldLog(level: LogLevel): boolean {
     const levels: LogLevel[] = ['debug', 'info', 'warn', 'error'];
@@ -145,14 +145,14 @@ export class Logger {
 
   /**
    * Generate formatMessage method
-   * @returns formatMessage method implementation
+   * @returns {string} formatMessage method implementation
    */
   private generateFormatMessageMethod(): string {
     return `  /**
    * Format log message with colors and timestamp
-   * @param level - Log level
-   * @param message - Message to format
-   * @returns Formatted message
+   * @param {string} level - Log level
+   * @param {string} message - Message to format
+   * @returns {string} Formatted message
    */
   private formatMessage(level: LogLevel, message: string): string {
     const timestamp = new Date().toISOString();
@@ -183,7 +183,7 @@ export class Logger {
 
   /**
    * Generate logger log methods
-   * @returns Log methods (debug, info, warn, error)
+   * @returns {string} Log methods (debug, info, warn, error)
    */
   private generateLoggerLogMethods(): string {
     return [
@@ -196,13 +196,13 @@ export class Logger {
 
   /**
    * Generate debug method
-   * @returns Debug method implementation
+   * @returns {string} Debug method implementation
    */
   private generateDebugMethod(): string {
     return `  /**
    * Log debug message
-   * @param message - Message to log
-   * @param args - Additional arguments
+   * @param {string} message - Message to log
+   * @param {string} args - Additional arguments
    */
   debug(message: string, ...args: any[]): void {
     if (this.shouldLog('debug')) {
@@ -213,13 +213,13 @@ export class Logger {
 
   /**
    * Generate info method
-   * @returns Info method implementation
+   * @returns {string} Info method implementation
    */
   private generateInfoMethod(): string {
     return `  /**
    * Log info message
-   * @param message - Message to log
-   * @param args - Additional arguments
+   * @param {string} message - Message to log
+   * @param {string} args - Additional arguments
    */
   info(message: string, ...args: any[]): void {
     if (this.shouldLog('info')) {
@@ -230,13 +230,13 @@ export class Logger {
 
   /**
    * Generate warn method
-   * @returns Warn method implementation
+   * @returns {string} Warn method implementation
    */
   private generateWarnMethod(): string {
     return `  /**
    * Log warning message
-   * @param message - Message to log
-   * @param args - Additional arguments
+   * @param {string} message - Message to log
+   * @param {string} args - Additional arguments
    */
   warn(message: string, ...args: any[]): void {
     if (this.shouldLog('warn')) {
@@ -247,13 +247,13 @@ export class Logger {
 
   /**
    * Generate error method
-   * @returns Error method implementation
+   * @returns {string} Error method implementation
    */
   private generateErrorMethod(): string {
     return `  /**
    * Log error message
-   * @param message - Message to log
-   * @param args - Additional arguments
+   * @param {string} message - Message to log
+   * @param {string} args - Additional arguments
    */
   error(message: string, ...args: any[]): void {
     if (this.shouldLog('error')) {
@@ -264,13 +264,13 @@ export class Logger {
 
   /**
    * Generate logger success method
-   * @returns Success method implementation
+   * @returns {string} Success method implementation
    */
   private generateLoggerSuccessMethod(): string {
     return `  /**
    * Log success message (alias for info with green color)
-   * @param message - Message to log
-   * @param args - Additional arguments
+   * @param {string} message - Message to log
+   * @param {string} args - Additional arguments
    */
   success(message: string, ...args: any[]): void {
     if (this.colorEnabled) {
@@ -287,13 +287,13 @@ export class Logger {
 
   /**
    * Generate logger child method
-   * @returns Child method implementation
+   * @returns {string} Child method implementation
    */
   private generateLoggerChildMethod(): string {
     return `  /**
    * Create child logger with prefix
-   * @param prefix - Prefix for child logger
-   * @returns New logger instance with prefix
+   * @param {string} prefix - Prefix for child logger
+   * @returns {string} New logger instance with prefix
    */
   child(prefix: string): Logger {
     const fullPrefix = this.prefix ? \`\${this.prefix}:\${prefix}\` : prefix;
@@ -307,7 +307,7 @@ export class Logger {
 
   /**
    * Generate logger class closing
-   * @returns Class closing brace
+   * @returns {string} Class closing brace
    */
   private generateLoggerClassClosing(): string {
     return `}`;
@@ -315,7 +315,7 @@ export class Logger {
 
   /**
    * Generate logger exports
-   * @returns Export statements
+   * @returns {string} Export statements
    */
   private generateLoggerExports(): string {
     return `/**
@@ -325,8 +325,8 @@ export const logger = new Logger();
 
 /**
  * Create logger with custom options
- * @param options - Logger options
- * @returns New logger instance
+   * @param {string} options - Logger options
+   * @returns {string} New logger instance
  */
 export const createLogger = (options?: LoggerOptions): Logger => {
   return new Logger(options);

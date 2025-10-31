@@ -13,6 +13,13 @@ import { TestFileGenerator } from './test-file-generator.js';
 export class TestStructureGenerator {
   private readonly testFileGenerator: TestFileGenerator;
 
+  // Coverage threshold constants
+  private readonly COVERAGE_THRESHOLDS = {
+    STRICT: 90,
+    STANDARD: 80,
+    LIGHT: 70,
+  } as const;
+
   /**
    * Initialize test structure generator
    */
@@ -22,38 +29,87 @@ export class TestStructureGenerator {
 
   /**
    * Generate test directory structure and files
-   * @param config - Project configuration
-   * @returns Array of directory items representing test structure
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of directory items representing test structure
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const items: DirectoryItem[] = [];
 
-    // Create base test directories
-    items.push(
-      { type: 'directory', path: 'tests' },
-      { type: 'directory', path: 'tests/unit' },
-      { type: 'directory', path: 'tests/integration' },
-      { type: 'directory', path: 'tests/e2e' },
-      { type: 'directory', path: 'tests/fixtures' },
-      { type: 'directory', path: 'tests/fixtures/data' },
-      { type: 'directory', path: 'tests/fixtures/mock-responses' },
-      { type: 'directory', path: 'tests/helpers' }
-    );
+    items.push(...this.generateBaseTestDirectories());
+    items.push(...this.generateQualitySpecificDirectories(config.qualityLevel));
+    items.push(...this.generateProjectSpecificDirectories(config.projectType));
+    items.push(...this.generateTestFiles(config));
+    items.push(...this.generateFixtureGitkeepFiles());
+    items.push(this.generateVitestConfigFile(config));
 
-    // Add project-specific test directories for web projects
-    if (config.projectType === 'web') {
-      items.push(
-        { type: 'directory', path: 'tests/unit/components' },
-        { type: 'directory', path: 'tests/unit/utils' },
-        { type: 'directory', path: 'tests/unit/services' },
-        { type: 'directory', path: 'tests/unit/types' },
-        { type: 'directory', path: 'tests/integration/components' },
-        { type: 'directory', path: 'tests/integration/api' }
-      );
+    return items;
+  }
+
+  /**
+   * Generate base test directories
+   * @returns {DirectoryItem[]} Base test directory items
+   */
+  private generateBaseTestDirectories(): DirectoryItem[] {
+    return [
+      { type: 'directory', path: 'tests', mode: 0o755 },
+      { type: 'directory', path: 'tests/unit', mode: 0o755 },
+      { type: 'directory', path: 'tests/integration', mode: 0o755 },
+      { type: 'directory', path: 'tests/e2e', mode: 0o755 },
+      { type: 'directory', path: 'tests/fixtures', mode: 0o755 },
+      { type: 'directory', path: 'tests/fixtures/data', mode: 0o755 },
+      { type: 'directory', path: 'tests/fixtures/mock-responses', mode: 0o755 },
+      { type: 'directory', path: 'tests/helpers', mode: 0o755 },
+    ];
+  }
+
+  /**
+   * Generate quality-specific test directories
+   * @param {string} qualityLevel - Quality level of the project
+   * @returns {DirectoryItem[]} Quality-specific directory items
+   */
+  private generateQualitySpecificDirectories(qualityLevel: string): DirectoryItem[] {
+    const directories: DirectoryItem[] = [];
+
+    // Add performance testing for high quality projects
+    if (qualityLevel === 'high' || qualityLevel === 'strict') {
+      directories.push({ type: 'directory', path: 'tests/performance', mode: 0o755 });
+      directories.push({ type: 'directory', path: 'tests/mutation', mode: 0o755 });
     }
 
-    // Create test files
-    items.push(
+    // Add additional test structure for standard and above
+    if (qualityLevel === 'standard' || qualityLevel === 'high' || qualityLevel === 'strict') {
+      directories.push({ type: 'directory', path: 'tests/factories', mode: 0o755 });
+    }
+
+    return directories;
+  }
+
+  /**
+   * Generate project-specific test directories
+   * @param {string} projectType - Type of project
+   * @returns {DirectoryItem[]} Project-specific directory items
+   */
+  private generateProjectSpecificDirectories(projectType: string): DirectoryItem[] {
+    if (projectType === 'web') {
+      return [
+        { type: 'directory', path: 'tests/unit/components', mode: 0o755 },
+        { type: 'directory', path: 'tests/unit/utils', mode: 0o755 },
+        { type: 'directory', path: 'tests/unit/services', mode: 0o755 },
+        { type: 'directory', path: 'tests/unit/types', mode: 0o755 },
+        { type: 'directory', path: 'tests/integration/components', mode: 0o755 },
+        { type: 'directory', path: 'tests/integration/api', mode: 0o755 },
+      ];
+    }
+    return [];
+  }
+
+  /**
+   * Generate test files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Test file items
+   */
+  private generateTestFiles(config: ProjectConfig): DirectoryItem[] {
+    return [
       {
         type: 'file',
         path: 'tests/setup.ts',
@@ -73,30 +129,42 @@ export class TestStructureGenerator {
         type: 'file',
         path: 'tests/e2e/basic-workflow.e2e.test.ts',
         content: this.generateBasicE2ETest(config),
-      }
-    );
+      },
+    ];
+  }
 
-    // Add .gitkeep files to fixture directories
-    items.push(
+  /**
+   * Generate .gitkeep files for fixture directories
+   * @returns {DirectoryItem[]} Gitkeep file items
+   */
+  private generateFixtureGitkeepFiles(): DirectoryItem[] {
+    return [
       { type: 'file', path: 'tests/fixtures/.gitkeep', content: '' },
       { type: 'file', path: 'tests/fixtures/data/.gitkeep', content: '' },
-      { type: 'file', path: 'tests/fixtures/mock-responses/.gitkeep', content: '' }
-    );
+      { type: 'file', path: 'tests/fixtures/mock-responses/.gitkeep', content: '' },
+      { type: 'file', path: 'tests/performance/.gitkeep', content: '' },
+      { type: 'file', path: 'tests/mutation/.gitkeep', content: '' },
+      { type: 'file', path: 'tests/factories/.gitkeep', content: '' },
+    ];
+  }
 
-    // Add vitest configuration
-    items.push({
+  /**
+   * Generate vitest configuration file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Vitest config file item
+   */
+  private generateVitestConfigFile(config: ProjectConfig): DirectoryItem {
+    return {
       type: 'file',
       path: 'vitest.config.ts',
       content: this.generateVitestConfig(config),
-    });
-
-    return items;
+    };
   }
 
   /**
    * Generate a basic unit test file
-   * @param config - Project configuration
-   * @returns Basic unit test content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Basic unit test content
    */
   private generateBasicUnitTest(config: ProjectConfig): string {
     return `/**
@@ -135,10 +203,19 @@ describe('${config.name}', () => {
 
   /**
    * Generate a basic integration test file
-   * @param config - Project configuration
-   * @returns Basic integration test content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Basic integration test content
    */
   private generateBasicIntegrationTest(config: ProjectConfig): string {
+    return [this.getIntegrationTestHeader(config), this.getIntegrationTestSuite()].join('\n');
+  }
+
+  /**
+   * Generate integration test header
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Integration test header
+   */
+  private getIntegrationTestHeader(config: ProjectConfig): string {
     return `/**
  * Integration Tests for ${config.name}
  *
@@ -146,9 +223,27 @@ describe('${config.name}', () => {
  */
 import { describe, it, expect, beforeAll, afterAll } from 'bun:test';
 
-describe('${config.name} Integration', () => {
-  describe('API integration', () => {
-    it('should handle API requests correctly', async () => {
+describe('${config.name} Integration', () => {`;
+  }
+
+  /**
+   * Generate integration test suite
+   * @returns {string} Integration test suite
+   */
+  private getIntegrationTestSuite(): string {
+    return `  describe('API integration', () => {
+    ${this.getApiSuccessTest()}
+    ${this.getApiErrorTest()}
+  });
+});`;
+  }
+
+  /**
+   * Generate API success test
+   * @returns {string} API success test
+   */
+  private getApiSuccessTest(): string {
+    return `it('should handle API requests correctly', async () => {
       // Given: API endpoint configuration
       const apiUrl = 'https://api.example.com/test';
 
@@ -159,9 +254,15 @@ describe('${config.name} Integration', () => {
       // Then: Should receive expected response
       expect(mockResponse.status).toBe(200);
       expect(mockResponse.data.success).toBe(true);
-    });
+    });`;
+  }
 
-    it('should handle API errors gracefully', async () => {
+  /**
+   * Generate API error test
+   * @returns {string} API error test
+   */
+  private getApiErrorTest(): string {
+    return `it('should handle API errors gracefully', async () => {
       // Given: Error scenario
       const errorScenario = {
         status: 404,
@@ -175,17 +276,24 @@ describe('${config.name} Integration', () => {
 
       // Then: Should handle error appropriately
       expect(errorHandler(errorScenario)).toBe('Error 404: Not found');
-    });
-  });
-});`;
+    });`;
   }
 
   /**
    * Generate a basic E2E test file
-   * @param config - Project configuration
-   * @returns Basic E2E test content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Basic E2E test content
    */
   private generateBasicE2ETest(config: ProjectConfig): string {
+    return `${this.generateE2ETestHeader(config)}${this.generateE2ETestWorkflows()}`;
+  }
+
+  /**
+   * Generate E2E test header
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} E2E test header
+   */
+  private generateE2ETestHeader(config: ProjectConfig): string {
     return `/**
  * E2E Tests for ${config.name}
  *
@@ -193,9 +301,27 @@ describe('${config.name} Integration', () => {
  */
 import { describe, it, expect, beforeAll, afterAll } from 'bun:test';
 
-describe('${config.name} E2E', () => {
-  describe('user workflows', () => {
-    it('should complete basic user workflow', async () => {
+describe('${config.name} E2E', () => {`;
+  }
+
+  /**
+   * Generate E2E test workflows
+   * @returns {string} E2E test workflows
+   */
+  private generateE2ETestWorkflows(): string {
+    return `  describe('user workflows', () => {
+    ${this.generateBasicWorkflowTest()}
+    ${this.generateAuthenticationTest()}
+  });
+});`;
+  }
+
+  /**
+   * Generate basic workflow test
+   * @returns {string} Basic workflow test
+   */
+  private generateBasicWorkflowTest(): string {
+    return `it('should complete basic user workflow', async () => {
       // Given: User starting point
       const user = {
         name: 'Test User',
@@ -215,9 +341,15 @@ describe('${config.name} E2E', () => {
       expect(workflow.step1).toBeDefined();
       expect(workflow.step2).toBeDefined();
       expect(workflow.step3).toBeDefined();
-    });
+    });`;
+  }
 
-    it('should handle user authentication flow', async () => {
+  /**
+   * Generate authentication test
+   * @returns {string} Authentication test
+   */
+  private generateAuthenticationTest(): string {
+    return `it('should handle user authentication flow', async () => {
       // Given: Authentication credentials
       const credentials = {
         username: 'testuser',
@@ -235,23 +367,38 @@ describe('${config.name} E2E', () => {
       expect(authResult.success).toBe(true);
       expect(authResult.token).toBeDefined();
       expect(authResult.user.name).toBe('Test User');
-    });
-  });
-});`;
+    });`;
   }
 
   /**
    * Generate Vitest configuration based on quality level
-   * @param config - Project configuration
-   * @returns Vitest configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Vitest configuration content
    */
   private generateVitestConfig(config: ProjectConfig): string {
     const coverageThreshold = this.getCoverageThreshold(config.qualityLevel);
 
+    return `${this.getVitestConfigImports()}${this.getVitestConfigTestSection(coverageThreshold)}${this.getVitestConfigResolveSection()}`;
+  }
+
+  /**
+   * Get Vitest config imports
+   * @returns {string} Import statements
+   */
+  private getVitestConfigImports(): string {
     return `import { defineConfig } from 'vitest/config';
 import { resolve } from 'path';
 
-export default defineConfig({
+`;
+  }
+
+  /**
+   * Get Vitest config test section
+   * @param {number} coverageThreshold - Coverage threshold value
+   * @returns {string} Test configuration section
+   */
+  private getVitestConfigTestSection(coverageThreshold: number): string {
+    return `export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
@@ -268,15 +415,31 @@ export default defineConfig({
         }
       },
       include: ['src/**/*'],
-      exclude: [
+      exclude: ${this.getVitestConfigExcludePatterns()}
+    }
+  },
+`;
+  }
+
+  /**
+   * Get Vitest config exclude patterns
+   * @returns {string} Exclude patterns array
+   */
+  private getVitestConfigExcludePatterns(): string {
+    return `[
         '**/node_modules/**',
         '**/tests/**',
         '**/*.d.ts',
         '**/*.config.*'
-      ]
-    }
-  },
-  resolve: {
+      ]`;
+  }
+
+  /**
+   * Get Vitest config resolve section
+   * @returns {string} Resolve configuration section
+   */
+  private getVitestConfigResolveSection(): string {
+    return `  resolve: {
     alias: {
       '@': resolve(__dirname, './src')
     }
@@ -286,19 +449,19 @@ export default defineConfig({
 
   /**
    * Get coverage threshold based on quality level
-   * @param qualityLevel - Project quality level
-   * @returns Coverage threshold percentage
+   * @param {string} qualityLevel - Project quality level
+   * @returns {number} Coverage threshold percentage
    */
   private getCoverageThreshold(qualityLevel: string): number {
     switch (qualityLevel) {
       case 'strict':
-        return 90;
+        return this.COVERAGE_THRESHOLDS.STRICT;
       case 'standard':
-        return 80;
+        return this.COVERAGE_THRESHOLDS.STANDARD;
       case 'light':
-        return 70;
+        return this.COVERAGE_THRESHOLDS.LIGHT;
       default:
-        return 80;
+        return this.COVERAGE_THRESHOLDS.STANDARD;
     }
   }
 }

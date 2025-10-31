@@ -7,8 +7,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 
 /**
  * Generate command configurations
- * @param config - Project configuration
- * @returns Command configurations
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Command configurations
  */
 export function generateCommandConfigs(config: ProjectConfig): string {
   return `/**
@@ -23,8 +23,8 @@ const commands: CommandConfig[] = [
 
 /**
  * Generate hello command configuration
- * @param config - Project configuration
- * @returns Hello command configuration
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Hello command configuration
  */
 export function generateHelloCommandConfig(config: ProjectConfig): string {
   return `{
@@ -55,8 +55,8 @@ export function generateHelloCommandConfig(config: ProjectConfig): string {
 
 /**
  * Generate build command configuration
- * @param config - Project configuration
- * @returns Build command configuration
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Build command configuration
  */
 export function generateBuildCommandConfig(config: ProjectConfig): string {
   return `{
@@ -71,7 +71,7 @@ export function generateBuildCommandConfig(config: ProjectConfig): string {
 
 /**
  * Generate build command options
- * @returns Build command options
+ * @returns {string} Build command options
  */
 function generateBuildCommandOptions(): string {
   return [
@@ -106,8 +106,8 @@ function generateBuildCommandOptions(): string {
 
 /**
  * Generate build command examples
- * @param config - Project configuration
- * @returns Build command examples
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Build command examples
  */
 function generateBuildCommandExamples(config: ProjectConfig): string {
   return `[
@@ -119,8 +119,8 @@ function generateBuildCommandExamples(config: ProjectConfig): string {
 
 /**
  * Generate deploy command configuration
- * @param config - Project configuration
- * @returns Deploy command configuration
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Deploy command configuration
  */
 export function generateDeployCommandConfig(config: ProjectConfig): string {
   return `{

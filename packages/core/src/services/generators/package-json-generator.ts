@@ -46,8 +46,8 @@ export class PackageJsonGenerator {
 
   /**
    * Generate package.json content for the project
-   * @param config - Project configuration
-   * @returns Generated package.json object
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {object} Generated package.json object
    */
   generate(config: ProjectConfig): object {
     return {
@@ -70,8 +70,8 @@ export class PackageJsonGenerator {
 
   /**
    * Generate npm scripts for the project
-   * @param config - Project configuration
-   * @returns Generated scripts object
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {Record<string, string>} Generated scripts object
    */
   private generateScripts(config: ProjectConfig): Record<string, string> {
     const scripts: Record<string, string> = {
@@ -91,8 +91,8 @@ export class PackageJsonGenerator {
 
   /**
    * Generate keywords for the project
-   * @param config - Project configuration
-   * @returns Generated keywords array
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Generated keywords array
    */
   private generateKeywords(config: ProjectConfig): string[] {
     const keywords = ['bun', 'typescript'];
@@ -118,8 +118,8 @@ export class PackageJsonGenerator {
 
   /**
    * Generate development dependencies for the project
-   * @param config - Project configuration
-   * @returns Generated development dependencies object
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {object} Development dependencies configuration with package versions
    */
   private generateDevDependenciesSync(config: ProjectConfig): Record<string, string> {
     const deps: Record<string, string> = {
@@ -146,12 +146,13 @@ export class PackageJsonGenerator {
 
   /**
    * Generate type-specific fields for the project
-   * @param config - Project configuration
-   * @returns Generated type-specific fields object
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean}ic fields object
    */
   private generateTypeSpecificFields(config: ProjectConfig): Record<string, unknown> {
     switch (config.projectType) {
       case 'bun-react':
+      case 'web':
         return this.getReactSpecificFields();
 
       case 'bun-vue':
@@ -167,7 +168,7 @@ export class PackageJsonGenerator {
 
   /**
    * Get React-specific package.json fields
-   * @returns React-specific fields object
+   * @returns {boolean}ic fields object
    */
   private getReactSpecificFields(): Record<string, unknown> {
     return {
@@ -189,7 +190,7 @@ export class PackageJsonGenerator {
 
   /**
    * Get Vue-specific package.json fields
-   * @returns Vue-specific fields object
+   * @returns {boolean}ic fields object
    */
   private getVueSpecificFields(): Record<string, unknown> {
     return {
@@ -209,7 +210,7 @@ export class PackageJsonGenerator {
 
   /**
    * Get Express-specific package.json fields
-   * @returns Express-specific fields object
+   * @returns {boolean}ic fields object
    */
   private getExpressSpecificFields(): Record<string, unknown> {
     return {
@@ -233,7 +234,7 @@ export class PackageJsonGenerator {
 
   /**
    * Get default package.json fields
-   * @returns Default fields object
+   * @returns {object} Default package.json fields configuration
    */
   private getDefaultFields(): Record<string, unknown> {
     return {
@@ -248,8 +249,8 @@ export class PackageJsonGenerator {
 
   /**
    * Generate type-specific scripts for the project
-   * @param config - Project configuration
-   * @returns Generated type-specific scripts object
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean}ic scripts object
    */
   private getTypeSpecificScripts(config: ProjectConfig): Record<string, string> {
     switch (config.projectType) {
@@ -268,12 +269,13 @@ export class PackageJsonGenerator {
 
   /**
    * Generate type-specific development dependencies for the project
-   * @param config - Project configuration
-   * @returns Generated type-specific development dependencies object
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean}ic development dependencies object
    */
   private getTypeSpecificDevDependencies(config: ProjectConfig): Record<string, string> {
     switch (config.projectType) {
       case 'bun-react':
+      case 'web':
         return {
           vite: '^5.0.0',
           '@vitejs/plugin-react': '^4.0.0',

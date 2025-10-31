@@ -9,12 +9,13 @@ import { generateLibraryInterface } from './library-interfaces.js';
 
 /**
  * Generate Library project index file
- * @param config - Project configuration
- * @returns Library index file TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Library index file TypeScript code
  */
 export function generateLibraryIndexFile(config: ProjectConfig): string {
   return [
     generateLibraryIndexHeader(config),
+    generateLibraryIndexInterfaces(config),
     generateLibraryIndexClass(config),
     generateLibraryIndexExports(config),
     generateLibraryIndexUtilities(config),
@@ -23,8 +24,8 @@ export function generateLibraryIndexFile(config: ProjectConfig): string {
 
 /**
  * Generate library index file header
- * @param config - Project configuration
- * @returns Header documentation
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Header documentation
  */
 function generateLibraryIndexHeader(config: ProjectConfig): string {
   return `/**
@@ -37,9 +38,18 @@ function generateLibraryIndexHeader(config: ProjectConfig): string {
 }
 
 /**
+ * Generate library index interfaces
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Interface definitions
+ */
+function generateLibraryIndexInterfaces(config: ProjectConfig): string {
+  return generateLibraryInterface(config);
+}
+
+/**
  * Generate library index main class
- * @param config - Project configuration
- * @returns Main class implementation
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Main class implementation
  */
 function generateLibraryIndexClass(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -66,8 +76,8 @@ export class ${className} {
 
 /**
  * Generate library index exports
- * @param config - Project configuration
- * @returns Export statements
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Export statements
  */
 function generateLibraryIndexExports(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -85,20 +95,21 @@ export type { Config, ProcessResult };`;
 
 /**
  * Generate library index utilities
- * @param config - Project configuration
- * @returns Utility exports
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Utility exports
  */
 function generateLibraryIndexUtilities(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
   return `// Export default and utilities
 export default ${className};
-export const VERSION = '1.0.0';`;
+export const VERSION = '1.0.0';
+export const PACKAGE_NAME = '${config.name}';`;
 }
 
 /**
  * Generate comprehensive library project index file with interfaces and classes
- * @param config - Project configuration
- * @returns Library index file TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Library index file TypeScript code
  */
 export function generateLibraryProjectIndexFile(config: ProjectConfig): string {
   const documentation = generateIndexDocumentation(config);

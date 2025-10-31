@@ -7,17 +7,25 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 
 /**
  * Generate DOM utilities
- * @param _config - Project configuration (unused)
- * @returns DOM utilities code
+ * @param {ProjectConfig} _config - Project configuration (unused)
+ * @returns {string} DOM utilities code
  */
 export function generateDOMUtils(_config: ProjectConfig): string {
+  return `${generateDOMUtilityFunctions()}${generateViewportFunctions()}${generateStyleFunctions()}${generateEventFunctions()}${generateClipboardFunctions()}${generateScrollbarFunctions()}${generatePerformanceFunctions()}`;
+}
+
+/**
+ * Generate basic DOM utility functions
+ * @returns {string} Basic DOM utility functions code
+ */
+function generateDOMUtilityFunctions(): string {
   return `/**
  * DOM utility functions
  */
 
 /**
  * Wait for DOM to be ready
- * @param callback - Function to execute when DOM is ready
+  * @param {string} callback - Function to execute when DOM is ready
  */
 export const domReady = (callback: () => void): void => {
   if (document.readyState === 'loading') {
@@ -27,10 +35,18 @@ export const domReady = (callback: () => void): void => {
   }
 };
 
+`;
+}
+
 /**
+ * Generate viewport-related functions
+ * @returns {string} Viewport functions code
+ */
+function generateViewportFunctions(): string {
+  return `/**
  * Check if element is in viewport
- * @param element - Element to check
- * @returns True if element is in viewport
+  * @param {string} element - Element to check
+  * @returns {boolean} if element is in viewport
  */
 export const isInViewport = (element: Element): boolean => {
   const rect = element.getBoundingClientRect();
@@ -44,8 +60,8 @@ export const isInViewport = (element: Element): boolean => {
 
 /**
  * Smooth scroll to element
- * @param element - Element to scroll to
- * @param offset - Offset from top (default: 0)
+  * @param {string} element - Element to scroll to
+  * @param {string} offset - Offset from top (default: 0)
  */
 export const scrollToElement = (element: Element, offset: number = 0): void => {
   const elementPosition = element.getBoundingClientRect().top;
@@ -57,11 +73,19 @@ export const scrollToElement = (element: Element, offset: number = 0): void => {
   });
 };
 
+`;
+}
+
 /**
+ * Generate style-related functions
+ * @returns {string} Style functions code
+ */
+function generateStyleFunctions(): string {
+  return `/**
  * Get element's computed style
- * @param element - Element to get style from
- * @param property - CSS property to get
- * @returns CSS property value
+  * @param {string} element - Element to get style from
+  * @param {string} property - CSS property to get
+  * @returns {string} CSS property value
  */
 export const getComputedStyle = (
   element: Element,
@@ -70,13 +94,29 @@ export const getComputedStyle = (
   return window.getComputedStyle(element).getPropertyValue(property);
 };
 
+`;
+}
+
 /**
+ * Generate event handling functions
+ * @returns {string} Event functions code
+ */
+function generateEventFunctions(): string {
+  return `${generateEventListenerFunction()}${generatePortalContainerFunction()}`;
+}
+
+/**
+ * Generate event listener with cleanup function
+ * @returns {string} Event listener function code
+ */
+function generateEventListenerFunction(): string {
+  return `/**
  * Add event listener with automatic cleanup
- * @param element - Element to add listener to
- * @param event - Event type
- * @param handler - Event handler
- * @param options - Event listener options
- * @returns Cleanup function
+  * @param {string} element - Element to add listener to
+  * @param {string} event - Event type
+  * @param {string} handler - Event handler
+  * @param {string} options - Event listener options
+  * @returns {string} Cleanup function
  */
 export const addEventListenerWithCleanup = <T extends EventTarget>(
   element: T,
@@ -91,10 +131,18 @@ export const addEventListenerWithCleanup = <T extends EventTarget>(
   };
 };
 
+`;
+}
+
 /**
+ * Generate portal container function
+ * @returns {string} Portal container function code
+ */
+function generatePortalContainerFunction(): string {
+  return `/**
  * Create portal container
- * @param id - Container ID
- * @returns Container element
+  * @param {string} id - Container ID
+  * @returns {string} Container element
  */
 export const createPortalContainer = (id: string): HTMLElement => {
   let container = document.getElementById(id);
@@ -108,10 +156,18 @@ export const createPortalContainer = (id: string): HTMLElement => {
   return container;
 };
 
+`;
+}
+
 /**
+ * Generate clipboard-related functions
+ * @returns {string} Clipboard functions code
+ */
+function generateClipboardFunctions(): string {
+  return `/**
  * Copy text to clipboard
- * @param text - Text to copy
- * @returns Promise that resolves when text is copied
+  * @param {string} text - Text to copy
+  * @returns {Promise<void>} that resolves when text is copied
  */
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
@@ -127,10 +183,18 @@ export const copyToClipboard = async (text: string): Promise<void> => {
   }
 };
 
+`;
+}
+
 /**
+ * Generate scrollbar-related functions
+ * @returns {string} Scrollbar functions code
+ */
+function generateScrollbarFunctions(): string {
+  return `/**
  * Check if element has scrollbar
- * @param element - Element to check
- * @returns True if element has scrollbar
+ * @param {string} element - Element to check
+ * @returns {boolean} if element has scrollbar
  */
 export const hasScrollbar = (element: Element): boolean => {
   return element.scrollHeight > element.clientHeight;
@@ -138,7 +202,7 @@ export const hasScrollbar = (element: Element): boolean => {
 
 /**
  * Get scrollbar width
- * @returns Scrollbar width in pixels
+ * @returns {string} Scrollbar width in pixels
  */
 export const getScrollbarWidth = (): number => {
   const outer = document.createElement('div');
@@ -155,11 +219,27 @@ export const getScrollbarWidth = (): number => {
   return scrollbarWidth;
 };
 
+`;
+}
+
 /**
+ * Generate performance-related functions (debounce, throttle)
+ * @returns {string} Performance functions code
+ */
+function generatePerformanceFunctions(): string {
+  return `${generateDebounceFunction()}${generateThrottleFunction()}`;
+}
+
+/**
+ * Generate debounce function
+ * @returns {string} Debounce function code
+ */
+function generateDebounceFunction(): string {
+  return `/**
  * Debounce function
- * @param func - Function to debounce
- * @param delay - Delay in milliseconds
- * @returns Debounced function
+  * @param {string} func - Function to debounce
+  * @param {string} delay - Delay in milliseconds
+  * @returns {string} Debounced function
  */
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
@@ -173,11 +253,19 @@ export const debounce = <T extends (...args: any[]) => any>(
   };
 };
 
+`;
+}
+
 /**
+ * Generate throttle function
+ * @returns {string} Throttle function code
+ */
+function generateThrottleFunction(): string {
+  return `/**
  * Throttle function
- * @param func - Function to throttle
- * @param limit - Time limit in milliseconds
- * @returns Throttled function
+  * @param {string} func - Function to throttle
+  * @param {string} limit - Time limit in milliseconds
+  * @returns {string} Throttled function
  */
 export const throttle = <T extends (...args: any[]) => any>(
   func: T,

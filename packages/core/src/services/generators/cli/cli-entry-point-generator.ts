@@ -15,9 +15,9 @@ const DEFAULT_EXECUTABLE_PERMISSIONS = 0o755;
 export class CliEntryPointGenerator {
   /**
    * Generates a CLI entry point file
-   * @param basePath - Base path where CLI should be created
-   * @param cliName - Name of the CLI tool
-   * @throws Error if file creation fails
+   * @param {string} basePath - Base path where CLI should be created
+   * @param {string} cliName - Name of the CLI tool
+   * @throws {Error} if file creation fails
    */
   async generateCliEntryPoint(basePath: string, cliName: string): Promise<void> {
     const filePath = join(basePath, 'bin', cliName);
@@ -37,8 +37,8 @@ export class CliEntryPointGenerator {
 
   /**
    * Generates the content for a CLI entry point file
-   * @param cliName - Name of the CLI tool
-   * @returns CLI entry point file content
+   * @param {string} cliName - Name of the CLI tool
+   * @returns {string} CLI entry point file content
    */
   private generateCliContent(cliName: string): string {
     return [
@@ -54,7 +54,7 @@ export class CliEntryPointGenerator {
 
   /**
    * Generates the shebang line
-   * @returns Shebang line
+   * @returns {string} Shebang line
    */
   private generateShebang(): string {
     return '#!/usr/bin/env bun';
@@ -62,8 +62,8 @@ export class CliEntryPointGenerator {
 
   /**
    * Generates the file header with metadata
-   * @param cliName - Name of the CLI tool
-   * @returns File header content
+   * @param {string} cliName - Name of the CLI tool
+   * @returns {string} File header content
    */
   private generateFileHeader(cliName: string): string {
     return `/**
@@ -79,28 +79,28 @@ export class CliEntryPointGenerator {
 
   /**
    * Generates error handling code
-   * @returns Error handling code
+   * @returns {string} Error handling code
    */
   private generateErrorHandlers(): string {
     return `// Error handling for uncaught exceptions
 process.on('uncaughtException', (error) => {
-  console.error('Uncaught Exception:', error.message);
+  process.stderr.write('Uncaught Exception: ' + error.message + '\\n');
   if (process.env.NODE_ENV === 'development') {
-    console.error(error.stack);
+    process.stderr.write((error.stack || 'No stack available') + '\\n');
   }
   process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.stderr.write('Unhandled Rejection at: ' + String(promise) + ', reason: ' + String(reason) + '\\n');
   process.exit(1);
 });`;
   }
 
   /**
    * Generates the main CLI entry point function
-   * @param cliName - Name of the CLI tool
-   * @returns CLI entry point function
+   * @param {string} cliName - Name of the CLI tool
+   * @returns {string} CLI entry point function
    */
   private generateCliEntryPointFunction(cliName: string): string {
     return `/**
@@ -124,12 +124,12 @@ async function cliEntryPoint(): Promise<void> {
     }
 
     if (args.includes('--version')) {
-      console.log('${cliName} version 1.0.0');
+      process.stdout.write('${cliName} version 1.0.0\\n');
       return;
     }
 
     // Add your CLI logic here
-    console.log('Hello from ${cliName} CLI!');
+    process.stdout.write('Hello from ${cliName} CLI!\\n');
 
   } catch (error) {
     handleCliError(error, '${cliName}');
@@ -139,45 +139,48 @@ async function cliEntryPoint(): Promise<void> {
 
   /**
    * Generates the show help function
-   * @param cliName - Name of the CLI tool
-   * @returns Show help function
+   * @param {string} cliName - Name of the CLI tool
+   * @returns {string} Show help function
    */
   private generateShowHelpFunction(cliName: string): string {
     return `/**
  * Shows help information for the CLI
- * @param cliName - Name of the CLI tool
+   * @param {string} cliName - Name of the CLI tool
  */
 function showHelp(cliName: string): void {
-  console.log('${cliName} - CLI Tool');
-  console.log('Usage: ${cliName} [options]');
-  console.log('');
-  console.log('Options:');
-  console.log('  --help     Show this help message');
-  console.log('  --version  Show version information');
+  const helpText = [
+    '${cliName} - CLI Tool',
+    'Usage: ${cliName} [options]',
+    '',
+    'Options:',
+    '  --help     Show this help message',
+    '  --version  Show version information'
+  ].join('\\n');
+  process.stdout.write(helpText + '\\n');
 }`;
   }
 
   /**
    * Generates the error handling function
-   * @param _cliName - Name of the CLI tool
-   * @returns Error handling function
+   * @param {string} _cliName - Name of the CLI tool
+   * @returns {string} Error handling function
    */
   private generateHandleCliErrorFunction(_cliName: string): string {
     return `/**
  * Handles CLI errors with proper formatting
- * @param error - Error that occurred
- * @param cliName - Name of the CLI tool
+   * @param {string} error - Error that occurred
+   * @param {string} cliName - Name of the CLI tool
  */
 function handleCliError(error: unknown, cliName: string): void {
-  console.error(\`❌ \${cliName} CLI Error:\`);
+  process.stderr.write('❌ ' + cliName + ' CLI Error:\\n');
   if (error instanceof Error) {
-    console.error(error.message);
+    process.stderr.write(error.message + '\\n');
     if (process.env.NODE_ENV === 'development' || process.env.VERBOSE) {
-      console.error('\\nStack trace:');
-      console.error(error.stack);
+      process.stderr.write('\\nStack trace:\\n');
+      process.stderr.write((error.stack || 'No stack available') + '\\n');
     }
   } else {
-    console.error('Unknown error occurred');
+    process.stderr.write('Unknown error occurred\\n');
   }
 
   // Exit with error code
@@ -187,7 +190,7 @@ function handleCliError(error: unknown, cliName: string): void {
 
   /**
    * Generates the entry point call
-   * @returns Entry point call
+   * @returns {string} Entry point call
    */
   private generateEntryPointCall(): string {
     return `// Execute CLI entry point

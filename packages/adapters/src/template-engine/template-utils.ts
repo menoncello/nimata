@@ -8,8 +8,8 @@
 export class TemplateUtils {
   /**
    * Generate template ID from file path
-   * @param filePath - The file path to convert
-   * @returns The generated template ID
+   * @param {string} filePath - The file path to convert
+   * @returns {string): string} The generated template ID
    */
   static generateTemplateId(filePath: string): string {
     // Replace non-word characters (except hyphens) with hyphens
@@ -30,8 +30,8 @@ export class TemplateUtils {
 
   /**
    * Infer category from file path
-   * @param filePath - The file path to analyze
-   * @returns The inferred category
+   * @param {string} filePath - The file path to analyze
+   * @returns {string): string} The inferred category
    */
   static inferCategory(filePath: string): string {
     const pathLower = filePath.toLowerCase();
@@ -71,9 +71,9 @@ export class TemplateUtils {
 
   /**
    * Resolve file path with context variables
-   * @param filePath - The file path to resolve
-   * @param context - The template context containing variables
-   * @returns The resolved file path
+   * @param {string} filePath - The file path to resolve
+   * @param {Record<string} context - The template context containing variables
+   * @returns {string} The resolved file path
    */
   static resolveFilePath(filePath: string, context: Record<string, unknown>): string {
     // Simple variable substitution in file paths
@@ -85,8 +85,8 @@ export class TemplateUtils {
 
   /**
    * Check if path represents a source file
-   * @param pathLower - Lowercase file path
-   * @returns True if source file
+   * @param {string} pathLower - Lowercase file path
+   * @returns {string): boolean} True if source file
    */
   private static isSourceFile(pathLower: string): boolean {
     return pathLower.includes('/src/') || pathLower.endsWith('/src') || pathLower.includes('lib/');
@@ -94,8 +94,8 @@ export class TemplateUtils {
 
   /**
    * Check if path represents a test file
-   * @param pathLower - Lowercase file path
-   * @returns True if test file
+   * @param {string} pathLower - Lowercase file path
+   * @returns {string): boolean} True if test file
    */
   private static isTestFile(pathLower: string): boolean {
     return (
@@ -105,8 +105,8 @@ export class TemplateUtils {
 
   /**
    * Check if path represents a documentation file
-   * @param pathLower - Lowercase file path
-   * @returns True if documentation file
+   * @param {string} pathLower - Lowercase file path
+   * @returns {string): boolean} True if documentation file
    */
   private static isDocumentationFile(pathLower: string): boolean {
     return (
@@ -116,8 +116,8 @@ export class TemplateUtils {
 
   /**
    * Check if path represents a configuration file
-   * @param pathLower - Lowercase file path
-   * @returns True if configuration file
+   * @param {string} pathLower - Lowercase file path
+   * @returns {string): boolean} True if configuration file
    */
   private static isConfigurationFile(pathLower: string): boolean {
     return pathLower.includes('/config/') || pathLower.includes('config.');
@@ -125,8 +125,8 @@ export class TemplateUtils {
 
   /**
    * Check if path represents a script file
-   * @param pathLower - Lowercase file path
-   * @returns True if script file
+   * @param {string} pathLower - Lowercase file path
+   * @returns {string): boolean} True if script file
    */
   private static isScriptFile(pathLower: string): boolean {
     return pathLower.includes('/script/') || pathLower.includes('scripts/');
@@ -134,8 +134,8 @@ export class TemplateUtils {
 
   /**
    * Check if path represents a build file
-   * @param pathLower - Lowercase file path
-   * @returns True if build file
+   * @param {string} pathLower - Lowercase file path
+   * @returns {string): boolean} True if build file
    */
   private static isBuildFile(pathLower: string): boolean {
     return pathLower.includes('/build/') || pathLower.includes('/dist/');

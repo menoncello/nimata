@@ -29,6 +29,7 @@ export interface ProjectConfig {
   license?: ProjectLicense;
   qualityLevel: ProjectQualityLevel;
   projectType: ProjectType;
+  framework?: string;
   aiAssistants: ProjectAIAssistant[];
   template?: string;
   targetDirectory?: string;

@@ -11,8 +11,8 @@ import { toPascalCase } from '../../../utils/string-utils.js';
 export class ReadmeGenerator {
   /**
    * Generate README content
-   * @param config - Project configuration
-   * @returns README markdown content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} README markdown content
    */
   static generate(config: ProjectConfig): string {
     const header = this.generateHeader(config);
@@ -28,8 +28,8 @@ export class ReadmeGenerator {
 
   /**
    * Generate README header
-   * @param config - Project configuration
-   * @returns README header content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} README header content
    */
   private static generateHeader(config: ProjectConfig): string {
     const description = config.description ? `\n\n${config.description}` : '';
@@ -38,8 +38,8 @@ export class ReadmeGenerator {
 
   /**
    * Generate features section
-   * @param config - Project configuration
-   * @returns Features section content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Features section content
    */
   private static generateFeatures(config: ProjectConfig): string {
     const baseFeatures = `- 🚀 Built with [Bun](https://bun.sh) for lightning-fast performance
@@ -58,8 +58,8 @@ export class ReadmeGenerator {
 
   /**
    * Generate installation section
-   * @param config - Project configuration
-   * @returns Installation section content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Installation section content
    */
   private static generateInstallation(config: ProjectConfig): string {
     return `## Installation
@@ -71,8 +71,8 @@ bun add ${config.name}
 
   /**
    * Generate usage section
-   * @param config - Project configuration
-   * @returns Usage section content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Usage section content
    */
   private static generateUsage(config: ProjectConfig): string {
     const pascalCaseName = toPascalCase(config.name);
@@ -91,7 +91,7 @@ await app.initialize();
 
   /**
    * Generate development section
-   * @returns Development section content
+   * @returns {string} Development section content
    */
   private static generateDevelopmentSection(): string {
     return `## Development
@@ -122,8 +122,8 @@ bun run build
 
   /**
    * Generate license section
-   * @param config - Project configuration
-   * @returns License section content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} License section content
    */
   private static generateLicense(config: ProjectConfig): string {
     return `## License
@@ -133,8 +133,8 @@ ${config.license || 'MIT'}`;
 
   /**
    * Generate footer
-   * @param config - Project configuration
-   * @returns Footer content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Footer content
    */
   private static generateFooter(config: ProjectConfig): string {
     return `---

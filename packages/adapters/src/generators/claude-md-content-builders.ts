@@ -9,8 +9,8 @@ import type { QualityLevel, ProjectType, ClaudeMdConfigOptions } from './claude-
 
 /**
  * Get coverage threshold based on quality level
- * @param qualityLevel - Quality level
- * @returns Coverage threshold number
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel): number} Coverage threshold number
  */
 export function getCoverageThreshold(qualityLevel: QualityLevel): number {
   switch (qualityLevel) {
@@ -27,8 +27,8 @@ export function getCoverageThreshold(qualityLevel: QualityLevel): number {
 
 /**
  * Get print width based on quality level
- * @param qualityLevel - Quality level
- * @returns Print width number
+ * @param {QualityLevel} qualityLevel - Quality level
+ * @returns {QualityLevel): number} Print width number
  */
 export function getPrintWidth(qualityLevel: QualityLevel): number {
   switch (qualityLevel) {
@@ -45,8 +45,8 @@ export function getPrintWidth(qualityLevel: QualityLevel): number {
 
 /**
  * Build code style configuration section
- * @param options - Configuration options
- * @returns Code style configuration string
+ * @param {ClaudeMdConfigOptions} options - Configuration options
+ * @returns {ClaudeMdConfigOptions): string} Code style configuration string
  */
 export function buildCodeStyleSection(options: ClaudeMdConfigOptions): string {
   const { qualityLevel, codeStyle } = options;
@@ -71,8 +71,8 @@ export function buildCodeStyleSection(options: ClaudeMdConfigOptions): string {
 
 /**
  * Build project architecture section
- * @param projectType - Project type
- * @returns Architecture section string
+ * @param {ProjectType} projectType - Project type
+ * @returns {ProjectType): string} Architecture section string
  */
 export function buildArchitectureSection(projectType: ProjectType): string {
   const architectureMap = {
@@ -110,8 +110,8 @@ ${architectureMap[projectType]}
 
 /**
  * Build specific components string
- * @param specificComponents - Specific components text (optional)
- * @returns Formatted specific components section
+ * @param {unknown} specificComponents - Specific components text (optional)
+ * @returns {string): string} Formatted specific components section
  */
 function buildSpecificComponents(specificComponents?: string): string {
   return specificComponents ? `\n\n${specificComponents}` : '';
@@ -119,8 +119,8 @@ function buildSpecificComponents(specificComponents?: string): string {
 
 /**
  * Build CLI development section
- * @param projectType - Type of project (optional)
- * @returns CLI development section or empty string
+ * @param {unknown} projectType - Type of project (optional)
+ * @returns {ProjectType): string} CLI development section or empty string
  */
 function buildCliDevelopmentSection(projectType?: ProjectType): string {
   if (projectType !== 'cli') {
@@ -131,9 +131,9 @@ function buildCliDevelopmentSection(projectType?: ProjectType): string {
 
 /**
  * Build development workflow section
- * @param options - Configuration options
- * @param projectType - Type of project (optional)
- * @returns Development workflow section string
+ * @param {unknown} options - Configuration options
+ * @param {unknown} projectType - Type of project (optional)
+ * @returns {string} Development workflow section string
  */
 export function buildDevelopmentWorkflowSection(
   options: ClaudeMdConfigOptions,

@@ -4,7 +4,7 @@
  * Generates CLI-specific project structure and files using modular approach
  */
 import type { ProjectConfig } from '../../../types/project-config.js';
-import { FILE_PERMISSIONS } from '../../validators/validation-constants.js';
+import { FILE_PERMISSIONS, DIRECTORY_PERMISSIONS } from '../../validators/validation-constants.js';
 import type { DirectoryItem } from '../core/core-file-operations.js';
 import { CLICommandGenerators } from './cli-command-generators.js';
 import { CLIIndexGenerators } from './cli-index-generators.js';
@@ -32,8 +32,8 @@ export class CLIStructureGenerator {
 
   /**
    * Generate CLI project structure
-   * @param config - Project configuration
-   * @returns CLI-specific directory structure
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} CLI-specific directory structure
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const directories = this.getCLIDirectories();
@@ -44,25 +44,25 @@ export class CLIStructureGenerator {
 
   /**
    * Get CLI-specific directory structure
-   * @returns Array of directory items
+   * @returns {DirectoryItem[]} Array of directory items
    */
   private getCLIDirectories(): DirectoryItem[] {
     return [
-      { path: 'src/commands', type: 'directory', mode: FILE_PERMISSIONS },
-      { path: 'src/utils', type: 'directory', mode: FILE_PERMISSIONS },
-      { path: 'src/types', type: 'directory', mode: FILE_PERMISSIONS },
-      { path: 'src/services', type: 'directory', mode: FILE_PERMISSIONS },
-      { path: 'src/config', type: 'directory', mode: FILE_PERMISSIONS },
-      { path: 'tests', type: 'directory', mode: FILE_PERMISSIONS },
-      { path: 'tests/unit', type: 'directory', mode: FILE_PERMISSIONS },
-      { path: 'tests/integration', type: 'directory', mode: FILE_PERMISSIONS },
+      { path: 'src/commands', type: 'directory', mode: DIRECTORY_PERMISSIONS },
+      { path: 'src/utils', type: 'directory', mode: DIRECTORY_PERMISSIONS },
+      { path: 'src/types', type: 'directory', mode: DIRECTORY_PERMISSIONS },
+      { path: 'src/services', type: 'directory', mode: DIRECTORY_PERMISSIONS },
+      { path: 'src/config', type: 'directory', mode: DIRECTORY_PERMISSIONS },
+      { path: 'tests', type: 'directory', mode: DIRECTORY_PERMISSIONS },
+      { path: 'tests/unit', type: 'directory', mode: DIRECTORY_PERMISSIONS },
+      { path: 'tests/integration', type: 'directory', mode: DIRECTORY_PERMISSIONS },
     ];
   }
 
   /**
    * Get CLI-specific files
-   * @param config - Project configuration
-   * @returns Array of file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of file items
    */
   private getCLIFiles(config: ProjectConfig): DirectoryItem[] {
     const coreFiles = this.getCoreCLIFiles(config);
@@ -74,8 +74,8 @@ export class CLIStructureGenerator {
 
   /**
    * Get core CLI files
-   * @param config - Project configuration
-   * @returns Array of core CLI file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of core CLI file items
    */
   private getCoreCLIFiles(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -102,8 +102,8 @@ export class CLIStructureGenerator {
 
   /**
    * Get command files
-   * @param config - Project configuration
-   * @returns Array of command file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of command file items
    */
   private getCommandFiles(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -124,8 +124,8 @@ export class CLIStructureGenerator {
 
   /**
    * Get utility files
-   * @param config - Project configuration
-   * @returns Array of utility file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of utility file items
    */
   private getUtilFiles(config: ProjectConfig): DirectoryItem[] {
     return [

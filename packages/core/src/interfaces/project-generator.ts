@@ -13,48 +13,48 @@ import type {
 export interface ProjectGenerator {
   /**
    * Generate a complete project
-   * @param config - Project configuration
-   * @returns Generation result
+   * @param {string} config - Project configuration
+   * @returns {string} Generation result
    */
   generateProject: (config: ProjectConfig) => Promise<GenerationResult>;
 
   /**
    * Validate project configuration
-   * @param config - Project configuration to validate
-   * @returns Validation result
+   * @param {string} config - Project configuration to validate
+   * @returns {string} Validation result
    */
   validateProjectConfig: (config: ProjectConfig) => ValidationResult;
 
   /**
    * Validate generated project
-   * @param projectPath - Path to generated project
-   * @returns Validation result
+   * @param {string} projectPath - Path to generated project
+   * @returns {string} Validation result
    */
   validateProject: (projectPath: string) => Promise<ValidationResult>;
 
   /**
    * Add a new project template
-   * @param template - Template to add
+   * @param {string} template - Template to add
    */
   addTemplate: (template: ProjectTemplate) => void;
 
   /**
    * Get available templates
-   * @returns List of available templates
+   * @returns {string} List of available templates
    */
   getAvailableTemplates: () => string[];
 
   /**
    * Check if project name is valid
-   * @param name - Project name to validate
-   * @returns Validation result
+   * @param {string} name - Project name to validate
+   * @returns {string} Validation result
    */
   validateProjectName: (name: string) => ValidationResult;
 
   /**
    * Get default project directory
-   * @param config - Project configuration
-   * @returns Project directory path
+   * @param {string} config - Project configuration
+   * @returns {string} Project directory path
    */
   getProjectDirectory: (config: ProjectConfig) => string;
 }

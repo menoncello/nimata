@@ -5,10 +5,10 @@
  * Eliminates repeated setup code across test files.
  */
 
+import { beforeEach, afterEach } from 'bun:test';
 import { mkdtemp, rm, writeFile, mkdir } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { beforeEach, afterEach } from 'bun:test';
 
 /**
  * Configuration test fixture interface

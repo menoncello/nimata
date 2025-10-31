@@ -9,7 +9,7 @@ import { ConfigFileGenerators } from './config/config-file-generators.js';
 import { ContentGenerators } from './config/content-generators.js';
 // Import new modular components
 import { AIConfigGenerators } from './core/ai-config-generators.js';
-import { ConfigurationGenerators, PackageMetadata } from './core/configuration-generators.js';
+import { ConfigurationGenerators, type PackageMetadata } from './core/configuration-generators.js';
 import { CoreFileOperations, type DirectoryItem } from './core/core-file-operations.js';
 import { EntryPointsGenerator } from './core/entry-points-generator.js';
 import { IndexGenerator } from './core/index-generator.js';
@@ -49,8 +49,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Create directories with security validation (delegated to CoreFileOperations)
-   * @param basePath - Base path for directory creation
-   * @param directories - Array of directory paths to create
+   * @param {string} basePath - Base path for directory creation
+   * @param {string[]} directories - Array of directory paths to create
    * @throws Error if directory creation fails or path validation fails
    */
   async createDirectories(basePath: string, directories: string[]): Promise<void> {
@@ -59,8 +59,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Create nested directory structure recursively (delegated to CoreFileOperations)
-   * @param basePath - Base path for directory creation
-   * @param nestedStructure - Array of nested directory paths
+   * @param {string} basePath - Base path for directory creation
+   * @param {string[]} nestedStructure - Array of nested directory paths
    * @throws Error if directory creation fails or path validation fails
    */
   async createNestedDirectories(basePath: string, nestedStructure: string[]): Promise<void> {
@@ -69,8 +69,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Create directories with .gitkeep files for empty directories (delegated to CoreFileOperations)
-   * @param basePath - Base path for directory creation
-   * @param directories - Array of directory paths to create with .gitkeep files
+   * @param {string} basePath - Base path for directory creation
+   * @param {string[]} directories - Array of directory paths to create with .gitkeep files
    * @throws Error if directory creation fails or path validation fails
    */
   async createDirectoriesWithGitkeep(basePath: string, directories: string[]): Promise<void> {
@@ -79,8 +79,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate directory structure for a specific project type
-   * @param projectType - Project type (cli, web, library, basic)
-   * @returns Directory structure for the specified project type
+   * @param {string} projectType - Project type (cli, web, library, basic)
+   * @returns {Promise<DirectoryItem[]>} Directory structure for the specified project type
    */
   async generateStructureForType(projectType: string): Promise<DirectoryItem[]> {
     const mockConfig: ProjectConfig = {
@@ -99,8 +99,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate and create directory structure for a specific project type
-   * @param basePath - Base path where to create the structure
-   * @param projectType - Project type (cli, web, library, basic)
+   * @param {string} basePath - Base path where to create the structure
+   * @param {string} projectType - Project type (cli, web, library, basic)
    * @throws Error if structure creation fails or path validation fails
    */
   async generateAndCreateStructureForType(basePath: string, projectType: string): Promise<void> {
@@ -111,8 +111,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Create directory structure from DirectoryItem array (delegated to CoreFileOperations)
-   * @param basePath - Base path where to create the structure
-   * @param structure - Array of DirectoryItem objects
+   * @param {string} basePath - Base path where to create the structure
+   * @param {DirectoryItem[]} structure - Array of DirectoryItem objects
    * @throws Error if structure creation fails or path validation fails
    */
   async createStructureFromDirectoryItems(
@@ -124,8 +124,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Create directory with specific permissions (delegated to CoreFileOperations)
-   * @param dirPath - Directory path to create
-   * @param mode - Permission mode (e.g., 0o755)
+   * @param {string} dirPath - Directory path to create
+   * @param {number} mode - Permission mode (e.g., 0o755)
    * @throws Error if directory creation fails or path validation fails
    */
   async createDirectoryWithPermissions(dirPath: string, mode: number): Promise<void> {
@@ -134,8 +134,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Create CLI executable file (delegated to CoreFileOperations)
-   * @param filePath - Path to the executable file
-   * @param content - Content of the executable file
+   * @param {string} filePath - Path to the executable file
+   * @param {string} content - Content of the executable file
    * @throws Error if file creation fails or path validation fails
    */
   async createCliExecutable(filePath: string, content: string): Promise<void> {
@@ -144,8 +144,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate main entry point file (delegated to EntryPointsGenerator)
-   * @param basePath - Base project path
-   * @param projectName - Name of the project
+   * @param {string} basePath - Base project path
+   * @param {string} projectName - Name of the project
    * @throws Error if file creation fails or path validation fails
    */
   async generateMainEntryPoint(basePath: string, projectName: string): Promise<void> {
@@ -154,9 +154,9 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate CLI entry point file (delegated to EntryPointsGenerator)
-   * @param basePath - Base project path
-   * @param cliName - Name of the CLI executable
-   * @param config - Project configuration
+   * @param {string} basePath - Base project path
+   * @param {string} cliName - Name of the CLI executable
+   * @param {ProjectConfig} config - Project configuration
    * @throws Error if file creation fails or path validation fails
    */
   async generateCliEntryPoint(
@@ -169,8 +169,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate .gitignore file (delegated to ConfigurationGenerators)
-   * @param basePath - Base project path
-   * @param config - Project configuration
+   * @param {string} basePath - Base project path
+   * @param {ProjectConfig} config - Project configuration
    * @throws Error if file creation fails or path validation fails
    */
   async generateGitignore(basePath: string, config: ProjectConfig): Promise<void> {
@@ -179,8 +179,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate package.json file (delegated to ConfigurationGenerators)
-   * @param basePath - Base project path
-   * @param metadata - Package metadata
+   * @param {string} basePath - Base project path
+   * @param {PackageMetadata} metadata - Package metadata
    * @throws Error if file creation fails or path validation fails
    */
   async generatePackageJson(basePath: string, metadata: PackageMetadata): Promise<void> {
@@ -189,8 +189,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate TypeScript configuration file (delegated to ConfigurationGenerators)
-   * @param basePath - Base project path
-   * @param config - Project configuration
+   * @param {string} basePath - Base project path
+   * @param {ProjectConfig} config - Project configuration
    * @throws Error if file creation fails or path validation fails
    */
   async generateTsConfig(basePath: string, config: ProjectConfig): Promise<void> {
@@ -199,8 +199,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Validates path to prevent directory traversal attacks and malicious path patterns
-   * @param basePath - Base path to validate against
-   * @param targetPath - Target path to validate
+   * @param {string} basePath - Base path to validate against
+   * @param {string} targetPath - Target path to validate
    * @throws Error if path validation fails
    */
   validatePath(basePath: string, targetPath: string): void {
@@ -209,8 +209,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate complete directory structure (refactored to use modular approach)
-   * @param config - Project configuration
-   * @returns Complete directory structure
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Complete directory structure
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const structure: DirectoryItem[] = [
@@ -252,8 +252,8 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate core files (delegated to index generator and project type generators)
-   * @param config - Project configuration
-   * @returns Core files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Core files
    */
   private generateCoreFiles(config: ProjectConfig): DirectoryItem[] {
     const coreFiles: DirectoryItem[] = [
@@ -279,16 +279,23 @@ export class DirectoryStructureGenerator {
 
   /**
    * Generate test files (using test file generator)
-   * @param config - Project configuration
-   * @returns Test files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Test files
    */
   private generateTestFiles(config: ProjectConfig): DirectoryItem[] {
     const testStructureGenerator = new TestStructureGenerator();
-    const vitestConfig = testStructureGenerator
-      .generate(config)
-      .find((item) => item.path === 'vitest.config.ts');
+    const testStructure = testStructureGenerator.generate(config);
+
+    // Get all directories from test structure
+    const testDirectories = testStructure.filter((item) => item.type === 'directory');
+
+    // Get the vitest config file
+    const vitestConfig = testStructure.find((item) => item.path === 'vitest.config.ts');
 
     return [
+      // Include all test directories
+      ...testDirectories,
+      // Include custom test files
       {
         path: 'tests/setup.ts',
         type: 'file',
@@ -299,14 +306,15 @@ export class DirectoryStructureGenerator {
         type: 'file',
         content: this.testFileGenerator.generate(config),
       },
+      // Include vitest config if it exists
       ...(vitestConfig ? [vitestConfig] : []),
     ];
   }
 
   /**
    * Generate documentation files (using content generators)
-   * @param config - Project configuration
-   * @returns Documentation files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Documentation files
    */
   private generateDocumentationFiles(config: ProjectConfig): DirectoryItem[] {
     return [

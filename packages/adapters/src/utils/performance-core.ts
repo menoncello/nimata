@@ -35,8 +35,8 @@ export class PerformanceMonitor {
 
   /**
    * Start monitoring an operation
-   * @param operation - Operation name
-   * @returns Metric ID for stopping the monitor
+   * @param {string} operation - Operation name
+   * @returns {string): string} Metric ID for stopping the monitor
    */
   start(operation: string): string {
     const timestamp = Date.now();
@@ -54,8 +54,8 @@ export class PerformanceMonitor {
 
   /**
    * Stop monitoring an operation
-   * @param id - Metric ID returned by start()
-   * @returns Completed metrics or null if not found
+   * @param {string} id - Metric ID returned by start()
+   * @returns {string): PerformanceMetrics | null} Completed metrics or null if not found
    */
   stop(id: string): PerformanceMetrics | null {
     const metric = this.activeMetrics.get(id);
@@ -77,7 +77,7 @@ export class PerformanceMonitor {
 
   /**
    * Get all metrics
-   * @returns Copy of all metrics array
+   * @returns {PerformanceMetrics[]} Copy of all metrics array
    */
   getMetrics(): PerformanceMetrics[] {
     return [...this.metrics];
@@ -85,8 +85,8 @@ export class PerformanceMonitor {
 
   /**
    * Get metrics by operation name
-   * @param operation - Operation name
-   * @returns Array of metrics for the operation
+   * @param {string} operation - Operation name
+   * @returns {string): PerformanceMetrics[]} Array of metrics for the operation
    */
   getMetricsByOperation(operation: string): PerformanceMetrics[] {
     return this.metrics.filter((metric) => metric.operation === operation);
@@ -94,8 +94,8 @@ export class PerformanceMonitor {
 
   /**
    * Get average duration for an operation
-   * @param operation - Operation name
-   * @returns Average duration in milliseconds
+   * @param {string} operation - Operation name
+   * @returns {string): number} Average duration in milliseconds
    */
   getAverageDuration(operation: string): number {
     const operationMetrics = this.getMetricsByOperation(operation);
@@ -139,7 +139,7 @@ export class PerformanceMonitor {
 
   /**
    * Get current memory usage
-   * @returns Memory usage in bytes
+   * @returns {number} Memory usage in bytes
    */
   private getMemoryUsage(): number {
     if (typeof process !== 'undefined' && process.memoryUsage) {
@@ -160,7 +160,7 @@ export class AsyncQueue {
 
   /**
    * Create a new async queue
-   * @param concurrency - Maximum concurrent operations
+   * @param {unknown} concurrency - Maximum concurrent operations
    */
   constructor(concurrency = 4) {
     this.concurrency = concurrency;
@@ -168,8 +168,8 @@ export class AsyncQueue {
 
   /**
    * Add operation to queue
-   * @param operation - Async operation function
-   * @returns Promise that resolves with operation result
+   * @param {(} operation - Async operation function
+   * @returns {void} Promise that resolves with operation result
    */
   async add<T>(operation: () => Promise<T>): Promise<T> {
     return new Promise((resolve, reject) => {
@@ -223,7 +223,7 @@ export class AsyncQueue {
 
   /**
    * Get queue status
-   * @returns Queue status object
+   * @returns {{ queue: number; active: number; concurrency: number }} Queue status object
    */
   status(): { queue: number; active: number; concurrency: number } {
     return {
@@ -240,9 +240,9 @@ export class AsyncQueue {
 export const PerformanceUtils = {
   /**
    * Debounce function calls
-   * @param func - Function to debounce
-   * @param wait - Wait time in milliseconds
-   * @returns Debounced function
+   * @param {unknown} func - Function to debounce
+   * @param {unknown} wait - Wait time in milliseconds
+   * @returns {void} Debounced function
    */
   debounce: <T extends (...args: unknown[]) => unknown>(
     func: T,
@@ -258,9 +258,9 @@ export const PerformanceUtils = {
 
   /**
    * Throttle function calls
-   * @param func - Function to throttle
-   * @param limit - Time limit in milliseconds
-   * @returns Throttled function
+   * @param {unknown} func - Function to throttle
+   * @param {unknown} limit - Time limit in milliseconds
+   * @returns {void} Throttled function
    */
   throttle: <T extends (...args: unknown[]) => unknown>(
     func: T,
@@ -279,8 +279,8 @@ export const PerformanceUtils = {
 
   /**
    * Format duration in milliseconds to human readable string
-   * @param durationMs - Duration in milliseconds
-   * @returns Formatted duration string
+   * @param {number} durationMs - Duration in milliseconds
+   * @returns {void} Formatted duration string
    */
   formatDuration: (durationMs: number): string => {
     if (durationMs < SECOND_IN_MS) {

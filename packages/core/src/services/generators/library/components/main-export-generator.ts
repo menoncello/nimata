@@ -12,8 +12,8 @@ import { toPascalCase } from '../../../../utils/string-utils.js';
 export class MainExportGenerator {
   /**
    * Generates the main export file content
-   * @param config - Project configuration
-   * @returns Main export file code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Main export file code
    */
   generateMainExport(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -31,9 +31,9 @@ export class MainExportGenerator {
 
   /**
    * Generates the main file header
-   * @param config - Project configuration
-   * @param _className - Name of the class
-   * @returns Header code
+   * @param {ProjectConfig} config - Project configuration
+   * @param {string} _className - Name of the class
+   * @returns {string} Header code
    */
   private generateMainHeader(config: ProjectConfig, _className: string): string {
     return `/**
@@ -49,8 +49,8 @@ ${config.description || 'A modern TypeScript library'}
 
   /**
    * Generates core module exports
-   * @param className - Name of the class
-   * @returns Core exports code
+   * @param {string} className - Name of the class
+   * @returns {string} Core exports code
    */
   private generateCoreExports(className: string): string {
     return `// Core exports
@@ -59,8 +59,8 @@ export { ${className} } from './core.js';`;
 
   /**
    * Generates type exports
-   * @param className - Name of the class
-   * @returns Type exports code
+   * @param {string} className - Name of the class
+   * @returns {string} Type exports code
    */
   private generateTypeExports(className: string): string {
     return `export type { ${className}Config, ${className}Options } from './types/index.js';`;
@@ -68,7 +68,7 @@ export { ${className} } from './core.js';`;
 
   /**
    * Generates utility exports
-   * @returns Utility exports code
+   * @returns {string} Utility exports code
    */
   private generateUtilityExports(): string {
     return `// Utility exports
@@ -77,7 +77,7 @@ export * from './utils/index.js';`;
 
   /**
    * Generates constant exports
-   * @returns Constant exports code
+   * @returns {string} Constant exports code
    */
   private generateConstantExports(): string {
     return `// Constant exports
@@ -86,8 +86,8 @@ export * from './constants/index.js';`;
 
   /**
    * Generates default export
-   * @param className - Name of the class
-   * @returns Default export code
+   * @param {string} className - Name of the class
+   * @returns {string} Default export code
    */
   private generateDefaultExport(className: string): string {
     return `// Default export

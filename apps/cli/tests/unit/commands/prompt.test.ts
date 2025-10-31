@@ -250,10 +250,10 @@ describe('PromptCommand [T004]', () => {
     it('[T004-51] should have consistent interface with other commands', () => {
       const requiredProperties = ['command', 'describe', 'builder', 'handler'];
 
-      requiredProperties.forEach((prop) => {
+      for (const prop of requiredProperties) {
         expect(promptCommand).toHaveProperty(prop);
         expect(promptCommand[prop as keyof typeof promptCommand]).toBeDefined();
-      });
+      }
     });
 
     it('[T004-52] should have command name matching file structure', () => {

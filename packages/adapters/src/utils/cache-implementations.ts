@@ -31,7 +31,7 @@ export class MemoryCache<T = unknown> {
 
   /**
    * Create a new memory cache instance
-   * @param options - Cache configuration options
+   * @param {CacheOptions = {}} options - Cache configuration options
    */
   constructor(options: CacheOptions = {}) {
     this.maxSize = options.maxSize || DEFAULT_MAX_SIZE;
@@ -40,8 +40,8 @@ export class MemoryCache<T = unknown> {
 
   /**
    * Get value from cache
-   * @param key - Cache key
-   * @returns Cached value or null if not found/expired
+   * @param {string} key - Cache key
+   * @returns {string): T | null} Cached value or null if not found/expired
    */
   get(key: string): T | null {
     const item = this.cache.get(key);
@@ -61,9 +61,9 @@ export class MemoryCache<T = unknown> {
 
   /**
    * Set value in cache
-   * @param key - Cache key
-   * @param value - Value to cache
-   * @param ttl - Optional time to live in milliseconds
+   * @param {string} key - Cache key
+   * @param {T} value - Value to cache
+   * @param {unknown} ttl - Optional time to live in milliseconds
    */
   set(key: string, value: T, ttl?: number): void {
     // Remove oldest items if cache is full
@@ -83,8 +83,8 @@ export class MemoryCache<T = unknown> {
 
   /**
    * Delete value from cache
-   * @param key - Cache key
-   * @returns True if item was deleted
+   * @param {string} key - Cache key
+   * @returns {string): boolean} True if item was deleted
    */
   delete(key: string): boolean {
     return this.cache.delete(key);
@@ -99,7 +99,7 @@ export class MemoryCache<T = unknown> {
 
   /**
    * Get cache size
-   * @returns Number of cached items
+   * @returns {number} Number of cached items
    */
   size(): number {
     return this.cache.size;
@@ -107,7 +107,7 @@ export class MemoryCache<T = unknown> {
 
   /**
    * Clean expired items
-   * @returns Number of items cleaned
+   * @returns {number} Number of items cleaned
    */
   cleanup(): number {
     let cleaned = 0;
@@ -133,7 +133,7 @@ export class FileSystemCache {
 
   /**
    * Create a new file system cache instance
-   * @param options - Cache configuration options
+   * @param {CacheOptions = {}} options - Cache configuration options
    */
   constructor(options: CacheOptions = {}) {
     this.cacheDir = options.directory || join(process.cwd(), '.nimata-cache');
@@ -153,8 +153,8 @@ export class FileSystemCache {
 
   /**
    * Get cached file content
-   * @param key - Cache key
-   * @returns Cached content or null if not found/expired
+   * @param {string} key - Cache key
+   * @returns {void} Cached content or null if not found/expired
    */
   async get(key: string): Promise<string | null> {
     const filePath = join(this.cacheDir, `${key}.cache`);
@@ -185,9 +185,9 @@ export class FileSystemCache {
 
   /**
    * Set cached file content
-   * @param key - Cache key
-   * @param content - Content to cache
-   * @param ttl - Optional time to live in milliseconds
+   * @param {string} key - Cache key
+   * @param {string} content - Content to cache
+   * @param {unknown} ttl - Optional time to live in milliseconds
    */
   async set(key: string, content: string, ttl?: number): Promise<void> {
     await this.init();
@@ -209,7 +209,7 @@ export class FileSystemCache {
 
   /**
    * Delete cached file
-   * @param key - Cache key
+   * @param {string} key - Cache key
    */
   async delete(key: string): Promise<void> {
     const filePath = join(this.cacheDir, `${key}.cache`);
@@ -236,7 +236,7 @@ export class FileSystemCache {
 
   /**
    * Clean expired cache files
-   * @returns Number of files cleaned
+   * @returns {void} Number of files cleaned
    */
   async cleanup(): Promise<number> {
     try {
@@ -259,9 +259,9 @@ export class FileSystemCache {
 
   /**
    * Process a single metadata file for cleanup
-   * @param file - Metadata file name
-   * @param now - Current timestamp
-   * @returns Number of files cleaned (0 or 1)
+   * @param {string} file - Metadata file name
+   * @param {number} now - Current timestamp
+   * @returns {void} Number of files cleaned (0 or 1)
    */
   private async processMetadataFile(file: string, now: number): Promise<number> {
     const metaPath = join(this.cacheDir, file);
@@ -283,9 +283,9 @@ export class FileSystemCache {
 
   /**
    * Check if metadata file is expired
-   * @param metaPath - Path to metadata file
-   * @param now - Current timestamp
-   * @returns True if expired
+   * @param {string} metaPath - Path to metadata file
+   * @param {number} now - Current timestamp
+   * @returns {void} True if expired
    */
   private async isMetadataExpired(metaPath: string, now: number): Promise<boolean> {
     const metaContent = await fs.readFile(metaPath, 'utf-8');
@@ -295,8 +295,8 @@ export class FileSystemCache {
 
   /**
    * Delete cache files (unsafe)
-   * @param metaPath - Path to metadata file
-   * @param cachePath - Path to cache file
+   * @param {string} metaPath - Path to metadata file
+   * @param {string} cachePath - Path to cache file
    */
   private async deleteCacheFiles(metaPath: string, cachePath: string): Promise<void> {
     await Promise.all([fs.unlink(metaPath), fs.unlink(cachePath)]);
@@ -304,8 +304,8 @@ export class FileSystemCache {
 
   /**
    * Delete cache files (safe with error handling)
-   * @param metaPath - Path to metadata file
-   * @param cachePath - Path to cache file
+   * @param {string} metaPath - Path to metadata file
+   * @param {string} cachePath - Path to cache file
    */
   private async deleteCacheFilesSafe(metaPath: string, cachePath: string): Promise<void> {
     await Promise.all([

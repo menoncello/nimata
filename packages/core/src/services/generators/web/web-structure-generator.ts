@@ -35,8 +35,8 @@ export class WebStructureGenerator {
 
   /**
    * Generate web project structure
-   * @param config - Project configuration
-   * @returns Web-specific directory structure
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {boolean}ic directory structure
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const directories = this.getWebDirectories();
@@ -47,7 +47,7 @@ export class WebStructureGenerator {
 
   /**
    * Get web-specific directory structure
-   * @returns Array of directory items
+   * @returns {DirectoryItem[]} Array of directory items items
    */
   private getWebDirectories(): DirectoryItem[] {
     return [
@@ -76,8 +76,8 @@ export class WebStructureGenerator {
 
   /**
    * Get web-specific files
-   * @param config - Project configuration
-   * @returns Array of file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of directory items items
    */
   private getWebFiles(config: ProjectConfig): DirectoryItem[] {
     const entryFiles = this.getEntryFiles(config);
@@ -101,8 +101,8 @@ export class WebStructureGenerator {
 
   /**
    * Get entry point files
-   * @param config - Project configuration
-   * @returns Entry files array
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Entry files array
    */
   private getEntryFiles(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -111,13 +111,18 @@ export class WebStructureGenerator {
         type: 'file',
         content: this.entryGenerators.generateMainEntry(config),
       },
+      {
+        path: 'src/server.ts',
+        type: 'file',
+        content: this.generateDevelopmentServer(config),
+      },
     ];
   }
 
   /**
    * Get component files
-   * @param config - Project configuration
-   * @returns Component files array
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Component files array
    */
   private getComponentFiles(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -136,8 +141,8 @@ export class WebStructureGenerator {
 
   /**
    * Get page files
-   * @param config - Project configuration
-   * @returns Page files array
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Page files array
    */
   private getPageFiles(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -161,8 +166,8 @@ export class WebStructureGenerator {
 
   /**
    * Get hook files
-   * @param config - Project configuration
-   * @returns Hook files array
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Hook files array
    */
   private getHookFiles(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -181,8 +186,8 @@ export class WebStructureGenerator {
 
   /**
    * Get utility files
-   * @param config - Project configuration
-   * @returns Utility files array
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Utility files array
    */
   private getUtilityFiles(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -201,8 +206,8 @@ export class WebStructureGenerator {
 
   /**
    * Get style files
-   * @param config - Project configuration
-   * @returns Style files array
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Style files array
    */
   private getStyleFiles(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -221,26 +226,125 @@ export class WebStructureGenerator {
 
   /**
    * Get configuration files
-   * @param config - Project configuration
-   * @returns Configuration files array
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Configuration files array
    */
   private getConfigFiles(config: ProjectConfig): DirectoryItem[] {
     return [
       {
         path: 'index.html',
         type: 'file',
-        content: this.configGenerators.generateHTMLTemplate(config),
+        content: WebConfigGenerators.generateHTMLTemplate(config),
       },
       {
         path: 'public/favicon.ico',
         type: 'file',
-        content: this.configGenerators.generateFavicon(),
+        content: WebConfigGenerators.generateFavicon(),
       },
       {
         path: 'vite.config.ts',
         type: 'file',
-        content: this.configGenerators.generateViteConfig(config),
+        content: WebConfigGenerators.generateViteConfig(config),
       },
     ];
+  }
+
+  /**
+   * Generate development server file for web projects
+   * @param {ProjectConfig} _config - Project configuration (not used in current implementation)
+   * @returns {string} Development server code
+   */
+  private generateDevelopmentServer(_config: ProjectConfig): string {
+    return this.buildDevServerFile();
+  }
+
+  /**
+   * Build the complete development server file content
+   * @returns {string} Development server code
+   */
+  private buildDevServerFile(): string {
+    return `/**
+ * Development Server Configuration
+ *
+ * This file can be used for custom development server setup
+ * For most use cases, Vite's built-in development server should be sufficient.
+ */
+
+import express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import { ViteDevServer } from 'vite';
+
+${this.generateSetupDevServerFunction()}
+
+${this.generateStandaloneServerFunction()}
+
+// Export for potential use
+export default {
+  setupDevServer,
+  createStandaloneServer,
+};
+`;
+  }
+
+  /**
+   * Generate setup development server function
+   * @returns {string} Setup function code
+   */
+  private generateSetupDevServerFunction(): string {
+    return `/**
+ * Setup custom development server with proxy configuration
+ * This is useful when you need custom middleware or proxy setup
+ */
+export async function setupDevServer(vite: ViteDevServer) {
+  const app = express();
+
+  // API proxy configuration
+  app.use('/api', createProxyMiddleware({
+    target: 'http://localhost:3001',
+    changeOrigin: true,
+    secure: false,
+  }));
+
+  // Custom middleware examples
+  app.use((req, res, next) => {
+    // Add custom headers or logging here
+    next();
+  });
+
+  return app;
+}`;
+  }
+
+  /**
+   * Generate standalone server function
+   * @returns {string} Standalone server function code
+   */
+  private generateStandaloneServerFunction(): string {
+    return `/**
+ * Standalone development server (alternative to Vite)
+ */
+export function createStandaloneServer() {
+  const app = express();
+  const port = process.env.PORT || 3000;
+
+  // Serve static files from dist directory
+  app.use(express.static('dist'));
+
+  // API routes
+  app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
+  // Catch-all handler for SPA routing
+  app.get('*', (req, res) => {
+    res.sendFile('dist/index.html', { root: '.' });
+  });
+
+  app.listen(port, () => {
+    console.log(\`🚀 Development server running on http://localhost:\${port}\`);
+  });
+
+  return app;
+}`;
   }
 }

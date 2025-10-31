@@ -272,4 +272,115 @@ describe('ESLintGenerator', () => {
       expect(results).toHaveLength(4);
     });
   });
+
+  describe('Internal Methods', () => {
+    let generator: ESLintGenerator;
+
+    beforeEach(() => {
+      const config: ProjectConfig = {
+        name: 'test-project',
+        qualityLevel: 'medium',
+        projectType: 'basic',
+        aiAssistants: ['claude-code'],
+      };
+      generator = createESLintGenerator(config);
+    });
+
+    it('should build extends config with TypeScript support', () => {
+      const options = {
+        qualityLevel: 'medium' as const,
+        projectType: 'basic' as const,
+        enableTypeScript: true,
+        enableTesting: false,
+      };
+
+      const extendsConfig = (generator as any).buildExtendsConfig(options);
+
+      expect(extendsConfig).toContain('eslint:recommended');
+      expect(extendsConfig).toContain('@typescript-eslint/recommended');
+      expect(extendsConfig).not.toContain('plugin:testing-library/recommended');
+    });
+
+    it('should build extends config with testing support', () => {
+      const options = {
+        qualityLevel: 'medium' as const,
+        projectType: 'basic' as const,
+        enableTypeScript: false,
+        enableTesting: true,
+      };
+
+      const extendsConfig = (generator as any).buildExtendsConfig(options);
+
+      expect(extendsConfig).toContain('eslint:recommended');
+      expect(extendsConfig).not.toContain('@typescript-eslint/recommended');
+      expect(extendsConfig).toContain('plugin:testing-library/recommended');
+    });
+
+    it('should return correct parser for TypeScript', () => {
+      const parser = (generator as any).getParser(true);
+      expect(parser).toBe('@typescript-eslint/parser');
+    });
+
+    it('should return correct parser for JavaScript', () => {
+      const parser = (generator as any).getParser(false);
+      expect(parser).toBe('espree');
+    });
+
+    it('should build plugins config with TypeScript', () => {
+      const options = {
+        qualityLevel: 'medium' as const,
+        projectType: 'basic' as const,
+        enableTypeScript: true,
+        enableTesting: false,
+      };
+
+      const plugins = (generator as any).buildPluginsConfig(options);
+
+      expect(plugins).toContain('@typescript-eslint');
+      expect(plugins).not.toContain('testing-library');
+    });
+
+    it('should build plugins config with testing', () => {
+      const options = {
+        qualityLevel: 'medium' as const,
+        projectType: 'basic' as const,
+        enableTypeScript: false,
+        enableTesting: true,
+      };
+
+      const plugins = (generator as any).buildPluginsConfig(options);
+
+      expect(plugins).not.toContain('@typescript-eslint');
+      expect(plugins).toContain('testing-library');
+    });
+
+    it('should build rules config with quality rules', () => {
+      const options = {
+        qualityLevel: 'strict' as const,
+        projectType: 'basic' as const,
+        enableTypeScript: true,
+        enableTesting: true,
+        customRules: { 'custom-rule': 'error' },
+      };
+
+      const rules = (generator as any).buildRulesConfig(options);
+
+      expect(typeof rules).toBe('object');
+      expect(rules).toHaveProperty('custom-rule', 'error');
+    });
+
+    it('should build rules config without TypeScript', () => {
+      const options = {
+        qualityLevel: 'medium' as const,
+        projectType: 'basic' as const,
+        enableTypeScript: false,
+        enableTesting: false,
+        customRules: {},
+      };
+
+      const rules = (generator as any).buildRulesConfig(options);
+
+      expect(typeof rules).toBe('object');
+    });
+  });
 });

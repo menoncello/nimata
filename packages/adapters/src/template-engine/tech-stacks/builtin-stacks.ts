@@ -3,7 +3,6 @@
  *
  * Pre-defined tech stack configurations
  */
-/* eslint-disable max-lines, max-lines-per-function, sonarjs/no-identical-functions, jsdoc/require-description, jsdoc/require-returns, jsdoc/require-param-description, @typescript-eslint/no-unused-vars, sonarjs/no-duplicate-string */
 import type { TemplateValidationRule } from '@nimata/core';
 import type { TechStackConfig } from '../tech-stack-types.js';
 import { TECH_STACK_CATEGORIES, TECH_STACK_PRIORITY } from '../tech-stack-utils.js';
@@ -35,6 +34,14 @@ const TS_CONFIG_NAME = 'TypeScript Configuration';
 const BASIC_TS_DESC = 'Validates TypeScript configuration for basic projects';
 const TS_ERROR_MSG = 'TypeScript configuration file is required';
 
+// Common validation messages
+const TS_CLI_ERROR_MSG = 'TypeScript configuration is required for CLI applications';
+const TS_REACT_ERROR_MSG = 'TypeScript configuration is required for React applications';
+const TS_EXPRESS_ERROR_MSG = 'TypeScript configuration is required for Express applications';
+
+// Common dependency descriptions
+const TS_COMPILER_DESC = 'TypeScript compiler and language features';
+
 // Type aliases and interfaces
 interface DependencyDefinition {
   name: string;
@@ -57,15 +64,16 @@ interface ValidationRuleDefinition {
 
 // Adapter to convert ValidationRuleDefinition to TemplateValidationRule
 /**
- *
- * @param rule
+ * Adapts a validation rule definition to template validation rule
+ * @param {ValidationRuleDefinition} rule - Rule definition to adapt
+ * @returns {TemplateValidationRule} Adapted template validation rule
  */
 function adaptValidationRule(rule: ValidationRuleDefinition): TemplateValidationRule {
   return {
     id: rule.id,
     name: rule.name,
     description: rule.description,
-    validator: (template: unknown, content: string) => ({
+    validator: (template: unknown, _content: string) => ({
       valid: rule.validator(template),
       errors: rule.validator(template)
         ? []
@@ -89,7 +97,7 @@ function adaptValidationRule(rule: ValidationRuleDefinition): TemplateValidation
 
 /**
  * Creates a basic TypeScript tech stack
- * @returns Tech stack configuration for basic TypeScript
+ * @returns {TechStackConfig} Tech stack configuration for basic TypeScript
  */
 export function createTypeScriptBasicStack(): TechStackConfig {
   const BASIC_TYPESCRIPT_CONSTANTS = {
@@ -121,7 +129,7 @@ export function createTypeScriptBasicStack(): TechStackConfig {
 
 /**
  * Creates basic TypeScript dependencies
- * @returns Array of TypeScript dependencies
+ * @returns {DependencyDefinition[]} Array of TypeScript dependencies
  */
 function createBasicTypeScriptDependencies(): DependencyDefinition[] {
   return [
@@ -130,7 +138,7 @@ function createBasicTypeScriptDependencies(): DependencyDefinition[] {
       version: TYPESCRIPT_VERSION,
       required: true,
       type: DEPENDENCY_TYPES.DEV,
-      description: 'TypeScript compiler and language features',
+      description: TS_COMPILER_DESC,
     },
     {
       name: '@types/node',
@@ -144,7 +152,7 @@ function createBasicTypeScriptDependencies(): DependencyDefinition[] {
 
 /**
  * Creates basic TypeScript validation rules
- * @returns Array of validation rules
+ * @returns {ValidationRuleDefinition[]} Array of validation rules
  */
 function createBasicTypeScriptValidationRules(): ValidationRuleDefinition[] {
   return [
@@ -163,7 +171,7 @@ function createBasicTypeScriptValidationRules(): ValidationRuleDefinition[] {
 
 /**
  * Creates basic TypeScript configuration schema
- * @returns Configuration schema object
+ * @returns {Record<} Configuration schema object
  */
 function createBasicTypeScriptConfigurationSchema(): Record<
   string,
@@ -182,7 +190,7 @@ function createBasicTypeScriptConfigurationSchema(): Record<
 
 /**
  * Creates basic TypeScript default configuration
- * @returns Default configuration object
+ * @returns {{ strict: boolean; target: string; module: string; moduleResolution: string; allowSyntheticDefaultImports: boolean;esModuleInterop: boolean; skipLibCheck: boolean; forceConsistentCasingInFileNames: boolean; }} Default configuration object
  */
 function createBasicTypeScriptDefaults(): {
   strict: boolean;
@@ -198,7 +206,7 @@ function createBasicTypeScriptDefaults(): {
 
 /**
  * Creates Bun-specific dependencies
- * @returns Array of Bun dependencies
+ * @returns {DependencyDefinition[]} Array of Bun dependencies
  */
 function createBunDependencies(): DependencyDefinition[] {
   return [
@@ -221,7 +229,7 @@ function createBunDependencies(): DependencyDefinition[] {
 
 /**
  * Creates dependencies for Bun TypeScript CLI stack
- * @returns Array of dependencies
+ * @returns {DependencyDefinition[]} Array of dependencies
  */
 function createBunTypeScriptCliDependencies(): DependencyDefinition[] {
   return [...createBasicTypeScriptDependencies(), ...createBunDependencies()];
@@ -229,7 +237,7 @@ function createBunTypeScriptCliDependencies(): DependencyDefinition[] {
 
 /**
  * Creates validation rules for Bun TypeScript CLI stack
- * @returns Array of validation rules
+ * @returns {ValidationRuleDefinition[]} Array of validation rules
  */
 function createBunTypeScriptCliValidationRules(): ValidationRuleDefinition[] {
   return [
@@ -240,15 +248,45 @@ function createBunTypeScriptCliValidationRules(): ValidationRuleDefinition[] {
       validator: (config) => typeof config === 'object' && config !== null,
       severity: 'error',
       category: 'structure',
-      message: 'TypeScript configuration is required for CLI applications',
+      message: TS_CLI_ERROR_MSG,
       enabled: true,
     },
   ];
 }
 
 /**
+ * Creates Bun TypeScript CLI configuration schema
+ * @returns {Record<string, unknown>} Configuration schema object
+ */
+function createBunTypeScriptCliConfigurationSchema(): Record<string, unknown> {
+  return {
+    strict: { type: 'boolean', default: true },
+    target: { type: 'string', enum: ['ES2020', 'ES2022', 'Bun'], default: 'Bun' },
+    module: { type: 'string', enum: ['ESNext'], default: 'ESNext' },
+    cliFramework: {
+      type: 'string',
+      enum: ['commander', 'yargs', 'argv', 'custom'],
+      default: 'commander',
+    },
+  };
+}
+
+/**
+ * Creates Bun TypeScript CLI default configuration
+ * @returns {Record<string, unknown>} Default configuration object
+ */
+function createBunTypeScriptCliDefaultConfig(): Record<string, unknown> {
+  return {
+    strict: true,
+    target: 'Bun',
+    module: 'ESNext',
+    cliFramework: 'commander',
+  };
+}
+
+/**
  * Creates a Bun + TypeScript CLI stack
- * @returns Tech stack configuration for Bun TypeScript CLI
+ * @returns {TechStackConfig} Tech stack configuration for Bun TypeScript CLI
  */
 export function createBunTypeScriptCliStack(): TechStackConfig {
   return {
@@ -260,22 +298,8 @@ export function createBunTypeScriptCliStack(): TechStackConfig {
     dependencies: createBunTypeScriptCliDependencies(),
     templatePatterns: ['src/**/*.ts', 'dist/**/*.js', 'bin/**/*.js'],
     validationRules: createBunTypeScriptCliValidationRules().map(adaptValidationRule),
-    configurationSchema: {
-      strict: { type: 'boolean', default: true },
-      target: { type: 'string', enum: ['ES2020', 'ES2022', 'Bun'], default: 'Bun' },
-      module: { type: 'string', enum: ['ESNext'], default: 'ESNext' },
-      cliFramework: {
-        type: 'string',
-        enum: ['commander', 'yargs', 'argv', 'custom'],
-        default: 'commander',
-      },
-    },
-    defaultConfiguration: {
-      strict: true,
-      target: 'Bun',
-      module: 'ESNext',
-      cliFramework: 'commander',
-    },
+    configurationSchema: createBunTypeScriptCliConfigurationSchema(),
+    defaultConfiguration: createBunTypeScriptCliDefaultConfig(),
     metadata: {
       category: TECH_STACK_CATEGORIES.CLI,
       priority: TECH_STACK_PRIORITY.HIGH,
@@ -286,7 +310,7 @@ export function createBunTypeScriptCliStack(): TechStackConfig {
 
 /**
  * Creates React core dependencies
- * @returns Array of React core dependencies
+ * @returns {DependencyDefinition[]} Array of React core dependencies
  */
 function createReactCoreDependencies(): DependencyDefinition[] {
   return [
@@ -309,7 +333,7 @@ function createReactCoreDependencies(): DependencyDefinition[] {
 
 /**
  * Creates React TypeScript dependencies
- * @returns Array of React TypeScript dependencies
+ * @returns {DependencyDefinition[]} Array of React TypeScript dependencies
  */
 function createReactTypeScriptDependencies(): DependencyDefinition[] {
   return [
@@ -318,7 +342,7 @@ function createReactTypeScriptDependencies(): DependencyDefinition[] {
       version: TYPESCRIPT_VERSION,
       required: true,
       type: DEPENDENCY_TYPES.DEV,
-      description: 'TypeScript compiler and language features',
+      description: TS_COMPILER_DESC,
     },
     {
       name: '@types/react',
@@ -339,7 +363,7 @@ function createReactTypeScriptDependencies(): DependencyDefinition[] {
 
 /**
  * Creates React dependencies
- * @returns Array of React dependencies
+ * @returns {DependencyDefinition[]} Array of React dependencies
  */
 function createReactDependencies(): DependencyDefinition[] {
   return [...createReactCoreDependencies(), ...createReactTypeScriptDependencies()];
@@ -347,7 +371,7 @@ function createReactDependencies(): DependencyDefinition[] {
 
 /**
  * Creates React validation rules
- * @returns Array of validation rules
+ * @returns {ValidationRuleDefinition[]} Array of validation rules
  */
 function createReactValidationRules(): ValidationRuleDefinition[] {
   return [
@@ -358,7 +382,7 @@ function createReactValidationRules(): ValidationRuleDefinition[] {
       validator: (config) => typeof config === 'object' && config !== null,
       severity: 'error',
       category: 'structure',
-      message: 'TypeScript configuration is required for React applications',
+      message: TS_REACT_ERROR_MSG,
       enabled: true,
     },
   ];
@@ -366,7 +390,7 @@ function createReactValidationRules(): ValidationRuleDefinition[] {
 
 /**
  * Creates a React + TypeScript stack
- * @returns Tech stack configuration for React TypeScript
+ * @returns {TechStackConfig} Tech stack configuration for React TypeScript
  */
 export function createReactTypeScriptStack(): TechStackConfig {
   return {
@@ -400,7 +424,7 @@ export function createReactTypeScriptStack(): TechStackConfig {
 
 /**
  * Creates Node.js Express core dependencies
- * @returns Array of Node.js Express core dependencies
+ * @returns {DependencyDefinition[]} Array of Node.js Express core dependencies
  */
 function createNodeExpressCoreDependencies(): DependencyDefinition[] {
   return [
@@ -423,7 +447,7 @@ function createNodeExpressCoreDependencies(): DependencyDefinition[] {
 
 /**
  * Creates Node.js Express TypeScript dependencies
- * @returns Array of Node.js Express TypeScript dependencies
+ * @returns {DependencyDefinition[]} Array of Node.js Express TypeScript dependencies
  */
 function createNodeExpressTypeScriptDependencies(): DependencyDefinition[] {
   return [
@@ -446,7 +470,7 @@ function createNodeExpressTypeScriptDependencies(): DependencyDefinition[] {
 
 /**
  * Creates Node.js Express dependencies
- * @returns Array of Node.js Express dependencies
+ * @returns {DependencyDefinition[]} Array of Node.js Express dependencies
  */
 function createNodeExpressDependencies(): DependencyDefinition[] {
   return [...createNodeExpressCoreDependencies(), ...createNodeExpressTypeScriptDependencies()];
@@ -454,7 +478,7 @@ function createNodeExpressDependencies(): DependencyDefinition[] {
 
 /**
  * Creates Node.js Express validation rules
- * @returns Array of validation rules
+ * @returns {ValidationRuleDefinition[]} Array of validation rules
  */
 function createNodeExpressValidationRules(): ValidationRuleDefinition[] {
   return [
@@ -465,7 +489,7 @@ function createNodeExpressValidationRules(): ValidationRuleDefinition[] {
       validator: (config) => typeof config === 'object' && config !== null,
       severity: 'error',
       category: 'structure',
-      message: 'TypeScript configuration is required for Express applications',
+      message: TS_EXPRESS_ERROR_MSG,
       enabled: true,
     },
   ];
@@ -473,7 +497,7 @@ function createNodeExpressValidationRules(): ValidationRuleDefinition[] {
 
 /**
  * Creates a Node.js + Express TypeScript stack
- * @returns Tech stack configuration for Node.js Express TypeScript
+ * @returns {TechStackConfig} Tech stack configuration for Node.js Express TypeScript
  */
 export function createNodeExpressTypeScriptStack(): TechStackConfig {
   const defaultConfig = { strict: true, target: 'ES2022', port: 3000, cors: true, helmet: true };
@@ -504,8 +528,9 @@ export function createNodeExpressTypeScriptStack(): TechStackConfig {
 
 /**
  * Creates Bun TypeScript CLI configuration schema
+ * @returns {Record<string, unknown>} Configuration schema object
  */
-function createBunTypeScriptCliSchema(): Record<string, unknown> {
+function _createBunTypeScriptCliSchema(): Record<string, unknown> {
   return {
     strict: { type: 'boolean', default: true },
     target: { type: 'string', enum: ['ES2020', 'ES2022', 'Bun'], default: 'Bun' },
@@ -515,8 +540,9 @@ function createBunTypeScriptCliSchema(): Record<string, unknown> {
 
 /**
  * Creates Bun TypeScript CLI framework configuration
+ * @returns {Record<string, unknown>} Framework configuration object
  */
-function createBunTypeScriptCliFramework(): Record<string, unknown> {
+function _createBunTypeScriptCliFramework(): Record<string, unknown> {
   return {
     type: 'string',
     enum: ['commander', 'yargs', 'argv', 'custom'],
@@ -526,8 +552,9 @@ function createBunTypeScriptCliFramework(): Record<string, unknown> {
 
 /**
  * Creates Bun TypeScript CLI execution configuration
+ * @returns {Record<string, unknown>} Execution configuration object
  */
-function createBunTypeScriptCliExecution(): Record<string, unknown> {
+function _createBunTypeScriptCliExecution(): Record<string, unknown> {
   return {
     mainFile: { type: 'string', default: 'src/index.ts' },
     buildCommand: { type: 'string', default: 'bun run build' },
@@ -536,8 +563,9 @@ function createBunTypeScriptCliExecution(): Record<string, unknown> {
 
 /**
  * Creates Bun TypeScript CLI metadata
+ * @returns {Record<string, unknown>} Metadata object
  */
-function createBunTypeScriptCliMetadata(): Record<string, unknown> {
+function _createBunTypeScriptCliMetadata(): Record<string, unknown> {
   return {
     category: 'cli-tool',
     priority: TECH_STACK_PRIORITY.NORMAL,
@@ -547,8 +575,9 @@ function createBunTypeScriptCliMetadata(): Record<string, unknown> {
 
 /**
  * Creates React TypeScript configuration schema
+ * @returns {Record<string, unknown>} Configuration schema object
  */
-function createReactTypeScriptConfigSchema(): Record<string, unknown> {
+function _createReactTypeScriptConfigSchema(): Record<string, unknown> {
   return {
     strict: { type: 'boolean', default: true },
     target: { type: 'string', enum: ['ES2020', 'ES2022'], default: 'ES2022' },
@@ -560,64 +589,17 @@ function createReactTypeScriptConfigSchema(): Record<string, unknown> {
 
 /**
  * Creates React with TypeScript dependencies
+ * @returns {DependencyDefinition[]} Array of React dependencies
  */
-function createReactWithTypeScriptDependencies(): DependencyDefinition[] {
-  return [
-    {
-      name: 'react',
-      version: '^18.0.0',
-      required: true,
-      type: DEPENDENCY_TYPES.RUNTIME,
-      description: 'React library for user interfaces',
-    },
-    {
-      name: 'react-dom',
-      version: '^18.0.0',
-      required: true,
-      type: DEPENDENCY_TYPES.RUNTIME,
-      description: 'React DOM renderer',
-    },
-    {
-      name: 'typescript',
-      version: TYPESCRIPT_VERSION,
-      required: true,
-      type: DEPENDENCY_TYPES.DEV,
-      description: 'TypeScript compiler and language features',
-    },
-    {
-      name: '@types/react',
-      version: REACT_TYPES_VERSION,
-      required: true,
-      type: DEPENDENCY_TYPES.DEV,
-      description: 'React type definitions',
-    },
-    {
-      name: '@types/react-dom',
-      version: REACT_TYPES_VERSION,
-      required: true,
-      type: DEPENDENCY_TYPES.DEV,
-      description: 'React DOM type definitions',
-    },
-  ];
-}
-
-/**
- * Creates React configuration schema
- */
-function createReactConfigSchema(): Record<string, unknown> {
-  return {
-    strict: { type: 'boolean', default: true },
-    target: { type: 'string', enum: ['ES2020', 'ES2022'], default: 'ES2022' },
-    jsx: { type: 'string', enum: ['react-jsx', 'react'], default: 'react-jsx' },
-    module: { type: 'string', enum: ['ESNext', 'CommonJS'], default: 'ESNext' },
-    bundler: { type: 'string', enum: ['vite', 'webpack', 'rollup'], default: 'vite' },
-  };
+function _createReactWithTypeScriptDependencies(): DependencyDefinition[] {
+  return [...createReactCoreDependencies(), ...createReactTypeScriptDependencies()];
 }
 
 /**
  * Creates React bundler configuration
+ * @returns {Record<string, unknown>} Bundler configuration object
  */
-function createReactBundlerConfig(): Record<string, unknown> {
+function _createReactBundlerConfig(): Record<string, unknown> {
   return {
     type: 'string',
     enum: ['vite', 'webpack', 'rollup'],
@@ -627,8 +609,9 @@ function createReactBundlerConfig(): Record<string, unknown> {
 
 /**
  * Creates React default configuration
+ * @returns {Record<string, unknown>} Default configuration object
  */
-function createReactDefaultConfig(): Record<string, unknown> {
+function _createReactDefaultConfig(): Record<string, unknown> {
   return {
     strict: true,
     target: 'ES2022',

@@ -16,8 +16,8 @@ const JSON_INDENTATION = 2;
 export class TypeScriptConfigGenerator {
   /**
    * Generate TypeScript configuration
-   * @param config - Project configuration
-   * @returns TypeScript configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} TypeScript configuration content
    */
   static generateTypeScriptConfig(config: ProjectConfig): string {
     const baseConfig = TypeScriptConfigGenerator.buildBaseTypeScriptConfig();
@@ -27,7 +27,7 @@ export class TypeScriptConfigGenerator {
 
   /**
    * Build base TypeScript configuration
-   * @returns Base TypeScript configuration
+   * @returns {string} Base TypeScript configuration
    */
   private static buildBaseTypeScriptConfig(): {
     compilerOptions: Record<string, unknown>;
@@ -43,7 +43,7 @@ export class TypeScriptConfigGenerator {
 
   /**
    * Build compiler options
-   * @returns Compiler options object
+   * @returns {object} TypeScript compiler options configuration object
    */
   private static buildCompilerOptions(): Record<string, unknown> {
     return {
@@ -76,9 +76,9 @@ export class TypeScriptConfigGenerator {
 
   /**
    * Apply project type specific configuration
-   * @param config - Base configuration to modify
-   * @param config.compilerOptions - Compiler options to modify
-   * @param projectType - Project type
+   * @param {{ compilerOptions: Record<string, unknown> }} config - Base configuration to modify
+   * @param {Record<string, unknown>} config.compilerOptions - Compiler options to modify
+   * @param {string} projectType - Project type
    */
   private static applyProjectTypeSpecificConfig(
     config: { compilerOptions: Record<string, unknown> },

@@ -14,8 +14,8 @@ import { toPascalCase } from '../../../utils/string-utils.js';
 export class CLIIndexGenerators {
   /**
    * Generate CLI index file
-   * @param config - Project configuration
-   * @returns CLI index file content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI index file content
    */
   generateCLIIndex(config: ProjectConfig): string {
     const { name } = config;
@@ -31,7 +31,7 @@ ${this.generateCLIIndexEntry(className)}`;
 
   /**
    * Generate CLI index header comment
-   * @returns Header comment
+   * @returns {string} Header comment
    */
   private generateCLIIndexHeader(): string {
     return `/**
@@ -44,7 +44,7 @@ ${this.generateCLIIndexEntry(className)}`;
 
   /**
    * Generate CLI index description
-   * @returns Description
+   * @returns {string} Description
    */
   private generateCLIIndexOptions(): string {
     return 'CLI Application Entry Point';
@@ -52,7 +52,7 @@ ${this.generateCLIIndexEntry(className)}`;
 
   /**
    * Generate CLI index imports
-   * @returns Import statements
+   * @returns {string} Import statements
    */
   private generateCLIIndexImports(): string {
     return `import { Command } from 'commander';
@@ -63,10 +63,10 @@ import { appConfig } from './config/app-config.js';`;
 
   /**
    * Generate CLI index class
-   * @param className - Class name
-   * @param name - Project name
-   * @param _config - Project configuration
-   * @returns CLI class implementation
+   * @param {string} className - Class name
+   * @param {string} name - Project name
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} CLI class implementation
    */
   private generateCLIIndexClass(className: string, name: string, _config: ProjectConfig): string {
     return [
@@ -78,9 +78,9 @@ import { appConfig } from './config/app-config.js';`;
 
   /**
    * Generate class declaration and properties
-   * @param className - Class name
-   * @param _name - Project name
-   * @returns Class declaration
+   * @param {string} className - Class name
+   * @param {string} _name - Project name
+   * @returns {string} Class declaration
    */
   private generateClassDeclaration(className: string, _name: string): string {
     return `/**
@@ -93,8 +93,8 @@ export class ${className}CLI {
 
   /**
    * Generate class constructor
-   * @param name - Project name
-   * @returns Constructor implementation
+   * @param {string} name - Project name
+   * @returns {string} Constructor implementation
    */
   private generateClassConstructor(name: string): string {
     return `  constructor() {
@@ -108,9 +108,9 @@ export class ${className}CLI {
 
   /**
    * Generate class methods
-   * @param _className - Class name
-   * @param _name - Project name
-   * @returns Class methods implementation
+   * @param {string} _className - Class name
+   * @param {string} _name - Project name
+   * @returns {string} Class methods implementation
    */
   private generateClassMethods(_className: string, _name: string): string {
     return [
@@ -125,7 +125,7 @@ export class ${className}CLI {
 
   /**
    * Generate setup program method
-   * @returns Setup program method implementation
+   * @returns {string} Setup program method implementation
    */
   private generateSetupProgramMethod(): string {
     return `  /**
@@ -146,7 +146,7 @@ export class ${className}CLI {
 
   /**
    * Generate setup commands method
-   * @returns Setup commands method implementation
+   * @returns {string} Setup commands method implementation
    */
   private generateSetupCommandsMethod(): string {
     return `  /**
@@ -164,12 +164,12 @@ export class ${className}CLI {
 
   /**
    * Generate run method
-   * @returns Run method implementation
+   * @returns {string} Run method implementation
    */
   private generateRunMethod(): string {
     return `  /**
    * Run the CLI application
-   * @param argv - Command line arguments
+   * @param {string} argv - Command line arguments
    */
   async run(argv: string[]): Promise<void> {
     try {
@@ -187,7 +187,7 @@ export class ${className}CLI {
 
   /**
    * Generate parse global options method
-   * @returns Parse global options method implementation
+   * @returns {string} Parse global options method implementation
    */
   private generateParseGlobalOptionsMethod(): string {
     return `  /**
@@ -218,7 +218,7 @@ export class ${className}CLI {
 
   /**
    * Generate handle error method
-   * @returns Handle error method implementation
+   * @returns {string} Handle error method implementation
    */
   private generateHandleErrorMethod(): string {
     return [
@@ -232,19 +232,19 @@ export class ${className}CLI {
 
   /**
    * Generate handle error method start
-   * @returns Method signature and opening
+   * @returns {string} Method signature and opening
    */
   private generateHandleErrorMethodStart(): string {
     return `  /**
    * Handle application errors
-   * @param error - Error to handle
+   * @param {string} error - Error to handle
    */
   private handleError(error: Error): void {`;
   }
 
   /**
    * Generate commander error handling
-   * @returns Commander error handling logic
+   * @returns {string} Commander error handling logic
    */
   private generateHandleCommanderError(): string {
     return `    if (error.name === 'CommanderError') {
@@ -261,7 +261,7 @@ export class ${className}CLI {
 
   /**
    * Generate validation error handling
-   * @returns Validation error handling logic
+   * @returns {string} Validation error handling logic
    */
   private generateHandleValidationError(): string {
     return `    if (error.name === 'ValidationError') {
@@ -278,7 +278,7 @@ export class ${className}CLI {
 
   /**
    * Generate unexpected error handling
-   * @returns Unexpected error handling logic
+   * @returns {string} Unexpected error handling logic
    */
   private generateHandleUnexpectedError(): string {
     return `    // Handle unexpected errors
@@ -290,7 +290,7 @@ export class ${className}CLI {
 
   /**
    * Generate handle error method end
-   * @returns Method closing
+   * @returns {string} Method closing
    */
   private generateHandleErrorMethodEnd(): string {
     return `  }`;
@@ -298,7 +298,7 @@ export class ${className}CLI {
 
   /**
    * Generate class closing brace
-   * @returns Class closing
+   * @returns {string} Class closing
    */
   private generateClassClosing(): string {
     return `}`;
@@ -306,7 +306,7 @@ export class ${className}CLI {
 
   /**
    * Generate CLI main function options
-   * @returns Main function options description
+   * @returns {string} Main function options description
    */
   private generateCLIIndexParseOptions(): string {
     return 'Main CLI application class with command handling';
@@ -314,8 +314,8 @@ export class ${className}CLI {
 
   /**
    * Generate CLI main function
-   * @param className - Class name
-   * @returns Main function implementation
+   * @param {string} className - Class name
+   * @returns {string} Main function implementation
    */
   private generateCLIIndexMain(className: string): string {
     return `/**
@@ -329,7 +329,7 @@ async function main(): Promise<void> {
 // Run the application if this file is executed directly
 if (import.meta.url === \`file://\${process.argv[1]}\`) {
   main().catch((error) => {
-    console.error('Failed to start CLI application:', error);
+    process.stderr.write('Failed to start CLI application: ' + String(error) + '\\n');
     process.exit(1);
   });
 }`;
@@ -337,7 +337,7 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
 
   /**
    * Generate CLI error handlers
-   * @returns Error handling code
+   * @returns {string} Error handling code
    */
   private generateCLIIndexErrorHandlers(): string {
     return `/**
@@ -346,33 +346,33 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
-  console.error('Uncaught Exception:', error);
+  process.stderr.write('Uncaught Exception: ' + String(error) + '\\n');
   process.exit(1);
 });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.stderr.write('Unhandled Rejection at: ' + String(promise) + ', reason: ' + String(reason) + '\\n');
   process.exit(1);
 });
 
 // Handle SIGINT (Ctrl+C)
 process.on('SIGINT', () => {
-  console.log('\\nReceived SIGINT. Gracefully shutting down...');
+  process.stdout.write('\\nReceived SIGINT. Gracefully shutting down...\\n');
   process.exit(0);
 });
 
 // Handle SIGTERM
 process.on('SIGTERM', () => {
-  console.log('\\nReceived SIGTERM. Gracefully shutting down...');
+  process.stdout.write('\\nReceived SIGTERM. Gracefully shutting down...\\n');
   process.exit(0);
 });`;
   }
 
   /**
    * Generate CLI entry point
-   * @param className - Class name
-   * @returns Entry point export
+   * @param {string} className - Class name
+   * @returns {string} Entry point export
    */
   private generateCLIIndexEntry(className: string): string {
     return `/**

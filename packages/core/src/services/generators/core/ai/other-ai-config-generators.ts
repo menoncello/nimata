@@ -12,8 +12,8 @@ import { DirectoryItem } from '../core-file-operations.js';
 export class OtherAIConfigGenerators {
   /**
    * Generate Copilot configuration file
-   * @param config - Project configuration
-   * @returns Copilot configuration file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Copilot configuration file
    */
   static generateCopilotConfig(config: ProjectConfig): DirectoryItem {
     return {
@@ -25,8 +25,8 @@ export class OtherAIConfigGenerators {
 
   /**
    * Generate AI Context configuration file
-   * @param config - Project configuration
-   * @returns AI Context configuration file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} AI Context configuration file
    */
   static generateAIContextConfig(config: ProjectConfig): DirectoryItem {
     return {
@@ -38,8 +38,8 @@ export class OtherAIConfigGenerators {
 
   /**
    * Generate Cursor configuration file
-   * @param config - Project configuration
-   * @returns Cursor configuration file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Cursor configuration file
    */
   static generateCursorConfig(config: ProjectConfig): DirectoryItem {
     return {
@@ -51,8 +51,8 @@ export class OtherAIConfigGenerators {
 
   /**
    * Generate Copilot configuration content
-   * @param config - Project configuration
-   * @returns Copilot configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Copilot configuration content
    */
   private static generateCopilotConfigContent(config: ProjectConfig): string {
     return [
@@ -65,27 +65,36 @@ export class OtherAIConfigGenerators {
 
   /**
    * Generate Copilot header
-   * @param config - Project configuration
-   * @returns Header section
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Header section
    */
-  private static generateCopilotHeader(config: ProjectConfig): string {
-    return `# GitHub Copilot Instructions for ${config.name}`;
+  private static generateCopilotHeader(_config: ProjectConfig): string {
+    return `# GitHub Copilot Instructions`;
   }
 
   /**
    * Generate Copilot project context
-   * @param config - Project configuration
-   * @returns Project context section
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Project context section
    */
   private static generateCopilotProjectContext(config: ProjectConfig): string {
-    const description = config.description ? `\nDescription: ${config.description}` : '';
-    return `## Project Context
-This is a ${config.projectType} project called ${config.name}.${description}`;
+    const projectTypeNames = {
+      basic: 'Basic Application',
+      web: 'Web Application',
+      cli: 'CLI Application',
+      library: 'Library Package',
+    };
+
+    return `## Overview
+
+This is a ${projectTypeNames[config.projectType as keyof typeof projectTypeNames] || config.projectType}.
+
+**Name**: ${config.name}`;
   }
 
   /**
    * Generate Copilot coding standards
-   * @returns Coding standards section
+   * @returns {string} Coding standards section
    */
   private static generateCopilotCodingStandards(): string {
     return `## Coding Standards
@@ -97,21 +106,64 @@ This is a ${config.projectType} project called ${config.name}.${description}`;
 
   /**
    * Generate Copilot project guidelines
-   * @param config - Project configuration
-   * @returns Project guidelines section
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Project guidelines section
    */
   private static generateCopilotProjectGuidelines(config: ProjectConfig): string {
+    const projectSpecificSection = this.getProjectSpecificSection(config.projectType);
+
     return `## Project Guidelines
 - Author: ${config.author || 'Your Name'}
 - License: ${config.license || 'MIT'}
 - Project Type: ${config.projectType}
-- Quality Level: ${config.qualityLevel}`;
+- Quality Level: ${config.qualityLevel}
+
+${projectSpecificSection}`;
+  }
+
+  /**
+   * Get project-specific guidelines based on project type
+   * @param {string} projectType - Project type
+   * @returns {string} Project-specific guidelines
+   */
+  private static getProjectSpecificSection(projectType: string): string {
+    if (projectType === 'cli') {
+      return `## CLI Development Guidelines
+
+- Use command pattern for CLI operations
+- Handle errors gracefully and provide helpful error messages
+- Support both programmatic and interactive usage
+- TypeScript
+- Browser`;
+    } else if (projectType === 'web') {
+      return `## Web Development Guidelines
+
+- Build responsive, accessible user interfaces
+- Follow modern web standards and best practices
+- Optimize for performance and user experience
+- TypeScript
+- Browser`;
+    } else if (projectType === 'library') {
+      return `## Library Development Guidelines
+
+- Design clear, well-documented public APIs
+- Follow semantic versioning for releases
+- Provide comprehensive examples and documentation
+- TypeScript
+- Browser`;
+    }
+    return `## Development Guidelines
+
+- Write clean, maintainable code
+- Follow established patterns and conventions
+- TypeScript
+- Browser`;
   }
 
   /**
    * Generate AI Context content
-   * @param config - Project configuration
-   * @returns AI Context content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} AI Context content
    */
   private static generateAIContextContent(config: ProjectConfig): string {
     return `Project: ${config.name}
@@ -125,8 +177,8 @@ This is a TypeScript project with strict ESLint rules and comprehensive testing.
 
   /**
    * Generate Cursor rules content
-   * @param config - Project configuration
-   * @returns Cursor rules content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Cursor rules content
    */
   private static generateCursorRules(config: ProjectConfig): string {
     return `# Cursor Rules for ${config.name}

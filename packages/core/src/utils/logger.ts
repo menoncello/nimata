@@ -5,10 +5,10 @@
  * Sensitive data is automatically masked in log messages
  */
 
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+export type LoggerLogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 export interface LogEntry {
-  level: LogLevel;
+  level: LoggerLogLevel;
   timestamp: string;
   operation: string;
   message: string;
@@ -34,22 +34,22 @@ const LOGGER_CONSTANTS = {
  */
 export class Logger {
   private static instance: Logger;
-  private logLevel: LogLevel;
+  private logLevel: LoggerLogLevel;
 
   /**
    * Creates a new Logger instance
-   * @param {LogLevel} logLevel - Minimum log level to output (default: 'info')
+   * @param {LoggerLogLevel} logLevel - Minimum log level to output (default: 'info')
    */
-  private constructor(logLevel: LogLevel = 'info') {
+  private constructor(logLevel: LoggerLogLevel = 'info') {
     this.logLevel = logLevel;
   }
 
   /**
    * Get singleton logger instance
-   * @param {LogLevel} logLevel - Optional minimum log level (only used on first call)
+   * @param {LoggerLogLevel} logLevel - Optional minimum log level (only used on first call)
    * @returns {Logger} Logger singleton instance
    */
-  static getInstance(logLevel?: LogLevel): Logger {
+  static getInstance(logLevel?: LoggerLogLevel): Logger {
     if (!Logger.instance) {
       Logger.instance = new Logger(logLevel);
     }
@@ -68,9 +68,9 @@ export class Logger {
 
   /**
    * Log info message
-   * @param operation - Operation being logged
-   * @param message - Log message
-   * @param metadata - Optional metadata object
+   * @param {string} operation - Operation being logged
+   * @param {string} message - Log message
+   * @param {string} metadata - Optional metadata object
    */
   info(operation: string, message: string, metadata?: Record<string, unknown>): void {
     this.log('info', operation, message, metadata);
@@ -78,9 +78,9 @@ export class Logger {
 
   /**
    * Log warning message
-   * @param operation - Operation being logged
-   * @param message - Log message
-   * @param metadata - Optional metadata object
+   * @param {string} operation - Operation being logged
+   * @param {string} message - Log message
+   * @param {string} metadata - Optional metadata object
    */
   warn(operation: string, message: string, metadata?: Record<string, unknown>): void {
     this.log('warn', operation, message, metadata);
@@ -88,9 +88,9 @@ export class Logger {
 
   /**
    * Log error message
-   * @param operation - Operation being logged
-   * @param message - Log message
-   * @param metadata - Optional metadata object
+   * @param {string} operation - Operation being logged
+   * @param {string} message - Log message
+   * @param {string} metadata - Optional metadata object
    */
   error(operation: string, message: string, metadata?: Record<string, unknown>): void {
     this.log('error', operation, message, metadata);
@@ -98,13 +98,13 @@ export class Logger {
 
   /**
    * Internal logging method
-   * @param level - Log level
-   * @param operation - Operation being logged
-   * @param message - Log message
-   * @param metadata - Optional metadata object
+   * @param {string} level - Log level
+   * @param {string} operation - Operation being logged
+   * @param {string} message - Log message
+   * @param {string} metadata - Optional metadata object
    */
   private log(
-    level: LogLevel,
+    level: LoggerLogLevel,
     operation: string,
     message: string,
     metadata?: Record<string, unknown>
@@ -126,45 +126,46 @@ export class Logger {
 
   /**
    * Check if message should be logged based on level
-   * @param level - Log level to check
-   * @returns True if should log, false otherwise
+   * @param {string} level - Log level to check
+   * @returns {string} True if should log, false otherwise
    */
-  private shouldLog(level: LogLevel): boolean {
-    const levels: Record<LogLevel, number> = { debug: 0, info: 1, warn: 2, error: 3 };
+  private shouldLog(level: LoggerLogLevel): boolean {
+    const levels: Record<LoggerLogLevel, number> = { debug: 0, info: 1, warn: 2, error: 3 };
     return levels[level] >= levels[this.logLevel];
   }
 
   /**
    * Output log entry to console
-   * @param entry - Log entry to output
+   * @param {LogEntry} entry - Log entry to output
    */
   private outputLog(entry: LogEntry): void {
     const prefix = `[${entry.timestamp}] [${entry.level.toUpperCase()}] [${entry.operation}] ${entry.message}`;
+    const metadataStr = entry.metadata ? JSON.stringify(entry.metadata) : 'undefined';
 
     switch (entry.level) {
       case 'debug':
-        console.debug(prefix, entry.metadata);
+        process.stderr.write(`DEBUG: ${prefix} ${metadataStr}\n`);
         break;
       case 'info':
-        console.info(prefix, entry.metadata);
+        process.stdout.write(`INFO: ${prefix} ${metadataStr}\n`);
         break;
       case 'warn':
         if (entry.fieldPath) {
-          console.warn(prefix, entry.fieldPath, entry.metadata);
+          process.stderr.write(`WARN: ${prefix} ${entry.fieldPath} ${metadataStr}\n`);
         } else {
-          console.warn(prefix, entry.metadata);
+          process.stderr.write(`WARN: ${prefix} ${metadataStr}\n`);
         }
         break;
       case 'error':
-        console.error(prefix, entry.metadata);
+        process.stderr.write(`ERROR: ${prefix} ${metadataStr}\n`);
         break;
     }
   }
 
   /**
    * Mask sensitive data in log metadata
-   * @param metadata - Metadata object to mask
-   * @returns Masked metadata object or undefined
+   * @param {string} metadata - Metadata object to mask
+   * @returns {string} Masked metadata object or undefined
    */
   private maskSensitiveData(
     metadata?: Record<string, unknown>
@@ -194,8 +195,8 @@ export class Logger {
 
   /**
    * Mask a sensitive string value
-   * @param value - String value to mask
-   * @returns Masked string
+   * @param {string} value - String value to mask
+   * @returns {string} Masked string
    */
   private maskValue(value: string): string {
     if (value.length <= LOGGER_CONSTANTS.MIN_MASK_LENGTH) {
@@ -208,8 +209,8 @@ export class Logger {
 
   /**
    * Recursively mask sensitive object properties
-   * @param obj - Object to mask
-   * @returns Masked object
+   * @param {string} obj - Object to mask
+   * @returns {string} Masked object
    */
   private maskObject(obj: unknown): unknown {
     if (Array.isArray(obj)) {

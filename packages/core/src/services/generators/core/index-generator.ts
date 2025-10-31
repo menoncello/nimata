@@ -17,6 +17,7 @@ import {
   getClassConstructor,
   getInitializeMethod,
   getConfigMethod,
+  getSetConfigMethod,
   getUpdateConfigMethod,
   getClassFooter,
   generateIndexDocumentation,
@@ -30,8 +31,8 @@ const BUN_FRAMEWORK_PREFIX = 'bun-';
 export class IndexGenerator {
   /**
    * Generate main index.ts file content based on project type
-   * @param config - Project configuration
-   * @returns Index file TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Index file TypeScript code
    */
   generateIndexFile(config: ProjectConfig): string {
     switch (config.projectType) {
@@ -55,8 +56,8 @@ export class IndexGenerator {
 
   /**
    * Generate CLI project index file
-   * @param config - Project configuration
-   * @returns CLI index file TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI index file TypeScript code
    */
   private generateCLIIndexFile(config: ProjectConfig): string {
     return generateCLIIndexFileModule(config);
@@ -64,8 +65,8 @@ export class IndexGenerator {
 
   /**
    * Generate Web project index file
-   * @param config - Project configuration
-   * @returns Web index file TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Web index file TypeScript code
    */
   private generateWebIndexFile(config: ProjectConfig): string {
     return generateWebIndexFileModule(config);
@@ -73,8 +74,8 @@ export class IndexGenerator {
 
   /**
    * Generate Library project index file
-   * @param config - Project configuration
-   * @returns Library index file TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Library index file TypeScript code
    */
   private generateLibraryIndexFile(config: ProjectConfig): string {
     return generateLibraryIndexFileModule(config);
@@ -82,8 +83,8 @@ export class IndexGenerator {
 
   /**
    * Generate TypeScript project index file
-   * @param config - Project configuration
-   * @returns TypeScript index file TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} TypeScript index file TypeScript code
    */
   private generateTypeScriptIndexFile(config: ProjectConfig): string {
     return generateTypeScriptIndexFileModule(config);
@@ -91,8 +92,8 @@ export class IndexGenerator {
 
   /**
    * Generate Framework project index file (React, Vue, Express)
-   * @param config - Project configuration
-   * @returns Framework index file TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Framework index file TypeScript code
    */
   private generateFrameworkIndexFile(config: ProjectConfig): string {
     return generateFrameworkIndexFileModule(config);
@@ -100,8 +101,8 @@ export class IndexGenerator {
 
   /**
    * Generate Basic project index file (original implementation)
-   * @param config - Project configuration
-   * @returns Basic index file TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Basic index file TypeScript code
    */
   private generateBasicIndexFile(config: ProjectConfig): string {
     const exportInterface = this.generateExportInterface(config);
@@ -117,8 +118,8 @@ ${exportClass}`;
 
   /**
    * Generate export interface
-   * @param config - Project configuration
-   * @returns Interface TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Interface TypeScript code
    */
   private generateExportInterface(config: ProjectConfig): string {
     return getBaseInterface(config);
@@ -126,8 +127,8 @@ ${exportClass}`;
 
   /**
    * Generate export class
-   * @param config - Project configuration
-   * @returns Class TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Class TypeScript code
    */
   private generateExportClass(config: ProjectConfig): string {
     const className = `${this.toPascalCase(config.name)}Core`;
@@ -137,6 +138,7 @@ ${exportClass}`;
       getClassConstructor(config),
       getInitializeMethod(config),
       getConfigMethod(className),
+      getSetConfigMethod(className),
       getUpdateConfigMethod(className),
       getClassFooter(),
     ].join('\n');
@@ -144,8 +146,8 @@ ${exportClass}`;
 
   /**
    * Convert string to PascalCase
-   * @param str - Input string
-   * @returns PascalCase string
+   * @param {string} str - Input string
+   * @returns {string} PascalCase string
    */
   private toPascalCase(str: string): string {
     return str

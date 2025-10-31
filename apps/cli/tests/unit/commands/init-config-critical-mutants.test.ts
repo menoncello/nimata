@@ -6,11 +6,11 @@
  * - src/commands/init-handlers.ts
  */
 import 'reflect-metadata';
+import { describe, it, expect, beforeEach } from 'bun:test';
 import {
   ProjectWizardImplementation,
   type ProjectConfig,
 } from '@nimata/adapters/wizards/project-wizard';
-import { describe, it, expect, beforeEach } from 'bun:test';
 import { runNonInteractive } from '../../../src/commands/init-config.js';
 import {
   displayValidationErrors,
@@ -74,10 +74,10 @@ describe('Critical Mutant Tests - Validation Logic', () => {
       expect(errorCalls.length).toBeGreaterThanOrEqual(2);
 
       // Verify each error was formatted correctly (not empty string)
-      errorCalls.forEach((call) => {
+      for (const call of errorCalls) {
         const message = String(call.args[0]);
         expect(message.length).toBeGreaterThan(10); // Not empty or just whitespace
-      });
+      }
     });
 
     it('should apply defaults when values are missing (kills ObjectLiteral mutant)', async () => {
@@ -318,10 +318,10 @@ describe('Critical Mutant Tests - Validation Logic', () => {
 
       // Verify message length (not empty strings)
       const infoCalls = output.calls.filter((c) => c.method === 'info');
-      infoCalls.forEach((call) => {
+      for (const call of infoCalls) {
         const msg = String(call.args[0]);
         expect(msg.length).toBeGreaterThan(5);
-      });
+      }
     });
   });
 });

@@ -8,7 +8,7 @@ import { AIContextConfigOptions } from '../types/config-types.js';
 
 /**
  * Build Claude instructions section
- * @returns Formatted markdown string with Claude instructions
+ * @returns {string} Formatted markdown string with Claude instructions
  */
 export function buildClaudeInstructionsSection(): string {
   return `## Claude-Specific Instructions`;
@@ -16,7 +16,7 @@ export function buildClaudeInstructionsSection(): string {
 
 /**
  * Build Claude file management section
- * @returns Formatted markdown string with file management guidelines
+ * @returns {string} Formatted markdown string with file management guidelines
  */
 export function buildClaudeFileManagementSection(): string {
   return `### File Management
@@ -28,7 +28,7 @@ export function buildClaudeFileManagementSection(): string {
 
 /**
  * Build Claude code generation section
- * @returns Formatted markdown string with code generation preferences
+ * @returns {string} Formatted markdown string with code generation preferences
  */
 export function buildClaudeCodeGenerationSection(): string {
   return `### Code Generation Preferences
@@ -41,9 +41,9 @@ export function buildClaudeCodeGenerationSection(): string {
 
 /**
  * Build Claude testing section
- * @param options - Configuration options for AI context generation
- * @param getCoverageThreshold - Function to get coverage threshold
- * @returns Formatted markdown string with testing approach
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(qualityLevel} getCoverageThreshold - Function to get coverage threshold
+ * @returns {void} Formatted markdown string with testing approach
  */
 export function buildClaudeTestingSection(
   options: AIContextConfigOptions,
@@ -59,7 +59,7 @@ export function buildClaudeTestingSection(
 
 /**
  * Build Claude quality standards section
- * @returns Formatted markdown string with quality standards
+ * @returns {string} Formatted markdown string with quality standards
  */
 export function buildClaudeQualityStandardsSection(): string {
   return `### Quality Standards
@@ -72,9 +72,9 @@ export function buildClaudeQualityStandardsSection(): string {
 
 /**
  * Build Claude project-specific section
- * @param options - Configuration options for AI context generation
- * @param getClaudeSpecificGuidelines - Function to get Claude-specific guidelines
- * @returns Formatted markdown string with project-specific guidelines
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(projectType} getClaudeSpecificGuidelines - Function to get Claude-specific guidelines
+ * @returns {void} Formatted markdown string with project-specific guidelines
  */
 export function buildClaudeProjectSpecificSection(
   options: AIContextConfigOptions,
@@ -86,7 +86,7 @@ ${getClaudeSpecificGuidelines(options.projectType)}`;
 
 /**
  * Build Claude interaction patterns section
- * @returns Formatted markdown string with interaction patterns
+ * @returns {string} Formatted markdown string with interaction patterns
  */
 export function buildClaudeInteractionPatternsSection(): string {
   return `### Interaction Patterns

@@ -1,174 +1,63 @@
 /**
  * ESLint Configuration Generator
- *
- * Generates ESLint configuration files for projects
  */
+
 import type { ProjectConfig } from '../../../types/project-config.js';
+import { JSON_INDENTATION, ESLINT_RULE_VALUES } from './constants.js';
 
 /**
- * ESLint Configuration Generator class
+ * ESLint configuration generator
  */
 export class ESLintConfigGenerator {
   /**
-   * Generate ESLint configuration
-   * @param _config - Project configuration
-   * @returns eslint.config.js content
+   * Generate ESLint configuration (instance method)
+   * @param {_config} _config - Project configuration (optional)
+   * @returns {string} ESLint config ESM format
    */
-  generate(_config: ProjectConfig): string {
-    return `${this.generateImports()}
-
-export default [
-  eslint.configs.recommended,
-  ${this.generateTypeScriptConfig()},
-  ${this.generateTestConfig()},
-  ${this.generateIgnores()},
-];`;
+  generate(_config?: ProjectConfig): string {
+    return ESLintConfigGenerator.generateESLintConfig();
   }
 
   /**
-   * Generate ESLint imports
-   * @returns ESLint import statements
+   * Build ESLint options
+   * @returns {Record<string, unknown>} ESLint configuration object
    */
-  private generateImports(): string {
-    return `import eslint from '@eslint/js';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import tsparser from '@typescript-eslint/parser';`;
-  }
-
-  /**
-   * Generate ESLint TypeScript configuration
-   * @returns TypeScript configuration object
-   */
-  private generateTypeScriptConfig(): string {
-    return `{
-    files: ['**/*.ts'],
-    languageOptions: {
-      parser: tsparser,
+  private static buildESLintOptions(): Record<string, unknown> {
+    return {
+      root: true,
+      env: {
+        node: true,
+        es2022: true,
+      },
+      extends: [
+        'eslint:recommended',
+        '@typescript-eslint/recommended',
+        '@typescript-eslint/recommended-requiring-type-checking',
+      ],
+      parser: '@typescript-eslint/parser',
       parserOptions: {
-        ecmaVersion: 2022,
+        ecmaVersion: 'latest',
         sourceType: 'module',
         project: './tsconfig.json',
       },
-    },
-    plugins: {
-      '@typescript-eslint': tseslint,
-    },
-    rules: ${this.generateRules()}
-  }`;
+      plugins: ['@typescript-eslint'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': ESLINT_RULE_VALUES.ERROR,
+        '@typescript-eslint/explicit-function-return-type': ESLINT_RULE_VALUES.WARN,
+        '@typescript-eslint/no-explicit-any': ESLINT_RULE_VALUES.ERROR,
+        '@typescript-eslint/no-non-null-assertion': ESLINT_RULE_VALUES.ERROR,
+        'prefer-const': ESLINT_RULE_VALUES.ERROR,
+        'no-var': ESLINT_RULE_VALUES.ERROR,
+      },
+    };
   }
 
   /**
-   * Generate ESLint rules
-   * @returns ESLint rules object
+   * Generate ESLint configuration
+   * @returns {string} ESLint config ESM format
    */
-  private generateRules(): string {
-    return `{
-      ${this.generateTypeScriptRules()},
-      ${this.generateGeneralRules()},
-      ${this.generateStyleRules()},
-      ${this.generateBestPracticeRules()},
-      ${this.generateImportRules()}
-    }`;
-  }
-
-  /**
-   * Generate TypeScript-specific ESLint rules
-   * @returns TypeScript ESLint rules
-   */
-  private generateTypeScriptRules(): string {
-    return `// TypeScript specific rules
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/prefer-nullish-coalescing': 'error',
-      '@typescript-eslint/prefer-optional-chain': 'error',
-      '@typescript-eslint/no-non-null-assertion': 'error'`;
-  }
-
-  /**
-   * Generate general ESLint rules
-   * @returns General ESLint rules
-   */
-  private generateGeneralRules(): string {
-    return `// General rules
-      'no-console': 'warn',
-      'no-debugger': 'error',
-      'prefer-const': 'error',
-      'no-var': 'error',
-      'object-shorthand': 'error',
-      'prefer-template': 'error'`;
-  }
-
-  /**
-   * Generate code style ESLint rules
-   * @returns Code style ESLint rules
-   */
-  private generateStyleRules(): string {
-    return `// Code style
-      'indent': ['error', 2],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'always'],
-      'comma-dangle': ['error', 'always-multiline']`;
-  }
-
-  /**
-   * Generate best practice ESLint rules
-   * @returns Best practice ESLint rules
-   */
-  private generateBestPracticeRules(): string {
-    return `// Best practices
-      'eqeqeq': ['error', 'always'],
-      'curly': ['error', 'all'],
-      'brace-style': ['error', '1tbs'],
-      'max-len': ['error', { code: 100 }]`;
-  }
-
-  /**
-   * Generate import/export ESLint rules
-   * @returns Import/export ESLint rules
-   */
-  private generateImportRules(): string {
-    return `// Import/Export
-      'sort-imports': ['error', { ignoreDeclarationSort: true }],
-      'import/order': ['error', {
-        'groups': [
-          'builtin',
-          'external',
-          'internal',
-          'parent',
-          'sibling',
-          'index'
-        ],
-        'newlines-between': 'always'
-      }]`;
-  }
-
-  /**
-   * Generate ESLint test configuration
-   * @returns Test configuration object
-   */
-  private generateTestConfig(): string {
-    return `{
-    files: ['tests/**/*.ts', '**/*.test.ts'],
-    rules: {
-      'no-console': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-    },
-  }`;
-  }
-
-  /**
-   * Generate ESLint ignores
-   * @returns ESLint ignores configuration
-   */
-  private generateIgnores(): string {
-    return `{
-    ignores: [
-      'dist/**',
-      'build/**',
-      'coverage/**',
-      'node_modules/**',
-      '*.js'
-    ],
-  }`;
+  static generateESLintConfig(): string {
+    const config = this.buildESLintOptions();
+    return `export default ${JSON.stringify(config, null, JSON_INDENTATION)};`;
   }
 }

@@ -65,7 +65,7 @@ describe('Project Generation - Integration (RED PHASE)', () => {
       await assertFileExists(`${tempDir}/end-to-end-test/README.md`);
       await assertFileExists(`${tempDir}/end-to-end-test/eslint.config.mjs`);
       await assertFileExists(`${tempDir}/end-to-end-test/tsconfig.json`);
-      await assertFileExists(`${tempDir}/end-to-end-test/prettier.config.mjs`);
+      await assertFileExists(`${tempDir}/end-to-end-test/.prettierrc.json`);
     });
 
     it('should generate working project with all components integrated', async () => {
@@ -97,7 +97,7 @@ describe('Project Generation - Integration (RED PHASE)', () => {
       // Verify configuration files
       await assertFileExists(`${tempDir}/integrated-test/eslint.config.mjs`);
       await assertFileExists(`${tempDir}/integrated-test/tsconfig.json`);
-      await assertFileExists(`${tempDir}/integrated-test/prettier.config.mjs`);
+      await assertFileExists(`${tempDir}/integrated-test/.prettierrc.json`);
 
       // Verify AI context files
       await assertFileExists(`${tempDir}/integrated-test/CLAUDE.md`);

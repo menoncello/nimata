@@ -4,10 +4,10 @@
  * Tests for end-to-end template generation functionality
  * Priority: P1 - Core template system functionality
  */
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdir, rm, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { ProjectGenerator } from '../../src/project-generator.js';
 
 describe('Template System Integration [T010]', () => {
@@ -86,25 +86,30 @@ describe('Template System Integration [T010]', () => {
 
       expect(result.success).toBe(true);
 
-      // Check web project files - project is created in a subdirectory named after the project
+      // Check React project files - project is created in a subdirectory named after the project
       const projectDir = join(testDir, config.name);
       const srcDir = join(projectDir, 'src');
-      const serverFile = join(srcDir, 'server.ts');
+      const appFile = join(srcDir, 'App.tsx');
+      const indexFile = join(srcDir, 'index.ts');
       const packageJsonFile = join(projectDir, 'package.json');
 
       // Read files to verify they exist and validate content
-      const serverContent = await readFile(serverFile, 'utf-8');
+      const appContent = await readFile(appFile, 'utf-8');
+      const indexContent = await readFile(indexFile, 'utf-8');
       const packageJsonContent = await readFile(packageJsonFile, 'utf-8');
 
-      expect(serverContent).toContain('server');
+      expect(appContent).toContain('React');
+      expect(indexContent).toContain('createRoot');
       expect(packageJsonContent).toContain('"name": "test-react-project"');
+      expect(packageJsonContent).toContain('react');
+      expect(packageJsonContent).toContain('react-dom');
     });
 
-    it('[T010-13] should generate Express project with server structure', async () => {
+    it('[T010-13] should generate web project with complete structure', async () => {
       const config = {
-        name: 'test-express-project',
-        description: 'A test Express project',
-        author: 'Backend Developer',
+        name: 'test-web-project',
+        description: 'A test web project',
+        author: 'Web Developer',
         license: 'Apache-2.0',
         qualityLevel: 'high' as const,
         projectType: 'web' as const,
@@ -124,11 +129,13 @@ describe('Template System Integration [T010]', () => {
       const packageJsonContent = await readFile(packageJsonFile, 'utf-8');
       const packageJsonData = JSON.parse(packageJsonContent);
 
-      expect(packageJsonData.name).toBe('test-express-project');
-      expect(packageJsonData.dependencies).toHaveProperty('express');
-      expect(packageJsonData.dependencies).toHaveProperty('cors');
-      expect(packageJsonData.dependencies).toHaveProperty('helmet');
-      expect(packageJsonData.devDependencies).toHaveProperty('@types/express');
+      expect(packageJsonData.name).toBe('test-web-project');
+      expect(packageJsonData.dependencies).toHaveProperty('react');
+      expect(packageJsonData.dependencies).toHaveProperty('react-dom');
+      expect(packageJsonData.devDependencies).toHaveProperty('@types/react');
+      expect(packageJsonData.devDependencies).toHaveProperty('@types/react-dom');
+      expect(packageJsonData.devDependencies).toHaveProperty('vite');
+      expect(packageJsonData.devDependencies).toHaveProperty('@vitejs/plugin-react');
     });
   });
 
@@ -170,13 +177,12 @@ describe('Template System Integration [T010]', () => {
 
       expect(result.success).toBe(true);
 
-      const prettierFile = join(testDir, config.name, 'prettier.config.mjs');
+      const prettierFile = join(testDir, config.name, '.prettierrc.json');
       const prettierContent = await readFile(prettierFile, 'utf-8');
 
-      expect(prettierContent).toContain('Prettier configuration for');
-      expect(prettierContent).toContain('semi: true');
-      expect(prettierContent).toContain('singleQuote: true');
-      expect(prettierContent).toContain('tabWidth: 2');
+      expect(prettierContent).toContain('"semi": true');
+      expect(prettierContent).toContain('"singleQuote": true');
+      expect(prettierContent).toContain('"tabWidth": 2');
     });
 
     it('[T010-23] should generate Vitest configuration', async () => {

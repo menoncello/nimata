@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class ReactTestGenerator {
   /**
    * Generate React-specific test cases
-   * @param _config - Project configuration
-   * @returns React test case TypeScript code
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} React test case TypeScript code
    */
   generateReactTests(_config: ProjectConfig): string {
     return `

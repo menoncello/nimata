@@ -209,12 +209,12 @@ describe('Project Generation - Quality Configurations (RED PHASE)', () => {
 
       // THEN: Prettier configuration generated
       expect(result.exitCode).toBe(0);
-      await assertFileExists(`${tempDir}/prettier-test/prettier.config.mjs`);
+      await assertFileExists(`${tempDir}/prettier-test/.prettierrc.json`);
 
       const prettierConfigContent = await Bun.file(
-        `${tempDir}/prettier-test/prettier.config.mjs`
+        `${tempDir}/prettier-test/.prettierrc.json`
       ).text();
-      expect(prettierConfigContent).toContain('export default');
+      expect(prettierConfigContent).toContain('"semi": true');
     });
 
     it('should generate .prettierignore file', async () => {
@@ -338,7 +338,7 @@ describe('Project Generation - Quality Configurations (RED PHASE)', () => {
 
       // THEN: Project generated successfully with Prettier config
       expect(result.exitCode).toBe(0);
-      await assertFileExists(`${tempDir}/prettier-validation-test/prettier.config.mjs`);
+      await assertFileExists(`${tempDir}/prettier-validation-test/.prettierrc.json`);
     });
   });
 
@@ -365,7 +365,7 @@ describe('Project Generation - Quality Configurations (RED PHASE)', () => {
       // Verify all config files exist
       await assertFileExists(`${tempDir}/integration-test/eslint.config.mjs`);
       await assertFileExists(`${tempDir}/integration-test/tsconfig.json`);
-      await assertFileExists(`${tempDir}/integration-test/prettier.config.mjs`);
+      await assertFileExists(`${tempDir}/integration-test/.prettierrc.json`);
       await assertFileExists(`${tempDir}/integration-test/package.json`);
     });
   });

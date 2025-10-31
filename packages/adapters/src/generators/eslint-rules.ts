@@ -9,7 +9,7 @@ import { ESLINT_RULES_CONSTANTS } from './eslint-rules-constants.js';
 // Base rules that apply to all quality levels
 /**
  * Gets base ESLint rules that apply to all quality levels
- * @returns Base ESLint rules configuration
+ * @returns {void} Base ESLint rules configuration
  */
 export function getBaseQualityRules(): Record<string, unknown> {
   return {
@@ -43,8 +43,8 @@ export function getBaseQualityRules(): Record<string, unknown> {
 // Light quality rules (minimal requirements)
 /**
  * Gets light quality ESLint rules with minimal requirements
- * @param baseRules - Base rules to extend
- * @returns Light quality ESLint rules configuration
+ * @param {Record<string} baseRules - Base rules to extend
+ * @returns {void} Light quality ESLint rules configuration
  */
 export function getLightQualityRules(baseRules: Record<string, unknown>): Record<string, unknown> {
   return {
@@ -60,8 +60,8 @@ export function getLightQualityRules(baseRules: Record<string, unknown>): Record
 // Medium quality rules (standard requirements)
 /**
  * Gets medium quality ESLint rules with standard requirements
- * @param baseRules - Base rules to extend
- * @returns Medium quality ESLint rules configuration
+ * @param {Record<string} baseRules - Base rules to extend
+ * @returns {void} Medium quality ESLint rules configuration
  */
 export function getMediumQualityRules(baseRules: Record<string, unknown>): Record<string, unknown> {
   return {
@@ -81,8 +81,8 @@ export function getMediumQualityRules(baseRules: Record<string, unknown>): Recor
 // Strict quality rules (maximum quality requirements)
 /**
  * Gets strict quality ESLint rules with comprehensive requirements
- * @param baseRules - Base rules to extend
- * @returns Strict quality ESLint rules configuration
+ * @param {Record<string} baseRules - Base rules to extend
+ * @returns {void} Strict quality ESLint rules configuration
  */
 export function getStrictQualityRules(baseRules: Record<string, unknown>): Record<string, unknown> {
   return {
@@ -102,8 +102,8 @@ export function getStrictQualityRules(baseRules: Record<string, unknown>): Recor
 
 /**
  * Gets quality-based ESLint rules for the specified quality level
- * @param qualityLevel - The quality level ('light', 'medium', or 'strict')
- * @returns Quality-based ESLint rules configuration
+ * @param {string} qualityLevel - The quality level ('light', 'medium', or 'strict')
+ * @returns {void} Quality-based ESLint rules configuration
  */
 export function getQualityRules(qualityLevel: string): Record<string, unknown> {
   const baseRules = getBaseQualityRules();

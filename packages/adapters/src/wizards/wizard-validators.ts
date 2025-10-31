@@ -36,8 +36,8 @@ const INVALID_ASSISTANTS_MESSAGE = `Invalid AI assistants: {{invalid}}. Valid op
 
 /**
  * Validate required configuration fields
- * @param config - Configuration to validate
- * @returns Validation result
+ * @param {Partial<ProjectConfig>} config - Configuration to validate
+ * @returns {ValidationResult} Validation result
  */
 export function validateRequiredFields(config: Partial<ProjectConfig>): ValidationResult {
   const errors: string[] = [];
@@ -56,8 +56,8 @@ export function validateRequiredFields(config: Partial<ProjectConfig>): Validati
 
 /**
  * Validate project name field
- * @param config - Configuration to validate
- * @param errors - Array to collect errors
+ * @param {Partial<ProjectConfig>} config - Configuration to validate
+ * @param {string[]} errors - Array to collect errors
  */
 function validateProjectNameField(config: Partial<ProjectConfig>, errors: string[]): void {
   if (config.name) {
@@ -72,8 +72,8 @@ function validateProjectNameField(config: Partial<ProjectConfig>, errors: string
 
 /**
  * Validate quality level field
- * @param config - Configuration to validate
- * @param errors - Array to collect errors
+ * @param {Partial<ProjectConfig>} config - Configuration to validate
+ * @param {string[]} errors - Array to collect errors
  */
 function validateQualityLevelField(config: Partial<ProjectConfig>, errors: string[]): void {
   if (!config.qualityLevel) {
@@ -85,8 +85,8 @@ function validateQualityLevelField(config: Partial<ProjectConfig>, errors: strin
 
 /**
  * Validate project type field
- * @param config - Configuration to validate
- * @param errors - Array to collect errors
+ * @param {Partial<ProjectConfig>} config - Configuration to validate
+ * @param {string[]} errors - Array to collect errors
  */
 function validateProjectTypeField(config: Partial<ProjectConfig>, errors: string[]): void {
   if (!config.projectType) {
@@ -98,8 +98,8 @@ function validateProjectTypeField(config: Partial<ProjectConfig>, errors: string
 
 /**
  * Validate AI assistants field
- * @param config - Configuration to validate
- * @param errors - Array to collect errors
+ * @param {Partial<ProjectConfig>} config - Configuration to validate
+ * @param {string[]} errors - Array to collect errors
  */
 function validateAIAssistantsField(config: Partial<ProjectConfig>, errors: string[]): void {
   if (!config.aiAssistants || config.aiAssistants.length === 0) {
@@ -112,8 +112,8 @@ function validateAIAssistantsField(config: Partial<ProjectConfig>, errors: strin
 
 /**
  * Validate optional configuration fields
- * @param config - Configuration to validate
- * @returns Validation result
+ * @param {Partial<ProjectConfig>} config - Configuration to validate
+ * @returns {ValidationResult} Validation result
  */
 export function validateOptionalFields(config: Partial<ProjectConfig>): ValidationResult {
   const errors: string[] = [];
@@ -141,8 +141,8 @@ export function validateOptionalFields(config: Partial<ProjectConfig>): Validati
 
 /**
  * Check if quality level is valid
- * @param qualityLevel - Quality level to check
- * @returns True if valid
+ * @param {string} qualityLevel - Quality level to check
+ * @returns {qualityLevel is QualityLevel} True if valid
  */
 export function isValidQualityLevel(qualityLevel: string): qualityLevel is QualityLevel {
   return ['light', 'medium', 'strict'].includes(qualityLevel);
@@ -150,8 +150,8 @@ export function isValidQualityLevel(qualityLevel: string): qualityLevel is Quali
 
 /**
  * Check if project type is valid
- * @param projectType - Project type to check
- * @returns True if valid
+ * @param {string} projectType - Project type to check
+ * @returns {projectType is ProjectType} True if valid
  */
 export function isValidProjectType(projectType: string): projectType is ProjectType {
   return ['basic', 'web', 'cli', 'library'].includes(projectType);
@@ -159,8 +159,8 @@ export function isValidProjectType(projectType: string): projectType is ProjectT
 
 /**
  * Validate AI assistants array
- * @param aiAssistants - Array of AI assistants to validate
- * @returns Array of validation errors
+ * @param {string[]} aiAssistants - Array of AI assistants to validate
+ * @returns {string[]} Array of validation errors
  */
 export function validateAIAssistants(aiAssistants: string[]): string[] {
   const errors: string[] = [];
@@ -178,8 +178,8 @@ export function validateAIAssistants(aiAssistants: string[]): string[] {
 
 /**
  * Validate project name format and constraints
- * @param name - The project name to validate
- * @returns Validation result with any errors
+ * @param {string} name - The project name to validate
+ * @returns {ValidationResult} Validation result with any errors
  */
 export function validateProjectName(name: string): ValidationResult {
   const errors: string[] = [];
@@ -209,8 +209,8 @@ export function validateProjectName(name: string): ValidationResult {
 
 /**
  * Check if license is a valid SPDX identifier
- * @param license - The license string to validate
- * @returns True if license is valid
+ * @param {string} license - The license string to validate
+ * @returns {boolean} True if license is valid
  */
 export function isValidLicense(license: string): boolean {
   // Common SPDX license identifiers

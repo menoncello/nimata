@@ -5,8 +5,8 @@
  * Tests to push P2 coverage from 74% → 90%+
  */
 
-import { DirectoryStructureGenerator } from '@nimata/core';
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
+import { DirectoryStructureGenerator } from '@nimata/core';
 import { TestProject, createTestProject } from '../e2e/support/test-project.js';
 import { createProjectConfig } from '../support/factories/project-config.factory.js';
 
@@ -194,12 +194,12 @@ describe('P2 Advanced Edge Cases - Story 1.4', () => {
       const testFiles = directoryStructure.filter(
         (item) => item.path.endsWith('.test.ts') && item.type === 'file'
       );
-      testFiles.forEach((testFile) => {
+      for (const testFile of testFiles) {
         expect(testFile.content).toContain('import');
         expect(testFile.content).toContain('describe');
         expect(testFile.content).toContain('test');
         expect(testFile.content).toContain('expect');
-      });
+      }
     });
 
     it('should generate proper directory structure depth', async () => {
@@ -268,7 +268,7 @@ describe('P2 Advanced Edge Cases - Story 1.4', () => {
 
       // Should generate AI config for single assistant
       const claudeConfig = directoryStructure.find(
-        (item) => item.path === '.claude/CLAUDE.md' && item.type === 'file'
+        (item) => item.path === 'CLAUDE.md' && item.type === 'file'
       );
       expect(claudeConfig).toBeDefined();
     });
@@ -287,17 +287,17 @@ describe('P2 Advanced Edge Cases - Story 1.4', () => {
       const structures = projectConfigs.map((config) => generator.generate(config));
 
       // THEN: Each structure should have consistent core files
-      structures.forEach((structure, index) => {
+      for (const [index, structure] of structures.entries()) {
         const config = projectConfigs[index];
 
         // Should always have these core files
         const coreFiles = ['src/index.ts', 'package.json', 'README.md', '.gitignore'];
-        coreFiles.forEach((file) => {
+        for (const file of coreFiles) {
           const fileItem = structure.find((item) => item.path === file && item.type === 'file');
           expect(fileItem).toBeDefined();
           expect(fileItem!.content).toBeDefined();
           expect(fileItem!.content!.length).toBeGreaterThan(0);
-        });
+        }
 
         // Package.json should have consistent structure
         const packageJsonFile = structure.find(
@@ -308,14 +308,14 @@ describe('P2 Advanced Edge Cases - Story 1.4', () => {
         expect(packageJson.version).toBe('1.0.0');
         expect(packageJson.type).toBe('module');
         expect(packageJson.engines).toBeDefined();
-      });
+      }
     });
 
     it('should maintain consistent directory permissions', async () => {
       // GIVEN: Multiple project types
       const projectTypes = ['basic', 'web', 'cli', 'library'] as const;
 
-      projectTypes.forEach((projectType) => {
+      for (const projectType of projectTypes) {
         // WHEN: Directory structure generator creates structure
         const projectConfig = createProjectConfig({
           name: `${projectType}-consistency`,
@@ -325,20 +325,20 @@ describe('P2 Advanced Edge Cases - Story 1.4', () => {
 
         // THEN: All directories should have consistent permissions
         const directories = directoryStructure.filter((item) => item.type === 'directory');
-        directories.forEach((dir) => {
+        for (const dir of directories) {
           expect(dir.mode).toBe(0o755);
-        });
+        }
 
         // AND: Files should have appropriate permissions
         const files = directoryStructure.filter((item) => item.type === 'file');
-        files.forEach((file) => {
+        for (const file of files) {
           if (file.executable) {
             expect(file.mode).toBe(0o755);
           } else {
             expect(file.mode).toBe(0o644);
           }
-        });
-      });
+        }
+      }
     });
   });
 
@@ -399,9 +399,9 @@ describe('P2 Advanced Edge Cases - Story 1.4', () => {
         {} as Record<string, typeof directoryStructure>
       );
 
-      Object.values(filesByPath).forEach((items) => {
+      for (const items of Object.values(filesByPath)) {
         expect(items).toHaveLength(1); // Each path/type combination should be unique
-      });
+      }
     });
   });
 });

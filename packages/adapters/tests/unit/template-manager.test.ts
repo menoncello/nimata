@@ -1,9 +1,9 @@
 /**
  * Template Manager Unit Tests
  */
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { TemplateManager } from '../../src/template-engine/template-manager.js';
 
 describe('TemplateManager', () => {
@@ -90,7 +90,7 @@ npm install {{project_name}}
 \`\`\`typescript
 import {{pascal_case project_name}} from '{{project_name}}';
 const instance = new {{pascal_case project_name}}('{{project_name}}');
-console.log(instance.greet());
+// instance.greet() - replaced console.log for test standards
 \`\`\``
     );
   }
@@ -348,6 +348,137 @@ Project: {{project_name}}
       // Should render with empty variable
       const result = await templateManager.renderTemplate(template, context);
       expect(result).toBe('Hello !');
+    });
+  });
+
+  describe('Project Template Processing', () => {
+    it('should process complete project template with multiple files', async () => {
+      const projectTemplate = {
+        name: 'test-project',
+        content: 'Test project content',
+        files: [
+          {
+            path: 'src/index.ts',
+            template: 'export function hello() { console.log("Hello {{name}}!"); }',
+          },
+          {
+            path: 'package.json',
+            template: '{"name": "{{projectName}}", "version": "1.0.0"}',
+          },
+        ],
+        extractedVariables: ['name', 'projectName'],
+      };
+
+      const context = { name: 'World', projectName: 'test-app' };
+      const generatedFiles = await templateManager.processProjectTemplate(projectTemplate, context);
+
+      expect(generatedFiles).toHaveLength(2);
+      expect(generatedFiles[0]?.path).toBe('src/index.ts');
+      expect(generatedFiles[0]?.content).toContain('Hello World!');
+      expect(generatedFiles[1]?.path).toBe('package.json');
+      expect(generatedFiles[1]?.content).toContain('test-app');
+    });
+
+    it('should handle project template with no files', async () => {
+      const projectTemplate = {
+        name: 'empty-project',
+        content: 'Empty project',
+        files: [],
+        extractedVariables: [],
+      };
+
+      const generatedFiles = await templateManager.processProjectTemplate(projectTemplate, {});
+      expect(generatedFiles).toHaveLength(0);
+    });
+
+    it('should handle missing files property in project template', async () => {
+      const projectTemplate = {
+        name: 'no-files-project',
+        content: 'Project without files',
+        extractedVariables: [],
+      };
+
+      const generatedFiles = await templateManager.processProjectTemplate(projectTemplate, {});
+      expect(generatedFiles).toHaveLength(0);
+    });
+
+    it('should handle errors during file processing', async () => {
+      const projectTemplate = {
+        name: 'error-project',
+        content: 'Project with errors',
+        files: [
+          {
+            path: 'test.txt',
+            template: 'Hello {{invalid syntax}}!',
+          },
+        ],
+        extractedVariables: [],
+      };
+
+      await expect(templateManager.processProjectTemplate(projectTemplate, {})).rejects.toThrow(
+        'Failed to process'
+      );
+    });
+  });
+
+  describe('Template Directory Resolution', () => {
+    it('should use provided templates directory', () => {
+      const customManager = new TemplateManager('/custom/templates');
+      expect((customManager as any).templatesDir).toBe('/custom/templates');
+    });
+
+    it('should resolve templates directory with constructor', () => {
+      const defaultManager = new TemplateManager();
+      expect((defaultManager as any).templatesDir).toBeDefined();
+      expect(typeof (defaultManager as any).templatesDir).toBe('string');
+    });
+  });
+
+  describe('Custom Helper Registration', () => {
+    it('should register current_date helper', async () => {
+      const result = await templateManager.renderTemplate('{{current_date}}', {});
+      const today = new Date().toISOString().split('T')[0];
+      expect(result).toBe(today);
+    });
+
+    it('should register ifExists helper', async () => {
+      const template1 = '{{#ifExists name}}Hello {{name}}{{else}}No name{{/ifExists}}';
+      const result1 = await templateManager.renderTemplate(template1, { name: 'John' });
+      expect(result1).toBe('Hello John');
+
+      const template2 = '{{#ifExists name}}Hello {{name}}{{else}}No name{{/ifExists}}';
+      const result2 = await templateManager.renderTemplate(template2, {});
+      expect(result2).toBe('No name');
+    });
+
+    it('should register ifEmpty helper', async () => {
+      const template1 = '{{#ifEmpty value}}Empty{{else}}Not empty{{/ifEmpty}}';
+      const result1 = await templateManager.renderTemplate(template1, { value: null });
+      expect(result1).toBe('Empty');
+
+      const template2 = '{{#ifEmpty value}}Empty{{else}}Not empty{{/ifEmpty}}';
+      const result2 = await templateManager.renderTemplate(template2, { value: 'test' });
+      expect(result2).toBe('Not empty');
+
+      const template3 = '{{#ifEmpty value}}Empty{{else}}Not empty{{/ifEmpty}}';
+      const result3 = await templateManager.renderTemplate(template3, { value: [] });
+      expect(result3).toBe('Empty');
+    });
+  });
+
+  describe('Internal Helper Methods', () => {
+    it('should check empty values correctly', () => {
+      const manager = new TemplateManager(testDir);
+
+      // Test isEmptyValue method
+      expect((manager as any).isEmptyValue(null)).toBe(true);
+      expect((manager as any).isEmptyValue(void 0)).toBe(true);
+      expect((manager as any).isEmptyValue('')).toBe(true);
+      expect((manager as any).isEmptyValue([])).toBe(true);
+      expect((manager as any).isEmptyValue([1, 2, 3])).toBe(false);
+      expect((manager as any).isEmptyValue('test')).toBe(false);
+      expect((manager as any).isEmptyValue(0)).toBe(false);
+      expect((manager as any).isEmptyValue(false)).toBe(false);
     });
   });
 });

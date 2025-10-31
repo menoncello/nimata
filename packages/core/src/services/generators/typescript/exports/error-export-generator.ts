@@ -12,8 +12,8 @@ import { toPascalCase } from '../../../../utils/string-utils.js';
 export class ErrorExportGenerator {
   /**
    * Generates error class definitions and exports
-   * @param config - The project configuration
-   * @returns Error class definitions string
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Error class definitions string
    */
   generateErrorExports(config: ProjectConfig): string {
     const { name } = config;
@@ -41,8 +41,8 @@ ${utilities}
 
   /**
    * Get header comment
-   * @param name - Project name
-   * @returns Header string
+   * @param {string} name - Project name
+   * @returns {string} Header string
    */
   private getHeader(name: string): string {
     return `// Error class definitions for ${name}`;
@@ -50,8 +50,8 @@ ${utilities}
 
   /**
    * Get base error class definition
-   * @param className - Class name
-   * @returns Base error class code
+   * @param {string} className - Class name
+   * @returns {string} Base error class code
    */
   private getBaseErrorClass(className: string): string {
     const constructorAndMethods = this.generateBaseErrorConstructorAndMethods(className);
@@ -69,8 +69,8 @@ ${constructorAndMethods}
 
   /**
    * Generate base error constructor and methods
-   * @param className - Class name
-   * @returns Constructor and methods content
+   * @param {string} className - Class name
+   * @returns {string} Constructor and methods content
    */
   private generateBaseErrorConstructorAndMethods(className: string): string {
     const constructor = this.generateBaseErrorConstructor(className);
@@ -86,8 +86,8 @@ ${toString}`;
 
   /**
    * Generate base error constructor
-   * @param className - Class name
-   * @returns Constructor content
+   * @param {string} className - Class name
+   * @returns {string} Constructor content
    */
   private generateBaseErrorConstructor(className: string): string {
     return `  constructor(message: string, code: string, cause?: Error) {
@@ -105,7 +105,7 @@ ${toString}`;
 
   /**
    * Generate toJSON method
-   * @returns toJSON method content
+   * @returns {string} toJSON method content
    */
   private generateToJSONMethod(): string {
     return `  /**
@@ -124,7 +124,7 @@ ${toString}`;
 
   /**
    * Generate toString method
-   * @returns toString method content
+   * @returns {string} toString method content
    */
   private generateToStringMethod(): string {
     return `  /**
@@ -137,8 +137,8 @@ ${toString}`;
 
   /**
    * Get configuration and validation error classes
-   * @param className - Base class name
-   * @returns Configuration error classes code
+   * @param {string} className - Base class name
+   * @returns {string} Configuration error classes code
    */
   private getConfigErrors(className: string): string {
     return `/**
@@ -174,8 +174,8 @@ export class ValidationError extends ${className}Error {
 
   /**
    * Get resource-related error classes
-   * @param className - Base class name
-   * @returns Resource error classes code
+   * @param {string} className - Base class name
+   * @returns {string} Resource error classes code
    */
   private getResourceErrors(className: string): string {
     const timeoutError = this.getTimeoutErrorClass(className);
@@ -191,8 +191,8 @@ ${permissionError}`;
 
   /**
    * Get timeout error class
-   * @param className - Base class name
-   * @returns Timeout error class code
+   * @param {string} className - Base class name
+   * @returns {string} Timeout error class code
    */
   private getTimeoutErrorClass(className: string): string {
     return `/**
@@ -218,8 +218,8 @@ export class TimeoutError extends ${className}Error {
 
   /**
    * Get not found error class
-   * @param className - Base class name
-   * @returns Not found error class code
+   * @param {string} className - Base class name
+   * @returns {string} Not found error class code
    */
   private getNotFoundErrorClass(className: string): string {
     return `/**
@@ -249,8 +249,8 @@ export class NotFoundError extends ${className}Error {
 
   /**
    * Get permission error class
-   * @param className - Base class name
-   * @returns Permission error class code
+   * @param {string} className - Base class name
+   * @returns {string} Permission error class code
    */
   private getPermissionErrorClass(className: string): string {
     return `/**
@@ -282,8 +282,8 @@ export class PermissionError extends ${className}Error {
 
   /**
    * Get system-related error classes
-   * @param className - Base class name
-   * @returns System error classes code
+   * @param {string} className - Base class name
+   * @returns {string} System error classes code
    */
   private getSystemErrors(className: string): string {
     const networkError = this.getNetworkErrorClass(className);
@@ -296,8 +296,8 @@ ${databaseError}`;
 
   /**
    * Get network error class
-   * @param className - Base class name
-   * @returns Network error class code
+   * @param {string} className - Base class name
+   * @returns {string} Network error class code
    */
   private getNetworkErrorClass(className: string): string {
     return `/**
@@ -326,8 +326,8 @@ export class NetworkError extends ${className}Error {
 
   /**
    * Get database error class
-   * @param className - Base class name
-   * @returns Database error class code
+   * @param {string} className - Base class name
+   * @returns {string} Database error class code
    */
   private getDatabaseErrorClass(className: string): string {
     return `/**
@@ -356,8 +356,8 @@ export class DatabaseError extends ${className}Error {
 
   /**
    * Get error utility functions
-   * @param className - Base class name
-   * @returns Error utility functions code
+   * @param {string} className - Base class name
+   * @returns {string} Error utility functions code
    */
   private getErrorUtilities(className: string): string {
     return `/**

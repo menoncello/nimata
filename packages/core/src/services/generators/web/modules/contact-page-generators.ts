@@ -6,7 +6,7 @@
 
 /**
  * Generate imports for contact page component
- * @returns Import statements for contact page
+ * @returns {string} Import statements for contact page
  */
 export function generateContactPageImports(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
@@ -16,7 +16,7 @@ import styles from './contact-page.module.css';`;
 
 /**
  * Generate TypeScript interfaces for contact page
- * @returns TypeScript interfaces for contact page
+ * @returns {string} TypeScript interfaces for contact page
  */
 export function generateContactPageInterfaces(): string {
   return `interface ContactFormData {
@@ -34,10 +34,19 @@ interface FormStatus {
 
 /**
  * Generate the main contact page component
- * @param projectName - Name of the project
- * @returns Contact page React component
+ * @param {string} projectName - Name of the project
+ * @returns {string} Contact page React component
  */
 export function generateContactPageComponent(projectName: string): string {
+  return `${generateContactPageComponentStart(projectName)}${generateContactPageStateManagement()}${generateContactPageEventHandlers()}${generateContactPageJSX(projectName)}${generateContactPageComponentEnd()}`;
+}
+
+/**
+ * Generate the start of the contact page component
+ * @param {string} _projectName - Name of the project (unused)
+ * @returns {string} Component start with state initialization
+ */
+function generateContactPageComponentStart(_projectName: string): string {
   return `export const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
@@ -50,7 +59,25 @@ export function generateContactPageComponent(projectName: string): string {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+`;
+}
+
+/**
+ * Generate event handlers for the contact form
+ * @returns {string} Event handler functions
+ */
+function generateContactPageEventHandlers(): string {
+  return `${generateInputChangeHandler()}${generateFormValidationHandler()}${generateFormSubmitHandler()}
+
+`;
+}
+
+/**
+ * Generate state management logic
+ * @returns {string} State management functions
+ */
+function generateContactPageStateManagement(): string {
+  return `  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -58,7 +85,23 @@ export function generateContactPageComponent(projectName: string): string {
     }));
   };
 
-  const validateForm = (): boolean => {
+`;
+}
+
+/**
+ * Generate input change handler
+ * @returns {string} Input change handler function
+ */
+function generateInputChangeHandler(): string {
+  return ``;
+}
+
+/**
+ * Generate form validation handler
+ * @returns {string} Form validation handler function
+ */
+function generateFormValidationHandler(): string {
+  return `  const validateForm = (): boolean => {
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       setFormStatus({ type: 'error', message: 'Please fill in all required fields.' });
       return false;
@@ -72,7 +115,15 @@ export function generateContactPageComponent(projectName: string): string {
     return true;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+`;
+}
+
+/**
+ * Generate form submission handler
+ * @returns {string} Form submission handler function
+ */
+function generateFormSubmitHandler(): string {
+  return `  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -101,20 +152,56 @@ export function generateContactPageComponent(projectName: string): string {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  };`;
+}
 
-  return (
+/**
+ * Generate JSX for the contact page
+ * @param {string} projectName - Name of the project
+ * @returns {string} JSX content for the contact page
+ */
+function generateContactPageJSX(projectName: string): string {
+  return `  return (
     <Layout title=\`Contact ${projectName}\`>
-      <div className={styles.contactContainer}>
+      ${generateContactPageHeader()}${generateContactPageContent(projectName)}${generateContactPageForm()}
+    </Layout>
+  );`;
+}
+
+/**
+ * Generate the contact page header section
+ * @returns {string} Header JSX
+ */
+function generateContactPageHeader(): string {
+  return `<div className={styles.contactContainer}>
         <div className={styles.contactHeader}>
           <h1>Contact Us</h1>
           <p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
         </div>
+`;
+}
 
-        <div className={styles.contactContent}>
+/**
+ * Generate the contact page content section
+ * @param {string} projectName - Name of the project
+ * @returns {string} Content JSX
+ */
+function generateContactPageContent(projectName: string): string {
+  return `<div className={styles.contactContent}>
           <div className={styles.contactInfo}>
             <h2>Get in Touch</h2>
-            <div className={styles.contactItem}>
+            ${generateContactInfoItems(projectName)}
+          </div>
+`;
+}
+
+/**
+ * Generate contact info items
+ * @param {string} projectName - Name of the project
+ * @returns {string} Contact info JSX
+ */
+function generateContactInfoItems(projectName: string): string {
+  return `<div className={styles.contactItem}>
               <h3>Email</h3>
               <p>hello@${projectName.toLowerCase().replace(/\\s+/g, '')}.com</p>
             </div>
@@ -125,81 +212,113 @@ export function generateContactPageComponent(projectName: string): string {
             <div className={styles.contactItem}>
               <h3>Phone</h3>
               <p>(555) 123-4567</p>
-            </div>
-          </div>
+            </div>`;
+}
 
-          <form ref={formRef} onSubmit={handleSubmit} className={styles.contactForm}>
-            <div className={styles.formGroup}>
-              <label htmlFor="name">Name *</label>
+/**
+ * Generate the contact form
+ * @returns {string} Form JSX
+ */
+function generateContactPageForm(): string {
+  return `<form ref={formRef} onSubmit={handleSubmit} className={styles.contactForm}>
+            ${generateFormFields()}${generateFormStatus()}${generateSubmitButton()}
+          </form>
+        </div>
+      </div>`;
+}
+
+/**
+ * Generate form fields
+ * @returns {string} Form field JSX
+ */
+function generateFormFields(): string {
+  return `${generateFormField('name', 'text', 'Name *', true)}${generateFormField('email', 'email', 'Email *', true)}${generateFormField('subject', 'text', 'Subject', false)}${generateTextAreaField('message', 'Message *', true)}`;
+}
+
+/**
+ * Generate a single form field
+ * @param {string} name - Field name
+ * @param {string} type - Field type
+ * @param {string} label - Field label
+ * @param {boolean} required - Whether field is required
+ * @returns {string} Form field JSX
+ */
+function generateFormField(name: string, type: string, label: string, required: boolean): string {
+  return `<div className={styles.formGroup}>
+              <label htmlFor="${name}">${label}</label>
               <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
+                type="${type}"
+                id="${name}"
+                name="${name}"
+                value={formData.${name}}
                 onChange={handleInputChange}
-                required
+                ${required ? 'required' : ''}
               />
             </div>
+`;
+}
 
-            <div className={styles.formGroup}>
-              <label htmlFor="email">Email *</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="subject">Subject</label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleInputChange}
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="message">Message *</label>
+/**
+ * Generate a textarea field
+ * @param {string} name - Field name
+ * @param {string} label - Field label
+ * @param {boolean} required - Whether field is required
+ * @returns {string} Textarea field JSX
+ */
+function generateTextAreaField(name: string, label: string, required: boolean): string {
+  return `<div className={styles.formGroup}>
+              <label htmlFor="${name}">${label}</label>
               <textarea
-                id="message"
-                name="message"
-                value={formData.message}
+                id="${name}"
+                name="${name}"
+                value={formData.${name}}
                 onChange={handleInputChange}
-                required
+                ${required ? 'required' : ''}
                 rows={6}
               />
             </div>
+`;
+}
 
-            {formStatus.type && (
+/**
+ * Generate form status display
+ * @returns {string} Form status JSX
+ */
+function generateFormStatus(): string {
+  return `{formStatus.type && (
               <div className={\`\${styles.formStatus} \${styles[\`formStatus--\${formStatus.type}\`]}\`}>
                 {formStatus.message}
               </div>
-            )}
+            )}`;
+}
 
-            <button
+/**
+ * Generate submit button
+ * @returns {string} Submit button JSX
+ */
+function generateSubmitButton(): string {
+  return `<button
               type="submit"
               disabled={isSubmitting}
               className={styles.submitButton}
             >
               {isSubmitting ? 'Sending...' : 'Send Message'}
-            </button>
-          </form>
-        </div>
-      </div>
-    </Layout>
-  );
-};`;
+            </button>`;
+}
+
+/**
+ * Generate the end of the contact page component
+ * @returns {string} Component closing
+ */
+function generateContactPageComponentEnd(): string {
+  return `
+  };
+`;
 }
 
 /**
  * Generate export statement for contact page
- * @returns Export statement for contact page
+ * @returns {string} Export statement for contact page
  */
 export function generateContactPageExports(): string {
   return `export default ContactPage;`;

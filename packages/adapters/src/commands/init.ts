@@ -7,6 +7,43 @@
 import type { CommandDefinition, CommandOption } from '../types/config-types.js';
 import { EXIT_CODES, FORMATTING } from '../utils/constants.js';
 
+/**
+ * Simple output writer to avoid console statements
+ */
+class OutputWriter {
+  /**
+   * Write message to stdout
+   * @param {string} message - Message to write
+   */
+  static write(message: string): void {
+    process.stdout.write(message);
+  }
+
+  /**
+   * Write error message to stderr
+   * @param {string} message - Error message to write
+   */
+  static writeError(message: string): void {
+    process.stderr.write(message);
+  }
+
+  /**
+   * Write message with newline
+   * @param {string} message - Message to write
+   */
+  static writeln(message = ''): void {
+    process.stdout.write(`${message}\n`);
+  }
+
+  /**
+   * Write error message with newline
+   * @param {string} message - Error message to write
+   */
+  static writelnError(message: string): void {
+    process.stderr.write(`${message}\n`);
+  }
+}
+
 // Default AI assistant
 const DEFAULT_AI_ASSISTANT = 'claude-code' as const;
 
@@ -75,7 +112,7 @@ export interface InitCommandOptions {
 export class InitCommand {
   /**
    * Create and configure the init command
-   * @returns Command definition for the init command
+   * @returns {CommandDefinition} Command definition for the init command
    */
   createCommand(): CommandDefinition {
     return {
@@ -91,7 +128,7 @@ export class InitCommand {
 
   /**
    * Get the command options configuration
-   * @returns Array of command option definitions
+   * @returns {CommandOption[]} Array of command option definitions
    */
   private getCommandOptions(): CommandOption[] {
     return [...COMMAND_OPTIONS];
@@ -99,8 +136,8 @@ export class InitCommand {
 
   /**
    * Execute the init command
-   * @param projectName - Name of the project to initialize
-   * @param options - Command options
+   * @param {string | undefined} projectName - Name of the project to initialize
+   * @param {InitCommandOptions} options - Command options
    * @returns {void}
    */
   async execute(projectName: string | undefined, options: InitCommandOptions): Promise<void> {
@@ -109,12 +146,12 @@ export class InitCommand {
       const config = await this.getProjectConfiguration(projectName, options);
 
       if (!config) {
-        console.log('❌ Project initialization cancelled');
+        OutputWriter.writeln('❌ Project initialization cancelled');
         return;
       }
 
       this.showConfigurationSummary(config);
-      console.log('✅ Project configuration validated');
+      OutputWriter.writeln('✅ Project configuration validated');
       this.showNextSteps(config, options);
     } catch (error: unknown) {
       this.handleError(error, options);
@@ -125,22 +162,22 @@ export class InitCommand {
    * Print welcome message
    */
   private printWelcomeMessage(): void {
-    console.log('🚀 Nìmata CLI - TypeScript Project Generator');
-    console.log();
+    OutputWriter.writeln('🚀 Nìmata CLI - TypeScript Project Generator');
+    OutputWriter.writeln();
   }
 
   /**
    * Handle execution errors
-   * @param error - Error that occurred
-   * @param options - Command options
+   * @param {unknown} error - Error that occurred
+   * @param {InitCommandOptions} options - Command options
    */
   private handleError(error: unknown, options: InitCommandOptions): void {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error('❌ Error creating project:', errorMessage);
+    OutputWriter.writelnError(`❌ Error creating project: ${errorMessage}`);
     if (options.verbose) {
       const errorStack = error instanceof Error ? error.stack : undefined;
       if (errorStack) {
-        console.error(errorStack);
+        OutputWriter.writelnError(errorStack);
       }
     }
     process.exit(EXIT_CODES.ERROR);
@@ -148,16 +185,16 @@ export class InitCommand {
 
   /**
    * Get project configuration from user input or defaults
-   * @param projectName - Name of the project to configure
-   * @param options - Command options
-   * @returns Project configuration or null if cancelled
+   * @param {unknown} projectName - Name of the project to configure
+   * @param {unknown} options - Command options
+   * @returns {void} Project configuration or null if cancelled
    */
   private async getProjectConfiguration(
     projectName: string | undefined,
     options: InitCommandOptions
   ): Promise<ProjectConfig | null> {
     if (!projectName) {
-      console.log('Error: Project name is required');
+      OutputWriter.writeln('Error: Project name is required');
       return null;
     }
 
@@ -167,9 +204,9 @@ export class InitCommand {
 
   /**
    * Create configuration from command-line options
-   * @param projectName - Name of the project
-   * @param options - Command options
-   * @returns Project configuration
+   * @param {string} projectName - Name of the project
+   * @param {InitCommandOptions} options - Command options
+   * @returns { ProjectConfig} Project configuration
    */
   private createConfigFromOptions(projectName: string, options: InitCommandOptions): ProjectConfig {
     const qualityLevel = this.parseQualityLevel(options.quality || 'medium');
@@ -187,22 +224,22 @@ export class InitCommand {
 
   /**
    * Parse quality level from string
-   * @param quality - Quality level string to parse
-   * @returns Parsed quality level
+   * @param {string} quality - Quality level string to parse
+   * @returns {string): 'light' | 'medium' | 'strict'} Parsed quality level
    */
   private parseQualityLevel(quality: string): 'light' | 'medium' | 'strict' {
     const validLevels = ['light', 'medium', 'strict'];
     if (validLevels.includes(quality)) {
       return quality as 'light' | 'medium' | 'strict';
     }
-    console.warn(`Warning: Invalid quality level "${quality}". Using "medium".`);
+    OutputWriter.writelnError(`Warning: Invalid quality level "${quality}". Using "medium".`);
     return 'medium';
   }
 
   /**
    * Parse AI assistants from string
-   * @param ai - AI assistants string to parse
-   * @returns Array of parsed AI assistants
+   * @param {string} ai - AI assistants string to parse
+   * @returns {string): AIAssistant[]} Array of parsed AI assistants
    */
   private parseAIAssistants(ai: string): AIAssistant[] {
     const validAssistants = [...VALID_AI_ASSISTANTS];
@@ -213,13 +250,15 @@ export class InitCommand {
     );
 
     if (validAIAssistants.length === 0) {
-      console.warn(`Warning: No valid AI assistants specified. Using "${DEFAULT_AI_ASSISTANT}".`);
+      OutputWriter.writelnError(
+        `Warning: No valid AI assistants specified. Using "${DEFAULT_AI_ASSISTANT}".`
+      );
       return [DEFAULT_AI_ASSISTANT as AIAssistant];
     }
 
     const invalid = assistants.filter((a) => !validAssistants.includes(a as AIAssistant));
     if (invalid.length > 0) {
-      console.warn(`Warning: Invalid AI assistants ignored: ${invalid.join(', ')}`);
+      OutputWriter.writelnError(`Warning: Invalid AI assistants ignored: ${invalid.join(', ')}`);
     }
 
     return validAIAssistants;
@@ -227,8 +266,8 @@ export class InitCommand {
 
   /**
    * Parse project type from template string
-   * @param template - Template string to parse
-   * @returns Parsed project type
+   * @param {string} template - Template string to parse
+   * @returns {string): 'basic' | 'web' | 'cli' | 'library'} Parsed project type
    */
   private parseProjectType(template: string): 'basic' | 'web' | 'cli' | 'library' {
     const templateMap: Record<string, 'basic' | 'web' | 'cli' | 'library'> = {
@@ -246,7 +285,7 @@ export class InitCommand {
     const projectType = templateMap[normalized];
 
     if (!projectType) {
-      console.warn(`Warning: Unknown template "${template}". Using "basic".`);
+      OutputWriter.writelnError(`Warning: Unknown template "${template}". Using "basic".`);
       return 'basic';
     }
 
@@ -255,22 +294,22 @@ export class InitCommand {
 
   /**
    * Show configuration summary
-   * @param config - Project configuration to display
+   * @param {ProjectConfig} config - Project configuration to display
    * @returns {void}
    */
   private showConfigurationSummary(config: ProjectConfig): void {
-    console.log('📋 Project Configuration:');
-    console.log(`   Name: ${config.name}`);
-    console.log(`   Type: ${this.getProjectTypeName(config.projectType)}`);
-    console.log(`   Quality: ${config.qualityLevel}`);
-    console.log(`   AI Assistants: ${config.aiAssistants.join(', ')}`);
-    console.log();
+    OutputWriter.writeln('📋 Project Configuration:');
+    OutputWriter.writeln(`   Name: ${config.name}`);
+    OutputWriter.writeln(`   Type: ${this.getProjectTypeName(config.projectType)}`);
+    OutputWriter.writeln(`   Quality: ${config.qualityLevel}`);
+    OutputWriter.writeln(`   AI Assistants: ${config.aiAssistants.join(', ')}`);
+    OutputWriter.writeln();
   }
 
   /**
    * Show next steps to the user
-   * @param config - Project configuration
-   * @param options - Command options
+   * @param {ProjectConfig} config - Project configuration
+   * @param {InitCommandOptions} options - Command options
    * @returns {void}
    */
   private showNextSteps(config: ProjectConfig, options: InitCommandOptions): void {
@@ -279,64 +318,64 @@ export class InitCommand {
     this.printProjectReadyMessage(projectPath, options);
     this.printUsefulCommands();
     this.printAIAssistantInfo(config);
-    console.log();
-    console.log('Happy coding! 🚀');
+    OutputWriter.writeln();
+    OutputWriter.writeln('Happy coding! 🚀');
   }
 
   /**
    * Print project ready message with next steps
-   * @param projectPath - Path to the project
-   * @param options - Command options
+   * @param {string} projectPath - Path to the project
+   * @param {InitCommandOptions} options - Command options
    */
   private printProjectReadyMessage(projectPath: string, options: InitCommandOptions): void {
-    console.log('🎉 Project Ready! Next Steps:');
-    console.log(`   1. cd ${projectPath}`);
+    OutputWriter.writeln('🎉 Project Ready! Next Steps:');
+    OutputWriter.writeln(`   1. cd ${projectPath}`);
 
     if (options.skipInstall) {
-      console.log(`   ${FORMATTING.JSON_INDENT_SIZE}. bun install or npm install`);
-      console.log(`   3. bun run dev or npm run dev`);
+      OutputWriter.writeln(`   ${FORMATTING.JSON_INDENT_SIZE}. bun install or npm install`);
+      OutputWriter.writeln(`   3. bun run dev or npm run dev`);
     } else {
-      console.log(`   ${FORMATTING.JSON_INDENT_SIZE}. bun run dev or npm run dev`);
+      OutputWriter.writeln(`   ${FORMATTING.JSON_INDENT_SIZE}. bun run dev or npm run dev`);
     }
 
-    console.log(`   3. Open your favorite editor and start coding!`);
+    OutputWriter.writeln(`   3. Open your favorite editor and start coding!`);
   }
 
   /**
    * Print useful commands
    */
   private printUsefulCommands(): void {
-    console.log();
-    console.log('📚 Useful Commands:');
-    console.log(`   bun test - Run tests`);
-    console.log(`   bun run lint - Check code quality`);
-    console.log(`   bun run build - Build for production`);
+    OutputWriter.writeln();
+    OutputWriter.writeln('📚 Useful Commands:');
+    OutputWriter.writeln(`   bun test - Run tests`);
+    OutputWriter.writeln(`   bun run lint - Check code quality`);
+    OutputWriter.writeln(`   bun run build - Build for production`);
   }
 
   /**
    * Print AI assistant information
-   * @param config - Project configuration
+   * @param {ProjectConfig} config - Project configuration
    */
   private printAIAssistantInfo(config: ProjectConfig): void {
     if (config.aiAssistants.includes(DEFAULT_AI_ASSISTANT)) {
-      console.log();
-      console.log('🤖 AI Assistant Ready:');
-      console.log(`   Claude Code is configured and ready to help!`);
-      console.log(`   Check CLAUDE.md for project-specific instructions.`);
+      OutputWriter.writeln();
+      OutputWriter.writeln('🤖 AI Assistant Ready:');
+      OutputWriter.writeln(`   Claude Code is configured and ready to help!`);
+      OutputWriter.writeln(`   Check CLAUDE.md for project-specific instructions.`);
     }
 
     if (config.aiAssistants.includes('copilot')) {
-      console.log();
-      console.log('🤖 AI Assistant Ready:');
-      console.log(`   GitHub Copilot is configured and ready to help!`);
-      console.log(`   Check .github/copilot-instructions.md for guidance.`);
+      OutputWriter.writeln();
+      OutputWriter.writeln('🤖 AI Assistant Ready:');
+      OutputWriter.writeln(`   GitHub Copilot is configured and ready to help!`);
+      OutputWriter.writeln(`   Check .github/copilot-instructions.md for guidance.`);
     }
   }
 
   /**
    * Get project type name for display
-   * @param projectType - Project type to get display name for
-   * @returns Display name of the project type
+   * @param {string} projectType - Project type to get display name for
+   * @returns {string): string} Display name of the project type
    */
   private getProjectTypeName(projectType: string): string {
     const names = {
@@ -351,7 +390,7 @@ export class InitCommand {
 
 /**
  * Create an init command instance
- * @returns New init command instance
+ * @returns {InitCommand} New init command instance
  */
 export function createInitCommand(): InitCommand {
   return new InitCommand();

@@ -55,8 +55,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Creates a new tech stack registry instance
-   * @param configDirectory - Directory containing tech stack configurations
-   * @param autoRegister - Whether to automatically register built-in tech stacks
+   * @param {unknown} configDirectory - Directory containing tech stack configurations
+   * @param {unknown} autoRegister - Whether to automatically register built-in tech stacks
    */
   constructor(configDirectory?: string, autoRegister = true) {
     this.configDirectory = configDirectory || './tech-stacks';
@@ -69,7 +69,7 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Register a new tech stack
-   * @param techStack - Tech stack definition to register
+   * @param {TechStackDefinition} techStack - Tech stack definition to register
    */
   async register(techStack: TechStackDefinition): Promise<void> {
     if (!techStack.id) {
@@ -92,7 +92,7 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Unregister a tech stack
-   * @param techStackId - ID of tech stack to unregister
+   * @param {string} techStackId - ID of tech stack to unregister
    */
   async unregister(techStackId: string): Promise<void> {
     if (!this.techStacks.has(techStackId)) {
@@ -110,8 +110,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Get tech stack by ID
-   * @param techStackId - ID of tech stack to retrieve
-   * @returns Tech stack definition or null if not found
+   * @param {string} techStackId - ID of tech stack to retrieve
+   * @returns {void} Tech stack definition or null if not found
    */
   async get(techStackId: string): Promise<TechStackDefinition | null> {
     return this.techStacks.get(techStackId) || null;
@@ -119,7 +119,7 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Get all registered tech stacks
-   * @returns Array of all tech stack definitions
+   * @returns {void} Array of all tech stack definitions
    */
   async getAll(): Promise<TechStackDefinition[]> {
     return Array.from(this.techStacks.values());
@@ -127,12 +127,12 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Search tech stacks by criteria
-   * @param query - Search query
-   * @param filters - Optional filters to apply
-   * @param filters.projectTypes - Filter by project types
-   * @param filters.categories - Filter by categories
-   * @param filters.tags - Filter by tags
-   * @returns Search results
+   * @param {unknown} query - Search query
+   * @param {unknown} filters - Optional filters to apply
+   * @param {unknown} filters.projectTypes - Filter by project types
+   * @param {unknown} filters.categories - Filter by categories
+   * @param {unknown} filters.tags - Filter by tags
+   * @returns {void} Search results
    */
   async search(
     query: string,
@@ -156,8 +156,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Get tech stacks by project type
-   * @param projectType - Project type to filter by
-   * @returns Array of tech stacks supporting the project type
+   * @param {ProjectType} projectType - Project type to filter by
+   * @returns {void} Array of tech stacks supporting the project type
    */
   async getByProjectType(projectType: ProjectType): Promise<TechStackDefinition[]> {
     return Array.from(this.techStacks.values()).filter((stack) =>
@@ -167,8 +167,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Validate tech stack configuration
-   * @param techStack - Tech stack to validate
-   * @returns Validation result
+   * @param {TechStackDefinition} techStack - Tech stack to validate
+   * @returns {void} Validation result
    */
   async validate(techStack: TechStackDefinition): Promise<TechStackValidationResult> {
     const errors = validateBasicProperties(techStack);
@@ -182,8 +182,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Validates basic required properties
-   * @param techStack - Tech stack to validate
-   * @returns Array of validation errors
+   * @param {TechStackDefinition} techStack - Tech stack to validate
+   * @returns {TechStackDefinition): Array<} Array of validation errors
    */
   private validateBasicProperties(techStack: TechStackDefinition): Array<{
     code: string;
@@ -222,8 +222,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Validates recommended properties
-   * @param techStack - Tech stack to validate
-   * @returns Array of validation warnings
+   * @param {TechStackDefinition} techStack - Tech stack to validate
+   * @returns {TechStackDefinition): Array<} Array of validation warnings
    */
   private validateRecommendedProperties(techStack: TechStackDefinition): Array<{
     code: string;
@@ -247,8 +247,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Validates tech stack configuration
-   * @param techStack - Tech stack to validate
-   * @returns Array of validation errors
+   * @param {TechStackDefinition} techStack - Tech stack to validate
+   * @returns {TechStackDefinition): Array<} Array of validation errors
    */
   private validateConfiguration(techStack: TechStackDefinition): Array<{
     code: string;
@@ -277,16 +277,16 @@ export class TechStackRegistry implements ITechStackRegistry {
       try {
         const techStack = creator();
         this.techStacks.set(techStack.id, techStack as TechStackDefinition);
-      } catch (error) {
-        console.warn(`Failed to register built-in tech stack:`, error);
+      } catch {
+        // Failed to register built-in tech stack, but continue with others
       }
     }
   }
 
   /**
    * Normalize tech stack definition
-   * @param techStack - Tech stack to normalize
-   * @returns Normalized tech stack definition
+   * @param {TechStackDefinition} techStack - Tech stack to normalize
+   * @returns {TechStackDefinition): TechStackDefinition} Normalized tech stack definition
    */
   private normalizeTechStackDefinition(techStack: TechStackDefinition): TechStackDefinition {
     return {
@@ -304,7 +304,7 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Save tech stack to file
-   * @param techStack - Tech stack to save
+   * @param {TechStackDefinition} techStack - Tech stack to save
    */
   private async saveTechStackToFile(techStack: TechStackDefinition): Promise<void> {
     const filePath = path.join(this.configDirectory, `${techStack.id}.json`);
@@ -314,11 +314,11 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Register adapter for tech stack
-   * @param techStackId - Tech stack ID
-   * @param adapter - Adapter to register
-   * @param adapter.templateEngine - Template engine adapter
-   * @param adapter.buildSystem - Build system adapter
-   * @param adapter.packageManager - Package manager adapter
+   * @param {string} techStackId - Tech stack ID
+   * @param {{ templateEngine?: TemplateEngineAdapter; buildSystem?: BuildSystemAdapter; packageManager?: PackageManagerAdapter }} adapter - Adapter configuration
+   * @param {TemplateEngineAdapter} adapter.templateEngine - Template engine adapter
+   * @param {BuildSystemAdapter} adapter.buildSystem - Build system adapter
+   * @param {PackageManagerAdapter} adapter.packageManager - Package manager adapter
    */
   registerAdapter(
     techStackId: string,
@@ -333,8 +333,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Get adapter for tech stack
-   * @param techStackId - Tech stack ID
-   * @returns Registered adapter or null
+   * @param {string} techStackId - Tech stack ID
+   * @returns {{ templateEngine?: TemplateEngineAdapter; buildSystem?: BuildSystemAdapter; packageManager?: PackageManagerAdapter } | null} Registered adapter or null
    */
   getAdapter(techStackId: string): {
     templateEngine?: TemplateEngineAdapter;
@@ -346,7 +346,7 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Get registry statistics
-   * @returns Registry statistics
+   * @returns {Promise<TechStackRegistryStats>} Registry statistics
    */
   async getStats(): Promise<TechStackRegistryStats> {
     const stacks = Array.from(this.techStacks.values());
@@ -369,8 +369,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Register a new tech stack (alias for register)
-   * @param techStack - Tech stack definition to register
-   * @returns Promise that resolves when registration is complete
+   * @param {TechStackDefinition} techStack - Tech stack definition to register
+   * @returns {void} Promise that resolves when registration is complete
    */
   async registerTechStack(techStack: TechStackDefinition): Promise<void> {
     return this.register(techStack);
@@ -378,7 +378,7 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Get registered tech stacks
-   * @returns Array of tech stack definitions
+   * @returns {void} Array of tech stack definitions
    */
   async getTechStacks(): Promise<TechStackDefinition[]> {
     return Array.from(this.techStacks.values());
@@ -386,8 +386,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Get tech stack by ID
-   * @param techStackId - Tech stack ID
-   * @returns Tech stack definition or null
+   * @param {string} techStackId - Tech stack ID
+   * @returns {void} Tech stack definition or null
    */
   async getTechStack(techStackId: string): Promise<TechStackDefinition | null> {
     return this.techStacks.get(techStackId) || null;
@@ -395,8 +395,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Get templates for tech stack
-   * @param _techStackId - Tech stack ID
-   * @returns Array of template metadata
+   * @param {string} _techStackId - Tech stack ID
+   * @returns {void} Array of template metadata
    */
   async getTemplatesForTechStack(_techStackId: string): Promise<TemplateMetadata[]> {
     // This would typically integrate with template catalog
@@ -406,8 +406,8 @@ export class TechStackRegistry implements ITechStackRegistry {
 
   /**
    * Validate tech stack configuration
-   * @param techStack - Tech stack definition to validate
-   * @returns Validation result
+   * @param {TechStackDefinition} techStack - Tech stack definition to validate
+   * @returns {TechStackDefinition): Promise<} Validation result
    */
   async validateTechStack(techStack: TechStackDefinition): Promise<{
     valid: boolean;

@@ -20,8 +20,8 @@ import { validateTypeScriptConfig } from './validations/typescript-validation.js
 export class ProjectValidator {
   /**
    * Validate a generated project
-   * @param options - Validator options
-   * @returns Validation result with detailed information
+   * @param {ProjectValidatorOptions} options - Validator options
+   * @returns {void} Validation result with detailed information
    */
   async validateProject(options: ProjectValidatorOptions): Promise<ProjectValidationResult> {
     const result: ProjectValidationResult = {
@@ -55,8 +55,8 @@ export class ProjectValidator {
 
   /**
    * Validate basic project structure
-   * @param options - Validator options
-   * @param result - Validation result
+   * @param {unknown} options - Validator options
+   * @param {unknown} result - Validation result
    */
   private async validateProjectStructure(
     options: ProjectValidatorOptions,
@@ -67,8 +67,8 @@ export class ProjectValidator {
 
   /**
    * Validate configuration files
-   * @param options - Validator options
-   * @param result - Validation result
+   * @param {unknown} options - Validator options
+   * @param {unknown} result - Validation result
    */
   private async validateConfigurations(
     options: ProjectValidatorOptions,
@@ -94,8 +94,8 @@ export class ProjectValidator {
 
   /**
    * Validate package.json content and structure
-   * @param options - Validator options containing project path and config
-   * @param result - Validation result to populate with findings
+   * @param {unknown} options - Validator options containing project path and config
+   * @param {unknown} result - Validation result to populate with findings
    */
   private async validatePackageJson(
     options: ProjectValidatorOptions,
@@ -106,8 +106,8 @@ export class ProjectValidator {
 
   /**
    * Validate TypeScript configuration and compiler options
-   * @param options - Validator options containing project path and config
-   * @param result - Validation result to populate with findings
+   * @param {unknown} options - Validator options containing project path and config
+   * @param {unknown} result - Validation result to populate with findings
    */
   private async validateTypeScriptConfig(
     options: ProjectValidatorOptions,
@@ -118,8 +118,8 @@ export class ProjectValidator {
 
   /**
    * Validate ESLint configuration and rules
-   * @param options - Validator options containing project path and config
-   * @param result - Validation result to populate with findings
+   * @param {unknown} options - Validator options containing project path and config
+   * @param {unknown} result - Validation result to populate with findings
    */
   private async validateESLintConfig(
     options: ProjectValidatorOptions,
@@ -144,8 +144,8 @@ export class ProjectValidator {
 
   /**
    * Validate test configuration and setup
-   * @param options - Validator options containing project path and config
-   * @param result - Validation result to populate with findings
+   * @param {unknown} options - Validator options containing project path and config
+   * @param {unknown} result - Validation result to populate with findings
    */
   private async validateTestConfig(
     options: ProjectValidatorOptions,
@@ -157,8 +157,8 @@ export class ProjectValidator {
 
   /**
    * Validate test configuration files
-   * @param options - Validator options
-   * @param result - Validation result
+   * @param {unknown} options - Validator options
+   * @param {unknown} result - Validation result
    */
   private async validateTestConfigurationFiles(
     options: ProjectValidatorOptions,
@@ -188,8 +188,8 @@ export class ProjectValidator {
 
   /**
    * Validate test directories
-   * @param options - Validator options
-   * @param result - Validation result
+   * @param {unknown} options - Validator options
+   * @param {unknown} result - Validation result
    */
   private async validateTestDirectories(
     options: ProjectValidatorOptions,
@@ -213,8 +213,8 @@ export class ProjectValidator {
 
   /**
    * Validate AI assistant configurations and files
-   * @param options - Validator options containing project path and config
-   * @param result - Validation result to populate with findings
+   * @param {unknown} options - Validator options containing project path and config
+   * @param {unknown} result - Validation result to populate with findings
    */
   private async validateAIConfigurations(
     options: ProjectValidatorOptions,
@@ -225,8 +225,8 @@ export class ProjectValidator {
 
   /**
    * Validate dependencies and installations
-   * @param options - Validator options containing project path and config
-   * @param result - Validation result to populate with findings
+   * @param {unknown} options - Validator options containing project path and config
+   * @param {unknown} result - Validation result to populate with findings
    */
   private async validateDependencies(
     options: ProjectValidatorOptions,
@@ -237,8 +237,8 @@ export class ProjectValidator {
 
   /**
    * Validate project-specific requirements
-   * @param options - Validator options
-   * @param result - Validation result
+   * @param {unknown} options - Validator options
+   * @param {unknown} result - Validation result
    */
   private async validateProjectSpecificRequirements(
     options: ProjectValidatorOptions,
@@ -250,7 +250,7 @@ export class ProjectValidator {
 
 /**
  * Create a project validator instance
- * @returns New ProjectValidator instance
+ * @returns {ProjectValidator} New ProjectValidator instance
  */
 export function createProjectValidator(): ProjectValidator {
   return new ProjectValidator();

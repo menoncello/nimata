@@ -8,7 +8,7 @@
 export class CSSUtilitiesGenerator {
   /**
    * Get utility classes
-   * @returns Utility CSS classes
+   * @returns {string} Utility CSS classes
    */
   static getUtilityClasses(): string {
     const accessibility = this.getAccessibilityUtilities();
@@ -49,7 +49,7 @@ ${visibility}`;
 
   /**
    * Get accessibility utilities
-   * @returns Accessibility CSS
+   * @returns {string} Accessibility CSS
    */
   private static getAccessibilityUtilities(): string {
     return `.sr-only {
@@ -67,7 +67,7 @@ ${visibility}`;
 
   /**
    * Get text utilities
-   * @returns Text CSS
+   * @returns {string} Text CSS
    */
   private static getTextUtilities(): string {
     return `.text-center { text-align: center; }
@@ -85,7 +85,7 @@ ${visibility}`;
 
   /**
    * Get color utilities
-   * @returns Color CSS
+   * @returns {string} Color CSS
    */
   private static getColorUtilities(): string {
     return `.text-primary { color: var(--color-primary); }
@@ -96,7 +96,7 @@ ${visibility}`;
 
   /**
    * Get background utilities
-   * @returns Background CSS
+   * @returns {string} Background CSS
    */
   private static getBackgroundUtilities(): string {
     return `.bg-primary { background-color: var(--color-primary); }
@@ -107,7 +107,7 @@ ${visibility}`;
 
   /**
    * Get border utilities
-   * @returns Border CSS
+   * @returns {string} Border CSS
    */
   private static getBorderUtilities(): string {
     return `.border { border: 1px solid var(--color-border); }
@@ -117,7 +117,7 @@ ${visibility}`;
 
   /**
    * Get border radius utilities
-   * @returns Border radius CSS
+   * @returns {string} Border radius CSS
    */
   private static getBorderRadiusUtilities(): string {
     return `.rounded { border-radius: var(--radius-base); }
@@ -127,7 +127,7 @@ ${visibility}`;
 
   /**
    * Get shadow utilities
-   * @returns Shadow CSS
+   * @returns {string} Shadow CSS
    */
   private static getShadowUtilities(): string {
     return `.shadow { box-shadow: var(--shadow-base); }
@@ -137,7 +137,7 @@ ${visibility}`;
 
   /**
    * Get spacing utilities
-   * @returns Spacing CSS
+   * @returns {string} Spacing CSS
    */
   private static getSpacingUtilities(): string {
     return `.p-1 { padding: var(--spacing-1); }
@@ -164,7 +164,7 @@ ${visibility}`;
 
   /**
    * Get display utilities
-   * @returns Display CSS
+   * @returns {string} Display CSS
    */
   private static getDisplayUtilities(): string {
     return `.flex { display: flex; }
@@ -177,7 +177,7 @@ ${visibility}`;
 
   /**
    * Get flexbox utilities
-   * @returns Flexbox CSS
+   * @returns {string} Flexbox CSS
    */
   private static getFlexboxUtilities(): string {
     return `.items-center { align-items: center; }
@@ -187,7 +187,7 @@ ${visibility}`;
 
   /**
    * Get visibility utilities
-   * @returns Visibility CSS
+   * @returns {string} Visibility CSS
    */
   private static getVisibilityUtilities(): string {
     return ``;

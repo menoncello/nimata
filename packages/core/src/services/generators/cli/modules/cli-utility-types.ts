@@ -6,7 +6,7 @@
 
 /**
  * Generate utility types
- * @returns Utility type definitions
+ * @returns {string} Utility type definitions
  */
 export function generateUtilityTypes(): string {
   return [
@@ -18,7 +18,7 @@ export function generateUtilityTypes(): string {
 
 /**
  * Generate transformation utility types
- * @returns Transformation utility type definitions
+ * @returns {string} Transformation utility type definitions
  */
 function generateTransformUtilityTypes(): string {
   return `/**
@@ -41,7 +41,7 @@ export type OptionalKeys<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>
 
 /**
  * Generate async utility types
- * @returns Async utility type definitions
+ * @returns {Promise<void>} utility type definitions
  */
 function generateAsyncUtilityTypes(): string {
   return `/**
@@ -52,7 +52,7 @@ export type AsyncFunction<T extends unknown[] = unknown[], R = unknown> = (...ar
 
 /**
  * Generate interface utility types
- * @returns Interface utility type definitions
+ * @returns {string} Interface utility type definitions
  */
 function generateInterfaceUtilityTypes(): string {
   return `/**

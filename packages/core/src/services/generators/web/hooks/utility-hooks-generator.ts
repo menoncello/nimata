@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 export class UtilityHooksGenerator {
   /**
    * Generates utility hooks collection
-   * @param _config - The project configuration
-   * @returns Utility hooks content
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Utility hooks content
    */
   generateUtilityHooks(_config: ProjectConfig): string {
     const imports = this.generateUtilityImports();
@@ -31,7 +31,7 @@ ${windowSizeHook}`;
 
   /**
    * Generate imports for utility hooks
-   * @returns Imports content
+   * @returns {string} Imports content
    */
   private generateUtilityImports(): string {
     return `import { useState, useEffect, useCallback, useRef } from 'react';`;
@@ -39,7 +39,7 @@ ${windowSizeHook}`;
 
   /**
    * Generate localStorage hook
-   * @returns LocalStorage hook content
+   * @returns {string} LocalStorage hook content
    */
   private generateLocalStorageHook(): string {
     const hookDeclaration = this.generateLocalStorageHookDeclaration();
@@ -60,7 +60,7 @@ ${returnValue}
 
   /**
    * Generate localStorage hook declaration
-   * @returns Hook declaration code
+   * @returns {string} Hook declaration code
    */
   private generateLocalStorageHookDeclaration(): string {
     return `  const [storedValue, setStoredValue] = useState<T>(() => {
@@ -76,7 +76,7 @@ ${returnValue}
 
   /**
    * Generate localStorage logic
-   * @returns Hook logic code
+   * @returns {string} Hook logic code
    */
   private generateLocalStorageLogic(): string {
     return `  const setValue = useCallback((value: T | ((val: T) => T)) => {
@@ -101,7 +101,7 @@ ${returnValue}
 
   /**
    * Generate localStorage return value
-   * @returns Return value code
+   * @returns {string} Return value code
    */
   private generateLocalStorageReturnValue(): string {
     return `  return [storedValue, setValue, removeValue] as const;`;
@@ -109,7 +109,7 @@ ${returnValue}
 
   /**
    * Generate debounce hook
-   * @returns Debounce hook content
+   * @returns {string} Debounce hook content
    */
   private generateDebounceHook(): string {
     const hookDeclaration = this.generateDebounceHookDeclaration();
@@ -129,7 +129,7 @@ ${effect}
 
   /**
    * Generate debounce hook declaration
-   * @returns Hook declaration code
+   * @returns {string} Hook declaration code
    */
   private generateDebounceHookDeclaration(): string {
     return `  const [debouncedValue, setDebouncedValue] = useState<T>(value);`;
@@ -137,7 +137,7 @@ ${effect}
 
   /**
    * Generate debounce effect
-   * @returns Effect code
+   * @returns {string} Effect code
    */
   private generateDebounceEffect(): string {
     return `  useEffect(() => {
@@ -153,7 +153,7 @@ ${effect}
 
   /**
    * Generate window size hook
-   * @returns Window size hook content
+   * @returns {string} Window size hook content
    */
   private generateWindowSizeHook(): string {
     const hookDeclaration = this.generateWindowSizeHookDeclaration();
@@ -173,7 +173,7 @@ ${effect}
 
   /**
    * Generate window size hook declaration
-   * @returns Hook declaration code
+   * @returns {string} Hook declaration code
    */
   private generateWindowSizeHookDeclaration(): string {
     return `  const [windowSize, setWindowSize] = useState({
@@ -184,7 +184,7 @@ ${effect}
 
   /**
    * Generate window size effect
-   * @returns Effect code
+   * @returns {string} Effect code
    */
   private generateWindowSizeEffect(): string {
     return `  useEffect(() => {

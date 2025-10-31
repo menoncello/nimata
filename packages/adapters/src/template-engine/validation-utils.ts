@@ -20,8 +20,8 @@ const _VALIDATION_CONSTANTS = {
 export class ValidationUtils {
   /**
    * Validates required fields
-   * @param value - Value to validate
-   * @returns True if valid
+   * @param {unknown} value - Value to validate
+   * @returns {unknown): boolean} True if valid
    */
   static validateRequired(value: unknown): boolean {
     return value !== undefined && value !== null && value !== '';
@@ -29,9 +29,9 @@ export class ValidationUtils {
 
   /**
    * Validates string patterns
-   * @param value - Value to validate
-   * @param pattern - Regular expression pattern to test against
-   * @returns True if valid, false if invalid
+   * @param {unknown} value - Value to validate
+   * @param {unknown} pattern - Regular expression pattern to test against
+   * @returns { boolean} True if valid, false if invalid
    */
   static validatePattern(value: unknown, pattern?: RegExp): boolean {
     if (typeof value !== 'string') return false;
@@ -58,11 +58,11 @@ export class ValidationUtils {
 
   /**
    * Validates string or array length
-   * @param value - Value to validate
-   * @param rule - Length validation rule
-   * @param rule.min - Minimum allowed length
-   * @param rule.max - Maximum allowed length
-   * @returns True if valid, error message if invalid
+   * @param {unknown} value - Value to validate
+   * @param {{ min?: number; max?: number }} rule - Validation rule
+   * @param {number} rule.min - Minimum allowed length
+   * @param {number} rule.max - Maximum allowed length
+   * @returns {boolean | string} True if valid, error message if invalid
    */
   static validateLength(value: unknown, rule: { min?: number; max?: number }): boolean | string {
     if (typeof value !== 'string' && !Array.isArray(value)) return false;
@@ -79,11 +79,11 @@ export class ValidationUtils {
 
   /**
    * Validates numeric ranges
-   * @param value - Value to validate
-   * @param rule - Range validation rule
-   * @param rule.min - Minimum allowed value
-   * @param rule.max - Maximum allowed value
-   * @returns True if valid, error message if invalid
+   * @param {unknown} value - Value to validate
+   * @param {{ min?: number; max?: number }} rule - Validation rule
+   * @param {number} rule.min - Minimum allowed value
+   * @param {number} rule.max - Maximum allowed value
+   * @returns {boolean | string} True if valid, error message if invalid
    */
   static validateRange(value: unknown, rule: { min?: number; max?: number }): boolean | string {
     if (typeof value !== 'number') return false;
@@ -99,9 +99,9 @@ export class ValidationUtils {
 
   /**
    * Validates using custom validator function
-   * @param value - Value to validate
-   * @param validator - Custom validator function
-   * @returns Validation result
+   * @param {unknown} value - Value to validate
+   * @param {unknown} validator - Custom validator function
+   * @returns {boolean | string} Validation result
    */
   static validateCustom(
     value: unknown,
@@ -112,8 +112,8 @@ export class ValidationUtils {
 
   /**
    * Validates email format
-   * @param email - Email string to validate
-   * @returns True if valid email format
+   * @param {string} email - Email string to validate
+   * @returns {string): boolean} True if valid email format
    */
   static validateEmail(email: string): boolean {
     // Simple email validation without regex
@@ -137,8 +137,8 @@ export class ValidationUtils {
 
   /**
    * Validates URL format
-   * @param url - URL string to validate
-   * @returns True if valid URL format
+   * @param {string} url - URL string to validate
+   * @returns {string): boolean} True if valid URL format
    */
   static validateURL(url: string): boolean {
     // Simple URL validation without regex
@@ -149,8 +149,8 @@ export class ValidationUtils {
 
   /**
    * Validates string case format (camelCase, snake_case, etc.)
-   * @param str - String to validate
-   * @returns True if valid string case format
+   * @param {string} str - String to validate
+   * @returns {string): boolean} True if valid string case format
    */
   static validateStringCase(str: string): boolean {
     // Simple validation to avoid regex performance issues
@@ -165,9 +165,9 @@ export class ValidationUtils {
 
   /**
    * Applies a single validation rule
-   * @param value - Value to validate
-   * @param rule - Validation rule to apply
-   * @returns True if valid, error message if invalid
+   * @param {unknown} value - Value to validate
+   * @param {import('@nimata/core'} rule - Validation rule to apply
+   * @returns {boolean | string} True if valid, error message if invalid
    */
   static applyValidationRule(
     value: unknown,

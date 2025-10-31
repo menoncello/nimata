@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate Framework class
- * @param config - Project configuration
- * @returns Framework class TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Framework class TypeScript code
  */
 export function generateFrameworkClass(config: ProjectConfig): string {
   switch (config.projectType) {
@@ -24,8 +24,8 @@ export function generateFrameworkClass(config: ProjectConfig): string {
 
 /**
  * Generate React class
- * @param config - Project configuration
- * @returns React class TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} React class TypeScript code
  */
 export function generateReactClass(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -53,8 +53,8 @@ export function generateReactClass(config: ProjectConfig): string {
 
 /**
  * Generate Vue class
- * @param config - Project configuration
- * @returns Vue class TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Vue class TypeScript code
  */
 export function generateVueClass(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -82,8 +82,8 @@ export function generateVueClass(config: ProjectConfig): string {
 
 /**
  * Generate Express class
- * @param config - Project configuration
- * @returns Express class TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Express class TypeScript code
  */
 export function generateExpressClass(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -107,8 +107,8 @@ export function generateExpressClass(config: ProjectConfig): string {
 
 /**
  * Generate Basic class
- * @param config - Project configuration
- * @returns Basic class TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Basic class TypeScript code
  */
 export function generateBasicClass(config: ProjectConfig): string {
   const className = `${convertToPascalCase(config.name)}Core`;
@@ -124,10 +124,10 @@ export function generateBasicClass(config: ProjectConfig): string {
 
 /**
  * Generate Basic class header
- * @param className - Class name
- * @param configType - Configuration type
- * @param config - Project configuration
- * @returns Class header TypeScript code
+ * @param {string} className - Class name
+ * @param {string} configType - Configuration type
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Class header TypeScript code
  */
 function generateBasicClassHeader(
   className: string,
@@ -143,9 +143,9 @@ export class ${className} {
 
 /**
  * Generate Basic class constructor
- * @param className - Class name
- * @param configType - Configuration type
- * @returns Constructor TypeScript code
+ * @param {string} className - Class name
+ * @param {string} configType - Configuration type
+ * @returns {string} Constructor TypeScript code
  */
 function generateBasicConstructor(className: string, configType: string): string {
   return `  constructor(config: ${configType} = {}) {
@@ -159,8 +159,8 @@ function generateBasicConstructor(className: string, configType: string): string
 
 /**
  * Generate Basic initialize method
- * @param config - Project configuration
- * @returns Initialize method TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Initialize method TypeScript code
  */
 function generateBasicInitializeMethod(config: ProjectConfig): string {
   return `  /**
@@ -175,9 +175,9 @@ function generateBasicInitializeMethod(config: ProjectConfig): string {
 
 /**
  * Generate Basic configuration methods
- * @param className - Class name
- * @param configType - Configuration type
- * @returns Configuration methods TypeScript code
+ * @param {string} className - Class name
+ * @param {string} configType - Configuration type
+ * @returns {string} Configuration methods TypeScript code
  */
 function generateBasicConfigMethods(className: string, configType: string): string {
   return `  /**

@@ -6,7 +6,7 @@
 
 /**
  * Generate configuration types
- * @returns Configuration type definitions
+ * @returns {string} Configuration type definitions
  */
 export function generateConfigurationTypes(): string {
   return [
@@ -19,7 +19,7 @@ export function generateConfigurationTypes(): string {
 
 /**
  * Generate main configuration interfaces
- * @returns Main configuration interface definitions
+ * @returns {string} Main configuration interface definitions
  */
 function generateMainConfigInterfaces(): string {
   return `/**
@@ -36,7 +36,7 @@ export interface ConfigFileOptions {
 
 /**
  * Generate command-related interfaces
- * @returns Command-related interface definitions
+ * @returns {string} Command-related interface definitions
  */
 function generateCommandRelatedInterfaces(): string {
   return [
@@ -48,7 +48,7 @@ function generateCommandRelatedInterfaces(): string {
 
 /**
  * Generate command configuration interface
- * @returns Command configuration interface definition
+ * @returns {string} Command configuration interface definition
  */
 function generateCommandConfigInterface(): string {
   return `/**
@@ -66,7 +66,7 @@ export interface CommandConfig {
 
 /**
  * Generate option configuration interface
- * @returns Option configuration interface definition
+ * @returns {string} Option configuration interface definition
  */
 function generateOptionConfigInterface(): string {
   return `/**
@@ -84,7 +84,7 @@ export interface OptionConfig {
 
 /**
  * Generate argument configuration interface
- * @returns Argument configuration interface definition
+ * @returns {string} Argument configuration interface definition
  */
 function generateArgumentConfigInterface(): string {
   return `/**
@@ -101,7 +101,7 @@ export interface ArgumentConfig {
 
 /**
  * Generate plugin and hook interfaces
- * @returns Plugin and hook interface definitions
+ * @returns {string} Plugin and hook interface definitions
  */
 function generatePluginAndHookInterfaces(): string {
   return `/**
@@ -126,7 +126,7 @@ export interface HookConfig {
 
 /**
  * Generate logging configuration interface
- * @returns Logging configuration interface definition
+ * @returns {string} Logging configuration interface definition
  */
 function generateLoggingInterface(): string {
   return `/**

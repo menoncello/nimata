@@ -8,7 +8,7 @@ import { AIContextConfigOptions } from '../types/config-types.js';
 
 /**
  * Build Copilot instructions section
- * @returns Formatted markdown string with Copilot instructions
+ * @returns {string} Formatted markdown string with Copilot instructions
  */
 export function buildCopilotInstructionsSection(): string {
   return `## Copilot-Specific Instructions`;
@@ -16,7 +16,7 @@ export function buildCopilotInstructionsSection(): string {
 
 /**
  * Build Copilot code style section
- * @returns Formatted markdown string with code style preferences
+ * @returns {string} Formatted markdown string with code style preferences
  */
 export function buildCopilotCodeStyleSection(): string {
   return `### Code Style Preferences
@@ -29,9 +29,9 @@ export function buildCopilotCodeStyleSection(): string {
 
 /**
  * Build Copilot framework section
- * @param options - Configuration options for AI context generation
- * @param getCopilotFrameworkGuidelines - Function to get framework guidelines
- * @returns Formatted markdown string with framework guidelines
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(frameworks} getCopilotFrameworkGuidelines - Function to get framework guidelines
+ * @returns {void} Formatted markdown string with framework guidelines
  */
 export function buildCopilotFrameworkSection(
   options: AIContextConfigOptions,
@@ -43,7 +43,7 @@ ${getCopilotFrameworkGuidelines(options.frameworks, options.projectType)}`;
 
 /**
  * Build Copilot testing section
- * @returns Formatted markdown string with testing patterns
+ * @returns {string} Formatted markdown string with testing patterns
  */
 export function buildCopilotTestingSection(): string {
   return `### Testing Patterns
@@ -56,9 +56,9 @@ export function buildCopilotTestingSection(): string {
 
 /**
  * Build Copilot architecture section
- * @param options - Configuration options for AI context generation
- * @param getCopilotArchitectureGuidelines - Function to get architecture guidelines
- * @returns Formatted markdown string with architecture guidelines
+ * @param {unknown} options - Configuration options for AI context generation
+ * @param {(projectType} getCopilotArchitectureGuidelines - Function to get architecture guidelines
+ * @returns {void} Formatted markdown string with architecture guidelines
  */
 export function buildCopilotArchitectureSection(
   options: AIContextConfigOptions,
@@ -70,7 +70,7 @@ ${getCopilotArchitectureGuidelines(options.projectType)}`;
 
 /**
  * Build Copilot code generation section
- * @returns Formatted markdown string with code generation guidelines
+ * @returns {string} Formatted markdown string with code generation guidelines
  */
 export function buildCopilotCodeGenerationSection(): string {
   return `### Code Generation Guidelines
@@ -83,7 +83,7 @@ export function buildCopilotCodeGenerationSection(): string {
 
 /**
  * Build Copilot security section
- * @returns Formatted markdown string with security considerations
+ * @returns {string} Formatted markdown string with security considerations
  */
 export function buildCopilotSecuritySection(): string {
   return `### Security Considerations
@@ -96,7 +96,7 @@ export function buildCopilotSecuritySection(): string {
 
 /**
  * Build Copilot performance section
- * @returns Formatted markdown string with performance guidelines
+ * @returns {string} Formatted markdown string with performance guidelines
  */
 export function buildCopilotPerformanceSection(): string {
   return `### Performance Guidelines
@@ -109,7 +109,7 @@ export function buildCopilotPerformanceSection(): string {
 
 /**
  * Build Copilot documentation section
- * @returns Formatted markdown string with documentation standards
+ * @returns {string} Formatted markdown string with documentation standards
  */
 export function buildCopilotDocumentationSection(): string {
   return `### Documentation Standards

@@ -10,7 +10,7 @@
 export class ResponsiveStyles {
   /**
    * Generate responsive styles for different screen sizes
-   * @returns Responsive CSS styles
+   * @returns {string} Responsive CSS styles
    */
   generateResponsiveStyles(): string {
     const tabletStyles = this.getTabletStyles();
@@ -24,7 +24,7 @@ ${mobileStyles}`;
 
   /**
    * Get tablet responsive styles
-   * @returns Tablet CSS styles
+   * @returns {string} Tablet CSS styles
    */
   private getTabletStyles(): string {
     return `@media (max-width: 768px) {
@@ -52,7 +52,7 @@ ${mobileStyles}`;
 
   /**
    * Get mobile responsive styles
-   * @returns Mobile CSS styles
+   * @returns {string} Mobile CSS styles
    */
   private getMobileStyles(): string {
     return `@media (max-width: 480px) {
@@ -74,7 +74,7 @@ ${mobileStyles}`;
 
   /**
    * Generate dark mode styles
-   * @returns Dark mode CSS styles
+   * @returns {string} Dark mode CSS styles
    */
   generateDarkModeStyles(): string {
     return `/* Dark mode support */
@@ -110,7 +110,7 @@ ${mobileStyles}`;
 
   /**
    * Generate accessibility-focused responsive styles
-   * @returns Accessibility CSS styles
+   * @returns {string} Accessibility CSS styles
    */
   generateAccessibilityStyles(): string {
     return `/* Accessibility */
@@ -145,7 +145,7 @@ ${mobileStyles}`;
 
   /**
    * Generate print styles
-   * @returns Print CSS styles
+   * @returns {string} Print CSS styles
    */
   generatePrintStyles(): string {
     return `/* Print Styles */
@@ -182,7 +182,7 @@ ${mobileStyles}`;
 
   /**
    * Generate complete responsive styles section
-   * @returns Complete responsive styles CSS
+   * @returns {string} Complete responsive styles CSS
    */
   generateResponsiveSection(): string {
     const responsive = this.generateResponsiveStyles();

@@ -6,7 +6,7 @@
 
 /**
  * Generate plugin configurations
- * @returns Plugin configurations
+ * @returns {string} Plugin configurations
  */
 export function generatePluginConfigs(): string {
   return `/**
@@ -26,7 +26,7 @@ const hooks: HookConfig[] = [
 
 /**
  * Generate logger plugin configuration
- * @returns Logger plugin configuration
+ * @returns {string} Logger plugin configuration
  */
 export function generateLoggerPluginConfig(): string {
   return `{
@@ -42,7 +42,7 @@ export function generateLoggerPluginConfig(): string {
 
 /**
  * Generate hooks configuration
- * @returns Hooks configuration
+ * @returns {string} Hooks configuration
  */
 export function generateHooksConfig(): string {
   return `{

@@ -12,8 +12,8 @@ import {
 
 /**
  * Validate description for security issues
- * @param description - Project description to validate
- * @returns Array of security validation errors
+ * @param {string} description - Project description to validate
+ * @returns {string} Array of security validation errors
  */
 export function validateDescriptionSecurity(description: string): string[] {
   const errors: string[] = [];
@@ -31,8 +31,8 @@ export function validateDescriptionSecurity(description: string): string[] {
 
 /**
  * Validate author field for security issues
- * @param author - Author name to validate
- * @returns Array of security validation errors
+ * @param {string} author - Author name to validate
+ * @returns {string} Array of security validation errors
  */
 export function validateAuthorSecurity(author: string): string[] {
   const errors: string[] = [];
@@ -50,8 +50,8 @@ export function validateAuthorSecurity(author: string): string[] {
 
 /**
  * Validate description length
- * @param description - Project description to validate
- * @returns Warning message if too long, null if OK
+ * @param {string} description - Project description to validate
+ * @returns {string} Warning message if too long, null if OK
  */
 export function validateDescriptionLength(description: string): string | null {
   if (description.length > MAX_DESCRIPTION_LENGTH) {
@@ -62,8 +62,8 @@ export function validateDescriptionLength(description: string): string | null {
 
 /**
  * Validate author length
- * @param author - Author name to validate
- * @returns Warning message if too long, null if OK
+ * @param {string} author - Author name to validate
+ * @returns {string} Warning message if too long, null if OK
  */
 export function validateAuthorLength(author: string): string | null {
   if (author.length > MAX_AUTHOR_LENGTH) {
@@ -74,8 +74,8 @@ export function validateAuthorLength(author: string): string | null {
 
 /**
  * Validate AI assistants count
- * @param aiAssistants - Array of AI assistants
- * @returns Warning message if too many, null if OK
+ * @param {string} aiAssistants - Array of AI assistants
+ * @returns {string} Warning message if too many, null if OK
  */
 export function validateAiAssistantsCount(aiAssistants: string[]): string | null {
   if (aiAssistants.length > MAX_AI_ASSISTANTS) {
@@ -86,8 +86,8 @@ export function validateAiAssistantsCount(aiAssistants: string[]): string | null
 
 /**
  * Validate quality level security implications
- * @param qualityLevel - Quality level to validate
- * @returns Warning message if low security, null if OK
+ * @param {string} qualityLevel - Quality level to validate
+ * @returns {string} Warning message if low security, null if OK
  */
 export function validateQualityLevelSecurity(qualityLevel: string): string | null {
   if (qualityLevel === 'light') {
@@ -98,9 +98,9 @@ export function validateQualityLevelSecurity(qualityLevel: string): string | nul
 
 /**
  * Main security validation function
- * @param config - Project configuration to validate
- * @param warnings - Array to collect warnings
- * @param errors - Array to collect errors
+ * @param {string} config - Project configuration to validate
+ * @param {string} warnings - Array to collect warnings
+ * @param {string} errors - Array to collect errors
  */
 export function validateSecurityConstraints(
   config: ProjectConfig,
@@ -115,9 +115,9 @@ export function validateSecurityConstraints(
 
 /**
  * Validate description security and length
- * @param description - Project description to validate
- * @param warnings - Array to collect warnings
- * @param errors - Array to collect errors
+ * @param {string} description - Project description to validate
+ * @param {string} warnings - Array to collect warnings
+ * @param {string} errors - Array to collect errors
  */
 function validateDescriptionSecurityAndLength(
   description: string | undefined,
@@ -139,9 +139,9 @@ function validateDescriptionSecurityAndLength(
 
 /**
  * Validate author security and length
- * @param author - Author name to validate
- * @param warnings - Array to collect warnings
- * @param errors - Array to collect errors
+ * @param {string} author - Author name to validate
+ * @param {string} warnings - Array to collect warnings
+ * @param {string} errors - Array to collect errors
  */
 function validateAuthorSecurityAndLength(
   author: string | undefined,
@@ -163,8 +163,8 @@ function validateAuthorSecurityAndLength(
 
 /**
  * Validate AI assistants configuration
- * @param aiAssistants - Array of AI assistants to validate
- * @param warnings - Array to collect warnings
+ * @param {string} aiAssistants - Array of AI assistants to validate
+ * @param {string} warnings - Array to collect warnings
  */
 function validateAiAssistantsConfiguration(
   aiAssistants: string[] | undefined,
@@ -182,8 +182,8 @@ function validateAiAssistantsConfiguration(
 
 /**
  * Validate quality level security implications
- * @param qualityLevel - Quality level to validate
- * @param warnings - Array to collect warnings
+ * @param {string} qualityLevel - Quality level to validate
+ * @param {string} warnings - Array to collect warnings
  */
 function validateQualityLevelSecurityImplications(
   qualityLevel: string | undefined,

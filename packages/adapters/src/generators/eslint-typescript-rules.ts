@@ -6,7 +6,7 @@
 
 /**
  * Get base TypeScript ESLint rules
- * @returns Base TypeScript rules configuration
+ * @returns {void} Base TypeScript rules configuration
  */
 function getBaseTypeScriptRules(): Record<string, unknown> {
   return {
@@ -21,7 +21,7 @@ function getBaseTypeScriptRules(): Record<string, unknown> {
 
 /**
  * Get light quality TypeScript rules
- * @returns Light quality TypeScript rules configuration
+ * @returns {void} Light quality TypeScript rules configuration
  */
 function getLightTypeScriptRules(): Record<string, unknown> {
   return {
@@ -32,7 +32,7 @@ function getLightTypeScriptRules(): Record<string, unknown> {
 
 /**
  * Get medium quality TypeScript rules
- * @returns Medium quality TypeScript rules configuration
+ * @returns {void} Medium quality TypeScript rules configuration
  */
 function getMediumTypeScriptRules(): Record<string, unknown> {
   return {
@@ -44,7 +44,7 @@ function getMediumTypeScriptRules(): Record<string, unknown> {
 
 /**
  * Get strict quality TypeScript rules
- * @returns Strict quality TypeScript rules configuration
+ * @returns {void} Strict quality TypeScript rules configuration
  */
 function getStrictTypeScriptRules(): Record<string, unknown> {
   return {
@@ -59,8 +59,8 @@ function getStrictTypeScriptRules(): Record<string, unknown> {
 
 /**
  * Get TypeScript ESLint rules based on quality level
- * @param qualityLevel - The quality level ('light', 'medium', 'strict')
- * @returns TypeScript ESLint rules configuration
+ * @param {string} qualityLevel - The quality level ('light', 'medium', 'strict')
+ * @returns {void} TypeScript ESLint rules configuration
  */
 export function getTypeScriptRules(qualityLevel: string): Record<string, unknown> {
   const baseTSRules = getBaseTypeScriptRules();

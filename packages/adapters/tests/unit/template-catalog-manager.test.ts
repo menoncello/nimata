@@ -1,10 +1,10 @@
 /**
  * Template Catalog Manager Unit Tests
  */
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { TemplateMetadata, TemplateCatalogConfig } from '@nimata/core';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { TemplateCatalogManager } from '../../src/template-engine/template-catalog-manager.js';
 
 describe('TemplateCatalogManager', () => {

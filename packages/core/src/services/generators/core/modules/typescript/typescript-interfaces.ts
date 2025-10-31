@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate TypeScript interface
- * @param config - Project configuration
- * @returns TypeScript interface TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} TypeScript interface TypeScript code
  */
 export function generateTypeScriptInterface(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -27,8 +27,8 @@ ${serviceInterface}`;
 
 /**
  * Generate TypeScript config interface
- * @param className - Class name
- * @returns Config interface code
+ * @param {string} className - Class name
+ * @returns {string} Config interface code
  */
 export function generateTypeScriptConfigInterface(className: string): string {
   return `export interface ${className}Config {
@@ -45,7 +45,7 @@ export function generateTypeScriptConfigInterface(className: string): string {
 
 /**
  * Generate Validator interface
- * @returns Validator interface code
+ * @returns {string} Validator interface code
  */
 export function generateValidatorInterface(): string {
   return `export interface Validator {
@@ -58,7 +58,7 @@ export function generateValidatorInterface(): string {
 
 /**
  * Generate Adapter interface
- * @returns Adapter interface code
+ * @returns {string} Adapter interface code
  */
 export function generateAdapterInterface(): string {
   return `export interface Adapter<T = unknown, U = unknown> {
@@ -71,7 +71,7 @@ export function generateAdapterInterface(): string {
 
 /**
  * Generate Service interface
- * @returns Service interface code
+ * @returns {string} Service interface code
  */
 export function generateServiceInterface(): string {
   return `export interface Service<T = unknown> {

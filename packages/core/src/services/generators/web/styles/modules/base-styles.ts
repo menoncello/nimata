@@ -24,8 +24,8 @@ export class BaseStyles {
 
   /**
    * Generate styles header comment
-   * @param config - Project configuration
-   * @returns Styles header comment
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Styles header comment
    */
   generateStylesHeader(config: ProjectConfig): string {
     return `/*
@@ -36,7 +36,7 @@ export class BaseStyles {
 
   /**
    * Generate CSS reset styles
-   * @returns CSS reset styles
+   * @returns {string} CSS reset styles
    */
   generateCSSReset(): string {
     return `/* CSS Reset and Base Styles */
@@ -51,8 +51,8 @@ export class BaseStyles {
 
   /**
    * Generate CSS variables based on project configuration
-   * @param config - Project configuration
-   * @returns CSS variables
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CSS variables
    */
   generateCSSVariables(config: ProjectConfig): string {
     const primaryColor = this.colorUtilities.getPrimaryColor(config);
@@ -91,7 +91,7 @@ export class BaseStyles {
 
   /**
    * Generate base HTML styles
-   * @returns Base HTML styles
+   * @returns {string} Base HTML styles
    */
   generateBaseStyles(): string {
     return `/* Base Styles */
@@ -120,8 +120,8 @@ input, button, textarea, select {
 
   /**
    * Generate complete base styles section
-   * @param config - Project configuration
-   * @returns Complete base styles CSS
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Complete base styles CSS
    */
   generateBaseStylesSection(config: ProjectConfig): string {
     const header = this.generateStylesHeader(config);

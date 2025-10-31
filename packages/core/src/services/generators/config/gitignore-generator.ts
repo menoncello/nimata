@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class GitignoreGenerator {
   /**
    * Generate .gitignore content
-   * @param _config - Project configuration
-   * @returns .gitignore content
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} .gitignore content
    */
   generate(_config: ProjectConfig): string {
     return [
@@ -32,7 +32,7 @@ export class GitignoreGenerator {
 
   /**
    * Generate dependencies section of .gitignore
-   * @returns Dependencies gitignore content
+   * @returns {string} Dependencies gitignore content
    */
   private generateDependencies(): string {
     return `# Dependencies
@@ -46,7 +46,7 @@ jspm_packages/`;
 
   /**
    * Generate builds section of .gitignore
-   * @returns Builds gitignore content
+   * @returns {string} Builds gitignore content
    */
   private generateBuilds(): string {
     return `# Production builds
@@ -70,7 +70,7 @@ public`;
 
   /**
    * Generate environment variables section of .gitignore
-   * @returns Environment gitignore content
+   * @returns {string} Environment gitignore content
    */
   private generateEnvironment(): string {
     return `# Environment variables
@@ -83,7 +83,7 @@ public`;
 
   /**
    * Generate IDE files section of .gitignore
-   * @returns IDE gitignore content
+   * @returns {string} IDE gitignore content
    */
   private generateIDE(): string {
     return `# IDE files
@@ -96,7 +96,7 @@ public`;
 
   /**
    * Generate OS generated files section of .gitignore
-   * @returns OS gitignore content
+   * @returns {string} OS gitignore content
    */
   private generateOS(): string {
     return `# OS generated files
@@ -111,7 +111,7 @@ Thumbs.db`;
 
   /**
    * Generate logs section of .gitignore
-   * @returns Logs gitignore content
+   * @returns {string} Logs gitignore content
    */
   private generateLogs(): string {
     return `# Logs
@@ -121,7 +121,7 @@ logs/
 
   /**
    * Generate runtime data section of .gitignore
-   * @returns Runtime gitignore content
+   * @returns {string} Runtime gitignore content
    */
   private generateRuntime(): string {
     return `# Runtime data
@@ -133,7 +133,7 @@ pids/
 
   /**
    * Generate coverage section of .gitignore
-   * @returns Coverage gitignore content
+   * @returns {string} Coverage gitignore content
    */
   private generateCoverage(): string {
     return `# Coverage directory used by tools like istanbul
@@ -146,7 +146,7 @@ coverage/
 
   /**
    * Generate cache section of .gitignore
-   * @returns Cache gitignore content
+   * @returns {string} Cache gitignore content
    */
   private generateCache(): string {
     return `# Optional npm cache directory
@@ -170,7 +170,7 @@ coverage/
 
   /**
    * Generate outputs section of .gitignore
-   * @returns Outputs gitignore content
+   * @returns {string} Outputs gitignore content
    */
   private generateOutputs(): string {
     return `# Optional REPL history
@@ -193,7 +193,7 @@ temp/`;
 
   /**
    * Generate editor files section of .gitignore
-   * @returns Editor gitignore content
+   * @returns {string} Editor gitignore content
    */
   private generateEditors(): string {
     return `# Editor directories and files

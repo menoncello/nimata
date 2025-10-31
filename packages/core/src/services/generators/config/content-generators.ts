@@ -16,8 +16,8 @@ import { ReadmeGenerator } from './readme-generator.js';
 export class ContentGenerators {
   /**
    * Generate README content
-   * @param config - Project configuration
-   * @returns README markdown content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} README markdown content
    */
   static generateReadme(config: ProjectConfig): string {
     return ReadmeGenerator.generate(config);
@@ -25,7 +25,7 @@ export class ContentGenerators {
 
   /**
    * Generate .gitignore content
-   * @returns Gitignore content
+   * @returns {string} Gitignore content
    */
   static generateGitignore(): string {
     return MiscGenerators.generateGitignore();
@@ -33,8 +33,8 @@ export class ContentGenerators {
 
   /**
    * Generate TypeScript configuration
-   * @param config - Project configuration
-   * @returns TypeScript config JSON
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} TypeScript config JSON
    */
   static generateTypeScriptConfig(config: ProjectConfig): string {
     return ConfigGenerators.generateTypeScriptConfig(config);
@@ -42,7 +42,7 @@ export class ContentGenerators {
 
   /**
    * Generate Prettier configuration
-   * @returns Prettier config JSON
+   * @returns {string} Prettier config JSON
    */
   static generatePrettierConfig(): string {
     return ConfigGenerators.generatePrettierConfig();
@@ -50,7 +50,7 @@ export class ContentGenerators {
 
   /**
    * Generate ESLint configuration
-   * @returns ESLint config JSON
+   * @returns {string} ESLint config JSON
    */
   static generateESLintConfig(): string {
     return ConfigGenerators.generateESLintConfig();
@@ -58,7 +58,7 @@ export class ContentGenerators {
 
   /**
    * Generate Vitest configuration
-   * @returns Vitest config TypeScript code
+   * @returns {string} Vitest config TypeScript code
    */
   static generateVitestConfig(): string {
     return ConfigGenerators.generateVitestConfig();
@@ -66,7 +66,7 @@ export class ContentGenerators {
 
   /**
    * Generate Stryker configuration
-   * @returns Stryker config JSON
+   * @returns {string} Stryker config JSON
    */
   static generateStrykerConfig(): string {
     return ConfigGenerators.generateStrykerConfig();
@@ -74,7 +74,7 @@ export class ContentGenerators {
 
   /**
    * Generate CI configuration
-   * @returns GitHub Actions workflow
+   * @returns {string} GitHub Actions workflow
    */
   static generateCIConfig(): string {
     return CIGenerators.generateCIConfig();
@@ -82,8 +82,8 @@ export class ContentGenerators {
 
   /**
    * Generate Claude configuration
-   * @param config - Project configuration
-   * @returns Claude configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Claude configuration content
    */
   static generateClaudeConfig(config: ProjectConfig): string {
     return AIConfigGenerators.generateClaudeConfig(config);
@@ -91,8 +91,8 @@ export class ContentGenerators {
 
   /**
    * Generate GitHub Copilot configuration
-   * @param config - Project configuration
-   * @returns Copilot configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Copilot configuration content
    */
   static generateCopilotConfig(config: ProjectConfig): string {
     return AIConfigGenerators.generateCopilotConfig(config);
@@ -100,8 +100,8 @@ export class ContentGenerators {
 
   /**
    * Generate AI context configuration
-   * @param config - Project configuration
-   * @returns AI context configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} AI context configuration content
    */
   static generateAIContext(config: ProjectConfig): string {
     return AIConfigGenerators.generateAIContext(config);
@@ -109,8 +109,8 @@ export class ContentGenerators {
 
   /**
    * Generate Cursor rules configuration
-   * @param config - Project configuration
-   * @returns Cursor rules configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Cursor rules configuration content
    */
   static generateCursorRules(config: ProjectConfig): string {
     return AIConfigGenerators.generateCursorRules(config);
@@ -118,8 +118,8 @@ export class ContentGenerators {
 
   /**
    * Generate package.json content
-   * @param config - Project configuration
-   * @returns Package.json content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Package.json content
    */
   static generatePackageJson(config: ProjectConfig): string {
     return ConfigGenerators.generatePackageJson(config);
@@ -127,8 +127,8 @@ export class ContentGenerators {
 
   /**
    * Generate API documentation placeholder
-   * @param config - Project configuration
-   * @returns API documentation markdown
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} API documentation markdown
    */
   static generateAPIDocumentation(config: ProjectConfig): string {
     return ConfigGenerators.generateAPIDocumentation(config);

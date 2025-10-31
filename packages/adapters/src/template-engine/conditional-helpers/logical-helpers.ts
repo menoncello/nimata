@@ -14,7 +14,7 @@ type HandlebarsInstance = typeof Handlebars;
 export class LogicalConditionalHelpers {
   /**
    * Register all logical operator helpers with Handlebars instance
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   static registerAll(handlebars: HandlebarsInstance): void {
     this.registerLogicalOperators(handlebars);
@@ -22,7 +22,7 @@ export class LogicalConditionalHelpers {
 
   /**
    * Register logical operator helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerLogicalOperators(handlebars: HandlebarsInstance): void {
     // AND helper for chaining conditions

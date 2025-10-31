@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate Web interface
- * @param config - Project configuration
- * @returns Web interface TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Web interface TypeScript code
  */
 export function generateWebInterface(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -24,8 +24,8 @@ ${componentInterface}`;
 
 /**
  * Generate Web config interface
- * @param className - Class name
- * @returns Config interface code
+ * @param {string} className - Class name
+ * @returns {string} Config interface code
  */
 export function generateWebConfigInterface(className: string): string {
   return `export interface ${className}Config {
@@ -48,7 +48,7 @@ export function generateWebConfigInterface(className: string): string {
 
 /**
  * Generate Route interface
- * @returns Route interface code
+ * @returns {string} Route interface code
  */
 export function generateRouteInterface(): string {
   return `export interface Route {
@@ -65,7 +65,7 @@ export function generateRouteInterface(): string {
 
 /**
  * Generate App component interface
- * @returns Component interface code
+ * @returns {string} Component interface code
  */
 export function generateAppComponentInterface(): string {
   return `export interface AppComponent {

@@ -180,7 +180,7 @@ describe('Documentation Files Generator - AC4: Documentation Files Generation (R
 
       // THEN: CLAUDE.md should be generated with AI context
       const claudeFile = documentationFiles.find(
-        (item) => item.path === '.claude/CLAUDE.md' && item.type === 'file'
+        (item) => item.path === 'CLAUDE.md' && item.type === 'file'
       );
       expect(claudeFile).toBeDefined();
       expect(claudeFile?.content).toContain('Claude Code Configuration for claude-context-test');
@@ -209,7 +209,7 @@ describe('Documentation Files Generator - AC4: Documentation Files Generation (R
 
       // THEN: CLAUDE.md should include quality standards
       const claudeFile = documentationFiles.find(
-        (item) => item.path === '.claude/CLAUDE.md' && item.type === 'file'
+        (item) => item.path === 'CLAUDE.md' && item.type === 'file'
       );
       expect(claudeFile).toBeDefined();
       expect(claudeFile?.content).toContain('- **Quality Level**: strict');

@@ -41,7 +41,7 @@ export class ProjectGenerator {
 
   /**
    * Constructor
-   * @param templatesDir - Templates directory
+   * @param {unknown} templatesDir - Templates directory
    */
   constructor(templatesDir?: string) {
     if (templatesDir) {
@@ -57,8 +57,8 @@ export class ProjectGenerator {
 
   /**
    * Generate a new project
-   * @param config - Project configuration
-   * @returns Generation result
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {void} Generation result
    */
   async generateProject(config: ProjectConfig): Promise<GenerationResult> {
     const startTime = Date.now();
@@ -82,9 +82,9 @@ export class ProjectGenerator {
 
   /**
    * Execute the project generation workflow
-   * @param config - Project configuration
-   * @param startTime - Start time for duration calculation
-   * @returns Generation result
+   * @param {unknown} config - Project configuration
+   * @param {unknown} startTime - Start time for duration calculation
+   * @returns {void} Generation result
    */
   private async executeProjectGeneration(
     config: ProjectConfig,
@@ -115,8 +115,8 @@ export class ProjectGenerator {
 
   /**
    * Add validation warnings to result
-   * @param result - Result object to add warnings to
-   * @param projectDir - Project directory to validate
+   * @param {GenerationResult} result - Result object to add warnings to
+   * @param {string} projectDir - Project directory to validate
    */
   private async addValidationWarnings(result: GenerationResult, projectDir: string): Promise<void> {
     const projectValidation = await this.validateProject(projectDir);
@@ -128,8 +128,8 @@ export class ProjectGenerator {
 
   /**
    * Validate project configuration
-   * @param config - Project configuration
-   * @returns Validation result
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): ValidationResult} Validation result
    */
   validateProjectConfig(config: ProjectConfig): ValidationResult {
     const requiredValidation = validateRequiredConfigFields(config);
@@ -145,8 +145,8 @@ export class ProjectGenerator {
 
   /**
    * Validate generated project structure and files
-   * @param projectPath - Path to the generated project
-   * @returns Validation result
+   * @param {string} projectPath - Path to the generated project
+   * @returns {void} Validation result
    */
   async validateProject(projectPath: string): Promise<ValidationResult> {
     const errors: string[] = [];
@@ -180,7 +180,7 @@ export class ProjectGenerator {
 
   /**
    * Add a new template to the system
-   * @param template - Template configuration to add
+   * @param {ProjectTemplate} template - Template configuration to add
    * @throws Error if template is invalid
    */
   addTemplate(template: ProjectTemplate): void {
@@ -217,7 +217,7 @@ export class ProjectGenerator {
 
   /**
    * Get list of available templates
-   * @returns Array of available template names
+   * @returns {string[]} Array of available template names
    */
   getAvailableTemplates(): string[] {
     // Return available templates synchronously for the interface
@@ -227,8 +227,8 @@ export class ProjectGenerator {
 
   /**
    * Validate project name format and constraints
-   * @param name - Project name to validate
-   * @returns Validation result
+   * @param {string} name - Project name to validate
+   * @returns {string): ValidationResult} Validation result
    */
   validateProjectName(name: string): ValidationResult {
     if (!name || name.trim().length === 0) {

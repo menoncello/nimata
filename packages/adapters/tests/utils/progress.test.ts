@@ -235,13 +235,13 @@ describe('PROJECT_GENERATION_STEPS', () => {
     expect(Array.isArray(PROJECT_GENERATION_STEPS)).toBe(true);
     expect(PROJECT_GENERATION_STEPS.length).toBeGreaterThan(0);
 
-    PROJECT_GENERATION_STEPS.forEach((step) => {
+    for (const step of PROJECT_GENERATION_STEPS) {
       expect(step).toHaveProperty('name');
       expect(step).toHaveProperty('weight');
       expect(typeof step.name).toBe('string');
       expect(typeof step.weight).toBe('number');
       expect(step.weight).toBeGreaterThan(0);
-    });
+    }
   });
 
   it('should include expected steps', () => {

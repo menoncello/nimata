@@ -4,7 +4,7 @@
 
 /**
  * Get CLI project patterns content
- * @returns CLI patterns string
+ * @returns {string} CLI patterns string
  */
 function getCLIPatternsContent(): string {
   return `### Command pattern example
@@ -26,11 +26,11 @@ export class MyCommand {
 
 /**
  * Get web project patterns content
- * @returns Web patterns string
+ * @returns {string} Web patterns string
  */
 /**
  * Get Express route example content
- * @returns Express route example string
+ * @returns {string} Express route example string
  */
 function getExpressRouteExample(): string {
   return `### Express route example
@@ -50,7 +50,7 @@ export const getUserHandler = async (req: Request, res: Response): Promise<void>
 
 /**
  * Get RESTful API pattern content
- * @returns RESTful API pattern string
+ * @returns {string} RESTful API pattern string
  */
 function getRestfulApiPattern(): string {
   return `### RESTful API Pattern
@@ -78,7 +78,7 @@ export const createErrorResponse = (error: string): ApiResponse<never> => ({
 
 /**
  * Get combined web patterns content
- * @returns Combined web patterns string
+ * @returns {string} Combined web patterns string
  */
 function getWebPatternsContent(): string {
   return `${getExpressRouteExample()}
@@ -88,8 +88,8 @@ ${getRestfulApiPattern()}`;
 
 /**
  * Get project-specific patterns content
- * @param projectType - Type of project
- * @returns Project-specific patterns string
+ * @param {string} projectType - Type of project
+ * @returns {string): string} Project-specific patterns string
  */
 export function getProjectSpecificPatternsContent(projectType: string): string {
   switch (projectType) {
@@ -104,11 +104,11 @@ export function getProjectSpecificPatternsContent(projectType: string): string {
 
 /**
  * Get best practices content
- * @returns Best practices string
+ * @returns {string} Best practices string
  */
 /**
  * Get best practices list content
- * @returns Best practices list string
+ * @returns {string} Best practices list string
  */
 function getBestPracticesList(): string {
   return `
@@ -126,7 +126,7 @@ function getBestPracticesList(): string {
 
 /**
  * Get testing pattern content
- * @returns Testing pattern string
+ * @returns {string} Testing pattern string
  */
 function getTestingPattern(): string {
   return `### Testing Pattern
@@ -162,7 +162,7 @@ describe('Example functionality', () => {
 
 /**
  * Get combined best practices content
- * @returns Combined best practices string
+ * @returns {string} Combined best practices string
  */
 export function getBestPracticesContent(): string {
   return `${getBestPracticesList()}

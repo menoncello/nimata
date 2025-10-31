@@ -70,7 +70,7 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Creates a new template manager instance
-   * @param templatesDir - Optional directory path where templates are located
+   * @param {unknown} templatesDir - Optional directory path where templates are located
    */
   constructor(templatesDir?: string) {
     this.templatesDir = templatesDir || this.resolveTemplatesDirectory();
@@ -80,8 +80,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Load template from file system
-   * @param templateName - The name of the template to load
-   * @returns Promise resolving to the loaded project template
+   * @param {string} templateName - The name of the template to load
+   * @returns {void} Promise resolving to the loaded project template
    */
   async loadTemplate(templateName: string): Promise<ProjectTemplate> {
     const templatePath = path.join(this.templatesDir, templateName);
@@ -101,8 +101,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Creates template variables array
-   * @param variables - Extracted variable names
-   * @returns Template variables configuration
+   * @param {unknown} variables - Extracted variable names
+   * @returns {Array<} Template variables configuration
    */
   private createTemplateVariables(
     variables: string[]
@@ -117,11 +117,11 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Creates project template object
-   * @param templateName - Template name
-   * @param content - Template content
-   * @param variables - Extracted variables
-   * @param templateVariables - Template variables configuration
-   * @returns Project template object
+   * @param {string} templateName - Template name
+   * @param {string} content - Template content
+   * @param {Array<{ name: string; type: string; required: boolean; description?: string; defaultValue?: unknown; }>} variables - Extracted variables
+   * @param {Array<{ name: string; type: string; required: boolean; description?: string; defaultValue?: unknown; }>} templateVariables - Template variables configuration
+   * @returns {{ name: string; content: string; variables: Array<{ name: string; type: string; required: boolean; description?: string; defaultValue?: unknown; }>; }} Project template object
    */
   private createProjectTemplate(
     templateName: string,
@@ -154,9 +154,9 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Render template with context
-   * @param template - The template string to render
-   * @param context - The template context containing variables
-   * @returns Promise resolving to the rendered template string
+   * @param {string} template - The template string to render
+   * @param {TemplateContext} context - The template context containing variables
+   * @returns {void} Promise resolving to the rendered template string
    */
   async renderTemplate(template: string, context: TemplateContext): Promise<string> {
     try {
@@ -178,8 +178,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Validate template syntax
-   * @param template - The template string to validate
-   * @returns Validation result indicating if template is valid
+   * @param {string} template - The template string to validate
+   * @returns {string): ValidationResult} Validation result indicating if template is valid
    */
   validateTemplate(template: string): ValidationResult {
     const errors: string[] = [];
@@ -215,9 +215,9 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Process complete project template
-   * @param projectTemplate - The project template containing files to process
-   * @param context - The template context for rendering
-   * @returns Promise resolving to array of generated files with paths and content
+   * @param {unknown} projectTemplate - The project template containing files to process
+   * @param {unknown} context - The template context for rendering
+   * @returns {Promise<Array<} Promise resolving to array of generated files with paths and content
    */
   async processProjectTemplate(
     projectTemplate: ProjectTemplate,
@@ -248,8 +248,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Register a custom helper function
-   * @param name - The name of the helper function
-   * @param helper - The helper function implementation
+   * @param {string} name - The name of the helper function
+   * @param {(...args} helper - The helper function implementation
    */
   registerHelper(name: string, helper: (...args: unknown[]) => unknown): void {
     this.handlebars.registerHelper(name, helper);
@@ -257,7 +257,7 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Get available templates
-   * @returns Promise resolving to array of available template IDs
+   * @returns {void} Promise resolving to array of available template IDs
    */
   async getAvailableTemplates(): Promise<string[]> {
     const templates = await this.discoverTemplates();
@@ -266,7 +266,7 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Discover templates from file system
-   * @returns Promise resolving to array of discovered template metadata
+   * @returns {void} Promise resolving to array of discovered template metadata
    */
   async discoverTemplates(): Promise<SimpleTemplateMetadata[]> {
     const result: TemplateDiscoveryResult = {
@@ -301,8 +301,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Get template metadata
-   * @param templateId - The ID of the template to retrieve
-   * @returns Template metadata or null if not found
+   * @param {string} templateId - The ID of the template to retrieve
+   * @returns {string): SimpleTemplateMetadata | null} Template metadata or null if not found
    */
   getTemplateMetadata(templateId: string): SimpleTemplateMetadata | null {
     return this.templates.get(templateId) || null;
@@ -310,7 +310,7 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Get all template metadata
-   * @returns Array of all template metadata
+   * @returns {SimpleTemplateMetadata[]} Array of all template metadata
    */
   getAllTemplates(): SimpleTemplateMetadata[] {
     return Array.from(this.templates.values());
@@ -318,8 +318,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Search templates by query
-   * @param query - The search query string
-   * @returns Array of templates matching the search query
+   * @param {string} query - The search query string
+   * @returns {string): SimpleTemplateMetadata[]} Array of templates matching the search query
    */
   searchTemplates(query: string): SimpleTemplateMetadata[] {
     const lowerQuery = query.toLowerCase();
@@ -334,8 +334,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Get templates by category
-   * @param category - The category to filter by
-   * @returns Array of templates in the specified category
+   * @param {string} category - The category to filter by
+   * @returns {string): SimpleTemplateMetadata[]} Array of templates in the specified category
    */
   getTemplatesByCategory(category: string): SimpleTemplateMetadata[] {
     return this.getAllTemplates().filter((template) => template.category === category);
@@ -343,8 +343,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Get templates by tag
-   * @param tag - The tag to filter by
-   * @returns Array of templates with the specified tag
+   * @param {string} tag - The tag to filter by
+   * @returns {string): SimpleTemplateMetadata[]} Array of templates with the specified tag
    */
   getTemplatesByTag(tag: string): SimpleTemplateMetadata[] {
     return this.getAllTemplates().filter((template) => template.tags.includes(tag));
@@ -359,7 +359,7 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Get cache statistics
-   * @returns Object containing cache size and keys
+   * @returns {{ size: number; keys: string[]; }} Object containing cache size and keys
    */
   getCacheStats(): { size: number; keys: string[] } {
     return {
@@ -370,8 +370,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Scan directory for template files
-   * @param directory - Directory to scan
-   * @returns Array of template file paths
+   * @param {string} directory - Directory to scan
+   * @returns {void} Array of template file paths
    */
   private async scanDirectory(directory: string): Promise<string[]> {
     return TemplateFileScanner.scanDirectory(directory);
@@ -379,7 +379,7 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Resolve templates directory
-   * @returns The resolved templates directory path
+   * @returns {string} The resolved templates directory path
    */
   private resolveTemplatesDirectory(): string {
     const possiblePaths = [
@@ -405,8 +405,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Extract metadata from template file
-   * @param filePath The path to the template file
-   * @returns The extracted metadata
+   * @param {string} filePath The path to the template file
+   * @returns {void} The extracted metadata
    */
   private async extractMetadata(filePath: string): Promise<SimpleTemplateMetadata> {
     const stats = await fs.stat(filePath);
@@ -467,8 +467,8 @@ export class TemplateManager implements TemplateEngine {
 
   /**
    * Check if value is considered empty
-   * @param value - Value to check
-   * @returns True if value is empty
+   * @param {unknown} value - Value to check
+   * @returns {unknown): boolean} True if value is empty
    */
   private isEmptyValue(value: unknown): boolean {
     return (

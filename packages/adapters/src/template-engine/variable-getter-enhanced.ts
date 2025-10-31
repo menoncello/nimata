@@ -13,9 +13,9 @@ import { TemplateVariableGetter } from './variable-getter.js';
 export class VariableGetterEnhanced extends TemplateVariableGetter {
   /**
    * Gets variable value from context with support for complex paths
-   * @param path - The variable path (e.g., "project.name" or "custom_variables.theme")
-   * @param context - The template context containing variable values
-   * @returns The variable value or undefined if not found
+   * @param {string} path - The variable path (e.g., "project.name" or "custom_variables.theme")
+   * @param {ExtendedTemplateContext} context - The template context containing variable values
+   * @returns { unknown} The variable value or undefined if not found
    */
   static getVariableValue(path: string, context: ExtendedTemplateContext): unknown {
     // Check if it's a nested path (e.g., "project.name" or "custom_variables.theme")

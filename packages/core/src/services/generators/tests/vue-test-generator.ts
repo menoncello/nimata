@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class VueTestGenerator {
   /**
    * Generate Vue-specific test cases
-   * @param _config - Project configuration
-   * @returns Vue test case TypeScript code
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Vue test case TypeScript code
    */
   generateVueTests(_config: ProjectConfig): string {
     return `

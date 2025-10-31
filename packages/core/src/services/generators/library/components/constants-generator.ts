@@ -12,8 +12,8 @@ import { toPascalCase } from '../../../../utils/string-utils.js';
 export class ConstantsGenerator {
   /**
    * Generates the constants exports file
-   * @param config - Project configuration
-   * @returns Constants module code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Constants module code
    */
   generateConstantsExports(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -45,9 +45,9 @@ ${libraryInfo}
 
   /**
    * Generates the default configuration
-   * @param config - Project configuration
-   * @param className - Name of the class
-   * @returns Default configuration code
+   * @param {ProjectConfig} config - Project configuration
+   * @param {string} className - Name of the class
+   * @returns {string} Default configuration code
    */
   private generateDefaultConfig(config: ProjectConfig, className: string): string {
     return `/**
@@ -63,7 +63,7 @@ export const DEFAULT_CONFIG: ${className}Config = {
 
   /**
    * Generates error codes constants
-   * @returns Error codes code
+   * @returns {string} Error codes code
    */
   private generateErrorCodes(): string {
     return `/**
@@ -81,7 +81,7 @@ export const ERROR_CODES = {
 
   /**
    * Generates event types constants
-   * @returns Event types code
+   * @returns {string} Event types code
    */
   private generateEventTypes(): string {
     return `/**
@@ -99,7 +99,7 @@ export const EVENT_TYPES = {
 
   /**
    * Generates default options constants
-   * @returns Default options code
+   * @returns {string} Default options code
    */
   private generateDefaultOptions(): string {
     return `/**
@@ -114,8 +114,8 @@ export const DEFAULT_OPTIONS = {
 
   /**
    * Generates library information constants
-   * @param config - Project configuration
-   * @returns Library information code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Library information code
    */
   private generateLibraryInfo(config: ProjectConfig): string {
     return `/**

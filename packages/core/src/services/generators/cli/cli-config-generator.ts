@@ -25,8 +25,8 @@ import { generatePluginConfigs } from './modules/plugin-hook-generators.js';
 export class CLIConfigGenerator {
   /**
    * Generate CLI configuration
-   * @param config - Project configuration
-   * @returns CLI configuration content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLI configuration content
    */
   generateCLIConfig(config: ProjectConfig): string {
     return [

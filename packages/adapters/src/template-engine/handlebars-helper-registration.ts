@@ -10,7 +10,7 @@ type HandlebarsInstance = typeof Handlebars;
 
 /**
  * Registers all default Handlebars helpers
- * @param handlebars - Handlebars instance
+ * @param {HandlebarsInstance} handlebars - Handlebars instance
  */
 export function registerDefaultHelpers(handlebars: HandlebarsInstance): void {
   // Register all helper groups
@@ -25,7 +25,7 @@ export function registerDefaultHelpers(handlebars: HandlebarsInstance): void {
 
 /**
  * Registers string manipulation helpers
- * @param handlebars - Handlebars instance
+ * @param {HandlebarsInstance} handlebars - Handlebars instance
  */
 function registerStringHelpers(handlebars: HandlebarsInstance): void {
   // Register string helpers
@@ -44,7 +44,7 @@ function registerStringHelpers(handlebars: HandlebarsInstance): void {
 
 /**
  * Registers conditional helpers
- * @param handlebars - Handlebars instance
+ * @param {HandlebarsInstance} handlebars - Handlebars instance
  */
 function registerConditionalHelpers(handlebars: HandlebarsInstance): void {
   handlebars.registerHelper('eq', (a: unknown, b: unknown): boolean => {
@@ -74,7 +74,7 @@ function registerConditionalHelpers(handlebars: HandlebarsInstance): void {
 
 /**
  * Registers array helpers
- * @param handlebars - Handlebars instance
+ * @param {HandlebarsInstance} handlebars - Handlebars instance
  */
 function registerArrayHelpers(handlebars: HandlebarsInstance): void {
   handlebars.registerHelper('length', (arr: unknown[]): number => {
@@ -84,7 +84,7 @@ function registerArrayHelpers(handlebars: HandlebarsInstance): void {
 
 /**
  * Registers utility helpers
- * @param handlebars - Handlebars instance
+ * @param {HandlebarsInstance} handlebars - Handlebars instance
  */
 function registerUtilityHelpers(handlebars: HandlebarsInstance): void {
   handlebars.registerHelper('json', (obj: unknown): string => {

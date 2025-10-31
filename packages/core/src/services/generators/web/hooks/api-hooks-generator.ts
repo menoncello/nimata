@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 export class ApiHooksGenerator {
   /**
    * Generates API hooks collection
-   * @param _config - The project configuration
-   * @returns API hooks content
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} API hooks content
    */
   generateApiHooks(_config: ProjectConfig): string {
     const imports = this.generateApiImports();
@@ -28,7 +28,7 @@ ${apiHook}`;
 
   /**
    * Generate imports for API hooks
-   * @returns Imports content
+   * @returns {string} Imports content
    */
   private generateApiImports(): string {
     return `import { useState, useEffect, useCallback, useRef } from 'react';`;
@@ -36,7 +36,7 @@ ${apiHook}`;
 
   /**
    * Generate API interfaces
-   * @returns Interfaces content
+   * @returns {string} Interfaces content
    */
   private generateApiInterfaces(): string {
     return `interface ApiState<T> {
@@ -55,7 +55,7 @@ interface ApiOptions {
 
   /**
    * Generate API hook
-   * @returns API hook content
+   * @returns {string} API hook content
    */
   private generateApiHook(): string {
     const hookDeclaration = this.generateApiHookDeclaration();
@@ -85,7 +85,7 @@ ${returnValue}
 
   /**
    * Generate API hook declaration
-   * @returns Hook declaration code
+   * @returns {string} Hook declaration code
    */
   private generateApiHookDeclaration(): string {
     return `  const [state, setState] = useState<ApiState<T>>({
@@ -102,15 +102,34 @@ ${returnValue}
 
   /**
    * Generate API core logic
-   * @returns Core logic code
+   * @returns {string} Core logic code
    */
   private generateApiCoreLogic(): string {
+    return [
+      this.getExecuteFunctionStart(),
+      this.getApiSuccessHandling(),
+      this.getApiErrorHandling(),
+      this.getExecuteFunctionEnd(),
+    ].join('\n');
+  }
+
+  /**
+   * Get execute function start
+   * @returns {string} Execute function start
+   */
+  private getExecuteFunctionStart(): string {
     return `  const execute = useCallback(async () => {
     if (!mountedRef.current) return;
 
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState(prev => ({ ...prev, loading: true, error: null }));`;
+  }
 
-    try {
+  /**
+   * Get API success handling
+   * @returns {string} API success handling code
+   */
+  private getApiSuccessHandling(): string {
+    return `    try {
       const data = await apiCall();
 
       if (mountedRef.current) {
@@ -121,8 +140,15 @@ ${returnValue}
           lastFetched: new Date(),
         });
         retryCountRef.current = 0;
-      }
-    } catch (error) {
+      }`;
+  }
+
+  /**
+   * Get API error handling
+   * @returns {string} API error handling code
+   */
+  private getApiErrorHandling(): string {
+    return `    } catch (error) {
       if (mountedRef.current) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
@@ -137,13 +163,20 @@ ${returnValue}
           }));
         }
       }
-    }
-  }, [apiCall, retryCount, retryDelay]);`;
+    }`;
+  }
+
+  /**
+   * Get execute function end
+   * @returns {string} Execute function end
+   */
+  private getExecuteFunctionEnd(): string {
+    return `  }, [apiCall, retryCount, retryDelay]);`;
   }
 
   /**
    * Generate API execute function
-   * @returns Execute function code
+   * @returns {string} Execute function code
    */
   private generateApiExecuteFunction(): string {
     return `  const executeWithRetry = useCallback(() => {
@@ -154,7 +187,7 @@ ${returnValue}
 
   /**
    * Generate API reset function
-   * @returns Reset function code
+   * @returns {string} Reset function code
    */
   private generateApiResetFunction(): string {
     return `  const reset = useCallback(() => {
@@ -172,7 +205,7 @@ ${returnValue}
 
   /**
    * Generate API return value
-   * @returns Return value code
+   * @returns {string} Return value code
    */
   private generateApiReturnValue(): string {
     return `  useEffect(() => {

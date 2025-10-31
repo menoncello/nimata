@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate TypeScript class
- * @param config - Project configuration
- * @returns TypeScript class TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} TypeScript class TypeScript code
  */
 export function generateTypeScriptClass(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -24,9 +24,9 @@ export function generateTypeScriptClass(config: ProjectConfig): string {
 
 /**
  * Generate TypeScript class header and properties
- * @param className - Class name
- * @param _config - Project configuration
- * @returns Class header TypeScript code
+ * @param {string} className - Class name
+ * @param {ProjectConfig} _config - Project configuration
+ * @returns {string} Class header TypeScript code
  */
 function generateTSClassHeader(className: string, _config: ProjectConfig): string {
   return `export class ${className} {
@@ -36,9 +36,9 @@ function generateTSClassHeader(className: string, _config: ProjectConfig): strin
 
 /**
  * Generate TypeScript class constructor
- * @param className - Class name
- * @param config - Project configuration
- * @returns Constructor TypeScript code
+ * @param {string} className - Class name
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Constructor TypeScript code
  */
 function generateTSConstructor(className: string, config: ProjectConfig): string {
   return `  constructor(config: Partial<${className}Config> = {}) {
@@ -54,7 +54,7 @@ function generateTSConstructor(className: string, config: ProjectConfig): string
 
 /**
  * Generate TypeScript initialize method
- * @returns Initialize method TypeScript code
+ * @returns {string} Initialize method TypeScript code
  */
 function generateTSInitializeMethod(): string {
   return `  /**
@@ -80,14 +80,14 @@ function generateTSInitializeMethod(): string {
 
 /**
  * Generate TypeScript validate method
- * @returns Validate method TypeScript code
+ * @returns {string} Validate method TypeScript code
  */
 function generateTSValidateMethod(): string {
   return `  /**
    * Validate input with validator
-   * @param validator - Validator to use
-   * @param input - Input to validate
-   * @returns Validation result
+   * @param {string} validator - Validator to use
+   * @param {string} input - Input to validate
+   * @returns {string} Validation result
    */
   validate(validator: Validator, input: unknown): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
@@ -107,14 +107,14 @@ function generateTSValidateMethod(): string {
 
 /**
  * Generate TypeScript adapt method
- * @returns Adapt method TypeScript code
+ * @returns {string} Adapt method TypeScript code
  */
 function generateTSAdaptMethod(): string {
   return `  /**
    * Adapt data with adapter
-   * @param adapter - Adapter to use
-   * @param input - Input to adapt
-   * @returns Adapted data
+   * @param {string} adapter - Adapter to use
+   * @param {string} input - Input to adapt
+   * @returns {string} Adapted data
    */
   adapt<T = unknown, U = unknown>(adapter: Adapter<T, U>, input: T): U {
     return adapter.adapt(input);
@@ -123,14 +123,14 @@ function generateTSAdaptMethod(): string {
 
 /**
  * Generate TypeScript execute service method
- * @returns Execute service method TypeScript code
+ * @returns {string} Execute service method TypeScript code
  */
 function generateTSExecuteServiceMethod(): string {
   return `  /**
    * Execute service
-   * @param service - Service to execute
-   * @param input - Service input
-   * @returns Service result
+   * @param {string} service - Service to execute
+   * @param {string} input - Service input
+   * @returns {string} Service result
    */
   async executeService<T = unknown, U = unknown>(
     service: Service<T>,
@@ -142,8 +142,8 @@ function generateTSExecuteServiceMethod(): string {
 
 /**
  * Generate TypeScript configuration methods
- * @param className - Class name
- * @returns Configuration methods TypeScript code
+ * @param {string} className - Class name
+ * @returns {string} Configuration methods TypeScript code
  */
 function generateTSConfigMethods(className: string): string {
   return `  /**

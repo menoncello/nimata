@@ -29,9 +29,9 @@ const SEARCH_CONSTANTS = {
 export class TemplateSearchEngine {
   /**
    * Search templates using filter criteria
-   * @param templates - Array of templates to search
-   * @param filter - Search filter criteria
-   * @returns Search results with matching templates
+   * @param {TemplateMetadata[]} templates - Array of templates to search
+   * @param {TemplateSearchFilter} filter - Search filter criteria
+   * @returns { TemplateSearchResult} Search results with matching templates
    */
   static search(templates: TemplateMetadata[], filter: TemplateSearchFilter): TemplateSearchResult {
     const startTime = performance.now();
@@ -55,9 +55,9 @@ export class TemplateSearchEngine {
 
   /**
    * Apply filters to templates
-   * @param templates - Array of templates to filter
-   * @param filter - Search filter criteria
-   * @returns Filtered templates
+   * @param {unknown} templates - Array of templates to filter
+   * @param {unknown} filter - Search filter criteria
+   * @returns {TemplateMetadata[]} Filtered templates
    */
   private static applyFilters(
     templates: TemplateMetadata[],
@@ -68,9 +68,9 @@ export class TemplateSearchEngine {
 
   /**
    * Sort and limit results
-   * @param filteredTemplates - Filtered templates
-   * @param filter - Search filter criteria
-   * @returns Sorted and limited templates
+   * @param {unknown} filteredTemplates - Filtered templates
+   * @param {unknown} filter - Search filter criteria
+   * @returns {TemplateMetadata[]} Sorted and limited templates
    */
   private static sortAndLimitResults(
     filteredTemplates: TemplateMetadata[],
@@ -91,7 +91,7 @@ export class TemplateSearchEngine {
 
   /**
    * Create empty facets object for search result
-   * @returns Empty facets object
+   * @returns {{ tags: []; projectTypes: []; qualityLevels: []; categories: [] }} Empty facets object
    */
   private static createEmptyFacets(): {
     tags: [];
@@ -113,9 +113,9 @@ export class TemplateSearchEngine {
 
   /**
    * Check if template matches search filter
-   * @param template - Template metadata
-   * @param filter - Search filter
-   * @returns True if template matches filter
+   * @param {TemplateMetadata} template - Template metadata
+   * @param {TemplateSearchFilter} filter - Search filter
+   * @returns { boolean} True if template matches filter
    */
   private static matchesFilter(template: TemplateMetadata, filter: TemplateSearchFilter): boolean {
     if (!this.matchesQueryFilter(template, filter)) {
@@ -151,9 +151,9 @@ export class TemplateSearchEngine {
 
   /**
    * Check if template matches query filter
-   * @param template - Template metadata
-   * @param filter - Search filter
-   * @returns True if template matches query
+   * @param {unknown} template - Template metadata
+   * @param {unknown} filter - Search filter
+   * @returns {boolean} True if template matches query
    */
   private static matchesQueryFilter(
     template: TemplateMetadata,
@@ -169,9 +169,9 @@ export class TemplateSearchEngine {
 
   /**
    * Check if template matches text search query
-   * @param template - Template metadata
-   * @param query - Search query
-   * @returns True if template matches query
+   * @param {TemplateMetadata} template - Template metadata
+   * @param {string} query - Search query
+   * @returns { boolean} True if template matches query
    */
   private static matchesTextSearch(template: TemplateMetadata, query: string): boolean {
     return (
@@ -184,9 +184,9 @@ export class TemplateSearchEngine {
 
   /**
    * Check if template matches tags filter
-   * @param template - Template metadata
-   * @param filter - Search filter
-   * @returns True if template matches tags
+   * @param {unknown} template - Template metadata
+   * @param {unknown} filter - Search filter
+   * @returns {boolean} True if template matches tags
    */
   private static matchesTagsFilter(
     template: TemplateMetadata,
@@ -201,9 +201,9 @@ export class TemplateSearchEngine {
 
   /**
    * Check if template matches project types filter
-   * @param template - Template metadata
-   * @param filter - Search filter
-   * @returns True if template matches project types
+   * @param {unknown} template - Template metadata
+   * @param {unknown} filter - Search filter
+   * @returns {boolean} True if template matches project types
    */
   private static matchesProjectTypesFilter(
     template: TemplateMetadata,
@@ -218,9 +218,9 @@ export class TemplateSearchEngine {
 
   /**
    * Check if template matches quality levels filter
-   * @param template - Template metadata
-   * @param filter - Search filter
-   * @returns True if template matches quality levels
+   * @param {unknown} template - Template metadata
+   * @param {unknown} filter - Search filter
+   * @returns {boolean} True if template matches quality levels
    */
   private static matchesQualityLevelsFilter(
     template: TemplateMetadata,
@@ -235,9 +235,9 @@ export class TemplateSearchEngine {
 
   /**
    * Check if template matches category filter
-   * @param template - Template metadata
-   * @param filter - Search filter
-   * @returns True if template matches category
+   * @param {unknown} template - Template metadata
+   * @param {unknown} filter - Search filter
+   * @returns {boolean} True if template matches category
    */
   private static matchesCategoryFilter(
     template: TemplateMetadata,
@@ -252,9 +252,9 @@ export class TemplateSearchEngine {
 
   /**
    * Check if template matches author filter
-   * @param template - Template metadata
-   * @param filter - Search filter
-   * @returns True if template matches author
+   * @param {unknown} template - Template metadata
+   * @param {unknown} filter - Search filter
+   * @returns {boolean} True if template matches author
    */
   private static matchesAuthorFilter(
     template: TemplateMetadata,
@@ -269,9 +269,9 @@ export class TemplateSearchEngine {
 
   /**
    * Check if template matches date range filter
-   * @param template - Template metadata
-   * @param filter - Search filter
-   * @returns True if template matches date range
+   * @param {unknown} template - Template metadata
+   * @param {unknown} filter - Search filter
+   * @returns {boolean} True if template matches date range
    */
   private static matchesDateRangeFilter(
     template: TemplateMetadata,
@@ -297,9 +297,9 @@ export class TemplateSearchEngine {
 
   /**
    * Calculate relevance score for template
-   * @param template - Template metadata
-   * @param query - Search query
-   * @returns Relevance score (higher is more relevant)
+   * @param {TemplateMetadata} template - Template metadata
+   * @param {string} query - Search query
+   * @returns { number} Relevance score (higher is more relevant)
    */
   private static calculateRelevanceScore(template: TemplateMetadata, query: string): number {
     const queryLower = query.toLowerCase();
@@ -333,10 +333,10 @@ export class TemplateSearchEngine {
 
   /**
    * Get suggestions for autocomplete based on query
-   * @param templates - Array of templates
-   * @param query - Partial query
-   * @param limit - Maximum number of suggestions
-   * @returns Array of suggestions
+   * @param {TemplateMetadata[]} templates - Array of templates
+   * @param {string} query - Partial query
+   * @param {unknown} limit - Maximum number of suggestions
+   * @returns {string[]} Array of suggestions
    */
   static getSuggestions(templates: TemplateMetadata[], query: string, limit = 10): string[] {
     if (!query || query.length < SEARCH_CONSTANTS.MIN_QUERY_LENGTH) {
@@ -359,9 +359,9 @@ export class TemplateSearchEngine {
 
   /**
    * Collect suggestions from a single template
-   * @param template - Template to extract suggestions from
-   * @param queryLower - Lowercase query string
-   * @param suggestions - Set to collect suggestions
+   * @param {unknown} template - Template to extract suggestions from
+   * @param {unknown} queryLower - Lowercase query string
+   * @param {unknown} suggestions - Set to collect suggestions
    */
   private static collectSuggestionsFromTemplate(
     template: TemplateMetadata,
@@ -395,9 +395,9 @@ export class TemplateSearchEngine {
 
   /**
    * Add suggestion to set if condition is met
-   * @param condition - Whether to add the suggestion
-   * @param suggestion - Suggestion to add
-   * @param suggestions - Set to add suggestion to
+   * @param {unknown} condition - Whether to add the suggestion
+   * @param {unknown} suggestion - Suggestion to add
+   * @param {unknown} suggestions - Set to add suggestion to
    */
   private static addSuggestionIfExists(
     condition: boolean,

@@ -110,8 +110,8 @@ export interface Config {
 
 /**
  * Validates that config paths are relative (security requirement)
- * @param config - Configuration object to validate
- * @returns Array of validation error messages (empty if valid)
+ * @param {string} config - Configuration object to validate
+ * @returns {string} Array of validation error messages (empty if valid)
  */
 export function validateConfigPaths(config: Config): string[] {
   const errors: string[] = [];

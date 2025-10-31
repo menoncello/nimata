@@ -8,14 +8,14 @@ import { toPascalCase } from '../../../../utils/string-utils.js';
 
 /**
  * Generates utility functions for libraries
- * @param config - Project configuration
- * @returns Utilities TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Utilities TypeScript code
  */
 export class UtilsGenerator {
   /**
    * Generates the utilities exports file
-   * @param config - Project configuration
-   * @returns Utilities module code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Utilities module code
    */
   generateUtilsExports(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -41,7 +41,7 @@ ${validateConfigFunction}
 
   /**
    * Generates the deep merge utility function
-   * @returns Deep merge function code
+   * @returns {string} Deep merge function code
    */
   private generateDeepMergeFunction(): string {
     const functionSignature = this.generateDeepMergeSignature();
@@ -57,14 +57,14 @@ ${helperFunctions}`;
 
   /**
    * Generates deep merge function signature
-   * @returns Function signature code
+   * @returns {string} Function signature code
    */
   private generateDeepMergeSignature(): string {
     return `/**
  * Deep merge two objects
- * @param target - Target object
- * @param source - Source object
- * @returns Merged object
+   * @param {string} target - Target object
+   * @param {string} source - Source object
+   * @returns {object}
  */
 export function deepMerge<T extends Record<string, unknown>>(
   target: T,
@@ -74,7 +74,7 @@ export function deepMerge<T extends Record<string, unknown>>(
 
   /**
    * Generates deep merge function body
-   * @returns Function body code
+   * @returns {string} Function body code
    */
   private generateDeepMergeBody(): string {
     return `  const result = { ...target };
@@ -93,14 +93,14 @@ export function deepMerge<T extends Record<string, unknown>>(
 
   /**
    * Generates helper functions for deep merge
-   * @returns Helper functions code
+   * @returns {string} Helper functions code
    */
   private generateDeepMergeHelpers(): string {
     return `/**
  * Check if a value is mergeable (object and not array)
- * @param sourceValue - Source value to check
- * @param targetValue - Target value to check
- * @returns Whether values can be merged
+   * @param {string} sourceValue - Source value to check
+   * @param {string} targetValue - Target value to check
+   * @returns {boolean} values can be merged
  */
 function isMergeableValue(
   sourceValue: unknown,
@@ -119,15 +119,15 @@ function isMergeableValue(
 
   /**
    * Generates the merge configs function
-   * @param className - Name of the class
-   * @returns Merge configs function code
+   * @param {string} className - Name of the class
+   * @returns {string} Merge configs function code
    */
   private generateMergeConfigsFunction(className: string): string {
     return `/**
  * Merge configuration objects
- * @param defaultConfig - Default configuration
- * @param userConfig - User configuration
- * @returns Merged configuration
+   * @param {string} defaultConfig - Default configuration
+   * @param {string} userConfig - User configuration
+   * @returns {string} Merged configuration
  */
 export function mergeConfigs(
   defaultConfig: ${className}Config,
@@ -143,13 +143,13 @@ export function mergeConfigs(
 
   /**
    * Generates the validate config function
-   * @param className - Name of the class
-   * @returns Validate config function code
+   * @param {string} className - Name of the class
+   * @returns {string} Validate config function code
    */
   private generateValidateConfigFunction(className: string): string {
     return `/**
  * Validate configuration object
- * @param config - Configuration to validate
+   * @param {string} config - Configuration to validate
  * @throws Error if configuration is invalid
  */
 export function validateConfig(config: ${className}Config): void {

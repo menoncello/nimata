@@ -14,8 +14,8 @@
  * - Integration with existing systems (Stories 1.2, 1.3)
  */
 
-import { DirectoryStructureGenerator } from '@nimata/core';
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
+import { DirectoryStructureGenerator } from '@nimata/core';
 import { TestProject, createTestProject } from '../e2e/support/test-project.js';
 import {
   createProjectConfig,
@@ -52,11 +52,11 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
       const directories = directoryStructure.filter((item) => item.type === 'directory');
       expect(directories.length).toBeGreaterThan(0);
 
-      directories.forEach((dir) => {
+      for (const dir of directories) {
         expect(dir.mode).toBe(0o755); // rwxr-xr-x
         expect(dir.path).toBeDefined();
         expect(dir.path.length).toBeGreaterThan(0);
-      });
+      }
     });
 
     it('should create files with appropriate permissions', async () => {
@@ -78,9 +78,9 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
       const regularFiles = directoryStructure.filter(
         (item) => item.type === 'file' && !item.executable
       );
-      regularFiles.forEach((file) => {
+      for (const file of regularFiles) {
         expect(file.mode).toBe(0o644); // rw-r--r--
-      });
+      }
     });
 
     it('should include .gitkeep files in all potentially empty directories', async () => {
@@ -109,14 +109,14 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
         'src/styles/.gitkeep',
       ];
 
-      expectedGitkeepDirs.forEach((expectedPath) => {
+      for (const expectedPath of expectedGitkeepDirs) {
         const gitkeepFile = directoryStructure.find(
           (item) => item.path === expectedPath && item.type === 'file'
         );
         expect(gitkeepFile).toBeDefined();
         expect(gitkeepFile!.content).toBe('');
         expect(gitkeepFile!.mode).toBe(0o644);
-      });
+      }
     });
   });
 
@@ -134,24 +134,24 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
 
       // THEN: Core directories should be present
       const expectedCoreDirs = ['src', 'tests', 'bin', 'docs', '.nimata'];
-      expectedCoreDirs.forEach((dir) => {
+      for (const dir of expectedCoreDirs) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem!.mode).toBe(0o755);
-      });
+      }
 
       // AND: Core files should be present
       const expectedFiles = ['src/index.ts', 'README.md', '.gitignore', 'package.json'];
-      expectedFiles.forEach((file) => {
+      for (const file of expectedFiles) {
         const fileItem = directoryStructure.find(
           (item) => item.path === file && item.type === 'file'
         );
         expect(fileItem).toBeDefined();
         expect(fileItem!.content).toBeDefined();
         expect(fileItem!.content!.length).toBeGreaterThan(0);
-      });
+      }
     });
 
     it('should generate web project structure with additional directories', async () => {
@@ -163,13 +163,13 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
 
       // THEN: Web-specific directories should be included
       const expectedWebDirs = ['public', 'src/components', 'src/styles'];
-      expectedWebDirs.forEach((dir) => {
+      for (const dir of expectedWebDirs) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem!.mode).toBe(0o755);
-      });
+      }
 
       // AND: Web-specific dependencies should be in package.json
       const packageJsonFile = directoryStructure.find(
@@ -192,13 +192,13 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
 
       // THEN: CLI-specific directories should be included
       const expectedCLIDirs = ['src/cli'];
-      expectedCLIDirs.forEach((dir) => {
+      for (const dir of expectedCLIDirs) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem!.mode).toBe(0o755);
-      });
+      }
 
       // AND: CLI launcher should be executable
       const cliLauncher = directoryStructure.find(
@@ -207,7 +207,7 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
       expect(cliLauncher).toBeDefined();
       expect(cliLauncher!.executable).toBe(true);
       expect(cliLauncher!.mode).toBe(0o755);
-      expect(cliLauncher!.content).toContain('#!/usr/bin/env node');
+      expect(cliLauncher!.content).toContain('#!/usr/bin/env bun');
     });
 
     it('should generate library project structure with proper exports', async () => {
@@ -219,13 +219,13 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
 
       // THEN: Library-specific directories should be included
       const expectedLibraryDirs = ['dist'];
-      expectedLibraryDirs.forEach((dir) => {
+      for (const dir of expectedLibraryDirs) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
         expect(dirItem!.mode).toBe(0o755);
-      });
+      }
 
       // AND: Main index should export properly for library
       const indexFile = directoryStructure.find(
@@ -251,12 +251,12 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
 
       // THEN: Basic structure should be present but minimal
       const basicDirs = ['src', 'tests', 'bin'];
-      basicDirs.forEach((dir) => {
+      for (const dir of basicDirs) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
-      });
+      }
 
       // AND: Package.json should have light dependencies
       const packageJsonFile = directoryStructure.find(
@@ -285,12 +285,12 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
         'tests/unit',
         'tests/integration',
       ];
-      completeDirs.forEach((dir) => {
+      for (const dir of completeDirs) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
-      });
+      }
 
       // AND: Package.json should have comprehensive dependencies
       const packageJsonFile = directoryStructure.find(
@@ -313,14 +313,14 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
 
       // THEN: Quality configuration files should be present
       const expectedConfigFiles = ['.gitignore', 'package.json', 'tsconfig.json'];
-      expectedConfigFiles.forEach((file) => {
+      for (const file of expectedConfigFiles) {
         const fileItem = directoryStructure.find(
           (item) => item.path === file && item.type === 'file'
         );
         expect(fileItem).toBeDefined();
         expect(fileItem!.content).toBeDefined();
         expect(fileItem!.content!.length).toBeGreaterThan(0);
-      });
+      }
     });
   });
 
@@ -398,7 +398,7 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
       // GIVEN: User creates projects of all types
       const projectTypes = ['basic', 'web', 'cli', 'library'] as const;
 
-      projectTypes.forEach((projectType) => {
+      for (const projectType of projectTypes) {
         // WHEN: Directory structure generator creates structure
         const projectConfig = createProjectConfig({
           name: `${projectType}-test-project`,
@@ -410,22 +410,22 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
 
         // THEN: Core structure should always be present
         const coreDirs = ['src', 'tests'];
-        coreDirs.forEach((dir) => {
+        for (const dir of coreDirs) {
           const dirItem = directoryStructure.find(
             (item) => item.path === dir && item.type === 'directory'
           );
           expect(dirItem).toBeDefined();
-        });
+        }
 
         // AND: Essential files should always be present
         const essentialFiles = ['src/index.ts', 'README.md', '.gitignore', 'package.json'];
-        essentialFiles.forEach((file) => {
+        for (const file of essentialFiles) {
           const fileItem = directoryStructure.find(
             (item) => item.path === file && item.type === 'file'
           );
           expect(fileItem).toBeDefined();
-        });
-      });
+        }
+      }
     });
   });
 
@@ -444,19 +444,19 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
 
       // THEN: AI assistant configurations should be included
       const claudeConfig = directoryStructure.find(
-        (item) => item.path === '.claude.md' && item.type === 'file'
+        (item) => item.path === 'CLAUDE.md' && item.type === 'file'
       );
       expect(claudeConfig).toBeDefined();
       expect(claudeConfig!.content).toContain('claude-code');
 
       // AND: .nimata directory structure should be present
       const nimataDirs = ['.nimata', '.nimata/cache', '.nimata/config'];
-      nimataDirs.forEach((dir) => {
+      for (const dir of nimataDirs) {
         const dirItem = directoryStructure.find(
           (item) => item.path === dir && item.type === 'directory'
         );
         expect(dirItem).toBeDefined();
-      });
+      }
     });
 
     it('should integrate with Story 1.2 quality configuration system', async () => {
@@ -501,12 +501,12 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
       expect(directoryStructure.length).toBeGreaterThan(0);
 
       const coreFiles = ['src/index.ts', 'README.md', 'package.json'];
-      coreFiles.forEach((file) => {
+      for (const file of coreFiles) {
         const fileItem = directoryStructure.find(
           (item) => item.path === file && item.type === 'file'
         );
         expect(fileItem).toBeDefined();
-      });
+      }
     });
   });
 
@@ -531,7 +531,7 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
 
       // THEN: All structures should be created efficiently
       expect(results).toHaveLength(10);
-      results.forEach((structure, index) => {
+      for (const [, structure] of results.entries()) {
         expect(structure.length).toBeGreaterThan(0);
 
         // Verify each structure has the expected core elements
@@ -539,7 +539,7 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
           (item) => ['src', 'tests', 'bin'].includes(item.path) && item.type === 'directory'
         );
         expect(hasCoreDirs).toBe(true);
-      });
+      }
 
       // Performance should be reasonable (less than 1 second for 10 projects)
       expect(duration).toBeLessThan(1000);
@@ -556,14 +556,14 @@ describe('P2 Comprehensive Integration Tests - Story 1.4', () => {
       // THEN: Outputs should be identical
       expect(structure1).toHaveLength(structure2.length);
 
-      structure1.forEach((item, index) => {
+      for (const [index, item] of structure1.entries()) {
         const correspondingItem = structure2[index];
         expect(item.path).toBe(correspondingItem.path);
         expect(item.type).toBe(correspondingItem.type);
         expect(item.content).toBe(correspondingItem.content);
         expect(item.mode).toBe(correspondingItem.mode);
         expect(item.executable).toBe(correspondingItem.executable);
-      });
+      }
     });
   });
 });

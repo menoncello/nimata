@@ -20,8 +20,8 @@ const SCANNER_CONSTANTS = {
 export class TemplateFileScanner {
   /**
    * Scan directory for template files
-   * @param directory - Directory to scan
-   * @returns Array of template file paths
+   * @param {string} directory - Directory to scan
+   * @returns {void} Array of template file paths
    */
   static async scanDirectory(directory: string): Promise<string[]> {
     // Check if directory exists first
@@ -38,8 +38,8 @@ export class TemplateFileScanner {
 
   /**
    * Recursively scan directory for template files
-   * @param dir - Directory to scan
-   * @param templatePaths - Array to accumulate template paths
+   * @param {string} dir - Directory to scan
+   * @param {string[]} templatePaths - Array to accumulate template paths
    */
   private static async scanRecursive(dir: string, templatePaths: string[]): Promise<void> {
     try {
@@ -48,16 +48,16 @@ export class TemplateFileScanner {
       for (const entry of entries) {
         await this.processDirectoryEntry(entry, dir, templatePaths);
       }
-    } catch (error) {
-      console.warn(`Failed to scan directory ${dir}:`, error);
+    } catch {
+      // Directory scan failed, continuing with others
     }
   }
 
   /**
    * Process a single directory entry during scanning
-   * @param entry - Directory entry to process
-   * @param dir - Parent directory path
-   * @param templatePaths - Array to accumulate template paths
+   * @param {import('fs'} entry - Directory entry to process
+   * @param {unknown} dir - Parent directory path
+   * @param {unknown} templatePaths - Array to accumulate template paths
    */
   private static async processDirectoryEntry(
     entry: import('fs').Dirent,
@@ -78,8 +78,8 @@ export class TemplateFileScanner {
 
   /**
    * Check if a file is a template file based on its extension
-   * @param fileName - Name of the file to check
-   * @returns True if the file is a template file
+   * @param {string} fileName - Name of the file to check
+   * @returns {string): boolean} True if the file is a template file
    */
   static isTemplateFile(fileName: string): boolean {
     const ext = path.extname(fileName).toLowerCase();
@@ -88,8 +88,8 @@ export class TemplateFileScanner {
 
   /**
    * Check if a directory should be ignored during scanning
-   * @param dirName - Name of the directory to check
-   * @returns True if the directory should be ignored
+   * @param {string} dirName - Name of the directory to check
+   * @returns {string): boolean} True if the directory should be ignored
    */
   static isIgnoredDirectory(dirName: string): boolean {
     return SCANNER_CONSTANTS.IGNORED_DIRECTORIES.includes(dirName);
@@ -97,8 +97,8 @@ export class TemplateFileScanner {
 
   /**
    * Get file statistics for a template file
-   * @param filePath - Path to the file
-   * @returns File statistics
+   * @param {string} filePath - Path to the file
+   * @returns {string): Promise<} File statistics
    */
   static async getFileStats(filePath: string): Promise<{
     size: number;

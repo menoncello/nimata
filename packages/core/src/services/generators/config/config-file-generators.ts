@@ -22,8 +22,8 @@ export class ConfigFileGenerators {
 
   /**
    * Generate .gitignore content
-   * @param config - Project configuration
-   * @returns .gitignore content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} .gitignore content
    */
   generateGitignore(config: ProjectConfig): string {
     return this.gitignoreGenerator.generate(config);
@@ -31,8 +31,8 @@ export class ConfigFileGenerators {
 
   /**
    * Generate package.json content
-   * @param config - Project configuration
-   * @returns package.json content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} package.json content
    */
   generatePackageJson(config: ProjectConfig): string {
     return this.packageJsonGenerator.generate(config);
@@ -40,8 +40,8 @@ export class ConfigFileGenerators {
 
   /**
    * Generate TypeScript configuration
-   * @param config - Project configuration
-   * @returns tsconfig.json content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} tsconfig.json content
    */
   generateTsConfig(config: ProjectConfig): string {
     return this.typescriptConfigGenerator.generate(config);
@@ -49,8 +49,8 @@ export class ConfigFileGenerators {
 
   /**
    * Generate ESLint configuration
-   * @param config - Project configuration
-   * @returns eslint.config.js content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} eslint.config.js content
    */
   generateESLintConfig(config: ProjectConfig): string {
     return this.eslintConfigGenerator.generate(config);

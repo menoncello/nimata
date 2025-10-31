@@ -11,8 +11,6 @@
  * - Executable permissions set on bin launcher (755)
  * - Entry points include basic boilerplate code with proper exports
  */
-import { constants, mode } from 'node:fs';
-import { join } from 'node:path';
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { TestProject } from '../e2e/support/test-project';
 import { createProjectConfig } from '../support/factories/project-config.factory';

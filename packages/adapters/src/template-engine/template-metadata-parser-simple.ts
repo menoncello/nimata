@@ -18,8 +18,8 @@ export interface SimpleTemplateMetadata {
 export class SimpleTemplateMetadataParser {
   /**
    * Parse metadata from template content
-   * @param content - The template content to parse
-   * @returns The parsed metadata
+   * @param {string} content - The template content to parse
+   * @returns {string): SimpleTemplateMetadata} The parsed metadata
    */
   static parseMetadata(content: string): SimpleTemplateMetadata {
     const metadata: SimpleTemplateMetadata = {};
@@ -32,12 +32,12 @@ export class SimpleTemplateMetadataParser {
 
   /**
    * Parse JSON metadata from content
-   * @param content - Template content
-   * @param metadata - Metadata object to update with parsed values
-   * @param metadata.name - Template name property to update
-   * @param metadata.description - Template description property to update
-   * @param metadata.category - Template category property to update
-   * @param metadata.tags - Template tags property to update
+   * @param {string} content - Template content
+   * @param {SimpleTemplateMetadata} metadata - Metadata object to update with parsed values
+   * @param {SimpleTemplateMetadata} metadata.name - Template name property to update
+   * @param {SimpleTemplateMetadata} metadata.description - Template description property to update
+   * @param {SimpleTemplateMetadata} metadata.category - Template category property to update
+   * @param {SimpleTemplateMetadata} metadata.tags - Template tags property to update
    */
   private static parseJsonMetadata(content: string, metadata: SimpleTemplateMetadata): void {
     if (!content.trim().startsWith('{')) {
@@ -57,12 +57,12 @@ export class SimpleTemplateMetadataParser {
 
   /**
    * Parse YAML metadata from content
-   * @param content - Template content to parse
-   * @param metadata - Metadata object to update with parsed values
-   * @param metadata.name - Template name property to update
-   * @param metadata.description - Template description property to update
-   * @param metadata.category - Template category property to update
-   * @param metadata.tags - Template tags property to update
+   * @param {string} content - Template content to parse
+   * @param {SimpleTemplateMetadata} metadata - Metadata object to update with parsed values
+   * @param {SimpleTemplateMetadata} metadata.name - Template name property to update
+   * @param {SimpleTemplateMetadata} metadata.description - Template description property to update
+   * @param {SimpleTemplateMetadata} metadata.category - Template category property to update
+   * @param {SimpleTemplateMetadata} metadata.tags - Template tags property to update
    */
   private static parseYamlMetadata(content: string, metadata: SimpleTemplateMetadata): void {
     const yamlMatch = content.match(/^(---\n([\S\s]*?)\n---)/);
@@ -80,12 +80,12 @@ export class SimpleTemplateMetadataParser {
 
   /**
    * Parse a single YAML line
-   * @param line - YAML line to parse
-   * @param metadata - Metadata object to update with parsed values
-   * @param metadata.name - Template name property to update
-   * @param metadata.description - Template description property to update
-   * @param metadata.category - Template category property to update
-   * @param metadata.tags - Template tags property to update
+   * @param {string} line - YAML line to parse
+   * @param {SimpleTemplateMetadata} metadata - Metadata object to update with parsed values
+   * @param {SimpleTemplateMetadata} metadata.name - Template name property to update
+   * @param {SimpleTemplateMetadata} metadata.description - Template description property to update
+   * @param {SimpleTemplateMetadata} metadata.category - Template category property to update
+   * @param {SimpleTemplateMetadata} metadata.tags - Template tags property to update
    */
   private static parseYamlLine(line: string, metadata: SimpleTemplateMetadata): void {
     const colonIndex = line.indexOf(':');
@@ -101,9 +101,9 @@ export class SimpleTemplateMetadataParser {
 
   /**
    * Extract value from YAML line
-   * @param line - YAML line
-   * @param colonIndex - Position of colon
-   * @returns Extracted value
+   * @param {string} line - YAML line
+   * @param {number} colonIndex - Position of colon
+   * @returns { string} Extracted value
    */
   private static extractYamlValue(line: string, colonIndex: number): string {
     let value = line.slice(colonIndex + 1).trim();
@@ -118,8 +118,8 @@ export class SimpleTemplateMetadataParser {
 
   /**
    * Check if string is quoted
-   * @param value - String to check
-   * @returns True if string is quoted
+   * @param {string} value - String to check
+   * @returns {string): boolean} True if string is quoted
    */
   private static isQuoted(value: string): boolean {
     return (
@@ -130,13 +130,13 @@ export class SimpleTemplateMetadataParser {
 
   /**
    * Update metadata from parsed YAML key-value pair
-   * @param key - YAML key to process
-   * @param value - YAML value to process
-   * @param metadata - Metadata object to update with parsed values
-   * @param metadata.name - Template name property to update
-   * @param metadata.description - Template description property to update
-   * @param metadata.category - Template category property to update
-   * @param metadata.tags - Template tags property to update
+   * @param {unknown} key - YAML key to process
+   * @param {unknown} value - YAML value to process
+   * @param {unknown} metadata - Metadata object to update with parsed values
+   * @param {unknown} metadata.name - Template name property to update
+   * @param {unknown} metadata.description - Template description property to update
+   * @param {unknown} metadata.category - Template category property to update
+   * @param {unknown} metadata.tags - Template tags property to update
    */
   private static updateMetadataFromYaml(
     key: string,
@@ -161,8 +161,8 @@ export class SimpleTemplateMetadataParser {
 
   /**
    * Parse YAML tags array
-   * @param value - YAML tags string
-   * @returns Array of tags
+   * @param {string} value - YAML tags string
+   * @returns {string): string[]} Array of tags
    */
   private static parseYamlTags(value: string): string[] {
     if (!value.startsWith('[') || !value.endsWith(']')) {

@@ -12,9 +12,9 @@ const DOUBLE_BRACE_LENGTH = 2;
 
 /**
  * Find the next variable placeholder in template
- * @param template - Template string to search
- * @param startPos - Starting position for search
- * @returns Variable placeholder info or null
+ * @param {string} template - Template string to search
+ * @param {number} startPos - Starting position for search
+ * @returns {{ startIndex: number; endIndex: number; variableName: string } | null} Variable placeholder info or null
  */
 function findNextVariable(
   template: string,
@@ -36,13 +36,13 @@ function findNextVariable(
 
 /**
  * Replace a single variable with its value
- * @param template - Template string
- * @param variableInfo - Variable placeholder information
- * @param variableInfo.startIndex - Variable start position
- * @param variableInfo.endIndex - Variable end position
- * @param variableInfo.path - Variable path
- * @param context - Template context
- * @returns Replacement string
+ * @param {string} template - Template string
+ * @param {{ startIndex: number; endIndex: number; path: string }} variableInfo - Variable information
+ * @param {number} variableInfo.startIndex - Variable start position
+ * @param {number} variableInfo.endIndex - Variable end position
+ * @param {string} variableInfo.path - Variable path
+ * @param {Record<string, unknown>} context - Template context
+ * @returns {string} Replacement string
  */
 function replaceSingleVariable(
   template: string,
@@ -59,9 +59,9 @@ function replaceSingleVariable(
 
 /**
  * Replaces variable placeholders with their values
- * @param template - Template string to process
- * @param context - Context object containing variable values
- * @returns Template string with replaced variables
+ * @param {string} template - Template string to process
+ * @param {TemplateContext} context - Context object containing variable values
+ * @returns { string} Template string with replaced variables
  */
 export function replaceVariables(template: string, context: TemplateContext): string {
   let result = '';
@@ -91,9 +91,9 @@ export function replaceVariables(template: string, context: TemplateContext): st
 
 /**
  * Parses a value and converts it to the appropriate type
- * @param value - String value to parse
- * @param context - Template context for variable resolution
- * @returns Parsed value
+ * @param {string} value - String value to parse
+ * @param {TemplateContext} context - Template context for variable resolution
+ * @returns { unknown} Parsed value
  */
 export function parseValueWrapper(value: string, context: TemplateContext): unknown {
   // Handle quoted strings

@@ -13,10 +13,10 @@ import { PARSER_CONSTANTS, UNKNOWN_ERROR_MSG } from './template-metadata-parser-
 export class TemplateFormatParsers {
   /**
    * Parse template content based on file extension
-   * @param content The template content
-   * @param ext The file extension
-   * @param filePath The file path for error reporting
-   * @returns Partial template metadata or null
+   * @param {unknown} content The template content
+   * @param {unknown} ext The file extension
+   * @param {unknown} filePath The file path for error reporting
+   * @returns {void} Partial template metadata or null
    */
   static parseTemplateContent(
     content: string,
@@ -35,9 +35,9 @@ export class TemplateFormatParsers {
 
   /**
    * Parse JSON template file
-   * @param content The JSON content to parse
-   * @param filePath The file path for error reporting
-   * @returns The parsed template metadata
+   * @param {string} content The JSON content to parse
+   * @param {string} filePath The file path for error reporting
+   * @returns {void} The parsed template metadata
    */
   private static parseJsonTemplate(content: string, filePath: string): Partial<TemplateMetadata> {
     try {
@@ -51,9 +51,9 @@ export class TemplateFormatParsers {
 
   /**
    * Parse YAML template file
-   * @param content The YAML content to parse
-   * @param filePath The file path for error reporting
-   * @returns The parsed template metadata
+   * @param {string} content The YAML content to parse
+   * @param {string} filePath The file path for error reporting
+   * @returns {void} The parsed template metadata
    */
   private static parseYamlTemplate(content: string, filePath: string): Partial<TemplateMetadata> {
     try {
@@ -71,8 +71,8 @@ export class TemplateFormatParsers {
 
   /**
    * Parse YAML frontmatter content
-   * @param yamlContent The YAML frontmatter content
-   * @returns Parsed metadata
+   * @param {string} yamlContent The YAML frontmatter content
+   * @returns {void} Parsed metadata
    */
   private static parseYamlFrontmatter(yamlContent: string): Partial<TemplateMetadata> {
     const data: Record<string, unknown> = {};
@@ -97,8 +97,8 @@ export class TemplateFormatParsers {
 
   /**
    * Clean quotes from string values
-   * @param value The value to clean
-   * @returns Cleaned value
+   * @param {string} value The value to clean
+   * @returns {string): string} Cleaned value
    */
   private static cleanValueQuotes(value: string): string {
     return value.replace(/(?:^["'])|(?:["']$)/g, '');
@@ -106,8 +106,8 @@ export class TemplateFormatParsers {
 
   /**
    * Parse array values from string
-   * @param value The value to parse
-   * @returns Parsed value (string or string array)
+   * @param {string} value The value to parse
+   * @returns {string): string | string[]} Parsed value (string or string array)
    */
   private static parseArrayValue(value: string): string | string[] {
     if (value.startsWith('[') && value.endsWith(']')) {
@@ -122,8 +122,8 @@ export class TemplateFormatParsers {
 
   /**
    * Parse basic YAML content
-   * @param content The YAML content
-   * @returns Parsed metadata
+   * @param {string} content The YAML content
+   * @returns {void} Parsed metadata
    */
   private static parseBasicYaml(content: string): Partial<TemplateMetadata> {
     const data: Record<string, unknown> = {};
@@ -148,9 +148,9 @@ export class TemplateFormatParsers {
 
   /**
    * Parse Handlebars template file
-   * @param content The Handlebars content to parse
-   * @param filePath The file path for error reporting
-   * @returns The parsed template metadata
+   * @param {unknown} content The Handlebars content to parse
+   * @param {unknown} filePath The file path for error reporting
+   * @returns {void} The parsed template metadata
    */
   private static parseHandlebarsTemplate(
     content: string,
@@ -191,8 +191,8 @@ export class TemplateFormatParsers {
 
   /**
    * Extract YAML frontmatter from content
-   * @param content The content to extract from
-   * @returns YAML frontmatter content or null
+   * @param {string} content The content to extract from
+   * @returns {string): string | null} YAML frontmatter content or null
    */
   private static extractYamlFrontmatter(content: string): string | null {
     const yamlRegex = /^-{3}\n([\S\s]*?)\n-{3}/;
@@ -202,8 +202,8 @@ export class TemplateFormatParsers {
 
   /**
    * Parse Handlebars comment metadata
-   * @param content The Handlebars content
-   * @returns Parsed metadata
+   * @param {string} content The Handlebars content
+   * @returns {void} Parsed metadata
    */
   private static parseHandlebarsComments(content: string): Partial<TemplateMetadata> {
     const metadata: Partial<TemplateMetadata> = {};
@@ -228,9 +228,9 @@ export class TemplateFormatParsers {
 
   /**
    * Extract a specific value from Handlebars comments
-   * @param content The content to search
-   * @param key The key to extract
-   * @returns The extracted value or null
+   * @param {string} content The content to search
+   * @param {string} key The key to extract
+   * @returns { string | null} The extracted value or null
    */
   private static extractHandlebarsCommentValue(content: string, key: string): string | null {
     const regex = new RegExp(`(?:{{!--\\s*${key}:\\s*)([^}]+?)(?:\\s*--}})`);
@@ -240,8 +240,8 @@ export class TemplateFormatParsers {
 
   /**
    * Extract tags from Handlebars comments
-   * @param content The content to search
-   * @returns Array of tags or null
+   * @param {string} content The content to search
+   * @returns {string): string[] | null} Array of tags or null
    */
   private static extractHandlebarsTags(content: string): string[] | null {
     // Use simple string matching to avoid regex vulnerabilities
@@ -261,8 +261,8 @@ export class TemplateFormatParsers {
 
   /**
    * Build default metadata for Handlebars templates
-   * @param filePath File path
-   * @returns Default metadata
+   * @param {string} filePath File path
+   * @returns {string):} Default metadata
    */
   private static buildDefaultMetadata(filePath: string): {
     tags: string[];
@@ -284,8 +284,8 @@ export class TemplateFormatParsers {
 
   /**
    * Convert string array to ProjectType array with validation
-   * @param types String array to convert
-   * @returns ProjectType array
+   * @param {string[]} types String array to convert
+   * @returns {string[]): ProjectType[]} ProjectType array
    */
   private static convertToProjectTypes(types: string[]): ProjectType[] {
     const validProjectTypes: ProjectType[] = [
@@ -304,8 +304,8 @@ export class TemplateFormatParsers {
 
   /**
    * Convert string array to ProjectQualityLevel array with validation
-   * @param levels String array to convert
-   * @returns ProjectQualityLevel array
+   * @param {string[]} levels String array to convert
+   * @returns {string[]): ProjectQualityLevel[]} ProjectQualityLevel array
    */
   private static convertToProjectQualityLevels(levels: string[]): ProjectQualityLevel[] {
     const validQualityLevels: ProjectQualityLevel[] = ['light', 'medium', 'strict', 'high'];

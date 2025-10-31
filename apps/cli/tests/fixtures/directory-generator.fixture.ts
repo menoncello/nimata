@@ -195,7 +195,7 @@ export const integrationTest = base.extend<{
     );
   },
 
-  mockExistingFiles: async ({ testProject, writeFile }, use) => {
+  mockExistingFiles: async ({ testProject: _testProject, writeFile }, use) => {
     await use(async () => {
       // Mock existing template files from Story 1.3
       await writeFile(
@@ -229,7 +229,7 @@ export const integrationTest = base.extend<{
     });
   },
 
-  verifyBackwardCompatibility: async ({ testProject, fileExists }, use) => {
+  verifyBackwardCompatibility: async ({ testProject: _testProject, fileExists }, use) => {
     await use(async () => {
       // Verify existing files still exist
       const existingFiles = ['package.json', 'tsconfig.json', 'src/index.ts'];
@@ -259,7 +259,7 @@ export const errorTest = base.extend<{
     await testProject.cleanup();
   },
 
-  createConflictingFile: async ({ testProject, writeFile }, use) => {
+  createConflictingFile: async ({ testProject: _testProject, writeFile }, use) => {
     await use(async (path: string) => {
       // Create a file where directory should be created
       await writeFile(path, 'This is a file, not a directory');

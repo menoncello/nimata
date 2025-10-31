@@ -8,8 +8,8 @@ import { getProjectDependencies } from './project-structure-validation.js';
 
 /**
  * Validate dependencies and installations
- * @param options - Validator options containing project path and config
- * @param result - Validation result to populate with findings
+ * @param {unknown} options - Validator options containing project path and config
+ * @param {unknown} result - Validation result to populate with findings
  */
 export async function validateDependencies(
   options: ProjectValidatorOptions,
@@ -43,8 +43,8 @@ export async function validateDependencies(
 
 /**
  * Validate essential dependencies
- * @param allDeps - All project dependencies from package.json
- * @param result - Validation result to populate with findings
+ * @param {unknown} allDeps - All project dependencies from package.json
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateEssentialDependencies(
   allDeps: Record<string, string>,
@@ -64,9 +64,9 @@ async function validateEssentialDependencies(
 
 /**
  * Validate project-specific dependencies
- * @param allDeps - All project dependencies from package.json
- * @param options - Validator options containing project configuration
- * @param result - Validation result to populate with findings
+ * @param {unknown} allDeps - All project dependencies from package.json
+ * @param {unknown} options - Validator options containing project configuration
+ * @param {unknown} result - Validation result to populate with findings
  */
 async function validateProjectSpecificDependencies(
   allDeps: Record<string, string>,

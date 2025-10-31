@@ -13,7 +13,7 @@ const UNKNOWN_ERROR_MESSAGE = 'Unknown error';
 
 /**
  * Create base result object
- * @returns Base generation result
+ * @returns {GenerationResult} Base generation result
  */
 export function createBaseResult(): GenerationResult {
   return {
@@ -27,9 +27,9 @@ export function createBaseResult(): GenerationResult {
 
 /**
  * Handle unexpected errors in project generation
- * @param error - Error that occurred
- * @param startTime - Start time for duration calculation
- * @returns Error result
+ * @param {unknown} error - Error that occurred
+ * @param {number} startTime - Start time for duration calculation
+ * @returns { GenerationResult} Error result
  */
 export function handleUnexpectedError(error: unknown, startTime: number): GenerationResult {
   const result = createBaseResult();
@@ -42,11 +42,11 @@ export function handleUnexpectedError(error: unknown, startTime: number): Genera
 
 /**
  * Create error result
- * @param result - Result object to modify
- * @param errorMessage - Error message
- * @param errors - Array of errors
- * @param startTime - Start time for duration calculation
- * @returns Error result
+ * @param {unknown} result - Result object to modify
+ * @param {unknown} errorMessage - Error message
+ * @param {unknown} errors - Array of errors
+ * @param {unknown} startTime - Start time for duration calculation
+ * @returns {void} Error result
  */
 export function createErrorResult(
   result: GenerationResult,
@@ -65,11 +65,11 @@ export function createErrorResult(
 
 /**
  * Create successful generation result
- * @param files - Generated files
- * @param projectDir - Project directory
- * @param startTime - Start time for duration calculation
- * @param addValidationWarnings - Function to add validation warnings
- * @returns Successful generation result
+ * @param {Array<{ path: string; content: string; permissions?: string }>} files - Generated files
+ * @param {string} projectDir - Project directory
+ * @param {number} startTime - Start time for duration calculation
+ * @param {(result: GenerationResult} addValidationWarnings - Function to add validation warnings
+ * @returns {Promise<GenerationResult>} Successful generation result
  */
 export async function createSuccessResult(
   files: Array<{ path: string; content: string; permissions?: string }>,
@@ -91,8 +91,8 @@ export async function createSuccessResult(
 
 /**
  * Map quality level (high -> strict)
- * @param level - Quality level from config
- * @returns Normalized quality level
+ * @param {string} level - Quality level from config
+ * @returns {string): NormalizedQualityLevel} Normalized quality level
  */
 export function normalizeQualityLevel(level: string): NormalizedQualityLevel {
   return level === 'high' ? 'strict' : (level as NormalizedQualityLevel);
@@ -100,8 +100,8 @@ export function normalizeQualityLevel(level: string): NormalizedQualityLevel {
 
 /**
  * Map project type to supported types
- * @param type - Project type from config
- * @returns Normalized project type
+ * @param {string} type - Project type from config
+ * @returns {string): NormalizedProjectType} Normalized project type
  */
 export function normalizeProjectType(type: string): NormalizedProjectType {
   const projectTypeMap: Record<string, 'basic' | 'web' | 'cli' | 'library'> = {
@@ -119,8 +119,8 @@ export function normalizeProjectType(type: string): NormalizedProjectType {
 
 /**
  * Normalize config for AI generators (convert types to match generator expectations)
- * @param config - Original project configuration
- * @returns Normalized configuration
+ * @param {ProjectConfig} config - Original project configuration
+ * @returns {ProjectConfig):} Normalized configuration
  */
 export function normalizeConfigForGenerators(config: ProjectConfig): {
   name: string;

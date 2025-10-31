@@ -17,8 +17,8 @@ const CATEGORY_CONSTANTS = {
 export class CategoryInference {
   /**
    * Infer template category from file path
-   * @param filePath The file path
-   * @returns The inferred category
+   * @param {string} filePath The file path
+   * @returns {string): string} The inferred category
    */
   static inferCategory(filePath: string): string {
     const pathLower = filePath.toLowerCase();
@@ -38,8 +38,8 @@ export class CategoryInference {
 
   /**
    * Check if path indicates documentation
-   * @param pathLower The lowercase file path
-   * @returns True if documentation path
+   * @param {string} pathLower The lowercase file path
+   * @returns {string): boolean} True if documentation path
    */
   private static isDocumentationPath(pathLower: string): boolean {
     return pathLower.includes('readme') || pathLower.includes('doc');
@@ -47,8 +47,8 @@ export class CategoryInference {
 
   /**
    * Check if path indicates configuration
-   * @param pathLower The lowercase file path
-   * @returns True if configuration path
+   * @param {string} pathLower The lowercase file path
+   * @returns {string): boolean} True if configuration path
    */
   private static isConfigurationPath(pathLower: string): boolean {
     return (
@@ -58,8 +58,8 @@ export class CategoryInference {
 
   /**
    * Infer source code category from path
-   * @param pathLower The lowercase file path
-   * @returns Source category or null if not a source path
+   * @param {string} pathLower The lowercase file path
+   * @returns {string): string | null} Source category or null if not a source path
    */
   private static inferSourceCategory(pathLower: string): string | null {
     // Check for 'src' before 'test' to avoid false positives

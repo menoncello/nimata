@@ -60,23 +60,23 @@ describe('Story 1.1 - AC1: Console Output Writer', () => {
   });
 
   describe('success operations', () => {
-    it('should write success message to console.log', () => {
+    it('should write success message to stdout', () => {
       writer.success('operation completed');
-      expect(consoleLogSpy).toHaveBeenCalledWith('operation completed');
+      expect(stdoutSpy).toHaveBeenCalledWith('operation completed\n');
     });
   });
 
   describe('error operations', () => {
-    it('should write error message to console.error', () => {
+    it('should write error message to stderr', () => {
       writer.error('operation failed');
-      expect(consoleErrorSpy).toHaveBeenCalledWith('operation failed');
+      expect(stderrSpy).toHaveBeenCalledWith('operation failed\n');
     });
   });
 
   describe('info operations', () => {
-    it('should write info message to console.log', () => {
+    it('should write info message to stdout', () => {
       writer.info('information');
-      expect(consoleLogSpy).toHaveBeenCalledWith('information');
+      expect(stdoutSpy).toHaveBeenCalledWith('information\n');
     });
   });
 });

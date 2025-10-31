@@ -1,5 +1,5 @@
-import { existsSync } from 'node:fs';
 import { describe, expect, test, afterEach } from 'bun:test';
+import { existsSync } from 'node:fs';
 import { TestProject, createTestProject } from './test-project.js';
 
 describe('TestProject', () => {

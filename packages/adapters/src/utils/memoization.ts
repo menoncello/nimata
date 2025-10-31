@@ -8,9 +8,9 @@ import { MemoryCache } from './cache-implementations.js';
 
 /**
  * Create a memoized function
- * @param func - Function to memoize
- * @param cache - Optional cache instance
- * @returns Memoized function
+ * @param {unknown} func - Function to memoize
+ * @param {unknown} cache - Optional cache instance
+ * @returns {T} Memoized function
  */
 export function createMemoizedFunction<T extends (...args: unknown[]) => unknown>(
   func: T,
@@ -34,11 +34,11 @@ export function createMemoizedFunction<T extends (...args: unknown[]) => unknown
 
 /**
  * Create a memoized function with custom cache options
- * @param func - Function to memoize
- * @param cacheOptions - Cache configuration options
- * @param cacheOptions.ttl - Time to live in milliseconds
- * @param cacheOptions.maxSize - Maximum cache size
- * @returns Memoized function
+ * @param {unknown} func - Function to memoize
+ * @param {unknown} cacheOptions - Cache configuration options
+ * @param {unknown} cacheOptions.ttl - Time to live in milliseconds
+ * @param {unknown} cacheOptions.maxSize - Maximum cache size
+ * @returns {T} Memoized function
  */
 export function memoize<T extends (...args: unknown[]) => unknown>(
   func: T,

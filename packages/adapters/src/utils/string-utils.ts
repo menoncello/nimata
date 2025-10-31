@@ -6,8 +6,8 @@
 
 /**
  * Convert string to camelCase
- * @param str - String to convert
- * @returns camelCase string
+ * @param {string} str - String to convert
+ * @returns {string): string} camelCase string
  */
 export function toCamelCase(str: string): string {
   return str.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
@@ -15,8 +15,8 @@ export function toCamelCase(str: string): string {
 
 /**
  * Convert string to PascalCase
- * @param str - String to convert
- * @returns PascalCase string
+ * @param {string} str - String to convert
+ * @returns {string): string} PascalCase string
  */
 export function toPascalCase(str: string): string {
   const camelCase = toCamelCase(str);
@@ -25,8 +25,8 @@ export function toPascalCase(str: string): string {
 
 /**
  * Convert string to kebab-case
- * @param str - String to convert
- * @returns kebab-case string
+ * @param {string} str - String to convert
+ * @returns {string): string} kebab-case string
  */
 export function toKebabCase(str: string): string {
   return str.replace(/([A-Z])/g, '-$1').toLowerCase();
@@ -34,8 +34,8 @@ export function toKebabCase(str: string): string {
 
 /**
  * Convert string to snake_case
- * @param str - String to convert
- * @returns snake_case string
+ * @param {string} str - String to convert
+ * @returns {string): string} snake_case string
  */
 export function toSnakeCase(str: string): string {
   return str.replace(/-([a-z])/g, (_, char) => `_${char}`).toLowerCase();

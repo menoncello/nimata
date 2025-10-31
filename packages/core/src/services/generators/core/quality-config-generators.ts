@@ -21,8 +21,8 @@ const DEFAULT_TAB_WIDTH = 2;
 export class QualityConfigGenerators {
   /**
    * Generate quality configuration files
-   * @param config - Project configuration
-   * @returns Quality configuration files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Quality configuration files
    */
   static generateQualityConfigs(config: ProjectConfig): DirectoryItem[] {
     return [
@@ -36,8 +36,8 @@ export class QualityConfigGenerators {
 
   /**
    * Generate TypeScript configuration file
-   * @param config - Project configuration
-   * @returns TypeScript configuration file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} TypeScript configuration file
    */
   private static generateTypeScriptConfigFile(config: ProjectConfig): DirectoryItem {
     return {
@@ -49,11 +49,11 @@ export class QualityConfigGenerators {
 
   /**
    * Generate ESLint configuration file
-   * @returns ESLint configuration file
+   * @returns {string} ESLint configuration file
    */
   private static generateESLintConfigFile(): DirectoryItem {
     return {
-      path: '.eslintrc.json',
+      path: 'eslint.config.mjs',
       type: 'file',
       content: ESLintConfigGenerator.generateESLintConfig(),
     };
@@ -61,7 +61,7 @@ export class QualityConfigGenerators {
 
   /**
    * Generate Prettier configuration file
-   * @returns Prettier configuration file
+   * @returns {string} Prettier configuration file
    */
   private static generatePrettierConfigFile(): DirectoryItem {
     return {
@@ -73,7 +73,7 @@ export class QualityConfigGenerators {
 
   /**
    * Generate Stryker configuration file
-   * @returns Stryker configuration file
+   * @returns {string} Stryker configuration file
    */
   private static generateStrykerConfigFile(): DirectoryItem {
     return {
@@ -85,8 +85,8 @@ export class QualityConfigGenerators {
 
   /**
    * Generate CI configuration file
-   * @param config - Project configuration
-   * @returns CI configuration file
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CI configuration file
    */
   private static generateCIConfigFile(config: ProjectConfig): DirectoryItem {
     return {
@@ -98,7 +98,7 @@ export class QualityConfigGenerators {
 
   /**
    * Generate Prettier configuration
-   * @returns Prettier configuration content
+   * @returns {string} Prettier configuration content
    */
   private static generatePrettierConfig(): string {
     const baseConfig = this.getPrettierBaseConfig();
@@ -116,7 +116,7 @@ export class QualityConfigGenerators {
 
   /**
    * Get base Prettier configuration
-   * @returns Base configuration object
+   * @returns {object} Base Prettier configuration object with formatting settings
    */
   private static getPrettierBaseConfig(): Record<string, unknown> {
     return {
@@ -136,7 +136,7 @@ export class QualityConfigGenerators {
 
   /**
    * Get Prettier override configurations
-   * @returns Override configurations array
+   * @returns {string} Override configurations array
    */
   private static getPrettierOverrides(): Array<Record<string, unknown>> {
     const jsonOverride = this.getJsonPrettierOverride();
@@ -147,7 +147,7 @@ export class QualityConfigGenerators {
 
   /**
    * Get JSON file Prettier override
-   * @returns JSON override configuration
+   * @returns {string} JSON override configuration
    */
   private static getJsonPrettierOverride(): Record<string, unknown> {
     return {
@@ -160,7 +160,7 @@ export class QualityConfigGenerators {
 
   /**
    * Get Markdown file Prettier override
-   * @returns Markdown override configuration
+   * @returns {string} Markdown override configuration
    */
   private static getMarkdownPrettierOverride(): Record<string, unknown> {
     return {
@@ -174,7 +174,7 @@ export class QualityConfigGenerators {
 
   /**
    * Generate Stryker configuration
-   * @returns Stryker configuration content
+   * @returns {string} Stryker configuration content
    */
   private static generateStrykerConfig(): string {
     return JSON.stringify(

@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 export class InterfaceExportGenerator {
   /**
    * Generates common interface definitions and exports
-   * @param config - The project configuration
-   * @returns Interface definitions string
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Interface definitions string
    */
   generateInterfaceExports(config: ProjectConfig): string {
     const header = this.generateInterfaceHeader(config);
@@ -32,8 +32,8 @@ ${systemInterfaces}
 
   /**
    * Generate interface file header
-   * @param config - Project configuration
-   * @returns Header content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Header content
    */
   private generateInterfaceHeader(config: ProjectConfig): string {
     return `// Interface definitions for ${config.name}`;
@@ -41,7 +41,7 @@ ${systemInterfaces}
 
   /**
    * Generate core business interfaces
-   * @returns Core interfaces content
+   * @returns {string} Core interfaces content
    */
   private generateCoreInterfaces(): string {
     const configurable = this.generateConfigurableInterface();
@@ -57,7 +57,7 @@ ${repository}`;
 
   /**
    * Generate configurable interface
-   * @returns Configurable interface content
+   * @returns {string} Configurable interface content
    */
   private generateConfigurableInterface(): string {
     return `/**
@@ -75,7 +75,7 @@ export interface Configurable {
 
   /**
    * Generate service interface
-   * @returns Service interface content
+   * @returns {string} Service interface content
    */
   private generateServiceInterface(): string {
     return `/**
@@ -97,7 +97,7 @@ export interface Service extends Configurable {
 
   /**
    * Generate repository interface
-   * @returns Repository interface content
+   * @returns {string} Repository interface content
    */
   private generateRepositoryInterface(): string {
     return `/**
@@ -121,7 +121,7 @@ export interface Repository<T, ID = string> {
 
   /**
    * Generate data-related interfaces
-   * @returns Data interfaces content
+   * @returns {string} Data interfaces content
    */
   private generateDataInterfaces(): string {
     const validator = this.generateValidatorInterface();
@@ -137,7 +137,7 @@ ${adapter}`;
 
   /**
    * Generate validator interface
-   * @returns Validator interface content
+   * @returns {string} Validator interface content
    */
   private generateValidatorInterface(): string {
     return `/**
@@ -153,7 +153,7 @@ export interface Validator<T = unknown> {
 
   /**
    * Generate validation result interface
-   * @returns Validation result interface content
+   * @returns {string} Validation result interface content
    */
   private generateValidationResultInterface(): string {
     return `/**
@@ -171,7 +171,7 @@ export interface ValidationResult {
 
   /**
    * Generate adapter interface
-   * @returns Adapter interface content
+   * @returns {string} Adapter interface content
    */
   private generateAdapterInterface(): string {
     return `/**
@@ -193,7 +193,7 @@ export interface Adapter<TInput, TOutput> {
 
   /**
    * Generate system interfaces
-   * @returns System interfaces content
+   * @returns {string} System interfaces content
    */
   private generateSystemInterfaces(): string {
     const logger = this.generateLoggerInterface();
@@ -209,7 +209,7 @@ ${cache}`;
 
   /**
    * Generate logger interface
-   * @returns Logger interface content
+   * @returns {string} Logger interface content
    */
   private generateLoggerInterface(): string {
     return `/**
@@ -229,7 +229,7 @@ export interface Logger {
 
   /**
    * Generate event emitter interface
-   * @returns Event emitter interface content
+   * @returns {string} Event emitter interface content
    */
   private generateEventEmitterInterface(): string {
     return `/**
@@ -261,7 +261,7 @@ export interface EventEmitter<TEvents extends Record<string, unknown> = Record<s
 
   /**
    * Generate cache interface
-   * @returns Cache interface content
+   * @returns {string} Cache interface content
    */
   private generateCacheInterface(): string {
     return `/**

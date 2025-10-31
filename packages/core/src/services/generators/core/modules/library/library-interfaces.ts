@@ -6,8 +6,8 @@ import { convertToPascalCase } from '../shared/common-generators.js';
 
 /**
  * Generate Library interface
- * @param config - Project configuration
- * @returns Library interface TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Library interface TypeScript code
  */
 export function generateLibraryInterface(config: ProjectConfig): string {
   const className = convertToPascalCase(config.name);
@@ -24,8 +24,8 @@ ${resultInterface}`;
 
 /**
  * Generate Library config interface
- * @param className - Class name
- * @returns Config interface code
+ * @param {string} className - Class name
+ * @returns {string} Config interface code
  */
 export function generateLibraryConfigInterface(className: string): string {
   return `export interface ${className}Config {
@@ -42,8 +42,8 @@ export function generateLibraryConfigInterface(className: string): string {
 
 /**
  * Generate Library options interface
- * @param className - Class name
- * @returns Options interface code
+ * @param {string} className - Class name
+ * @returns {string} Options interface code
  */
 export function generateLibraryOptionsInterface(className: string): string {
   return `export interface ${className}Options {
@@ -60,7 +60,7 @@ export function generateLibraryOptionsInterface(className: string): string {
 
 /**
  * Generate Library result interface
- * @returns Result interface code
+ * @returns {string} Result interface code
  */
 export function generateLibraryResultInterface(): string {
   return `export interface LibraryResult<T = unknown> {

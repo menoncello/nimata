@@ -39,8 +39,8 @@ export class StyleGenerator {
 
   /**
    * Generates main application styles using modular approach
-   * @param config - The project configuration
-   * @returns Main CSS content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Main CSS content
    */
   generateMainStyles(config: ProjectConfig): string {
     const baseSection = this.baseStyles.generateBaseStylesSection(config);
@@ -54,8 +54,8 @@ export class StyleGenerator {
 
   /**
    * Generates component-specific styles using modular approach
-   * @param _config - The project configuration (unused for now, but kept for API compatibility)
-   * @returns Component CSS content
+   * @param {ProjectConfig} _config - Project configuration (unused for now, but kept for API compatibility)
+   * @returns {string} Component CSS content
    */
   public generateComponentStyles(_config: ProjectConfig): string {
     return this.componentStyles.generateComponentStylesSection();
@@ -63,8 +63,8 @@ export class StyleGenerator {
 
   /**
    * Get primary color based on project configuration
-   * @param config - Project configuration containing theme settings
-   * @returns Primary color hex code
+   * @param {ProjectConfig} config - Project configuration containing theme settings
+   * @returns {string} Primary color hex code
    */
   public getPrimaryColor(config: ProjectConfig): string {
     return this.colorUtilities.getPrimaryColor(config);
@@ -72,9 +72,9 @@ export class StyleGenerator {
 
   /**
    * Lighten a hex color by a specified percentage
-   * @param color - Hex color code to lighten (e.g., '#3b82f6')
-   * @param percent - Percentage to lighten (0-100)
-   * @returns Lightened hex color code
+   * @param {string} color - Hex color code to lighten (e.g., '#3b82f6')
+   * @param {string} percent - Percentage to lighten (0-100)
+   * @returns {string} Lightened hex color code
    */
   public lightenColor(color: string, percent: number): string {
     return this.colorUtilities.lightenColor(color, percent);
@@ -82,9 +82,9 @@ export class StyleGenerator {
 
   /**
    * Darken a hex color by a specified percentage
-   * @param color - Hex color code to darken (e.g., '#3b82f6')
-   * @param percent - Percentage to darken (0-100)
-   * @returns Darkened hex color code
+   * @param {string} color - Hex color code to darken (e.g., '#3b82f6')
+   * @param {string} percent - Percentage to darken (0-100)
+   * @returns {string} Darkened hex color code
    */
   public darkenColor(color: string, percent: number): string {
     return this.colorUtilities.darkenColor(color, percent);

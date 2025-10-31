@@ -180,11 +180,11 @@ export async function assertGitignoreContains(
   const fullPath = join(testProjectPath, relativePath);
   const content = await fs.readFile(fullPath, 'utf-8');
 
-  expectedPatterns.forEach((pattern) => {
+  for (const pattern of expectedPatterns) {
     if (!content.split('\n').some((line) => line.trim() === pattern.trim())) {
       throw new Error(`Gitignore file missing expected pattern: ${pattern}`);
     }
-  });
+  }
 }
 
 /**

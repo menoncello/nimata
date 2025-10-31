@@ -12,9 +12,9 @@ import { type ProjectConfig } from './enhanced-init-types.js';
 export class ProjectTemplates {
   /**
    * Get main file content based on project type
-   * @param projectType - Project type
-   * @param projectName - Project name
-   * @returns Main file content
+   * @param {string} projectType - Project type
+   * @param {string} projectName - Project name
+   * @returns { string} Main file content
    */
   getMainFileContent(projectType: string, projectName: string): string {
     switch (projectType) {
@@ -31,8 +31,8 @@ export class ProjectTemplates {
 
   /**
    * Get index file content for libraries
-   * @param projectName - Project name
-   * @returns Index file content
+   * @param {string} projectName - Project name
+   * @returns {string): string} Index file content
    */
   getIndexFileContent(projectName: string): string {
     return `/**
@@ -47,8 +47,8 @@ export * from './main';
 
   /**
    * Get main file name for project type
-   * @param projectType - Project type
-   * @returns Main file name
+   * @param {string} projectType - Project type
+   * @returns {string): string} Main file name
    */
   getMainFileName(projectType: string): string {
     if (projectType === 'cli') {
@@ -59,8 +59,8 @@ export * from './main';
 
   /**
    * Generate README content
-   * @param config - Project configuration
-   * @returns README content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {ProjectConfig): string} README content
    */
   generateReadmeContent(config: ProjectConfig): string {
     return `# ${config.name}
@@ -103,7 +103,7 @@ MIT
 
   /**
    * Generate .gitignore content
-   * @returns .gitignore content
+   * @returns {string} .gitignore content
    */
   generateGitignoreContent(): string {
     return [
@@ -120,7 +120,7 @@ MIT
 
   /**
    * Get dependencies section for .gitignore
-   * @returns Dependencies gitignore content
+   * @returns {string} Dependencies gitignore content
    */
   private getGitignoreDependencies(): string {
     return `# Dependencies
@@ -132,7 +132,7 @@ yarn-error.log*`;
 
   /**
    * Get build outputs section for .gitignore
-   * @returns Build outputs gitignore content
+   * @returns {string} Build outputs gitignore content
    */
   private getGitignoreBuildOutputs(): string {
     return `# Build outputs
@@ -143,7 +143,7 @@ build/
 
   /**
    * Get environment section for .gitignore
-   * @returns Environment gitignore content
+   * @returns {string} Environment gitignore content
    */
   private getGitignoreEnvironment(): string {
     return `# Environment variables
@@ -156,7 +156,7 @@ build/
 
   /**
    * Get IDE section for .gitignore
-   * @returns IDE gitignore content
+   * @returns {string} IDE gitignore content
    */
   private getGitignoreIde(): string {
     return `# IDE
@@ -168,7 +168,7 @@ build/
 
   /**
    * Get OS section for .gitignore
-   * @returns OS gitignore content
+   * @returns {string} OS gitignore content
    */
   private getGitignoreOs(): string {
     return `# OS
@@ -178,7 +178,7 @@ Thumbs.db`;
 
   /**
    * Get coverage section for .gitignore
-   * @returns Coverage gitignore content
+   * @returns {string} Coverage gitignore content
    */
   private getGitignoreCoverage(): string {
     return `# Coverage
@@ -188,7 +188,7 @@ coverage/
 
   /**
    * Get logs section for .gitignore
-   * @returns Logs gitignore content
+   * @returns {string} Logs gitignore content
    */
   private getGitignoreLogs(): string {
     return `# Logs
@@ -198,7 +198,7 @@ logs/
 
   /**
    * Get temporary files section for .gitignore
-   * @returns Temporary files gitignore content
+   * @returns {string} Temporary files gitignore content
    */
   private getGitignoreTempFiles(): string {
     return `# Temporary files
@@ -208,11 +208,11 @@ logs/
 
   /**
    * Get CLI project template
-   * @param projectName - Project name
-   * @returns CLI template content
+   * @param {string} projectName - Project name
+   * @returns {string): string} CLI template content
    */
   private getCliTemplate(projectName: string): string {
-    return `#!/usr/bin/env node
+    return `#!/usr/bin/env bun
 
 import { Command } from 'commander';
 
@@ -229,8 +229,8 @@ program.parse();
 
   /**
    * Get web project template
-   * @param projectName - Project name
-   * @returns Web template content
+   * @param {string} projectName - Project name
+   * @returns {string): string} Web template content
    */
   private getWebTemplate(projectName: string): string {
     return `console.log('Hello, ${projectName}!');
@@ -248,8 +248,8 @@ new App();
 
   /**
    * Get library project template
-   * @param projectName - Project name
-   * @returns Library template content
+   * @param {string} projectName - Project name
+   * @returns {string): string} Library template content
    */
   private getLibraryTemplate(projectName: string): string {
     return `/**
@@ -275,8 +275,8 @@ export default hello;
 
   /**
    * Get basic project template
-   * @param projectName - Project name
-   * @returns Basic template content
+   * @param {string} projectName - Project name
+   * @returns {string): string} Basic template content
    */
   private getBasicTemplate(projectName: string): string {
     return `console.log('Hello from ${projectName}!');

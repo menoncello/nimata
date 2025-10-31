@@ -16,7 +16,7 @@ const DEFAULT_TAB_WIDTH = 2;
 export class ESLintConfigGenerator {
   /**
    * Generate ESLint configuration
-   * @returns ESLint configuration content
+   * @returns {string} ESLint configuration content
    */
   static generateESLintConfig(): string {
     return [
@@ -27,7 +27,7 @@ export class ESLintConfigGenerator {
 
   /**
    * Generate ESLint base configuration
-   * @returns Base ESLint configuration
+   * @returns {string} Base ESLint configuration
    */
   private static generateESLintBase(): string {
     return JSON.stringify(
@@ -58,7 +58,7 @@ export class ESLintConfigGenerator {
 
   /**
    * Generate ESLint rules configuration
-   * @returns ESLint rules configuration
+   * @returns {string} ESLint rules configuration
    */
   private static generateESLintRules(): string {
     const typeScriptRules = ESLintConfigGenerator.getTypeScriptRules();
@@ -78,7 +78,7 @@ export class ESLintConfigGenerator {
 
   /**
    * Gets TypeScript-specific ESLint rules
-   * @returns TypeScript rules object
+   * @returns {object} TypeScript-specific ESLint rules configuration object
    */
   private static getTypeScriptRules(): Record<string, unknown> {
     return {
@@ -95,7 +95,7 @@ export class ESLintConfigGenerator {
 
   /**
    * Gets general ESLint rules
-   * @returns General rules object
+   * @returns {object} General ESLint rules configuration object
    */
   private static getGeneralRules(): Record<string, unknown> {
     return {
@@ -114,7 +114,7 @@ export class ESLintConfigGenerator {
 
   /**
    * Gets code style ESLint rules
-   * @returns Code style rules object
+   * @returns {object} Code style ESLint rules configuration object
    */
   private static getCodeStyleRules(): Record<string, unknown> {
     return {
@@ -134,7 +134,7 @@ export class ESLintConfigGenerator {
 
   /**
    * Gets best practice ESLint rules
-   * @returns Best practice rules object
+   * @returns {object} Best practice ESLint rules configuration object
    */
   private static getBestPracticeRules(): Record<string, unknown> {
     return {

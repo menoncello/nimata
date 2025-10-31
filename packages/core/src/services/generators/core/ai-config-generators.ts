@@ -14,8 +14,8 @@ import { DirectoryItem } from './core-file-operations.js';
 export class AIConfigGenerators {
   /**
    * Generate AI assistant configuration files
-   * @param config - Project configuration
-   * @returns AI assistant configuration files
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} AI assistant configuration files
    */
   static generateAIAssistantConfigs(config: ProjectConfig): DirectoryItem[] {
     return config.aiAssistants.map((assistant) =>
@@ -25,9 +25,9 @@ export class AIConfigGenerators {
 
   /**
    * Get AI assistant configuration for a specific assistant
-   * @param assistant - AI assistant type
-   * @param config - Project configuration
-   * @returns AI assistant configuration file
+   * @param {string} assistant - AI assistant type
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} AI assistant configuration file
    */
   private static getAIAssistantConfig(assistant: string, config: ProjectConfig): DirectoryItem {
     switch (assistant) {

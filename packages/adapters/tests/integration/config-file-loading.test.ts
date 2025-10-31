@@ -5,10 +5,10 @@
  *
  * @see packages/adapters/src/repositories/yaml-config-repository.ts
  */
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 
 describe.skip('Config File Loading (AC1, AC2, AC3, AC5) - P1-2: Deferred to Story 1.3+', () => {
   let testDir: string;

@@ -15,13 +15,13 @@ import { PARSER_CONSTANTS } from './template-metadata-parser-core.js';
 export class TemplateMetadataBuilder {
   /**
    * Complete template metadata with defaults
-   * @param params Object containing all parameters
-   * @param params.metadata Partial metadata
-   * @param params.filePath File path
-   * @param params.stats File stats
-   * @param params.content File content
-   * @param params.ext File extension
-   * @returns Complete template metadata
+   * @param {{ metadata: Partial<TemplateMetadata>; filePath: string; stats: { size: number; lastModified: Date; }; content: string; ext: string; }} params - Parameters object
+   * @param {Partial<TemplateMetadata>} params.metadata Partial metadata
+   * @param {string} params.filePath File path
+   * @param {{ size: number; lastModified: Date; }} params.stats File stats
+   * @param {string} params.content File content
+   * @param {string} params.ext File extension
+   * @returns {TemplateMetadata} Complete template metadata
    */
   static completeTemplateMetadata(params: {
     metadata: Partial<TemplateMetadata>;
@@ -51,15 +51,15 @@ export class TemplateMetadataBuilder {
 
   /**
    * Assemble complete template metadata from components
-   * @param metadataComponents Object containing metadata components
-   * @param metadataComponents.identityMetadata Identity metadata
-   * @param metadataComponents.fileMetadata File metadata
-   * @param metadataComponents.systemMetadata System metadata
-   * @param metadataComponents.metadata Original partial metadata
-   * @param fileInfo File information
-   * @param fileInfo.filePath File path
-   * @param fileInfo.ext File extension
-   * @returns Complete template metadata
+   * @param {{ identityMetadata: Partial<TemplateMetadata>; fileMetadata: Partial<TemplateMetadata>; systemMetadata: Partial<TemplateMetadata>; metadata: Partial<TemplateMetadata> }} metadataComponents - Object containing metadata components
+   * @param {Partial<TemplateMetadata>} metadataComponents.identityMetadata - Identity metadata component
+   * @param {Partial<TemplateMetadata>} metadataComponents.fileMetadata - File metadata component
+   * @param {Partial<TemplateMetadata>} metadataComponents.systemMetadata - System metadata component
+   * @param {Partial<TemplateMetadata>} metadataComponents.metadata - Original metadata component
+   * @param {{ filePath: string; ext: string }} fileInfo - File information
+   * @param {string} fileInfo.filePath - File path
+   * @param {string} fileInfo.ext - File extension
+   * @returns {TemplateMetadata} Complete template metadata
    */
   private static assembleCompleteMetadata(
     metadataComponents: {
@@ -91,10 +91,10 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build identity properties
-   * @param identityMetadata Identity metadata
-   * @param filePath File path
-   * @param ext File extension
-   * @returns Identity properties
+   * @param {Partial<TemplateMetadata>} identityMetadata Identity metadata
+   * @param {string} filePath File path
+   * @param {string} ext File extension
+   * @returns {Partial<TemplateMetadata>} Identity properties
    */
   private static buildIdentityProps(
     identityMetadata: Partial<TemplateMetadata>,
@@ -111,9 +111,9 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build system properties
-   * @param systemMetadata System metadata
-   * @param filePath File path
-   * @returns System properties
+   * @param {Partial<TemplateMetadata>} systemMetadata System metadata
+   * @param {string} filePath File path
+   * @returns {Partial<TemplateMetadata>} System properties
    */
   private static buildSystemProps(
     systemMetadata: Partial<TemplateMetadata>,
@@ -134,9 +134,9 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build file properties
-   * @param fileMetadata File metadata
-   * @param filePath File path
-   * @returns File properties
+   * @param {Partial<TemplateMetadata>} fileMetadata File metadata
+   * @param {string} filePath File path
+   * @returns {Partial<TemplateMetadata>} File properties
    */
   private static buildFileProps(
     fileMetadata: Partial<TemplateMetadata>,
@@ -151,9 +151,9 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build optional properties
-   * @param systemMetadata System metadata
-   * @param metadata Original partial metadata
-   * @returns Optional properties
+   * @param {Partial<TemplateMetadata>} systemMetadata System metadata
+   * @param {Partial<TemplateMetadata>} metadata Original partial metadata
+   * @returns {Partial<TemplateMetadata>} Optional properties
    */
   private static buildOptionalProps(
     systemMetadata: Partial<TemplateMetadata>,
@@ -171,9 +171,9 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build system metadata (version, dependencies, features)
-   * @param metadata Partial metadata
-   * @param filePath File path
-   * @returns System metadata
+   * @param {Partial<TemplateMetadata>} metadata Partial metadata
+   * @param {string} filePath File path
+   * @returns {Partial<TemplateMetadata>} System metadata
    */
   private static buildSystemMetadata(
     metadata: Partial<TemplateMetadata>,
@@ -198,10 +198,10 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build identity metadata (id, name, description)
-   * @param metadata Partial metadata
-   * @param filePath File path
-   * @param ext File extension
-   * @returns Identity metadata
+   * @param {Partial<TemplateMetadata>} metadata Partial metadata
+   * @param {string} filePath File path
+   * @param {string} ext File extension
+   * @returns {Partial<TemplateMetadata>} Identity metadata
    */
   private static buildIdentityMetadata(
     metadata: Partial<TemplateMetadata>,
@@ -218,8 +218,8 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build default metadata (arrays, category)
-   * @param filePath File path
-   * @returns Default metadata
+   * @param {string} filePath File path
+   * @returns {{ tags: string[]; supportedProjectTypes: ProjectType[]; recommendedQualityLevels: ProjectQualityLevel[]; category: string }} Default metadata
    */
   private static buildDefaultMetadata(filePath: string): {
     tags: string[];
@@ -241,9 +241,9 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build file metadata from stats
-   * @param filePath File path
-   * @param stats File stats
-   * @returns File metadata
+   * @param {string} filePath File path
+   * @param {Stats} stats File stats
+   * @returns {Partial<TemplateMetadata>} File metadata
    */
   private static buildFileMetadata(filePath: string, stats: Stats): Partial<TemplateMetadata> {
     return {
@@ -255,8 +255,8 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build validation metadata
-   * @param metadata Partial metadata
-   * @returns Validation metadata
+   * @param {Partial<TemplateMetadata>} metadata Partial metadata
+   * @returns {TemplateMetadata['validation']} Validation metadata
    */
   private static buildValidationMetadata(
     metadata: Partial<TemplateMetadata>
@@ -274,8 +274,8 @@ export class TemplateMetadataBuilder {
 
   /**
    * Build usage metadata
-   * @param metadata Partial metadata
-   * @returns Usage metadata
+   * @param {Partial<TemplateMetadata>} metadata Partial metadata
+   * @returns {TemplateMetadata['usageStats']} Usage metadata
    */
   private static buildUsageMetadata(
     metadata: Partial<TemplateMetadata>
@@ -293,8 +293,8 @@ export class TemplateMetadataBuilder {
 
   /**
    * Generate a unique template ID from file path
-   * @param filePath The file path
-   * @returns A unique template ID
+   * @param {string} filePath The file path
+   * @returns {string} A unique template ID
    */
   private static generateTemplateId(filePath: string): string {
     const relativePath = path.relative(process.cwd(), filePath);
@@ -306,8 +306,8 @@ export class TemplateMetadataBuilder {
 
   /**
    * Convert string array to ProjectType array with validation
-   * @param types String array to convert
-   * @returns ProjectType array
+   * @param {string[]} types String array to convert
+   * @returns {ProjectType[]} ProjectType array
    */
   private static convertToProjectTypes(types: string[]): ProjectType[] {
     const validProjectTypes: ProjectType[] = [
@@ -326,8 +326,8 @@ export class TemplateMetadataBuilder {
 
   /**
    * Convert string array to ProjectQualityLevel array with validation
-   * @param levels String array to convert
-   * @returns ProjectQualityLevel array
+   * @param {string[]} levels String array to convert
+   * @returns {ProjectQualityLevel[]} ProjectQualityLevel array
    */
   private static convertToProjectQualityLevels(levels: string[]): ProjectQualityLevel[] {
     const validQualityLevels: ProjectQualityLevel[] = ['light', 'medium', 'strict', 'high'];

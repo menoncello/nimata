@@ -11,8 +11,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class ExpressServerCodeGenerator {
   /**
    * Generate Express server file
-   * @param config - Project configuration
-   * @returns Express server TypeScript code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Express server TypeScript code
    */
   generateExpressServer(config: ProjectConfig): string {
     return [
@@ -25,7 +25,7 @@ export class ExpressServerCodeGenerator {
 
   /**
    * Get server import statements
-   * @returns Import statements
+   * @returns {string} Import statements
    */
   private getServerImports(): string {
     return `import express from 'express';
@@ -39,8 +39,8 @@ import { config } from './config/environment.js';`;
 
   /**
    * Get createApp function implementation
-   * @param config - Project configuration
-   * @returns createApp function code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} createApp function code
    */
   private getCreateAppFunction(config: ProjectConfig): string {
     return [
@@ -59,7 +59,7 @@ import { config } from './config/environment.js';`;
 
   /**
    * Get createApp function signature
-   * @returns createApp function signature
+   * @returns {string} createApp function signature
    */
   private getCreateAppSignature(): string {
     return `/**
@@ -70,7 +70,7 @@ export function createApp(): express.Application {`;
 
   /**
    * Get createApp initialization
-   * @returns createApp initialization
+   * @returns {string} createApp initialization
    */
   private getCreateAppInitialization(): string {
     return `  const app = express();`;
@@ -78,8 +78,8 @@ export function createApp(): express.Application {`;
 
   /**
    * Get createApp security middleware
-   * @param _config - Project configuration (unused, kept for interface compatibility)
-   * @returns Security middleware code
+   * @param {ProjectConfig} _config - Project configuration (unused, kept for interface compatibility)
+   * @returns {string} Security middleware code
    */
   private getCreateAppSecurity(_config: ProjectConfig): string {
     return `  // Security middleware
@@ -92,8 +92,8 @@ export function createApp(): express.Application {`;
 
   /**
    * Get createApp logging middleware
-   * @param _config - Project configuration (unused, kept for interface compatibility)
-   * @returns Logging middleware code
+   * @param {ProjectConfig} _config - Project configuration (unused, kept for interface compatibility)
+   * @returns {string} Logging middleware code
    */
   private getCreateAppLogging(_config: ProjectConfig): string {
     return `  // Logging
@@ -104,7 +104,7 @@ export function createApp(): express.Application {`;
 
   /**
    * Get createApp body parsing middleware
-   * @returns Body parsing middleware code
+   * @returns {string} Body parsing middleware code
    */
   private getCreateAppBodyParsing(): string {
     return `  // Body parsing
@@ -114,7 +114,7 @@ export function createApp(): express.Application {`;
 
   /**
    * Get createApp routes setup
-   * @returns Routes setup code
+   * @returns {string} Routes setup code
    */
   private getCreateAppRoutes(): string {
     return `  // API routes
@@ -123,8 +123,8 @@ export function createApp(): express.Application {`;
 
   /**
    * Get createApp health check endpoint
-   * @param config - Project configuration
-   * @returns Health check endpoint code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Health check endpoint code
    */
   private getCreateAppHealthCheck(config: ProjectConfig): string {
     return `  // Health check endpoint
@@ -140,7 +140,7 @@ export function createApp(): express.Application {`;
 
   /**
    * Get createApp 404 handler
-   * @returns 404 handler code
+   * @returns {string} 404 handler code
    */
   private getCreateApp404Handler(): string {
     return `  // 404 handler
@@ -155,7 +155,7 @@ export function createApp(): express.Application {`;
 
   /**
    * Get createApp error handler
-   * @returns Error handler code
+   * @returns {string} Error handler code
    */
   private getCreateAppErrorHandler(): string {
     return `  // Error handling middleware (must be last)
@@ -164,7 +164,7 @@ export function createApp(): express.Application {`;
 
   /**
    * Get createApp return statement
-   * @returns Return statement
+   * @returns {string} Return statement
    */
   private getCreateAppReturn(): string {
     return `  return app;
@@ -173,7 +173,7 @@ export function createApp(): express.Application {`;
 
   /**
    * Get startServer function implementation
-   * @returns startServer function code
+   * @returns {string} startServer function code
    */
   private getStartServerFunction(): string {
     return `/**
@@ -192,7 +192,7 @@ export function startServer(): void {
 
   /**
    * Get auto-start script for server
-   * @returns Auto-start script code
+   * @returns {string} Auto-start script code
    */
   private getAutoStartScript(): string {
     return `// Auto-start server if this file is run directly

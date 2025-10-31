@@ -109,9 +109,20 @@ export const DANGEROUS_NAME_PATTERNS = [
   /\s/, // Spaces (not allowed in npm package names)
 ];
 
-export const DANGEROUS_AUTHOR_PATTERNS = [/<\/?script>/i, /javascript:/i, /on\w+\s*=/i];
+export const DANGEROUS_AUTHOR_PATTERNS = [
+  /<\/?script>/i,
+  /javascript:/i,
+  /vbscript:/i,
+  /on\w+\s*=/i,
+];
 
-export const XSS_PATTERNS = [/<script/i, /javascript:/i, /on\w+\s*=/i, /data:text\/html/i];
+export const XSS_PATTERNS = [
+  /<script/i,
+  /javascript:/i,
+  /vbscript:/i,
+  /on\w+\s*=/i,
+  /data:text\/html/i,
+];
 
 export const DANGEROUS_DIRECTORIES = ['etc', 'bin', 'usr', 'var', 'sys', 'proc', 'dev'];
 

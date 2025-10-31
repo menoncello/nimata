@@ -9,8 +9,8 @@ import { generateTypeScriptInterface } from './typescript-interfaces.js';
 
 /**
  * Generate TypeScript project index file
- * @param config - Project configuration
- * @returns TypeScript index file TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} TypeScript index file TypeScript code
  */
 export function generateTypeScriptIndexFile(config: ProjectConfig): string {
   const documentation = generateIndexDocumentation(config);

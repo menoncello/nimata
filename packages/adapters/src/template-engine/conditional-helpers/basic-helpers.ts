@@ -14,7 +14,7 @@ type HandlebarsInstance = typeof Handlebars;
 export class BasicConditionalHelpers {
   /**
    * Register all basic conditional helpers with Handlebars instance
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   static registerAll(handlebars: HandlebarsInstance): void {
     this.registerMultiConditionHelpers(handlebars);
@@ -24,7 +24,7 @@ export class BasicConditionalHelpers {
 
   /**
    * Register multi-condition helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerMultiConditionHelpers(handlebars: HandlebarsInstance): void {
     // Enhanced if helper that supports multiple conditions
@@ -70,7 +70,7 @@ export class BasicConditionalHelpers {
 
   /**
    * Register existence checking helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerExistenceHelpers(handlebars: HandlebarsInstance): void {
     this.registerIfExistsHelper(handlebars);
@@ -80,7 +80,7 @@ export class BasicConditionalHelpers {
 
   /**
    * Register ifExists helper
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerIfExistsHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(
@@ -103,7 +103,7 @@ export class BasicConditionalHelpers {
 
   /**
    * Register ifEmpty helper
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerIfEmptyHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(
@@ -121,7 +121,7 @@ export class BasicConditionalHelpers {
 
   /**
    * Register ifNotEmpty helper
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerIfNotEmptyHelper(handlebars: HandlebarsInstance): void {
     handlebars.registerHelper(
@@ -139,8 +139,8 @@ export class BasicConditionalHelpers {
 
   /**
    * Check if options object is a block helper
-   * @param options - Options object
-   * @returns True if block helper
+   * @param {unknown} options - Options object
+   * @returns {Handlebars.HelperOptions): boolean} True if block helper
    */
   private static isBlockHelper(options?: Handlebars.HelperOptions): boolean {
     return !!(
@@ -154,7 +154,7 @@ export class BasicConditionalHelpers {
 
   /**
    * Register type checking helpers
-   * @param handlebars - Handlebars instance
+   * @param {HandlebarsInstance} handlebars - Handlebars instance
    */
   private static registerTypeCheckHelpers(handlebars: HandlebarsInstance): void {
     // Object has property check (works as both block and inline helper)
@@ -195,8 +195,8 @@ export class BasicConditionalHelpers {
 
   /**
    * Checks if a value is considered empty
-   * @param value - Value to check
-   * @returns True if value is empty
+   * @param {unknown} value - Value to check
+   * @returns {unknown): boolean} True if value is empty
    */
   private static isValueEmpty(value: unknown): boolean {
     return (
@@ -210,9 +210,9 @@ export class BasicConditionalHelpers {
 
   /**
    * Gets type match result for value checking
-   * @param value - Value to check
-   * @param type - Expected type
-   * @returns True if value matches type
+   * @param {unknown} value - Value to check
+   * @param {string} type - Expected type
+   * @returns { boolean} True if value matches type
    */
   private static getTypeMatchResult(value: unknown, type: string): boolean {
     switch (type) {

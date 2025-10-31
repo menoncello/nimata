@@ -11,8 +11,8 @@ import { CSS_VALUES } from './vue-constants.js';
 export class HTMLGenerator {
   /**
    * Generate HTML template
-   * @param config - Project configuration
-   * @returns HTML template content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} HTML template content
    */
   static generateHtmlTemplate(config: ProjectConfig): string {
     const head = this.getHtmlHead(config);
@@ -28,8 +28,8 @@ ${body}
 
   /**
    * Get HTML head section
-   * @param config - Project configuration
-   * @returns HTML head content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} HTML head content
    */
   private static getHtmlHead(config: ProjectConfig): string {
     const metaTags = this.getMetaTags(config);
@@ -45,8 +45,8 @@ ${body}
 
   /**
    * Get meta tags
-   * @param config - Project configuration
-   * @returns Meta tags HTML
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Meta tags HTML
    */
   private static getMetaTags(config: ProjectConfig): string {
     const viewport = this.getViewportMeta();
@@ -60,7 +60,7 @@ ${body}
 
   /**
    * Get viewport meta tag
-   * @returns Viewport meta tag
+   * @returns {string} Viewport meta tag
    */
   private static getViewportMeta(): string {
     return `<meta name="viewport" content="width=device-width, initial-scale=1.0" />`;
@@ -68,8 +68,8 @@ ${body}
 
   /**
    * Get description meta tag
-   * @param config - Project configuration
-   * @returns Description meta tag
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Description meta tag
    */
   private static getDescriptionMeta(config: ProjectConfig): string {
     return `<meta name="description" content="${config.description || 'A modern Vue application'}" />`;
@@ -77,7 +77,7 @@ ${body}
 
   /**
    * Get theme color meta tag
-   * @returns Theme color meta tag
+   * @returns {string} Theme color meta tag
    */
   private static getThemeColorMeta(): string {
     return `<meta name="theme-color" content="${CSS_VALUES.BACKGROUND_LIGHT}" />`;
@@ -85,8 +85,8 @@ ${body}
 
   /**
    * Get title tag
-   * @param config - Project configuration
-   * @returns Title HTML
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} Title HTML
    */
   private static getTitle(config: ProjectConfig): string {
     return `<title>${config.name}</title>`;
@@ -94,8 +94,8 @@ ${body}
 
   /**
    * Get HTML body section
-   * @param _config - Project configuration (unused)
-   * @returns HTML body content
+   * @param {ProjectConfig} _config - Project configuration (unused)
+   * @returns {string} HTML body content
    */
   private static getHtmlBody(_config: ProjectConfig): string {
     return `  <body>

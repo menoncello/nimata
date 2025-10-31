@@ -8,14 +8,14 @@ import { toPascalCase } from '../../../../utils/string-utils.js';
 
 /**
  * Generates the main library core module
- * @param config - Project configuration
- * @returns Core module TypeScript code
+ * @param {ProjectConfig} config - Project configuration
+ * @returns {string} Core module TypeScript code
  */
 export class CoreModuleGenerator {
   /**
    * Generates the main library class
-   * @param config - Project configuration
-   * @returns TypeScript class code
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} TypeScript class code
    */
   generateCoreModule(config: ProjectConfig): string {
     const className = toPascalCase(config.name);
@@ -53,13 +53,13 @@ export class ${className} {
 
   /**
    * Generates the constructor for the main class
-   * @param className - Name of the class
-   * @returns Constructor method code
+   * @param {string} className - Name of the class
+   * @returns {string} Constructor method code
    */
   private generateConstructor(className: string): string {
     return `/**
    * Create a new ${className} instance
-   * @param config - Configuration options
+   * @param {string} config - Configuration options
    */
   constructor(config?: Partial<${className}Config>) {
     this.config = mergeConfigs(DEFAULT_CONFIG, config);
@@ -68,7 +68,7 @@ export class ${className} {
 
   /**
    * Generates the initialize method
-   * @returns Initialize method code
+   * @returns {string} Initialize method code
    */
   private generateInitializeMethod(): string {
     return `/**
@@ -102,13 +102,13 @@ export class ${className} {
 
   /**
    * Generates configuration-related methods
-   * @param className - Name of the class
-   * @returns Configuration methods code
+   * @param {string} className - Name of the class
+   * @returns {string} Configuration methods code
    */
   private generateConfigMethods(className: string): string {
     return `/**
    * Get current configuration
-   * @returns Current configuration
+   * @returns {string} Current configuration
    */
   getConfig(): ${className}Config {
     return { ...this.config };
@@ -116,7 +116,7 @@ export class ${className} {
 
   /**
    * Update configuration
-   * @param updates - Configuration updates
+   * @param {string} updates - Configuration updates
    */
   updateConfig(updates: Partial<${className}Config>): void {
     this.config = mergeConfigs(this.config, updates);
@@ -126,8 +126,8 @@ export class ${className} {
 
   /**
    * Generates the main process method
-   * @param className - Name of the class
-   * @returns Process method code
+   * @param {string} className - Name of the class
+   * @returns {string} Process method code
    */
   private generateProcessMethod(className: string): string {
     const methodSignature = this.generateProcessMethodSignature(className);
@@ -143,15 +143,15 @@ ${doProcessMethod}`;
 
   /**
    * Generates the process method signature
-   * @param className - Name of the class
-   * @returns Method signature code
+   * @param {string} className - Name of the class
+   * @returns {string} Method signature code
    */
   private generateProcessMethodSignature(className: string): string {
     return `/**
    * Perform main library operation
-   * @param input - Input data
-   * @param options - Operation options
-   * @returns Operation result
+   * @param {string} input - Input data
+   * @param {string} options - Operation options
+   * @returns {string} Operation result
    */
   async process<T = unknown>(
     input: T,
@@ -161,7 +161,7 @@ ${doProcessMethod}`;
 
   /**
    * Generates the process method body
-   * @returns Method body code
+   * @returns {string} Method body code
    */
   private generateProcessMethodBody(): string {
     return `  if (!this.initialized) {
@@ -194,14 +194,14 @@ ${doProcessMethod}`;
 
   /**
    * Generates the internal do process method
-   * @returns Do process method code
+   * @returns {string} Do process method code
    */
   private generateDoProcessMethod(): string {
     return `/**
    * Internal processing method (to be implemented by specific libraries)
-   * @param input - Input data
-   * @param options - Processing options
-   * @returns Processed data
+   * @param {string} input - Input data
+   * @param {string} options - Processing options
+   * @returns {string} Processed data
    */
   private async doProcess<T = unknown>(input: T, options: unknown): Promise<T> {
     // Default implementation - should be overridden by specific libraries

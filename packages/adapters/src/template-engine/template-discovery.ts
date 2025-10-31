@@ -27,7 +27,7 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Create template discovery instance
-   * @param config - Template catalog configuration containing sources and templates directory
+   * @param {TemplateCatalogConfig} config - Template catalog configuration containing sources and templates directory
    */
   constructor(config: TemplateCatalogConfig) {
     this.config = config;
@@ -44,8 +44,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Discover templates from file system
-   * @param directory - Directory path to scan for templates
-   * @returns Array of discovered template metadata
+   * @param {string} directory - Directory path to scan for templates
+   * @returns {void} Array of discovered template metadata
    */
   async discover(directory: string): Promise<TemplateMetadata[]> {
     return this.scanner.discover(directory);
@@ -53,8 +53,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Scan for new or modified templates
-   * @param directory - Directory to scan
-   * @returns Scan results with new, modified, and deleted templates
+   * @param {string} directory - Directory to scan
+   * @returns {string): Promise<} Scan results with new, modified, and deleted templates
    */
   async scan(directory: string): Promise<{
     newTemplates: TemplateMetadata[];
@@ -66,9 +66,9 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Watch for template changes
-   * @param directory - Directory to watch
-   * @param callback - Callback function for change events
-   * @returns Function to stop watching
+   * @param {unknown} directory - Directory to watch
+   * @param {(event} callback - Callback function for change events
+   * @returns {void} Function to stop watching
    */
   watch(
     directory: string,
@@ -79,8 +79,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Index templates for fast search
-   * @param templates - Array of templates to index
-   * @returns Promise that resolves when indexing is complete
+   * @param {TemplateMetadata[]} templates - Array of templates to index
+   * @returns {void} Promise that resolves when indexing is complete
    */
   async index(templates: TemplateMetadata[]): Promise<void> {
     return this.scanner.index(templates);
@@ -88,8 +88,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Get template by ID
-   * @param templateId - Template ID to search for
-   * @returns Template metadata or null if not found
+   * @param {string} templateId - Template ID to search for
+   * @returns {void} Template metadata or null if not found
    */
   async getTemplateById(templateId: string): Promise<TemplateMetadata | null> {
     return this.indexManager.getTemplateById(templateId);
@@ -97,8 +97,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Get templates by category
-   * @param category - Category filter to apply
-   * @returns Array of templates matching the category
+   * @param {string} category - Category filter to apply
+   * @returns {void} Array of templates matching the category
    */
   async getTemplatesByCategory(category: string): Promise<TemplateMetadata[]> {
     return this.indexManager.getTemplatesByCategory(category);
@@ -106,8 +106,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Get templates by project type
-   * @param projectType - Project type filter to apply
-   * @returns Array of templates supporting the specified project type
+   * @param {ProjectType} projectType - Project type filter to apply
+   * @returns {void} Array of templates supporting the specified project type
    */
   async getTemplatesByProjectType(projectType: ProjectType): Promise<TemplateMetadata[]> {
     return this.indexManager.getTemplatesByProjectType(projectType);
@@ -115,13 +115,13 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Search templates with filters
-   * @param query - Search query string
-   * @param filters - Optional search filters to narrow results
-   * @param filters.category - Category filter
-   * @param filters.projectType - Project type filter
-   * @param filters.tags - Tags filter
-   * @param filters.author - Author filter
-   * @returns Array of templates matching the search criteria
+   * @param {string} query - Search query string
+   * @param {{ category?: string; projectType?: ProjectType; tags?: string[]; author?: string; }} filters - Search filters
+   * @param {string | undefined} filters.category - Category filter
+   * @param {ProjectType | undefined} filters.projectType - Project type filter
+   * @param {string[] | undefined} filters.tags - Tags filter
+   * @param {string | undefined} filters.author - Author filter
+   * @returns {Promise<TemplateMetadata[]>} Array of templates matching the search criteria
    */
   async searchTemplates(
     query: string,
@@ -137,7 +137,7 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Refresh template index by rediscovering all templates
-   * @returns Refreshed array of all available templates
+   * @returns {void} Refreshed array of all available templates
    */
   async refreshIndex(): Promise<TemplateMetadata[]> {
     return this.scanner.refreshIndex(this.config.templatesDirectory);
@@ -145,8 +145,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Watch for template changes across all configured sources
-   * @param callback - Callback function for change events
-   * @returns Promise that resolves when watching is set up
+   * @param {(event} callback - Callback function for change events
+   * @returns {void} Promise that resolves when watching is set up
    */
   async watchTemplates(
     callback: (event: string, template: TemplateMetadata) => void
@@ -156,7 +156,7 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Stop watching for changes across all sources
-   * @returns Promise that resolves when all watchers are stopped
+   * @returns {void} Promise that resolves when all watchers are stopped
    */
   async stopWatching(): Promise<void> {
     await this.watcher.stopWatching();
@@ -164,7 +164,7 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Get comprehensive discovery statistics
-   * @returns Object containing statistics about templates, categories, project types, and index size
+   * @returns {Promise<} Object containing statistics about templates, categories, project types, and index size
    */
   async getStatistics(): Promise<{
     totalTemplates: number;
@@ -179,10 +179,10 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Discover templates from a single source configuration
-   * @param source - Template source configuration containing path and recursion settings
-   * @param source.path - Source path to discover templates from
-   * @param source.recursive - Whether to search recursively in subdirectories
-   * @returns Array of discovered templates from the specified source
+   * @param {{ }} source - Template source configuration containing path and recursion settings
+   * @param {{ }} source.path - Source path to discover templates from
+   * @param {{ }} source.recursive - Whether to search recursively in subdirectories
+   * @returns {void} Array of discovered templates from the specified source
    */
   private async discoverFromSource(source: {
     path: string;
@@ -193,7 +193,7 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Get index statistics (alias for getStatistics)
-   * @returns Index statistics object
+   * @returns {Promise<} Index statistics object
    */
   async getIndexStats(): Promise<{
     totalTemplates: number;
@@ -208,8 +208,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Search templates by query string (alias for searchTemplates)
-   * @param query - Search query string
-   * @returns Search results with matching templates
+   * @param {string} query - Search query string
+   * @returns {void} Search results with matching templates
    */
   async searchByQuery(query: string): Promise<TemplateMetadata[]> {
     return this.searchTemplates(query);
@@ -217,8 +217,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Get templates by category (alias for getTemplatesByCategory)
-   * @param category - Category to filter by
-   * @returns Array of templates in the category
+   * @param {string} category - Category to filter by
+   * @returns {void} Array of templates in the category
    */
   async getByCategory(category: string): Promise<TemplateMetadata[]> {
     return this.getTemplatesByCategory(category);
@@ -226,8 +226,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Get templates by project type (alias for getTemplatesByProjectType)
-   * @param projectType - Project type to filter by
-   * @returns Array of templates for the project type
+   * @param {ProjectType} projectType - Project type to filter by
+   * @returns {void} Array of templates for the project type
    */
   async getByProjectType(projectType: ProjectType): Promise<TemplateMetadata[]> {
     return this.getTemplatesByProjectType(projectType);
@@ -235,8 +235,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Get templates by tag
-   * @param tag - Tag to filter by
-   * @returns Array of templates with the specified tag
+   * @param {string} tag - Tag to filter by
+   * @returns {void} Array of templates with the specified tag
    */
   async getByTag(tag: string): Promise<TemplateMetadata[]> {
     const allTemplates = await this.indexManager.getAllTemplates();
@@ -247,8 +247,8 @@ export class TemplateDiscovery implements ITemplateDiscovery {
 
   /**
    * Get templates by author
-   * @param author - Author to filter by
-   * @returns Array of templates by the specified author
+   * @param {string} author - Author to filter by
+   * @returns {void} Array of templates by the specified author
    */
   async getByAuthor(author: string): Promise<TemplateMetadata[]> {
     const allTemplates = await this.indexManager.getAllTemplates();

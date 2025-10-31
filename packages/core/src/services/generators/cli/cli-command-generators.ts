@@ -13,8 +13,8 @@ import type { ProjectConfig } from '../../../types/project-config.js';
 export class CLICommandGenerators {
   /**
    * Generate commands index file
-   * @param _config - Project configuration
-   * @returns Commands index file content
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Commands index file content
    */
   generateCommandsIndex(_config: ProjectConfig): string {
     return [
@@ -27,7 +27,7 @@ export class CLICommandGenerators {
 
   /**
    * Generate commands index header
-   * @returns Header section
+   * @returns {string} Header section
    */
   private generateCommandsHeader(): string {
     return `/**
@@ -39,7 +39,7 @@ export class CLICommandGenerators {
 
   /**
    * Generate command exports
-   * @returns Command exports section
+   * @returns {string} Command exports section
    */
   private generateCommandExports(): string {
     return `export { default as helloCommand } from './hello-command.js';
@@ -49,7 +49,7 @@ export { default as versionCommand } from './version-command.js';`;
 
   /**
    * Generate command registry
-   * @returns Command registry section
+   * @returns {string} Command registry section
    */
   private generateCommandRegistry(): string {
     return `/**
@@ -64,7 +64,7 @@ export const commandRegistry = new Map([
 
   /**
    * Generate command helper functions
-   * @returns Command helpers section
+   * @returns {string} Command helpers section
    */
   private generateCommandHelpers(): string {
     return [
@@ -76,12 +76,12 @@ export const commandRegistry = new Map([
 
   /**
    * Generate getAvailableCommands function
-   * @returns getAvailableCommands function section
+   * @returns {string} getAvailableCommands function section
    */
   private generateGetAvailableCommands(): string {
     return `/**
  * Get all available commands
- * @returns Array of command information
+   * @returns {string} Array of command information
  */
 export const getAvailableCommands = () => [
   { name: 'hello', description: 'Say hello to the world' },
@@ -92,13 +92,13 @@ export const getAvailableCommands = () => [
 
   /**
    * Generate hasCommand function
-   * @returns hasCommand function section
+   * @returns {string} hasCommand function section
    */
   private generateHasCommandFunction(): string {
     return `/**
  * Check if a command exists
- * @param name - Command name
- * @returns True if command exists
+   * @param {string} name - Command name
+   * @returns {boolean} if command exists
  */
 export const hasCommand = (name: string): boolean => {
   return commandRegistry.has(name);
@@ -107,13 +107,13 @@ export const hasCommand = (name: string): boolean => {
 
   /**
    * Generate loadCommand function
-   * @returns loadCommand function section
+   * @returns {string} loadCommand function section
    */
   private generateLoadCommandFunction(): string {
     return `/**
  * Load a command dynamically
- * @param name - Command name
- * @returns Command module
+   * @param {string} name - Command name
+   * @returns {string} Command module
  */
 export const loadCommand = async (name: string) => {
   const loader = commandRegistry.get(name);
@@ -127,8 +127,8 @@ export const loadCommand = async (name: string) => {
 
   /**
    * Generate hello command
-   * @param _config - Project configuration
-   * @returns Hello command content
+   * @param {ProjectConfig} _config - Project configuration
+   * @returns {string} Hello command content
    */
   generateHelloCommand(_config: ProjectConfig): string {
     return [
@@ -143,7 +143,7 @@ export const loadCommand = async (name: string) => {
 
   /**
    * Generate hello command header
-   * @returns Header section
+   * @returns {string} Header section
    */
   private generateHelloCommandHeader(): string {
     return `/**
@@ -155,7 +155,7 @@ export const loadCommand = async (name: string) => {
 
   /**
    * Generate hello command imports
-   * @returns Import section
+   * @returns {string} Import section
    */
   private generateHelloCommandImports(): string {
     return `import type { Command } from 'commander';
@@ -164,7 +164,7 @@ import type { Logger } from '../utils/logger.js';`;
 
   /**
    * Generate hello command interface
-   * @returns Interface section
+   * @returns {string} Interface section
    */
   private generateHelloCommandInterface(): string {
     return `interface HelloOptions {
@@ -175,14 +175,14 @@ import type { Logger } from '../utils/logger.js';`;
 
   /**
    * Generate hello command execute function
-   * @returns Execute function section
+   * @returns {string} Execute function section
    */
   private generateHelloCommandExecute(): string {
     return `/**
  * Execute hello command
- * @param name - Name to greet
- * @param options - Command options
- * @param logger - Logger instance
+   * @param {string} name - Name to greet
+   * @param {string} options - Command options
+   * @param {string} logger - Logger instance
  */
 function execute(name: string, options: HelloOptions, logger: Logger): void {
   let greeting = 'Hello';
@@ -207,14 +207,14 @@ function execute(name: string, options: HelloOptions, logger: Logger): void {
 
   /**
    * Generate hello command configure function
-   * @returns Configure function section
+   * @returns {string} Configure function section
    */
   private generateHelloCommandConfigure(): string {
     return `/**
  * Configure hello command
- * @param program - Commander program instance
- * @param logger - Logger instance
- * @returns Configured command
+   * @param {string} program - Commander program instance
+   * @param {string} logger - Logger instance
+   * @returns {string} Configured command
  */
 function configure(program: Command, logger: Logger): Command {
   return program
@@ -229,7 +229,7 @@ function configure(program: Command, logger: Logger): Command {
 
   /**
    * Generate hello command export
-   * @returns Export section
+   * @returns {string} Export section
    */
   private generateHelloCommandExport(): string {
     return `/**

@@ -10,16 +10,19 @@ describe('CLILogger', () => {
   let mockConsoleError: any;
   let mockConsoleWarn: any;
   let mockProcessStdoutWrite: any;
+  let mockProcessStderrWrite: any;
   let _consoleLogSpy: string[];
   let _consoleErrorSpy: string[];
   let _consoleWarnSpy: string[];
   let processWriteSpy: string[];
+  let processStderrSpy: string[];
 
   beforeEach(() => {
     _consoleLogSpy = [];
     _consoleErrorSpy = [];
     _consoleWarnSpy = [];
     processWriteSpy = [];
+    processStderrSpy = [];
 
     mockConsoleLog = vi.spyOn(console, 'log').mockImplementation((...args) => {
       _consoleLogSpy?.push(args.join(' '));
@@ -34,6 +37,10 @@ describe('CLILogger', () => {
       processWriteSpy?.push(data);
       return true;
     });
+    mockProcessStderrWrite = vi.spyOn(process.stderr, 'write').mockImplementation((data) => {
+      processStderrSpy?.push(data);
+      return true;
+    });
   });
 
   afterEach(() => {
@@ -41,6 +48,7 @@ describe('CLILogger', () => {
     mockConsoleError.mockRestore();
     mockConsoleWarn.mockRestore();
     mockProcessStdoutWrite.mockRestore();
+    mockProcessStderrWrite.mockRestore();
   });
 
   describe('constructor', () => {
@@ -64,14 +72,16 @@ describe('CLILogger', () => {
     it('should log success message', () => {
       const logger = new CLILogger();
       logger.success('Test success');
-      expect(mockConsoleLog).toHaveBeenCalledWith('✅ Test success');
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith('✅ Test success\n');
     });
 
     it('should log success message with data in JSON mode', () => {
       const logger = new CLILogger({ json: true });
       logger.success('Test success', { key: 'value' });
-      expect(mockConsoleLog).toHaveBeenCalledWith(expect.stringContaining('"status": "success"'));
-      expect(mockConsoleLog).toHaveBeenCalledWith(
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith(
+        expect.stringContaining('"status": "success"')
+      );
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith(
         expect.stringContaining('"message": "Test success"')
       );
     });
@@ -79,7 +89,7 @@ describe('CLILogger', () => {
     it('should not log in silent mode', () => {
       const logger = new CLILogger({ silent: true });
       logger.success('Test success');
-      expect(mockConsoleLog).not.toHaveBeenCalled();
+      expect(mockProcessStdoutWrite).not.toHaveBeenCalled();
     });
   });
 
@@ -87,15 +97,17 @@ describe('CLILogger', () => {
     it('should log error message', () => {
       const logger = new CLILogger();
       logger.error('Test error');
-      expect(mockConsoleError).toHaveBeenCalledWith('❌ Test error');
+      expect(mockProcessStderrWrite).toHaveBeenCalledWith('❌ Test error\n');
     });
 
     it('should log error with details in verbose mode', () => {
       const logger = new CLILogger({ verbose: true });
       const error = new Error('Detailed error');
       logger.error('Test error', error);
-      expect(mockConsoleError).toHaveBeenCalledWith('❌ Test error');
-      expect(mockConsoleError).toHaveBeenCalledWith(expect.stringContaining('Detailed error'));
+      expect(mockProcessStderrWrite).toHaveBeenCalledWith('❌ Test error\n');
+      expect(mockProcessStderrWrite).toHaveBeenCalledWith(
+        expect.stringContaining('Detailed error')
+      );
     });
 
     it('should log error with CLIError properties', () => {
@@ -108,8 +120,10 @@ describe('CLILogger', () => {
         stack: 'Error stack trace',
       };
       logger.error('Test error', cliError);
-      expect(mockConsoleError).toHaveBeenCalledWith('❌ Test error');
-      expect(mockConsoleError).toHaveBeenCalledWith(expect.stringContaining('Error stack trace'));
+      expect(mockProcessStderrWrite).toHaveBeenCalledWith('❌ Test error\n');
+      expect(mockProcessStderrWrite).toHaveBeenCalledWith(
+        expect.stringContaining('Error stack trace')
+      );
     });
   });
 
@@ -117,13 +131,13 @@ describe('CLILogger', () => {
     it('should log warning message', () => {
       const logger = new CLILogger();
       logger.warn('Test warning');
-      expect(mockConsoleWarn).toHaveBeenCalledWith('⚠️ Test warning');
+      expect(mockProcessStderrWrite).toHaveBeenCalledWith('⚠️ Test warning\n');
     });
 
     it('should not log in silent mode', () => {
       const logger = new CLILogger({ silent: true });
       logger.warn('Test warning');
-      expect(mockConsoleWarn).not.toHaveBeenCalled();
+      expect(mockProcessStderrWrite).not.toHaveBeenCalled();
     });
   });
 
@@ -131,13 +145,13 @@ describe('CLILogger', () => {
     it('should log info message in verbose mode', () => {
       const logger = new CLILogger({ verbose: true });
       logger.info('Test info');
-      expect(mockConsoleLog).toHaveBeenCalledWith('ℹ️ Test info');
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith('ℹ️ Test info\n');
     });
 
     it('should not log in non-verbose mode', () => {
       const logger = new CLILogger({ verbose: false });
       logger.info('Test info');
-      expect(mockConsoleLog).not.toHaveBeenCalled();
+      expect(mockProcessStdoutWrite).not.toHaveBeenCalled();
     });
   });
 
@@ -145,14 +159,14 @@ describe('CLILogger', () => {
     it('should log debug message with data in verbose mode', () => {
       const logger = new CLILogger({ verbose: true });
       logger.debug('Test debug', { key: 'value' });
-      expect(mockConsoleLog).toHaveBeenCalledWith('🔍 Test debug');
-      expect(mockConsoleLog).toHaveBeenCalledWith('   ', { key: 'value' });
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith('🔍 Test debug\n');
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith('   {\n  "key": "value"\n}\n');
     });
 
     it('should not log in non-verbose mode', () => {
       const logger = new CLILogger({ verbose: false });
       logger.debug('Test debug');
-      expect(mockConsoleLog).not.toHaveBeenCalled();
+      expect(mockProcessStdoutWrite).not.toHaveBeenCalled();
     });
   });
 
@@ -160,13 +174,13 @@ describe('CLILogger', () => {
     it('should log step message', () => {
       const logger = new CLILogger();
       logger.step(1, 3, 'Test step');
-      expect(mockConsoleLog).toHaveBeenCalledWith('📍 (1/3) Test step');
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith('📍 (1/3) Test step\n');
     });
 
     it('should not log in silent mode', () => {
       const logger = new CLILogger({ silent: true });
       logger.step(1, 3, 'Test step');
-      expect(mockConsoleLog).not.toHaveBeenCalled();
+      expect(mockProcessStdoutWrite).not.toHaveBeenCalled();
     });
   });
 
@@ -174,13 +188,15 @@ describe('CLILogger', () => {
     it('should log header', () => {
       const logger = new CLILogger();
       logger.header('Test Header');
-      expect(mockConsoleLog).toHaveBeenCalledWith(expect.stringContaining('=== Test Header ==='));
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith(
+        expect.stringContaining('=== Test Header ===')
+      );
     });
 
     it('should not log in silent mode', () => {
       const logger = new CLILogger({ silent: true });
       logger.header('Test Header');
-      expect(mockConsoleLog).not.toHaveBeenCalled();
+      expect(mockProcessStdoutWrite).not.toHaveBeenCalled();
     });
   });
 
@@ -217,16 +233,22 @@ describe('CLIErrorHandler', () => {
   let mockConsoleLog: any;
   let mockConsoleError: any;
   let mockConsoleWarn: any;
+  let mockProcessStdoutWrite: any;
+  let mockProcessStderrWrite: any;
   let logger: CLILogger;
   let errorHandler: CLIErrorHandler;
   let consoleLogSpy: string[];
   let consoleErrorSpy: string[];
   let consoleWarnSpy: string[];
+  let processWriteSpy: string[];
+  let processStderrSpy: string[];
 
   beforeEach(() => {
     consoleLogSpy = [];
     consoleErrorSpy = [];
     consoleWarnSpy = [];
+    processWriteSpy = [];
+    processStderrSpy = [];
 
     mockConsoleLog = vi.spyOn(console, 'log').mockImplementation((...args) => {
       consoleLogSpy?.push(args.join(' '));
@@ -237,6 +259,14 @@ describe('CLIErrorHandler', () => {
     mockConsoleWarn = vi.spyOn(console, 'warn').mockImplementation((...args) => {
       consoleWarnSpy?.push(args.join(' '));
     });
+    mockProcessStdoutWrite = vi.spyOn(process.stdout, 'write').mockImplementation((data) => {
+      processWriteSpy?.push(data);
+      return true;
+    });
+    mockProcessStderrWrite = vi.spyOn(process.stderr, 'write').mockImplementation((data) => {
+      processStderrSpy?.push(data);
+      return true;
+    });
     logger = new CLILogger({ verbose: true });
     errorHandler = new CLIErrorHandler(logger);
   });
@@ -245,13 +275,15 @@ describe('CLIErrorHandler', () => {
     mockConsoleLog.mockRestore();
     mockConsoleError.mockRestore();
     mockConsoleWarn.mockRestore();
+    mockProcessStdoutWrite.mockRestore();
+    mockProcessStderrWrite.mockRestore();
   });
 
   describe('handle', () => {
     it('should handle regular error', () => {
       const error = new Error('Test error');
       errorHandler.handle(error);
-      expect(mockConsoleError).toHaveBeenCalledWith('❌ Test error');
+      expect(mockProcessStderrWrite).toHaveBeenCalledWith('❌ Test error\n');
     });
 
     it('should handle CLI error with suggestions', () => {
@@ -262,22 +294,22 @@ describe('CLIErrorHandler', () => {
         suggestions: ['Suggestion 1', 'Suggestion 2'],
       };
       errorHandler.handle(cliError);
-      expect(mockConsoleError).toHaveBeenCalledWith('\x1B[31m✗\x1B[0m Test CLI error');
-      expect(mockConsoleLog).toHaveBeenCalledWith('ℹ️ Suggestions:');
-      expect(mockConsoleLog).toHaveBeenCalledWith('   1. Suggestion 1');
-      expect(mockConsoleLog).toHaveBeenCalledWith('   2. Suggestion 2');
+      expect(mockProcessStderrWrite).toHaveBeenCalledWith('❌ Test CLI error\n');
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith('ℹ️ Suggestions:\n');
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith('ℹ️   1. Suggestion 1\n');
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith('ℹ️   2. Suggestion 2\n');
     });
 
     it('should handle error with context', () => {
       const error = new Error('Context error');
       errorHandler.handle(error, 'Test Context');
-      expect(mockConsoleError).toHaveBeenCalledWith('\x1B[31m✗\x1B[0m undefined');
+      expect(mockProcessStderrWrite).toHaveBeenCalledWith('❌ undefined\n');
     });
 
     it('should show help for permission errors', () => {
       const error = new Error('EACCES: permission denied');
       errorHandler.handle(error);
-      expect(mockConsoleLog).toHaveBeenCalledWith(
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith(
         expect.stringContaining('For permission issues, try:')
       );
     });
@@ -285,7 +317,7 @@ describe('CLIErrorHandler', () => {
     it('should show help for validation errors', () => {
       const error = new Error('Validation failed');
       errorHandler.handle(error);
-      expect(mockConsoleLog).toHaveBeenCalledWith(
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith(
         expect.stringContaining('For validation issues, try:')
       );
     });
@@ -293,7 +325,7 @@ describe('CLIErrorHandler', () => {
     it('should show help for network errors', () => {
       const error = new Error('ENOTFOUND: network error');
       errorHandler.handle(error);
-      expect(mockConsoleLog).toHaveBeenCalledWith(
+      expect(mockProcessStdoutWrite).toHaveBeenCalledWith(
         expect.stringContaining('For network issues, try:')
       );
     });

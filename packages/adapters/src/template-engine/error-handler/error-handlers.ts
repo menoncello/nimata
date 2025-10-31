@@ -11,9 +11,9 @@ import {
 
 /**
  * Handles template loading errors
- * @param filePath - Path to the template file
- * @param error - Original error that occurred
- * @returns Enhanced template error with context
+ * @param {string} filePath - Path to the template file
+ * @param {Error} error - Original error that occurred
+ * @returns { TemplateError} Enhanced template error with context
  */
 export function handleLoadingError(filePath: string, error: Error): TemplateError {
   const context: TemplateErrorContext = {
@@ -34,9 +34,9 @@ export function handleLoadingError(filePath: string, error: Error): TemplateErro
 
 /**
  * Creates a template not found error
- * @param filePath - Path to the template file
- * @param context - Error context
- * @returns Template error for missing file
+ * @param {unknown} filePath - Path to the template file
+ * @param {unknown} context - Error context
+ * @returns {TemplateError} Template error for missing file
  */
 function createTemplateNotFoundError(
   filePath: string,
@@ -60,9 +60,9 @@ function createTemplateNotFoundError(
 
 /**
  * Creates a template permission error
- * @param filePath - Path to the template file
- * @param context - Error context
- * @returns Template error for permission issues
+ * @param {unknown} filePath - Path to the template file
+ * @param {unknown} context - Error context
+ * @returns {TemplateError} Template error for permission issues
  */
 function createTemplatePermissionError(
   filePath: string,
@@ -85,10 +85,10 @@ function createTemplatePermissionError(
 
 /**
  * Creates a generic template load error
- * @param filePath - Path to the template file
- * @param error - Original error
- * @param context - Error context
- * @returns Generic template load error
+ * @param {unknown} filePath - Path to the template file
+ * @param {unknown} error - Original error
+ * @param {unknown} context - Error context
+ * @returns {TemplateError} Generic template load error
  */
 function createGenericLoadError(
   filePath: string,
@@ -107,10 +107,10 @@ function createGenericLoadError(
 
 /**
  * Handles template parsing errors
- * @param content - Template content that failed to parse
- * @param error - Original parsing error
- * @param filePath - Optional file path where error occurred
- * @returns Enhanced template error with parsing context
+ * @param {unknown} content - Template content that failed to parse
+ * @param {unknown} error - Original parsing error
+ * @param {unknown} filePath - Optional file path where error occurred
+ * @returns {TemplateError} Enhanced template error with parsing context
  */
 export function handleParsingError(
   content: string,
@@ -136,9 +136,9 @@ export function handleParsingError(
 
 /**
  * Creates a JSON syntax error
- * @param error - Original error
- * @param context - Error context
- * @returns JSON syntax error
+ * @param {Error} error - Original error
+ * @param {TemplateErrorContext} context - Error context
+ * @returns { TemplateError} JSON syntax error
  */
 function createJsonSyntaxError(error: Error, context: TemplateErrorContext): TemplateError {
   return {
@@ -158,9 +158,9 @@ function createJsonSyntaxError(error: Error, context: TemplateErrorContext): Tem
 
 /**
  * Creates a Handlebars syntax error
- * @param error - Original error
- * @param context - Error context
- * @returns Handlebars syntax error
+ * @param {Error} error - Original error
+ * @param {TemplateErrorContext} context - Error context
+ * @returns { TemplateError} Handlebars syntax error
  */
 function createHandlebarsSyntaxError(error: Error, context: TemplateErrorContext): TemplateError {
   return {
@@ -181,9 +181,9 @@ function createHandlebarsSyntaxError(error: Error, context: TemplateErrorContext
 
 /**
  * Creates a generic parsing error
- * @param error - Original error
- * @param context - Error context
- * @returns Generic parsing error
+ * @param {Error} error - Original error
+ * @param {TemplateErrorContext} context - Error context
+ * @returns { TemplateError} Generic parsing error
  */
 function createGenericParseError(error: Error, context: TemplateErrorContext): TemplateError {
   return {
@@ -198,10 +198,10 @@ function createGenericParseError(error: Error, context: TemplateErrorContext): T
 
 /**
  * Handles template rendering errors
- * @param templateId - ID of the template that failed to render
- * @param error - Original rendering error
- * @param _context - Optional rendering context data
- * @returns Enhanced template error with rendering context
+ * @param {unknown} templateId - ID of the template that failed to render
+ * @param {unknown} error - Original rendering error
+ * @param {unknown} _context - Optional rendering context data
+ * @returns {TemplateError} Enhanced template error with rendering context
  */
 export function handleRenderingError(
   templateId: string,
@@ -226,9 +226,9 @@ export function handleRenderingError(
 
 /**
  * Creates an undefined variable error
- * @param error - Original error
- * @param errorContext - Error context
- * @returns Undefined variable error
+ * @param {unknown} error - Original error
+ * @param {unknown} errorContext - Error context
+ * @returns {TemplateError} Undefined variable error
  */
 function createUndefinedVariableError(
   error: Error,
@@ -254,9 +254,9 @@ function createUndefinedVariableError(
 
 /**
  * Creates an unknown helper error
- * @param error - Original error
- * @param errorContext - Error context
- * @returns Unknown helper error
+ * @param {Error} error - Original error
+ * @param {TemplateErrorContext} errorContext - Error context
+ * @returns { TemplateError} Unknown helper error
  */
 function createUnknownHelperError(error: Error, errorContext: TemplateErrorContext): TemplateError {
   return {
@@ -276,9 +276,9 @@ function createUnknownHelperError(error: Error, errorContext: TemplateErrorConte
 
 /**
  * Creates a generic rendering error
- * @param error - Original error
- * @param errorContext - Error context
- * @returns Generic rendering error
+ * @param {Error} error - Original error
+ * @param {TemplateErrorContext} errorContext - Error context
+ * @returns { TemplateError} Generic rendering error
  */
 function createGenericRenderError(error: Error, errorContext: TemplateErrorContext): TemplateError {
   return {

@@ -7,8 +7,8 @@ import type { ProjectConfig } from '../../../../types/project-config.js';
 
 /**
  * Generate application types
- * @param _config - Project configuration (unused)
- * @returns Application types code
+ * @param {ProjectConfig} _config - Project configuration (unused)
+ * @returns {string} Application types code
  */
 export function generateAppTypes(_config: ProjectConfig): string {
   const header = getAppTypesHeader();
@@ -39,7 +39,7 @@ ${environmentTypes}`;
 
 /**
  * Get app types header
- * @returns Header comment
+ * @returns {string} Header comment
  */
 function getAppTypesHeader(): string {
   return `/**
@@ -49,7 +49,7 @@ function getAppTypesHeader(): string {
 
 /**
  * Get state-related types
- * @returns State types code
+ * @returns {string} State types code
  */
 function getStateTypes(): string {
   return `// Global app state types
@@ -69,7 +69,7 @@ export interface User {
 
 /**
  * Get navigation types
- * @returns Navigation types code
+ * @returns {string} Navigation types code
  */
 function getNavigationTypes(): string {
   return `// Navigation types
@@ -84,7 +84,7 @@ export interface NavigationItem {
 
 /**
  * Get API response types
- * @returns API types code
+ * @returns {string} API types code
  */
 function getApiTypes(): string {
   return `// API response types
@@ -106,7 +106,7 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
 
 /**
  * Get form-related types
- * @returns Form types code
+ * @returns {string} Form types code
  */
 function getFormTypes(): string {
   return `// Form types
@@ -129,7 +129,7 @@ export interface FormState {
 
 /**
  * Get theme types
- * @returns Theme types code
+ * @returns {string} Theme types code
  */
 function getThemeTypes(): string {
   return `// Theme types
@@ -161,7 +161,7 @@ export interface Theme {
 
 /**
  * Get component prop types
- * @returns Component types code
+ * @returns {string} Component types code
  */
 function getComponentTypes(): string {
   return `// Component prop types
@@ -182,7 +182,7 @@ export interface ButtonProps extends BaseComponentProps {
 
 /**
  * Get environment types
- * @returns Environment types code
+ * @returns {string} Environment types code
  */
 function getEnvironmentTypes(): string {
   return `// Environment types

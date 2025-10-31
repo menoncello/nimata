@@ -10,6 +10,7 @@ export interface PackageJsonConfig {
   description?: string;
   main?: string;
   types?: string;
+  bin?: Record<string, string>;
   scripts?: Record<string, string>;
   keywords?: string[];
   author?: string;

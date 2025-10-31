@@ -5,6 +5,7 @@
  * Integrates with existing content generation functionality
  */
 import type { ProjectConfig } from '../../types/project-config.js';
+import { logger } from '../../utils/logger.js';
 import { ContentGenerators } from './config/content-generators.js';
 import { DirectoryItem } from './directory-structure-generator.js';
 
@@ -17,8 +18,8 @@ import { DirectoryItem } from './directory-structure-generator.js';
 export class DocumentationGenerator {
   /**
    * Generate documentation files for a project
-   * @param config - Project configuration
-   * @returns Array of documentation file items
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem[]} Array of documentation file items
    */
   generate(config: ProjectConfig): DirectoryItem[] {
     const documentationFiles: DirectoryItem[] = [];
@@ -56,9 +57,9 @@ export class DocumentationGenerator {
 
   /**
    * Generate AI assistant configuration
-   * @param assistant - AI assistant type
-   * @param config - Project configuration
-   * @returns AI assistant configuration file item or null
+   * @param {string} assistant - AI assistant type
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem|null} AI assistant configuration file item or null
    */
   private generateAIAssistantConfig(
     assistant: string,
@@ -69,9 +70,9 @@ export class DocumentationGenerator {
 
   /**
    * Gets configuration for specific AI assistant
-   * @param assistant - Assistant name
-   * @param config - Project configuration
-   * @returns Assistant configuration or null
+   * @param {string} assistant - Assistant name
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem|null} Assistant configuration or null
    */
   private getAssistantConfig(assistant: string, config: ProjectConfig): DirectoryItem | null {
     const configurations = {
@@ -87,18 +88,18 @@ export class DocumentationGenerator {
       return configFn;
     }
 
-    console.warn(`Unknown AI assistant: ${assistant}`);
+    logger.warn('getDocumentationConfig', `Unknown AI assistant: ${assistant}`);
     return null;
   }
 
   /**
    * Creates Claude configuration
-   * @param config - Project configuration
-   * @returns Claude configuration
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Claude configuration
    */
   private createClaudeConfig(config: ProjectConfig): DirectoryItem {
     return {
-      path: '.claude/CLAUDE.md',
+      path: 'CLAUDE.md',
       type: 'file',
       content: ContentGenerators.generateClaudeConfig(config),
       mode: 0o644,
@@ -107,8 +108,8 @@ export class DocumentationGenerator {
 
   /**
    * Creates Copilot configuration
-   * @param config - Project configuration
-   * @returns Copilot configuration
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Copilot configuration
    */
   private createCopilotConfig(config: ProjectConfig): DirectoryItem {
     return {
@@ -121,8 +122,8 @@ export class DocumentationGenerator {
 
   /**
    * Creates AI context configuration
-   * @param config - Project configuration
-   * @returns AI context configuration
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} AI context configuration
    */
   private createAIContextConfig(config: ProjectConfig): DirectoryItem {
     return {
@@ -135,8 +136,8 @@ export class DocumentationGenerator {
 
   /**
    * Creates Cursor configuration
-   * @param config - Project configuration
-   * @returns Cursor configuration
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {DirectoryItem} Cursor configuration
    */
   private createCursorConfig(config: ProjectConfig): DirectoryItem {
     return {
@@ -149,8 +150,8 @@ export class DocumentationGenerator {
 
   /**
    * Generate README.md only
-   * @param config - Project configuration
-   * @returns README.md content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} README.md content
    */
   generateReadme(config: ProjectConfig): string {
     return ContentGenerators.generateReadme(config);
@@ -158,8 +159,8 @@ export class DocumentationGenerator {
 
   /**
    * Generate API documentation only
-   * @param config - Project configuration
-   * @returns API documentation content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} API documentation content
    */
   generateApiDocumentation(config: ProjectConfig): string {
     return ContentGenerators.generateAPIDocumentation(config);
@@ -167,8 +168,8 @@ export class DocumentationGenerator {
 
   /**
    * Generate CLAUDE.md only
-   * @param config - Project configuration
-   * @returns CLAUDE.md content
+   * @param {ProjectConfig} config - Project configuration
+   * @returns {string} CLAUDE.md content
    */
   generateClaudeConfig(config: ProjectConfig): string {
     return ContentGenerators.generateClaudeConfig(config);

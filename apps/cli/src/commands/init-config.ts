@@ -7,7 +7,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { type ProjectWizard, type ProjectConfig } from '@nimata/adapters/wizards/project-wizard';
-import { ProjectConfigProcessorImpl, type ProjectConfig as CoreProjectConfig } from '@nimata/core';
+import { type ProjectConfig as CoreProjectConfig, type ProjectConfigProcessor } from '@nimata/core';
 import pc from 'picocolors';
 import type { OutputWriter } from '../output.js';
 
@@ -35,9 +35,9 @@ export interface InitCommandArgs {
 
 /**
  * Load configuration file if provided
- * @param configPath - Path to configuration file
- * @param output - Output writer instance
- * @returns Partial project configuration
+ * @param {string} configPath - Path to configuration file
+ * @param {OutputWriter} output - Output writer instance
+ * @returns {Promise<Partial<ProjectConfig>>} Partial project configuration
  */
 export async function loadConfigurationFile(
   configPath: string | undefined,
@@ -67,10 +67,10 @@ export async function loadConfigurationFile(
 
 /**
  * Handle non-interactive mode configuration
- * @param argv - Command line arguments
- * @param config - Existing configuration
- * @param output - Output writer instance
- * @returns Updated configuration
+ * @param {InitCommandArgs} argv - Command line arguments
+ * @param {Partial<ProjectConfig>} config - Existing configuration
+ * @param {OutputWriter} output - Output writer instance
+ * @returns {Promise<Partial<ProjectConfig>>} Updated configuration
  */
 export async function handleNonInteractiveMode(
   argv: InitCommandArgs,
@@ -97,9 +97,9 @@ export async function handleNonInteractiveMode(
 
 /**
  * Set project name from positional argument if not already set
- * @param config - Current configuration
- * @param projectName - Project name from arguments
- * @returns Updated configuration
+ * @param {Partial<ProjectConfig>} config - Current configuration
+ * @param {string} projectName - Project name from arguments
+ * @returns {Partial<ProjectConfig>} Updated configuration
  */
 export function setProjectNameFromArgs(
   config: Partial<ProjectConfig>,
@@ -113,10 +113,10 @@ export function setProjectNameFromArgs(
 
 /**
  * Run non-interactive project configuration
- * @param config - Partial project configuration
- * @param wizard - Project wizard instance
- * @param output - Output writer instance
- * @returns Complete project configuration
+ * @param {Partial<ProjectConfig>} config - Partial project configuration
+ * @param {ProjectWizard} wizard - Project wizard instance
+ * @param {OutputWriter} output - Output writer instance
+ * @returns {Promise<ProjectConfig>} Complete project configuration
  */
 export async function runNonInteractive(
   config: Partial<ProjectConfig>,
@@ -155,16 +155,16 @@ export async function runNonInteractive(
 
 /**
  * Process and validate configuration
- * @param config - Raw project configuration
- * @param deps - Dependencies object containing processor and output writer
- * @param deps.processor - Configuration processor instance
- * @param deps.output - Output writer for logging results
- * @returns Processed and validated configuration
+ * @param {ProjectConfig} config - Raw project configuration
+ * @param {object} deps - Dependencies object containing processor and output writer
+ * @param {ProjectConfigProcessorImpl} deps.processor - Configuration processor instance
+ * @param {OutputWriter} deps.output - Output writer for logging results
+ * @returns {Promise<ProjectConfig>} Processed and validated configuration
  */
 export async function processConfiguration(
   config: ProjectConfig,
   deps: {
-    processor: ProjectConfigProcessorImpl;
+    processor: ProjectConfigProcessor;
     output: OutputWriter;
   }
 ): Promise<ProjectConfig> {
@@ -176,9 +176,9 @@ export async function processConfiguration(
 
 /**
  * Build configuration from command line arguments
- * @param argv - Command line arguments
- * @param _output - Output writer instance (unused but required for interface consistency)
- * @returns Partial project configuration
+ * @param {InitCommandArgs} argv - Command line arguments
+ * @param {OutputWriter} _output - Output writer instance (unused but required for interface consistency)
+ * @returns {Partial<ProjectConfig>} Partial project configuration
  */
 function buildConfigFromArgs(argv: InitCommandArgs, _output: OutputWriter): Partial<ProjectConfig> {
   const config: Partial<ProjectConfig> = {};
@@ -188,6 +188,7 @@ function buildConfigFromArgs(argv: InitCommandArgs, _output: OutputWriter): Part
   }
 
   if (argv.template) {
+    config.template = argv.template as 'basic' | 'web' | 'cli' | 'library';
     config.projectType = argv.template as 'basic' | 'web' | 'cli' | 'library';
   }
 
@@ -212,8 +213,9 @@ function buildConfigFromArgs(argv: InitCommandArgs, _output: OutputWriter): Part
 
 /**
  * Handle errors consistently
- * @param error - Error object
- * @param output - Output writer instance
+ * @param {unknown} error - Error object
+ * @param {OutputWriter} output - Output writer instance
+ * @returns {never} Never returns (always exits)
  */
 export function handleError(error: unknown, output: OutputWriter): never {
   const message = error instanceof Error ? error.message : 'Unknown error occurred';

@@ -31,8 +31,8 @@ export interface SubstitutionConfig {
 export class VariableExtractor {
   /**
    * Extracts variable names from template content
-   * @param content - Template content to analyze
-   * @returns Object containing used variables set and found variables array
+   * @param {string} content - Template content to analyze
+   * @returns {string):} Object containing used variables set and found variables array
    */
   static extractVariableNames(content: string): {
     usedVariables: Set<string>;
@@ -58,8 +58,8 @@ export class VariableExtractor {
 
   /**
    * Determines if a variable should be processed by substitution engine vs Handlebars
-   * @param variableName - Variable name to check
-   * @returns True if variable should be processed by substitution engine
+   * @param {string} variableName - Variable name to check
+   * @returns {string): boolean} True if variable should be processed by substitution engine
    */
   private static isSimpleVariable(variableName: string): boolean {
     // Exclude Handlebars keywords and special variables
@@ -94,9 +94,9 @@ export class VariableExtractor {
 
   /**
    * Performs variable substitution in content
-   * @param content - Template content
-   * @param config - Configuration object containing all substitution parameters
-   * @returns Content with substituted variables
+   * @param {string} content - Template content
+   * @param {SubstitutionConfig} config - Configuration object containing all substitution parameters
+   * @returns { string} Content with substituted variables
    */
   static performSubstitution(content: string, config: SubstitutionConfig): string {
     // Pattern that matches simple variables but excludes Handlebars block helpers

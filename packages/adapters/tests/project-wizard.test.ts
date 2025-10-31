@@ -8,8 +8,9 @@ import type { ProjectConfig } from '../src/wizards/wizard-validators.js';
 
 /**
  * Verify all required steps are present and required
- * @param steps - Array of wizard steps
- * @param requiredSteps - IDs of required steps
+ * @param {ReturnType<ProjectWizardImplementation['getSteps']>} steps - Array of wizard steps
+ * @param {string[]} requiredSteps - IDs of required steps
+ * @returns {void}
  */
 function verifyRequiredSteps(
   steps: ReturnType<ProjectWizardImplementation['getSteps']>,
@@ -24,8 +25,9 @@ function verifyRequiredSteps(
 
 /**
  * Verify all optional steps are present and optional
- * @param steps - Array of wizard steps
- * @param optionalSteps - IDs of optional steps
+ * @param {ReturnType<ProjectWizardImplementation['getSteps']>} steps - Array of wizard steps
+ * @param {string[]} optionalSteps - IDs of optional steps
+ * @returns {void}
  */
 function verifyOptionalSteps(
   steps: ReturnType<ProjectWizardImplementation['getSteps']>,
@@ -40,7 +42,8 @@ function verifyOptionalSteps(
 
 /**
  * Verify license step has common SPDX licenses
- * @param values - Array of license values
+ * @param {unknown[]} values - Array of license values
+ * @returns {void}
  */
 function verifyCommonLicenses(values: unknown[]): void {
   const commonLicenses = ['MIT', 'Apache-2.0', 'GPL-3.0-or-later', 'BSD-3-Clause', 'ISC'];
@@ -51,8 +54,8 @@ function verifyCommonLicenses(values: unknown[]): void {
 
 /**
  * Extract step IDs from wizard steps
- * @param steps - Array of wizard steps
- * @returns Array of step IDs
+ * @param {ReturnType<ProjectWizardImplementation['getSteps']>} steps - Array of wizard steps
+ * @returns {string[]} Array of step IDs
  */
 function extractStepIds(steps: ReturnType<ProjectWizardImplementation['getSteps']>): string[] {
   const ids: string[] = [];
@@ -64,9 +67,9 @@ function extractStepIds(steps: ReturnType<ProjectWizardImplementation['getSteps'
 
 /**
  * Check if any error contains a substring
- * @param errors - Array of error messages
- * @param substring - Substring to search for
- * @returns True if any error contains the substring
+ * @param {string[]} errors - Array of error messages
+ * @param {string} substring - Substring to search for
+ * @returns {boolean} True if any error contains the substring
  */
 function containsErrorWith(errors: string[], substring: string): boolean {
   for (const error of errors) {
