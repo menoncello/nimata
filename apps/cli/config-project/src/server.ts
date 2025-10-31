@@ -17,14 +17,11 @@ export async function setupDevServer(vite: ViteDevServer) {
   const app = express();
 
   // API proxy configuration
-  app.use(
-    '/api',
-    createProxyMiddleware({
-      target: 'http://localhost:3001',
-      changeOrigin: true,
-      secure: false,
-    })
-  );
+  app.use('/api', createProxyMiddleware({
+    target: 'http://localhost:3001',
+    changeOrigin: true,
+    secure: false,
+  }));
 
   // Custom middleware examples
   app.use((req, res, next) => {

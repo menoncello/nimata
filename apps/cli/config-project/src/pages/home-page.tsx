@@ -20,10 +20,16 @@ export function HomePage() {
       <section className="hero">
         <div className="hero__content">
           <h1 className="hero__title">{message}</h1>
-          <p className="hero__description">Get started with your new project in seconds.</p>
+          <p className="hero__description">
+            Get started with your new project in seconds.
+          </p>
           <div className="hero__actions">
-            <button className="btn btn--primary">Get Started</button>
-            <button className="btn btn--secondary">Learn More</button>
+            <button className="btn btn--primary">
+              Get Started
+            </button>
+            <button className="btn btn--secondary">
+              Learn More
+            </button>
           </div>
         </div>
       </section>

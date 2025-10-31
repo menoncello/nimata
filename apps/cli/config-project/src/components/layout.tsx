@@ -23,20 +23,16 @@ export function Layout({ children }: LayoutProps) {
             <h1>config-project</h1>
           </div>
           <div className="navbar__nav">
-            <a href="/" className="nav-link">
-              Home
-            </a>
-            <a href="/about" className="nav-link">
-              About
-            </a>
-            <a href="/contact" className="nav-link">
-              Contact
-            </a>
+            <a href="/" className="nav-link">Home</a>
+            <a href="/about" className="nav-link">About</a>
+            <a href="/contact" className="nav-link">Contact</a>
           </div>
         </nav>
       </header>
 
-      <main className="layout__main">{children}</main>
+      <main className="layout__main">
+        {children}
+      </main>
 
       <footer className="layout__footer">
         <p>&copy; 2024 config-project. All rights reserved.</p>

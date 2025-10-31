@@ -145,11 +145,11 @@ export const getScrollbarWidth = (): number => {
  * @param {string} delay - Delay in milliseconds
  * @returns {string} Debounced function
  */
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   delay: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeout: NodeJS.Timeout;
+  let timeout: number;
 
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
@@ -163,7 +163,7 @@ export const debounce = <T extends (...args: any[]) => any>(
  * @param {string} limit - Time limit in milliseconds
  * @returns {string} Throttled function
  */
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {

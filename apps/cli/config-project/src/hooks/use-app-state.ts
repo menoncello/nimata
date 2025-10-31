@@ -35,15 +35,15 @@ export function useAppState() {
   }));
 
   const updateUser = useCallback((user: User | null) => {
-    setState((prev) => ({ ...prev, user }));
+    setState(prev => ({ ...prev, user }));
   }, []);
 
   const setLoading = useCallback((loading: boolean) => {
-    setState((prev) => ({ ...prev, loading }));
+    setState(prev => ({ ...prev, loading }));
   }, []);
 
   const setError = useCallback((error: string | null) => {
-    setState((prev) => ({ ...prev, error }));
+    setState(prev => ({ ...prev, error }));
   }, []);
 
   const addNotification = useCallback((notification: Omit<Notification, 'id' | 'timestamp'>) => {
@@ -53,25 +53,25 @@ export function useAppState() {
       timestamp: new Date(),
     };
 
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       notifications: [...prev.notifications, newNotification],
     }));
   }, []);
 
   const removeNotification = useCallback((id: string) => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
-      notifications: prev.notifications.filter((n) => n.id !== id),
+      notifications: prev.notifications.filter(n => n.id !== id),
     }));
   }, []);
 
   const clearNotifications = useCallback(() => {
-    setState((prev) => ({ ...prev, notifications: [] }));
+    setState(prev => ({ ...prev, notifications: [] }));
   }, []);
 
   const setTheme = useCallback((theme: 'light' | 'dark') => {
-    setState((prev) => ({ ...prev, theme }));
+    setState(prev => ({ ...prev, theme }));
 
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-theme', theme);
@@ -82,9 +82,7 @@ export function useAppState() {
     // Initialize theme from localStorage or system preference
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       const initialTheme = savedTheme || systemTheme;
 
       setTheme(initialTheme);
@@ -94,9 +92,11 @@ export function useAppState() {
   useEffect(() => {
     // Auto-remove notifications after 5 seconds
     const timer = setInterval(() => {
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
-        notifications: prev.notifications.filter((n) => Date.now() - n.timestamp.getTime() < 5000),
+        notifications: prev.notifications.filter(n =>
+          Date.now() - n.timestamp.getTime() < 5000
+        ),
       }));
     }, 1000);
 

@@ -24,53 +24,50 @@ export function useRouter(routes: Route[] = []) {
     isNavigating: false,
   }));
 
-  const navigate = useCallback(
-    (path: string, replace = false) => {
-      setState((prev) => ({ ...prev, isNavigating: true }));
-      if (typeof window !== 'undefined') {
-        if (replace) {
-          window.history.replaceState(null, '', path);
-        } else {
-          window.history.pushState(null, '', path);
-        }
+  const navigate = useCallback((path: string, replace = false) => {
+    setState(prev => ({ ...prev, isNavigating: true }));
+    if (typeof window !== 'undefined') {
+      if (replace) {
+        window.history.replaceState(null, '', path);
+      } else {
+        window.history.pushState(null, '', path);
       }
-      // Parse URL
-      const url = new URL(
-        path,
-        typeof window !== 'undefined' ? window.location.origin : 'http://localhost'
-      );
-      const params: Record<string, string> = {};
-      const query: Record<string, string> = {};
+    }
+    // Parse URL
+    const url = new URL(path, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
+    const params: Record<string, string> = {};
+    const query: Record<string, string> = {};
 
-      // Extract query parameters
-      url.searchParams.forEach((value, key) => {
-        query[key] = value;
-      });
-      // Find matching route and extract params
-      const matchedRoute = routes.find((route) => {
-        const routePattern = route.path.replace(/:[^/]+/g, '([^/]+)').replace(/\*\*/g, '.*');
-        const regex = new RegExp(`^${routePattern}$`);
-        const match = path.match(regex);
+    // Extract query parameters
+    url.searchParams.forEach((value, key) => {
+      query[key] = value;
+    });
+    // Find matching route and extract params
+    const matchedRoute = routes.find(route => {
+      const routePattern = route.path
+        .replace(/:[^/]+/g, '([^/]+)')
+        .replace(/*/g, '.*');
+      const regex = new RegExp(`^${routePattern}$`);
+      const match = path.match(regex);
 
-        if (match) {
-          const paramKeys = (route.path.match(/:[^/]+/g) || []).map((key) => key.substring(1));
-          paramKeys.forEach((key, index) => {
-            params[key] = match[index + 1];
-          });
-          return true;
-        }
-        return false;
-      });
-      setState((prev) => ({
-        ...prev,
-        currentPath: path,
-        params,
-        query,
-        isNavigating: false,
-      }));
-    },
-    [routes]
-  );
+      if (match) {
+        const paramKeys = (route.path.match(/:[^/]+/g) || [])
+          .map(key => key.substring(1));
+        paramKeys.forEach((key, index) => {
+          params[key] = match[index + 1];
+        });
+        return true;
+      }
+      return false;
+    });
+    setState(prev => ({
+      ...prev,
+      currentPath: path,
+      params,
+      query,
+      isNavigating: false,
+    }));
+  }, [routes]);
 
   const goBack = useCallback(() => {
     if (typeof window !== 'undefined') {

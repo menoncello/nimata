@@ -29,6 +29,12 @@
     "noImplicitThis": true,
     "exactOptionalPropertyTypes": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "build"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build"
+  ]
 }

@@ -1,21 +1,26 @@
 /**
  * Home Page
  *
- * Application home page component
+ * Application home page component that displays the main landing page
+ * with hero section and features grid
  */
 
 import type { PageComponent } from '../components/Layout.component.js';
 import type { AppConfig } from '../types/app.types.js';
 
 /**
- * Home page component
+ * Home page component that renders the main landing page
+ *
+ * Displays a hero section with app information and a features grid
+ * showcasing key application capabilities
  */
 export class HomePage implements PageComponent {
   private config: AppConfig;
 
   /**
+   * Creates a new HomePage instance
    *
-   * @param config
+   * @param {AppConfig} config - Application configuration containing name and description
    */
   constructor(config: AppConfig) {
     this.config = config;
@@ -23,9 +28,19 @@ export class HomePage implements PageComponent {
 
   /**
    * Render home page content
-   * @returns HTML string
+   *
+   * @returns {string} HTML string containing the complete home page markup
    */
   render(): string {
+    return this.renderHeroSection() + this.renderFeaturesSection();
+  }
+
+  /**
+   * Renders the hero section with welcome message and navigation actions
+   *
+   * @returns {string} HTML string for the hero section
+   */
+  private renderHeroSection(): string {
     return `
 <section class="hero-section">
   <div class="hero-content">
@@ -37,7 +52,16 @@ export class HomePage implements PageComponent {
     </div>
   </div>
 </section>
+    `.trim();
+  }
 
+  /**
+   * Renders the features section showcasing application capabilities
+   *
+   * @returns {string} HTML string for the features section
+   */
+  private renderFeaturesSection(): string {
+    return `
 <section class="features-section">
   <div class="container">
     <h2>Features</h2>
@@ -65,7 +89,6 @@ export class HomePage implements PageComponent {
    */
   onMount(): void {
     // Add any page-specific initialization here
-    console.log('Home page mounted');
   }
 
   /**
@@ -73,6 +96,5 @@ export class HomePage implements PageComponent {
    */
   onUnmount(): void {
     // Add any cleanup here
-    console.log('Home page unmounted');
   }
 }
